@@ -1,0 +1,19 @@
+{
+  "name": "@skalenetwork/ima-widget",
+  "version": "0.0.1",
+  "description": "Simple JS/TS IMA widget",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "skale",
+    "web3",
+    "ethereum"
+  ],
+  "author": "SKALE Labs",
+  "license": "LGPL-3.0-only",
+  "dependencies": {
+    "@skalenetwork/ima-js": "1.0.0-develop.1"
+  }
+}
