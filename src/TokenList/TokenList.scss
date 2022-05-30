@@ -1,0 +1,19 @@
+
+
+.token-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.token-icon-accent{
+    filter: sepia(69%) saturate(1854%) hue-rotate(2deg) brightness(97%) contrast(81%);
+}
+
+.default-token-icon {
+    color: black;
+    background-color: #dbe106;
+    padding: 4px;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+}

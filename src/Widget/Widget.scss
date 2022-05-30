@@ -1,0 +1,191 @@
+@import "../variables.scss";
+@import "../typography.scss";
+
+h1, h2, h3, h4, h5, h6, p {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+.test-component {
+  background-color: var(--background);
+  color: var(--font-color);
+  border: 1px solid $harvey-black;
+  padding: 16px;
+  width: 360px;
+  text-align: center;
+
+  .heading {
+    @include heading;
+  }
+}
+
+.ima-widget-body {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 0 20pt 20pt 0;
+}
+
+.skale-logo-sm{
+  width: 18pt;
+}
+
+.ima-widget-popup-wrapper{
+  margin: 0 20pt 10pt 20pt;
+}
+
+.ima-widget-popup{
+  padding: 1pt 20pt 15pt 20pt;
+  max-height: calc(100vh - 110pt);
+}
+
+.widget-paper{
+  border-radius: 20px !important;
+}
+
+.flex-container {
+  display: flex;
+  vertical-align: middle;
+}
+
+.fl-right {
+  justify-content: end;
+}
+
+.fl-centered {
+  align-items: center;
+  justify-content: center;
+}
+
+.fl-centered-vert{
+  align-items: center;
+}
+
+.fl-grow{
+  flex-grow: 1;
+}
+
+.marg-top-10{
+  margin-top: 10px;
+}
+
+.marg-left-10{
+  margin-left: 10px;
+}
+
+.marg-left-20{
+  margin-left: 20px;
+}
+
+.marg-ri-20{
+  margin-right: 20px;
+}
+
+.marg-ri-10{
+  margin-right: 10px;
+}
+
+.marg-top-20 {
+  margin-top: 20px !important;
+}
+
+.marg-top-30 {
+  margin-top: 30px !important;
+}
+
+.marg-bott-20 {
+  margin-bottom: 20px !important;
+}
+
+.marg-bott-10 {
+  margin-bottom: 10px !important;
+}
+
+.marg-bott-40 {
+  margin-bottom: 40px !important;
+}
+
+.no-marg-top{
+  margin-top: 0 !important;
+}
+
+
+.no-marg-bott{
+  margin-bottom: 0 !important;
+}
+
+.no-marg{
+  margin: 0 !important;
+}
+
+.schain-name {
+  font-weight: bold;
+  padding-left: 10pt;
+  color: white !important;
+}
+
+
+.chains-list{
+  overflow: auto;
+  max-height: 45vh;
+}
+
+.chain-name-btn{
+  width: 100%;
+  text-align: left;
+  text-transform: uppercase;
+  // font-size: 0.8125rem;
+  // line-height: 1.75;
+  // letter-spacing: 0.02857em;
+
+  font-size: 0.6525rem;
+  line-height: 1.6;
+  letter-spacing: 0.02857em;
+}
+
+.transfer-btn{
+  width: 100%;
+  margin-top: 20pt !important;
+}
+
+.hidden.hiddable {
+  overflow: hidden;  /* Hide the element content, while height = 0 */
+  height: 0;
+  opacity: 0;
+  transition: height 0ms 1.5s, opacity 1.5s 0ms;
+}
+
+.hiddable {
+  height: auto; opacity: 1;
+  transition: height 0ms 1.5s, opacity 1.5s 0ms;
+}
+
+.hidden-static {
+  overflow: hidden;  /* Hide the element content, while height = 0 */
+  height: 0;
+  opacity: 0;
+}
+
+.MuiAccordionSummary-content{
+  margin: 0 !important;
+}
+
+
+
+.amount-input{
+  color: red;
+}
+
+
+.arrow-down-icon{
+  width: 100%;
+  text-align: center;
+  margin-top: 15pt;
+  margin-bottom: -30pt;
+
+  svg {
+    width: 15pt;
+    color: #bdbdbd;
+  }
+}

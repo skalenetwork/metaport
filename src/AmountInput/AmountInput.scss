@@ -1,0 +1,41 @@
+
+.amount-input {
+
+    .MuiInput-root::after {
+        border-bottom: none !important;
+    }
+
+    .MuiInput-root::before {
+        border-bottom: none !important;
+    }
+
+    input {
+        background-color: #292929;
+        border-radius: 4px 0 0 4px;
+        padding: 9pt;
+    }
+
+    .MuiFormControl-root {
+        width: 100%;
+        // border-radius: 4px;
+    }
+
+    background-color: #0d0d0d;
+    // padding: 6pt;
+    border-radius: 4px;
+
+    button {
+        border-radius: 0 4px 4px 0;       
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance:textfield; /* Firefox */
+    }
+}
