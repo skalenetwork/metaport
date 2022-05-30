@@ -10,7 +10,8 @@
     "jsx": "react",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "src"
   },
   "include": ["src/**/*", "index.ts", "src/custom.d.ts"],
   "exclude": [

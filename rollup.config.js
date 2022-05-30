@@ -7,6 +7,7 @@ import copy from "rollup-plugin-copy";
 import svg from 'rollup-plugin-svg-import';
 import image from '@rollup/plugin-image';
 
+
 const packageJson = require("./package.json");
 
 export default {
@@ -41,6 +42,11 @@ export default {
           src: "src/typography.scss",
           dest: "build",
           rename: "typography.scss"
+        },
+        {
+          src: "src/icons",
+          dest: "build",
+          rename: "icons"
         }
       ]
     })

@@ -8,8 +8,18 @@ import Button from '@mui/material/Button';
 
 import './TokenList.scss';
 
+let reqSvgs;
 
-const reqSvgs = require.context ('../icons', true, /\.svg$/ );
+if (process.env.STORYBOOK) {
+  try {
+    reqSvgs = require.context('../icons', true, /\.svg$/ );
+  } catch (e) {
+    console.log(e);
+  }
+  
+} else {
+  reqSvgs = require.context('./icons', true, /\.svg$/ );
+}
 
 const svgs = reqSvgs
   .keys ()

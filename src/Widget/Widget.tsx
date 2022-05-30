@@ -14,9 +14,11 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import skaleLogo from './skale_logo_short.svg';
-import WidgetCore from '../WidgetCore'
+import WidgetCore from '../WidgetCore';
 
 import "./Widget.scss";
+
+import { schains, tokens } from './TestData';
 
 let theme = createTheme({
   palette: {
@@ -90,7 +92,10 @@ class IMAWidget {
     const widgetEl: HTMLElement = document.getElementById('ima-widget');  
     const root = createRoot(widgetEl);
     root.render(
-        <WidgetBody />
+        <WidgetBody
+          schains={schains}
+          tokens={tokens}
+        />
     );
   }
 }
