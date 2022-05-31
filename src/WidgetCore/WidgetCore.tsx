@@ -1,5 +1,6 @@
 import React from "react";
 import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
 
 import ChainsList from '../ChainsList';
 import TokenList from '../TokenList';
@@ -16,23 +17,29 @@ export default function WidgetCore(props) {
 
   return (
     <div>
-      <div className={'hiddable ' + (expandedTo || expandedTokens ? 'hidden' : '')}>
-        <h5>From</h5>
-        <ChainsList
-          schains={props.schains}
-          setChain={props.setChain1}
-          chain={props.chain1}
-          disabledChain={props.chain2}
-          expanded={expandedFrom}
-          setExpanded={setExpandedFrom}
-        />
+      
+      <div>
+        <Collapse in={!expandedTo && !expandedTokens}>
+          <div>
+            <h5 className='no-marg-top'>From</h5>
+            <ChainsList
+              schains={props.schains}
+              setChain={props.setChain1}
+              chain={props.chain1}
+              disabledChain={props.chain2}
+              expanded={expandedFrom}
+              setExpanded={setExpandedFrom}
+            />
+          </div>
+        </Collapse>
       </div>
-
-      <div  className={'arrow-down-icon hiddable ' + (expandedFrom || expandedTo || expandedTokens ? 'hidden' : '')}>
+      
+      <div>
+      <Collapse className='arrow-down-icon' in={!expandedFrom && !expandedTo && !expandedTokens}>
         <ArrowDownwardIcon/>
-      </div>
-    
-      <div className={'hiddable ' + (expandedFrom || expandedTokens ? 'hidden' : '')}>
+      </Collapse>
+
+      <Collapse in={!expandedFrom && !expandedTokens}>
         <h5>To</h5>
         <ChainsList
           schains={props.schains}
@@ -42,35 +49,37 @@ export default function WidgetCore(props) {
           expanded={expandedTo}
           setExpanded={setExpandedTo}
         />
-      </div>
+      </Collapse>
 
-      <div className={'marg-top-20 hiddable ' + (!chainsSelected ? 'hidden' : '')}>
-        <div className={(!expandedTokens ? 'hidden-static' : '')}>
+      <Collapse in={chainsSelected}>
+        <Collapse in={(expandedTokens as boolean)}>
           <h5>Token</h5>
-        </div>
-        <div className={'hiddable ' + (expandedFrom || expandedTo ? 'hidden' : '')}>
+        </Collapse>
+        <Collapse in={!expandedFrom && !expandedTo}>
           <div className='marg-top-10'>
-              <TokenList
-                tokens={props.tokens}
-                setToken={props.setToken}
-                token={props.token}
-                expanded={expandedTokens}
-                setExpanded={setExpandedTokens}
-              />
-          </div>      
-        </div>
-
-        <div className={'hiddable ' + (expandedFrom || expandedTo || expandedTokens ? 'hidden' : '')}>
-          <div className='marg-top-10'>
-            <AmountInput/>
+            <TokenList
+              tokens={props.tokens}
+              setToken={props.setToken}
+              token={props.token}
+              expanded={expandedTokens}
+              setExpanded={setExpandedTokens}
+            />
           </div>
-        </div>
-      </div>
+      </Collapse>
 
-      <div className={'hiddable ' + (expandedFrom || expandedTo || expandedTokens ? 'hidden' : '')}>
-        <Button variant="contained" color="secondary" size="large" className='transfer-btn'>
-          Transfer
-        </Button>
+        <Collapse in={!expandedFrom && !expandedTo && !expandedTokens}>
+            <div className='marg-top-10'>
+              <AmountInput/>
+            </div>
+        </Collapse>
+      </Collapse>
+
+      <Collapse in={!expandedFrom && !expandedTo && !expandedTokens}>
+        <Button variant="contained" color="secondary" size="large" className='transfer-btn marg-top-10'>
+            Transfer
+          </Button>
+      </Collapse>
+
       </div>
     </div>
   )

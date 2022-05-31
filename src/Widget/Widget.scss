@@ -41,7 +41,7 @@ button {
 }
 
 .ima-widget-popup{
-  padding: 1pt 20pt 15pt 20pt;
+  padding: 20pt 20pt 15pt 20pt;
   max-height: calc(100vh - 110pt);
 }
 
@@ -140,10 +140,6 @@ button {
   width: 100%;
   text-align: left;
   text-transform: uppercase;
-  // font-size: 0.8125rem;
-  // line-height: 1.75;
-  // letter-spacing: 0.02857em;
-
   font-size: 0.6525rem;
   line-height: 1.6;
   letter-spacing: 0.02857em;
@@ -176,12 +172,9 @@ button {
   margin: 0 !important;
 }
 
-
-
 .amount-input{
   color: red;
 }
-
 
 .arrow-down-icon{
   width: 100%;
@@ -193,4 +186,9 @@ button {
     width: 15pt;
     color: #bdbdbd;
   }
+}
+
+.MuiCollapse-hidden{
+  // z-index: 0;
+  // position: absolute;
 }
