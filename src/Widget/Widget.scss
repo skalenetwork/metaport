@@ -188,7 +188,16 @@ button {
   }
 }
 
-.MuiCollapse-hidden{
-  // z-index: 0;
-  // position: absolute;
+.balance-text {
+  margin: 10pt 0 0;
+  text-align: right;
+  color: #bdbdbd;
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
+
+.token-symbol-text {
+  margin-left: 2pt;
 }

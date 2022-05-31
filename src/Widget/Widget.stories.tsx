@@ -10,5 +10,6 @@ export const WidgetBodyTest = () => (
   <WidgetBody
     schains={schains}
     tokens={tokens}
+    balance='1250.5'
   />
 );

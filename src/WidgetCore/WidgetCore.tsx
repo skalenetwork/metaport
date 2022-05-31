@@ -12,6 +12,7 @@ export default function WidgetCore(props) {
   const [expandedFrom, setExpandedFrom] = React.useState<string | false>(false);
   const [expandedTo, setExpandedTo] = React.useState<string | false>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<string | false>(false);
+  const [amount, setAmount] = React.useState<string>('');
 
   const chainsSelected = props.chain1 && props.chain2;
 
@@ -67,9 +68,18 @@ export default function WidgetCore(props) {
           </div>
       </Collapse>
 
-        <Collapse in={!expandedFrom && !expandedTo && !expandedTokens}>
+        <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
             <div className='marg-top-10'>
-              <AmountInput/>
+              <AmountInput
+                amount={amount}
+                setAmount={setAmount}
+                balance={props.balance}
+              />
+            </div>
+            <div className='flex-container'>
+              <div className='fl-grow'></div>
+              <h6 className='balance-text'>Balance: {props.balance}</h6>
+              <h6 className='balance-text uppercase marg-left-10 token-symbol-text'>{props.token}</h6>
             </div>
         </Collapse>
       </Collapse>

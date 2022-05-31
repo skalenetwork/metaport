@@ -76,6 +76,8 @@ export function WidgetBody(props) {
                   setToken={setToken}
                   token={token}
                   tokens={props.tokens}
+
+                  balance={props.balance}
                 />
               </div>
             </Paper>
@@ -95,6 +97,8 @@ class IMAWidget {
         <WidgetBody
           schains={schains}
           tokens={tokens}
+          balance='1234'
+          amount=''
         />
     );
   }
