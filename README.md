@@ -15,3 +15,8 @@ yarn add @skalenetwork/ima-widget
 
 ## Usage
 
+## Development
+
+```
+npx sb init --builder webpack5
+```
