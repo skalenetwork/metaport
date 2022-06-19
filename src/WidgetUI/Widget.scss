@@ -43,6 +43,14 @@ button {
 .ima-widget-popup{
   padding: 20pt 20pt 15pt 20pt;
   max-height: calc(100vh - 110pt);
+  // width: 230pt;
+  // max-width: 100% !important;
+}
+
+@media all and (min-width:300pt) {  
+  .ima-widget-popup{
+    min-width: 230pt;
+  }
 }
 
 .widget-paper{
@@ -148,6 +156,7 @@ button {
 .transfer-btn{
   width: 100%;
   margin-top: 20pt !important;
+  // border-radius: 8pt;
 }
 
 .hidden.hiddable {
@@ -180,10 +189,11 @@ button {
   width: 100%;
   text-align: center;
   margin-top: 15pt;
-  margin-bottom: -30pt;
+  margin-bottom: -35pt;
 
   svg {
     width: 15pt;
+    height: 15pt;
     color: #bdbdbd;
   }
 }
@@ -204,4 +214,19 @@ button {
 
 .widget-paper{
   border: 1px solid #292929;
+}
+
+.MuiButton-root{
+  font-weight: 600 !important;
+}
+
+
+.Mui-disabled{
+  .MuiAccordionSummary-expandIconWrapper{
+    display: none !important;
+  }
+
+  opacity: 1 !important;
+  background-color: #0d0d0d !important;
+  border-radius: 4px !important;
 }

@@ -1,27 +1,14 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
-import Button from '@mui/material/Button';
-
-
-const stringToColour1 = function(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  let colour = '#';
-  for (let i = 0; i < 3; i++) {
-    let value = (hash >> (i * 8)) & 0xFF;
-    colour += ('00' + value.toString(16)).substr(-2);
-  }
-  return colour;
-}
 
 function hashCode(str) {
   let hash = 0;
@@ -37,7 +24,6 @@ function stringToColour(str) {
 
 
 export default function ChainsList(props) {
-
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       props.setExpanded(isExpanded ? panel : false);
@@ -46,8 +32,8 @@ export default function ChainsList(props) {
   const schainNames = [];
 
   for (let chain of props.schains) {
-    if (chain.schain[0] != props.disabledChain){
-      schainNames.push(chain.schain[0]);
+    if (chain != props.disabledChain){
+      schainNames.push(chain);
     }
   }
 
@@ -56,23 +42,38 @@ export default function ChainsList(props) {
     props.setChain(schainName);
   }
 
+  function getSChainName(schainName: string) {
+    if (props.schainAliases && props.schainAliases[schainName]){
+      return props.schainAliases[schainName];
+    } else {
+      return schainName;
+    }
+  }
+
   return (
     <div>
-      <Accordion expanded={props.expanded === 'panel1'} onChange={handleChange('panel1')}>
+      
+      <Accordion
+        expanded={props.expanded === 'panel1'}
+        onChange={handleChange('panel1')}
+        disabled={props.disabled}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
           {props.chain ? (
-            <div className="flex-container chain-name-btn">
-              <div className="flex-container fl-centered">
-                <OfflineBoltIcon sx={{ color: stringToColour(props.chain) }} width='20px'/>
+            <Tooltip title={'SKALE Chain ' + props.chain}>
+              <div className="flex-container chain-name-btn">
+                <div className="flex-container fl-centered">
+                  <OfflineBoltIcon sx={{ color: stringToColour(props.chain) }} width='20px'/>
+                </div>
+                <p className="schain-name flex-container marg-ri-10">
+                  {getSChainName(props.chain)}
+                </p>
               </div>
-              <p className="schain-name flex-container marg-ri-10">
-                {props.chain}
-              </p>
-            </div>
+            </Tooltip>
           ) : (
             <div className="flex-container chain-name-btn">
               <div className="flex-container fl-centered">
@@ -95,7 +96,7 @@ export default function ChainsList(props) {
                       <OfflineBoltIcon sx={{ color: stringToColour(schainName) }} className='opacityIcon'/>
                     </div>
                     <p className="schain-name flex-container marg-ri-10">
-                      {schainName}
+                      {getSChainName(schainName)}
                     </p>
                   </div>  
                 </Button>
@@ -104,7 +105,7 @@ export default function ChainsList(props) {
           </div>
         </AccordionDetails>
       </Accordion>
-     
+    
     </div>
   )
 }

@@ -2323,65 +2323,65 @@ export const schains = [
     }
   ]
   
-export const tokens = {
-    "ada": {
-    "name": "Cardano",
-    "address": "0xD6B02218Ca3F482A68D54104BCe796a14DCB38b9",
-    "type": "erc20"
-    },
-    "rep": {
+  export const tokens = {
+      "ada": {
+        "name": "Cardano",
+        "address": "0xD6B02218Ca3F482A68D54104BCe796a14DCB38b9",
+        "type": "erc20"
+      },
+      "rep": {
         "name": "Augur",
         "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
         "type": "erc20"
-    },
-    "bat": {
-    "name": "Basic Attention Token",
-    "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
-    "type": "erc20"
-    },
-    "busd": {
+      },
+      "bat": {
+        "name": "Basic Attention Token",
+        "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
+        "type": "erc20"
+      },
+      "busd": {
         "name": "Binance USD",
         "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
         "type": "erc20"
-    },
-    "link": {
-    "name": "Chainlink",
-    "address": "0xD6B02218Ca3F482A68D54104BCe796a14DCB38b9",
-    "type": "erc20"
-    },
-    "mkr": {
-    "name": "Maker",
-    "address": "0xD6B02218Ca3F482A68D54104BCe796a14DCB38b9",
-    "type": "erc20"
-    },
-    "skl": {
-    "name": "SKALE",
-    "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
-    "type": "erc20"
-    },
-    "snt": {
-    "name": "Status",
-    "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
-    "type": "erc20"
-    },
-    "uni": {
-    "name": "Uniswap",
-    "address": "0xc87e24E7a83ED7Ae2D0312ab82C83958aA52fbd0",
-    "type": "erc20"
-    },
-    "usdt": {
-    "name": "Tether",
-    "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-    "type": "erc20"
-    },
-    "usdc": {
-    "name": "USDC",
-    "address": "0xc87e24E7a83ED7Ae2D0312ab82C83958aA52fbd0",
-    "type": "erc20"
-    },
-    "zrx": {
-    "name": "0x",
-    "address": "0xc87e24E7a83ED7Ae2D0312ab82C83958aA52fbd0",
-    "type": "erc20"
-    }
-};
+      },
+      "link": {
+        "name": "Chainlink",
+        "address": "0xD6B02218Ca3F482A68D54104BCe796a14DCB38b9",
+        "type": "erc20"
+      },
+      "mkr": {
+        "name": "Maker",
+        "address": "0xD6B02218Ca3F482A68D54104BCe796a14DCB38b9",
+        "type": "erc20"
+      },
+      "skl": {
+        "name": "SKALE",
+        "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
+        "type": "erc20"
+      },
+      "snt": {
+        "name": "Status",
+        "address": "0x9be267496fDC26ac8b2120012e2D8D1174D81dc6",
+        "type": "erc20"
+      },
+      "uni": {
+        "name": "Uniswap",
+        "address": "0xc87e24E7a83ED7Ae2D0312ab82C83958aA52fbd0",
+        "type": "erc20"
+      },
+      "usdt": {
+        "name": "Tether",
+        "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
+        "type": "erc20"
+      },
+      "usdc": {
+        "name": "USDC",
+        "address": "0xc87e24E7a83ED7Ae2D0312ab82C83958aA52fbd0",
+        "type": "erc20"
+      },
+      "zrx": {
+        "name": "0x",
+        "address": "0xc87e24E7a83ED7Ae2D0312ab82C83958aA52fbd0",
+        "type": "erc20"
+      }
+  };

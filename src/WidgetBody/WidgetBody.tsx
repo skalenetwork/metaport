@@ -16,7 +16,7 @@ export default function WidgetBody(props) {
   const [expandedTokens, setExpandedTokens] = React.useState<string | false>(false);
   const [amount, setAmount] = React.useState<string>('');
 
-  const chainsSelected = props.chain1 && props.chain2;
+  const tokensList = props.token || (props.chain1 && props.chain2);
 
   return (
     <div>
@@ -31,6 +31,9 @@ export default function WidgetBody(props) {
               disabledChain={props.chain2}
               expanded={expandedFrom}
               setExpanded={setExpandedFrom}
+              fromChain={true}
+              schainAliases={props.schainAliases}
+              disabled={props.disabledChains}
             />
           </div>
         </Collapse>
@@ -38,7 +41,13 @@ export default function WidgetBody(props) {
       
       <div>
       <Collapse className='arrow-down-icon' in={!expandedFrom && !expandedTo && !expandedTokens}>
-        <IconButton aria-label="fingerprint" color="secondary">
+        <IconButton
+          color="secondary"
+          onClick={() => {
+            let chain1 = props.chain1;
+            props.setChain1(props.chain2);
+            props.setChain2(chain1);
+          }}>
           <SwapVertIcon/>
         </IconButton>
       </Collapse>
@@ -52,10 +61,12 @@ export default function WidgetBody(props) {
           disabledChain={props.chain1}
           expanded={expandedTo}
           setExpanded={setExpandedTo}
+          schainAliases={props.schainAliases}
+          disabled={props.disabledChains}
         />
       </Collapse>
 
-      <Collapse in={chainsSelected}>
+      <Collapse in={tokensList}>
         <Collapse in={(expandedTokens as boolean)}>
           <h5>Token</h5>
         </Collapse>

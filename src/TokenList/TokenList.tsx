@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -16,7 +16,6 @@ if (process.env.STORYBOOK) {
   } catch (e) {
     console.log(e);
   }
-  
 } else {
   reqSvgs = require.context('./icons', true, /\.svg$/ );
 }
@@ -40,19 +39,32 @@ function svgPath(name) {
 
 export default function TokenList(props) {
 
+  let disabled = Object.keys(props.tokens['erc20']).length == 1;
+  useEffect(() => {
+    if (disabled) {
+      props.setToken(Object.keys(props.tokens['erc20'])[0])
+    }
+  }, []);
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       props.setExpanded(isExpanded ? panel : false);
     };
 
-  function handle(schainName) {
+  function handle(token) {
     props.setExpanded(false);
-    props.setToken(schainName);
+    props.setToken(token);
   }
+
+  let erc20Tokens = props.tokens['erc20'];
 
   return (
     <div>
-      <Accordion expanded={props.expanded === 'panel1'} onChange={handleChange('panel1')}>
+      <Accordion
+        expanded={props.expanded === 'panel1'}
+        onChange={handleChange('panel1')}
+        disabled={disabled}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
@@ -64,7 +76,7 @@ export default function TokenList(props) {
                 <img className='token-icon token-icon-accent' src={svgPath(props.token)}/>
               </div>
               <p className="schain-name flex-container marg-ri-10">
-                {props.tokens[props.token]['name']}
+                {erc20Tokens[props.token]['name']}
               </p>
             </div>
           ) : (
@@ -81,7 +93,7 @@ export default function TokenList(props) {
         </AccordionSummary>
         <AccordionDetails>
           <div className='chains-list'>
-            {Object.keys(props.tokens).map((key, i)  => (
+            {Object.keys(erc20Tokens).map((key, i)  => (
               <Typography key={key}>
                 <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(key)}>
                   <div className="flex-container chain-name-btn">
@@ -89,7 +101,7 @@ export default function TokenList(props) {
                       <img className='token-icon token-icon-accent' src={svgPath(key)}/>
                     </div>
                     <p className="schain-name flex-container marg-ri-10">
-                      {props.tokens[key]['name']}
+                      {erc20Tokens[key]['name']}
                     </p>
                   </div>  
                 </Button>
