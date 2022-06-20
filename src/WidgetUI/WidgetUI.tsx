@@ -39,10 +39,6 @@ export function WidgetUI(props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const divRef = React.useRef();
 
-  const [chain1, setChain1] = React.useState(undefined);
-  const [chain2, setChain2] = React.useState(undefined);
-  const [token, setToken] = React.useState(undefined);
-
   const [disabledChains, setDisabledChains] = React.useState(undefined);
 
   useEffect(() => {
@@ -51,13 +47,13 @@ export function WidgetUI(props) {
     }
 
     if (props.schains.length == 2) {
-        setChain1(props.schains[0]);
-        setChain2(props.schains[1]);
+        props.setChain1(props.schains[0]);
+        props.setChain2(props.schains[1]);
         setDisabledChains(true);
     }
 
     if (Object.keys(props.tokens['erc20']).length == 1) {
-      setToken(Object.keys(props.tokens['erc20'])[0])
+      props.setToken(Object.keys(props.tokens['erc20'])[0])
     }
 
 
@@ -88,15 +84,15 @@ export function WidgetUI(props) {
               <div className='ima-widget-popup'>
                 <WidgetBody
                   schains={props.schains}
-                  setChain1={setChain1}
-                  setChain2={setChain2}
-                  chain1={chain1}
-                  chain2={chain2}
+                  setChain1={props.setChain1}
+                  setChain2={props.setChain2}
+                  chain1={props.chain1}
+                  chain2={props.chain2}
 
                   schainAliases={props.schainAliases}
 
-                  setToken={setToken}
-                  token={token}
+                  setToken={props.setToken}
+                  token={props.token}
                   tokens={props.tokens}
 
                   balance={props.balance}

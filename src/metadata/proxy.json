@@ -1,0 +1,5 @@
+{
+  "mainnet": "https://mainnet.skalenodes.com",
+  "staging": "https://staging-v2.skalenodes.com",
+  "qatestnet": "https://new-testnet-proxy.skalenodes.com"
+}

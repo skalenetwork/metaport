@@ -32,7 +32,7 @@ export default function ChainsList(props) {
   const schainNames = [];
 
   for (let chain of props.schains) {
-    if (chain != props.disabledChain){
+    if (chain != props.disabledChain && chain != props.chain){
       schainNames.push(chain);
     }
   }

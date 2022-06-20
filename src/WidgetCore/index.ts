@@ -1,1 +1,1 @@
-export { default } from "./WidgetCore";
+export * from "./WidgetCore";

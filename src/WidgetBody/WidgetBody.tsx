@@ -11,9 +11,9 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import IconButton from '@mui/material/IconButton';
 
 export default function WidgetBody(props) {
-  const [expandedFrom, setExpandedFrom] = React.useState<string | false>(false);
-  const [expandedTo, setExpandedTo] = React.useState<string | false>(false);
-  const [expandedTokens, setExpandedTokens] = React.useState<string | false>(false);
+  const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
+  const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
+  const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
   const [amount, setAmount] = React.useState<string>('');
 
   const tokensList = props.token || (props.chain1 && props.chain2);
@@ -66,8 +66,8 @@ export default function WidgetBody(props) {
         />
       </Collapse>
 
-      <Collapse in={tokensList}>
-        <Collapse in={(expandedTokens as boolean)}>
+      <Collapse in={!!tokensList}>
+        <Collapse in={!!expandedTokens}>
           <h5>Token</h5>
         </Collapse>
         <Collapse in={!expandedFrom && !expandedTo}>
