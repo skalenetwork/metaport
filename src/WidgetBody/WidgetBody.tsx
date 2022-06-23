@@ -1,4 +1,5 @@
 import React from "react";
+
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 
@@ -6,9 +7,15 @@ import ChainsList from '../ChainsList';
 import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
 
-// import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import IconButton from '@mui/material/IconButton';
+
+
+function roundBalance(balance) {
+  return balance;
+  // return Math.floor(balance * 100) / 100;
+}
+
 
 export default function WidgetBody(props) {
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
@@ -16,7 +23,7 @@ export default function WidgetBody(props) {
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
   const [amount, setAmount] = React.useState<string>('');
 
-  const tokensList = props.token || (props.chain1 && props.chain2);
+  let tokensList = Object.keys(props.tokens['erc20']).length != 0;
 
   return (
     <div>
@@ -66,7 +73,7 @@ export default function WidgetBody(props) {
         />
       </Collapse>
 
-      <Collapse in={!!tokensList}>
+      <Collapse in={tokensList}>
         <Collapse in={!!expandedTokens}>
           <h5>Token</h5>
         </Collapse>
@@ -92,8 +99,16 @@ export default function WidgetBody(props) {
             </div>
             <div className='flex-container'>
               <div className='fl-grow'></div>
-              <h6 className='balance-text'>Balance: {props.balance}</h6>
-              <h6 className='balance-text uppercase marg-left-10 token-symbol-text'>{props.token}</h6>
+                {props.balance == '' ? (
+                  <div>
+                    <h6 className='balance-text'>Loading balance...</h6>
+                  </div>
+                ) : (
+                  <div className='flex-container'>
+                    <h6 className='balance-text'>Balance: {roundBalance(props.balance)}</h6>
+                    <h6 className='balance-text uppercase marg-left-10 token-symbol-text'>{props.token}</h6>
+                  </div>
+                )}
             </div>
         </Collapse>
       </Collapse>

@@ -51,13 +51,14 @@ export function WidgetUI(props) {
         props.setChain2(props.schains[1]);
         setDisabledChains(true);
     }
-
-    if (Object.keys(props.tokens['erc20']).length == 1) {
-      props.setToken(Object.keys(props.tokens['erc20'])[0])
-    }
-
-
   }, []);
+
+  useEffect(() => {
+    if (props.tokens == undefined) return;
+    if (Object.keys(props.tokens['erc20']).length == 1) {
+      props.setToken(Object.keys(props.tokens['erc20'])[0]);
+    }
+  }, [props.tokens]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     // setAnchorEl(anchorEl ? null : event.currentTarget);
