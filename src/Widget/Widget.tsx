@@ -12,7 +12,7 @@ export function Widget(props) {
   const [availableTokens, setAvailableTokens] = React.useState({'erc20': {}});
 
   // const [address, setAddress] = React.useState(undefined);
-  const address = '';
+  const address = '0xBFef9277d497B67d3D730E59F85020d8B064Af88';
 
   const [chain1, setChain1] = React.useState(undefined);
   const [chain2, setChain2] = React.useState(undefined);

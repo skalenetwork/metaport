@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import skaleLogo from './skale_logo_short.svg';
 import WidgetBody from '../WidgetBody';
+import { Connector } from '../WalletConnector';
 
 import "./Widget.scss";
 
@@ -82,6 +83,9 @@ export function WidgetUI(props) {
         <Popper id={id} open={open} anchorEl={anchorEl}>
           <div className="ima-widget-popup-wrapper">
             <Paper elevation={3} className='widget-paper'>
+              
+              <Connector/>
+              
               <div className='ima-widget-popup'>
                 <WidgetBody
                   schains={props.schains}
