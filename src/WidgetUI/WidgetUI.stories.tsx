@@ -19,6 +19,8 @@ export const WidgetUITestDefault = () => (
     schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain']}
     tokens={defaultTokens['staging']['rapping-zuben-elakrab']}
     balance='3250.5'
+
+    walletConnected={true}
   />
 );
 
@@ -58,6 +60,8 @@ export const WidgetUITestPreset = () => (
     chain2='bbb-chain'
     setChain1={setMock}
     setChain2={setMock}
+
+    walletConnected={true}
   />
 );
 
@@ -87,8 +91,22 @@ export const WidgetUITestAliases = () => (
 
     setToken={setMock}
     token='usdt'
+
+    walletConnected={true}
   />
 );
+
+
+export const WidgetUITestConnect = () => (
+  <WidgetUI
+    schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain']}
+    tokens={defaultTokens['staging']['rapping-zuben-elakrab']}
+    balance='3250.5'
+    walletConnected={false}
+    open={true}
+  />
+);
+
 
 
 // export const WidgetUITestFullscreen = () => (

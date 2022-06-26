@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client';
 import WidgetUI from '../WidgetUI'
 import { initSChain, initERC20, runTokenLookup } from '../WidgetCore'
 
+import { connect, addListeners } from '../WalletConnector'
+
 import defaultTokens from '../metadata/tokens.json'
 
 
@@ -11,8 +13,9 @@ export function Widget(props) {
 
   const [availableTokens, setAvailableTokens] = React.useState({'erc20': {}});
 
-  // const [address, setAddress] = React.useState(undefined);
-  const address = '0xBFef9277d497B67d3D730E59F85020d8B064Af88';
+  const [address, setAddress] = React.useState(undefined);
+
+  const [walletConnected, setWalletConnected] = React.useState(undefined);
 
   const [chain1, setChain1] = React.useState(undefined);
   const [chain2, setChain2] = React.useState(undefined);
@@ -30,6 +33,11 @@ export function Widget(props) {
     let balanceEther = sChain1.web3.utils.fromWei(balance);
     setBalance(balanceEther);
   }
+
+  useEffect(() => {
+    setWalletConnected(false);
+    addListeners(accountsChangedFallback);
+  }, []);
 
   async function tokenLookup() {
     let tokens = await runTokenLookup(
@@ -73,12 +81,43 @@ export function Widget(props) {
 
   useEffect(() => {
     setBalance('');
-    if (sChain1 && token && availableTokens['erc20'][token]) {
+    if (sChain1 && token && availableTokens['erc20'][token] && address) {
       let tokenInfo = availableTokens['erc20'][token];
       sChain1.erc20.addToken(token, initERC20(tokenInfo, sChain1.web3));
       getTokenBalance();
     }
-  }, [token, availableTokens]);
+  }, [token, availableTokens, address]);
+
+  function accountsChangedFallback(accounts) {
+    if (accounts.length === 0) {
+      // MetaMask is locked or the user has not connected any accounts
+      console.log('Please connect to MetaMask!');
+    } else {
+      setAddress(accounts[0]);
+      setWalletConnected(true);
+    }
+  }
+
+
+  function networkConnectFallback(accounts) {
+    if (accounts.length === 0) {
+      // MetaMask is locked or the user has not connected any accounts
+      console.log('Please connect to MetaMask!');
+    }
+    // todo: handle accounts in Metamask module
+
+    console.log('accounts[0]');
+    console.log(accounts[0]);
+
+    setAddress(accounts[0]);
+    setWalletConnected(true);
+  }
+
+  function connectMetamask() {
+    console.log('connectMetamask...');
+    connect(networkConnectFallback);
+    console.log('Done: connectMetamask...');
+  }
 
   return (<WidgetUI
     schains={props.schains}
@@ -95,6 +134,9 @@ export function Widget(props) {
 
     token={token}
     setToken={setToken}
+
+    walletConnected={walletConnected}
+    connectMetamask={connectMetamask}
   />)
 }
 

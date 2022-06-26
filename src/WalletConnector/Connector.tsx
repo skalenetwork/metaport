@@ -1,20 +1,32 @@
-import React, { useEffect } from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
+import React from 'react';
+import Paper from '@mui/material/Paper';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ButtonBase from '@mui/material/ButtonBase/ButtonBase';
 
-import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
+import metamaskLogo from './metamask-fox.svg';
 
 
 export function Connector(props) {
-
   return (
     <div>
-      <p>Connect to metamask</p>
+        <h5 className='no-marg-top'>Connect to your wallet</h5>
+        <ButtonBase
+          onClick={props.connectMetamask}
+          className='MetamaskSurface'
+        >
+         <Paper>
+            <div className='flex-container fl-centered'>
+              <div>
+                <img src={metamaskLogo} alt="logo" className='surfaceIcon'/>
+              </div>
+              <div className='fl-grow marg-top-10 marg-bott-10'>
+                <h3 className="no-marg-top marg-bott-5">Metamask</h3>
+                <h6 className='no-marg gray-text'>Connect using Metamask</h6>
+              </div>
+              <ArrowForwardIosIcon className='gray-icon'/>
+            </div>
+          </Paper>
+        </ButtonBase>
     </div>
   )
 }

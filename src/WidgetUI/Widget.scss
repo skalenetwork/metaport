@@ -119,6 +119,15 @@ button {
   margin-bottom: 40px !important;
 }
 
+.marg-bott-5 {
+  margin-bottom: 5px !important;
+}
+
+.marg-top-5 {
+  margin-top: 5px !important;
+}
+
+
 .no-marg-top{
   margin-top: 0 !important;
 }
@@ -229,4 +238,33 @@ button {
   opacity: 1 !important;
   background-color: #0d0d0d !important;
   border-radius: 4px !important;
+}
+
+
+.MetamaskSurface{
+  width: 100%;
+  margin: 10pt;
+  border-radius: 4px !important;
+
+  text-align: left;
+
+  .surfaceIcon{
+    padding-right: 20pt;
+    width: 30pt !important;
+  }
+
+  .MuiPaper-root{
+    width: 100%;
+    padding: 10pt 20pt;
+  }
+
+  .gray-icon {
+    color: #bdbdbd;
+    width: 12pt;
+  }
+
+}
+
+.gray-text {
+  color: #bdbdbd;
 }

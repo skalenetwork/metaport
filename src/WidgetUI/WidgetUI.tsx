@@ -83,11 +83,9 @@ export function WidgetUI(props) {
         <Popper id={id} open={open} anchorEl={anchorEl}>
           <div className="ima-widget-popup-wrapper">
             <Paper elevation={3} className='widget-paper'>
-              
-              <Connector/>
-              
               <div className='ima-widget-popup'>
-                <WidgetBody
+                {props.walletConnected ? (
+                  <WidgetBody
                   schains={props.schains}
                   setChain1={props.setChain1}
                   setChain2={props.setChain2}
@@ -104,6 +102,11 @@ export function WidgetUI(props) {
 
                   disabledChains={disabledChains}
                 />
+                ) : (
+                <Connector
+                  connectMetamask={props.connectMetamask}
+                />
+              )}
               </div>
             </Paper>
           </div>
