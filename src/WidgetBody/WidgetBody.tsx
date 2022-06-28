@@ -6,6 +6,7 @@ import Collapse from '@mui/material/Collapse';
 import ChainsList from '../ChainsList';
 import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
+import Stepper from '../Stepper';
 
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import IconButton from '@mui/material/IconButton';
@@ -21,7 +22,6 @@ export default function WidgetBody(props) {
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
-  const [amount, setAmount] = React.useState<string>('');
 
   let tokensList = Object.keys(props.tokens['erc20']).length != 0;
 
@@ -92,8 +92,8 @@ export default function WidgetBody(props) {
         <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
             <div className='marg-top-10'>
               <AmountInput
-                amount={amount}
-                setAmount={setAmount}
+                amount={props.amount}
+                setAmount={props.setAmount}
                 balance={props.balance}
               />
             </div>
@@ -113,12 +113,20 @@ export default function WidgetBody(props) {
         </Collapse>
       </Collapse>
 
-      <Collapse in={!expandedFrom && !expandedTo && !expandedTokens}>
-        <Button variant="contained" color="secondary" size="medium" className='transfer-btn marg-top-10'>
-            Transfer
-          </Button>
+      <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.amount != ''}>
+        <div className='marg-top-10'>
+          {props.balance == '' ? (
+            <div></div>
+          ) : (
+            <Stepper
+              approveTransfer={props.approveTransfer}
+              transfer={props.transfer}
+              amount={props.amount}
+              allowance={props.allowance}
+            />
+          )}
+        </div>
       </Collapse>
-
       </div>
     </div>
   )

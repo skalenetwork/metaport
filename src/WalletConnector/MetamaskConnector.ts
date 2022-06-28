@@ -26,17 +26,6 @@ export async function changeMetamaskNetwork(networkParams) {
 }
 
 
-const handleAccountsChanged = (accounts) => {
-  if (accounts.length === 0) {
-    // MetaMask is locked or the user has not connected any accounts
-    console.log('Please connect to MetaMask!');
-  }
-  // } else if (accounts[0] !== props.currentAccount) {
-  //   props.setCurrentAccount(accounts[0]);
-  // }
-}
-
-
 export const connect = (connectFallback) => {
   window.ethereum
     .request({ method: 'eth_requestAccounts' })
@@ -65,4 +54,18 @@ export const addListeners = (accountsChangedFallback) => {
     // eth_accounts will return an empty array.
     console.error(err);
   });
+}
+
+
+export function schainNetworkParams(schainName, schainChainUrl, schainChainId) {
+  return {
+    chainId: schainChainId,
+    chainName: "SKALE Chain | " + schainName,
+    rpcUrls: [schainChainUrl],
+    nativeCurrency: {
+        name: "sFUEL",
+        symbol: "sFUEL",
+        decimals: 18
+    }
+  };
 }

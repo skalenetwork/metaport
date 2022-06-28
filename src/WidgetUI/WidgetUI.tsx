@@ -86,22 +86,29 @@ export function WidgetUI(props) {
               <div className='ima-widget-popup'>
                 {props.walletConnected ? (
                   <WidgetBody
-                  schains={props.schains}
-                  setChain1={props.setChain1}
-                  setChain2={props.setChain2}
-                  chain1={props.chain1}
-                  chain2={props.chain2}
+                    schains={props.schains}
+                    setChain1={props.setChain1}
+                    setChain2={props.setChain2}
+                    chain1={props.chain1}
+                    chain2={props.chain2}
 
-                  schainAliases={props.schainAliases}
+                    schainAliases={props.schainAliases}
 
-                  setToken={props.setToken}
-                  token={props.token}
-                  tokens={props.tokens}
+                    setToken={props.setToken}
+                    token={props.token}
+                    tokens={props.tokens}
 
-                  balance={props.balance}
+                    balance={props.balance}
+                    allowance={props.allowance}
 
-                  disabledChains={disabledChains}
-                />
+                    disabledChains={disabledChains}
+
+                    amount={props.amount}
+                    setAmount={props.setAmount}
+
+                    approveTransfer={props.approveTransfer}
+                    transfer={props.transfer}
+                  />
                 ) : (
                 <Connector
                   connectMetamask={props.connectMetamask}

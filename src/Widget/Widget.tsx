@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import WidgetUI from '../WidgetUI'
-import { initSChain, initERC20, runTokenLookup } from '../WidgetCore'
+import { initSChain, initSChainMetamask, initERC20, runTokenLookup } from '../WidgetCore'
+import { SChain } from '@skalenetwork/ima-js';
 
 import { connect, addListeners } from '../WalletConnector'
 
@@ -14,6 +15,8 @@ export function Widget(props) {
   const [availableTokens, setAvailableTokens] = React.useState({'erc20': {}});
 
   const [address, setAddress] = React.useState(undefined);
+  const [amount, setAmount] = React.useState<string>('');
+  const [allowance, setAllowance] = React.useState<string>('');
 
   const [walletConnected, setWalletConnected] = React.useState(undefined);
 
@@ -21,8 +24,8 @@ export function Widget(props) {
   const [chain2, setChain2] = React.useState(undefined);
   const [token, setToken] = React.useState(undefined);
 
-  const [sChain1, setSChain1] = React.useState(undefined);
-  const [sChain2, setSChain2] = React.useState(undefined);
+  const [sChain1, setSChain1] = React.useState<SChain>(undefined);
+  const [sChain2, setSChain2] = React.useState<SChain>(undefined);
 
   const [balance, setBalance] = React.useState(undefined);
 
@@ -32,6 +35,17 @@ export function Widget(props) {
     let balance = await sChain1.getERC20Balance(tokenContract, address);
     let balanceEther = sChain1.web3.utils.fromWei(balance);
     setBalance(balanceEther);
+  }
+
+  async function getTokenAllowance() {
+    console.log('getting token allowance: ' + token);
+    let tokenContract = sChain1.erc20.tokens[token];
+    let allowance = await tokenContract.methods.allowance(
+      address,
+      sChain1.erc20.address
+    ).call();
+    let allowanceEther = sChain1.web3.utils.fromWei(allowance);
+    setAllowance(allowanceEther);
   }
 
   useEffect(() => {
@@ -50,12 +64,16 @@ export function Widget(props) {
     setAvailableTokens(tokens);
   }
 
+  async function initSchain1() {
+    setSChain1(await initSChainMetamask(
+      props.network,
+      chain1
+    ))
+  }
+
   useEffect(() => {
     if (chain1) {
-      setSChain1(initSChain(
-        props.network,
-        chain1
-      ))
+      initSchain1()
       console.log('chain1 changed ' + chain1);
     }
   }, [chain1]);
@@ -70,13 +88,12 @@ export function Widget(props) {
     }
   }, [chain2]);
 
-
   useEffect(() => {
     // setBalance('');
     if (sChain1 && sChain2) {
       tokenLookup()
     }
-  }, [sChain1, sChain2]);
+  }, [sChain1]);
 
 
   useEffect(() => {
@@ -85,6 +102,7 @@ export function Widget(props) {
       let tokenInfo = availableTokens['erc20'][token];
       sChain1.erc20.addToken(token, initERC20(tokenInfo, sChain1.web3));
       getTokenBalance();
+      getTokenAllowance();
     }
   }, [token, availableTokens, address]);
 
@@ -98,6 +116,22 @@ export function Widget(props) {
     }
   }
 
+  async function approveTransfer() {
+    const amountWei = sChain1.web3.utils.toWei(amount);
+    await sChain1.erc20.approve(token, amountWei, {address: address});
+    getTokenAllowance();
+  }
+
+  async function transfer() {
+    const amountWei = sChain1.web3.utils.toWei(amount);
+    await sChain1.erc20.transferToSchain(
+      chain2,
+      availableTokens['erc20'][token]['originAddress'],
+      amountWei,
+      {address: address}
+    );
+    getTokenBalance();
+  }
 
   function networkConnectFallback(accounts) {
     if (accounts.length === 0) {
@@ -105,9 +139,6 @@ export function Widget(props) {
       console.log('Please connect to MetaMask!');
     }
     // todo: handle accounts in Metamask module
-
-    console.log('accounts[0]');
-    console.log(accounts[0]);
 
     setAddress(accounts[0]);
     setWalletConnected(true);
@@ -124,7 +155,9 @@ export function Widget(props) {
     tokens={availableTokens}
     schainAliases={props.schainAliases}
     balance={balance}
-    amount=''
+    amount={amount}
+    setAmount={setAmount}
+    allowance={allowance}
     open={props.open}
 
     chain1={chain1}
@@ -137,6 +170,9 @@ export function Widget(props) {
 
     walletConnected={walletConnected}
     connectMetamask={connectMetamask}
+
+    approveTransfer={approveTransfer}
+    transfer={transfer}
   />)
 }
 

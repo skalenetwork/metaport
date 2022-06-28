@@ -1,9 +1,12 @@
 import Web3 from 'web3';
+import { soliditySha3 } from 'web3-utils';
 
 import { SChain } from '@skalenetwork/ima-js';
 
 import sChainAbi from '../metadata/schianAbi.json';
 import proxyEndpoints from '../metadata/proxy.json';
+import { schainNetworkParams, changeMetamaskNetwork } from '../WalletConnector'
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const erc20Abi = require('../metadata/erc20_abi.json');
 
@@ -19,6 +22,18 @@ export function initERC20(token: any, web3: Web3) {
 export function initSChain(network: string, schainName: string) {
   const endpoint = getSChainEndpoint(network, schainName);
   const sChainWeb3 = new Web3(endpoint);
+  return new SChain(sChainWeb3, sChainAbi);
+}
+
+
+export async function initSChainMetamask(network: string, schainName: string) {
+  const endpoint = getSChainEndpoint(network, schainName);
+  const chainId = calcChainId(schainName);
+  const networkParams = schainNetworkParams(schainName, endpoint, chainId);
+
+  await changeMetamaskNetwork(networkParams);
+
+  const sChainWeb3 = new Web3(window.ethereum);
   return new SChain(sChainWeb3, sChainAbi);
 }
 
@@ -44,24 +59,24 @@ async function addToken(
   fromChain
 ) {
 
-  console.log('token token token');
-  console.log(token);
-
   let tokenCloneAddress = await sChain.erc20.getTokenCloneAddress(
     token['address'],
     sChainName
   );
+
   if (tokenCloneAddress == ZERO_ADDRESS) return;
 
   if (fromChain) {
     availableTokens[tokenSymbol] = {
       'address': token['address'],
+      'originAddress': token['address'],
       'name': token['name'],
       'clone': false
     };
   } else {
     availableTokens[tokenSymbol] = {
       'address': tokenCloneAddress,
+      'originAddress': token['address'],
       'name': token['name'],
       'clone': true
     };
@@ -102,4 +117,20 @@ export async function runTokenLookup(
     }
   }
   return {'erc20': availableTokens};
+}
+
+
+function calcChainId(sChainName) {
+  let h = soliditySha3(sChainName);
+  h = remove0x(h).toLowerCase();
+  while(h.length < 64)
+      h = "0" + h;
+  h = h.substr(0, 13);
+  return "0x" + h;
+}
+
+
+export function remove0x(s: any) {
+  if (!s.startsWith('0x')) return s;
+  return s.slice(2);
 }
