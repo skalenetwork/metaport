@@ -84,24 +84,29 @@ button {
 }
 
 .marg-top-10{
-  margin-top: 10px;
+  margin-top: 10px !important;
 }
 
 .marg-left-10{
-  margin-left: 10px;
+  margin-left: 10px !important;
 }
 
 .marg-left-20{
-  margin-left: 20px;
+  margin-left: 20px !important;
 }
 
 .marg-ri-20{
-  margin-right: 20px;
+  margin-right: 20px !important;
 }
 
 .marg-ri-10{
-  margin-right: 10px;
+  margin-right: 10px !important;
 }
+
+.marg-ri-5{
+  margin-right: 5px !important;
+}
+
 
 .marg-top-20 {
   margin-top: 20px !important;
@@ -212,9 +217,9 @@ button {
 }
 
 .balance-text {
-  margin: 10pt 0 0;
   text-align: right;
   color: #bdbdbd;
+  font-weight: 600 !important;
 }
 
 .uppercase{
@@ -311,3 +316,6 @@ button {
   }
 }
 
+.token-text{
+  margin-top: 28pt !important;
+}

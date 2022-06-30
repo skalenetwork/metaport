@@ -71,18 +71,8 @@ export function WidgetUI(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="ima-widget-body">
-        <Fab ref={divRef} color="primary" aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
-          {open ? (
-            <CloseIcon />
-          ) : (
-            <img className='skale-logo-sm' src={skaleLogo}/>
-          )
-          }
-        </Fab>
-        <Popper id={id} open={open} anchorEl={anchorEl}>
-          <div className="ima-widget-popup-wrapper">
-            <Paper elevation={3} className='widget-paper'>
+          <div className="ima-widget-fullsreen-wrapper">
+            <Paper elevation={3} className='ima-widget-fullsreen widget-paper'>
               <div className='ima-widget-popup'>
                 {props.walletConnected ? (
                   <WidgetBody
@@ -111,8 +101,6 @@ export function WidgetUI(props) {
 
                     loading={props.loading}
                     setLoading={props.setLoading}
-
-                    loadingTokens={props.loadingTokens}
                 
                     activeStep={props.activeStep}
                     setActiveStep={props.setActiveStep}
@@ -125,8 +113,6 @@ export function WidgetUI(props) {
               </div>
             </Paper>
           </div>
-        </Popper>
-      </div>
     </ThemeProvider>
   );
 }

@@ -29,12 +29,16 @@ export function Widget(props) {
 
   const [balance, setBalance] = React.useState(undefined);
 
-  async function getTokenBalance() {
-    console.log('getting token balance: ' + token);
-    let tokenContract = sChain1.erc20.tokens[token];
+  const [loading, setLoading] = React.useState(false);
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const [loadingTokens, setLoadingTokens] = React.useState(false);
+
+  async function getTokenBalance(tokenName) {
+    console.log('getting token balance: ' + tokenName);
+    let tokenContract = sChain1.erc20.tokens[tokenName];
     let balance = await sChain1.getERC20Balance(tokenContract, address);
-    let balanceEther = sChain1.web3.utils.fromWei(balance);
-    setBalance(balanceEther);
+    return sChain1.web3.utils.fromWei(balance);
   }
 
   async function getTokenAllowance() {
@@ -54,6 +58,7 @@ export function Widget(props) {
   }, []);
 
   async function tokenLookup() {
+    setLoadingTokens(true);
     let tokens = await runTokenLookup(
       sChain1,
       chain1,
@@ -61,7 +66,17 @@ export function Widget(props) {
       chain2,
       props.tokens
     );
+    await getTokenBalances(tokens);
     setAvailableTokens(tokens);
+    setLoadingTokens(false);
+  }
+
+  async function getTokenBalances(tokens) {
+    for (let [tokenName, tokenInfo] of Object.entries(tokens['erc20'])) {
+      sChain1.erc20.addToken(tokenName, initERC20(tokenInfo, sChain1.web3));
+      let balance = await getTokenBalance(tokenName);
+      tokens['erc20'][tokenName]['balance'] = balance;
+    }  
   }
 
   async function initSchain1() {
@@ -89,11 +104,19 @@ export function Widget(props) {
   }, [chain2]);
 
   useEffect(() => {
-    // setBalance('');
+    // const currentToken = token;
+    setAmount('');
+    setToken(undefined);
+    setLoading(false);
+    setActiveStep(0);
+
     if (sChain1 && sChain2) {
       tokenLookup()
+      // if (availableTokens['erc20'][currentToken]){
+      //   setToken(currentToken);
+      // }
     }
-  }, [sChain1]);
+  }, [sChain1, sChain2]);
 
 
   useEffect(() => {
@@ -101,7 +124,7 @@ export function Widget(props) {
     if (sChain1 && token && availableTokens['erc20'][token] && address) {
       let tokenInfo = availableTokens['erc20'][token];
       sChain1.erc20.addToken(token, initERC20(tokenInfo, sChain1.web3));
-      getTokenBalance();
+      // getTokenBalance();
       getTokenAllowance();
     }
   }, [token, availableTokens, address]);
@@ -130,7 +153,7 @@ export function Widget(props) {
       amountWei,
       {address: address}
     );
-    getTokenBalance();
+    // getTokenBalance();
   }
 
   function networkConnectFallback(accounts) {
@@ -173,6 +196,14 @@ export function Widget(props) {
 
     approveTransfer={approveTransfer}
     transfer={transfer}
+
+    loading={loading}
+    setLoading={setLoading}
+
+    loadingTokens={loadingTokens}
+
+    activeStep={activeStep}
+    setActiveStep={setActiveStep}
   />)
 }
 

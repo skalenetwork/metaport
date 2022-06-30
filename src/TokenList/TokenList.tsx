@@ -57,6 +57,7 @@ export default function TokenList(props) {
   }
 
   let erc20Tokens = props.tokens['erc20'];
+  let tokenInfo = erc20Tokens[props.token];
 
   return (
     <div>
@@ -75,8 +76,12 @@ export default function TokenList(props) {
               <div className="flex-container fl-centered">
                 <img className='token-icon token-icon-accent' src={svgPath(props.token)}/>
               </div>
-              <p className="schain-name flex-container marg-ri-10">
-                {erc20Tokens[props.token]['name']}
+              <p className="schain-name flex-container fl-grow marg-ri-10">
+                {tokenInfo['name']}
+                
+              </p>
+              <p className="balance-text flex-container marg-ri-5">
+                {tokenInfo['balance']} {props.token}
               </p>
             </div>
           ) : (
@@ -100,8 +105,11 @@ export default function TokenList(props) {
                     <div className="flex-container fl-centered">
                       <img className='token-icon token-icon-accent' src={svgPath(key)}/>
                     </div>
-                    <p className="schain-name flex-container marg-ri-10">
+                    <p className="schain-name flex-container fl-grow marg-ri-10">
                       {erc20Tokens[key]['name']}
+                    </p>
+                    <p className="balance-text flex-container marg-ri-5">
+                      {erc20Tokens[key]['balance']} {key}
                     </p>
                   </div>  
                 </Button>

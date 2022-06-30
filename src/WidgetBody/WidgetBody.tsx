@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from 'react';
 
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
+import Skeleton from '@mui/material/Skeleton';
 
 import ChainsList from '../ChainsList';
 import TokenList from '../TokenList';
@@ -23,7 +24,14 @@ export default function WidgetBody(props) {
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
 
-  let tokensList = Object.keys(props.tokens['erc20']).length != 0;
+  // let tokensList = Object.keys(props.tokens['erc20']).length != 0;
+  let currentTokenBalance;
+
+  // todo: optimize
+  if (props.token && props.tokens['erc20'][props.token]) {
+    currentTokenBalance = props.tokens['erc20'][props.token]['balance'];
+  }
+
 
   return (
     <div>
@@ -54,6 +62,9 @@ export default function WidgetBody(props) {
             let chain1 = props.chain1;
             props.setChain1(props.chain2);
             props.setChain2(chain1);
+            props.setAmount(0);
+            props.setLoading(false);
+            props.setActiveStep(0);
           }}>
           <SwapVertIcon/>
         </IconButton>
@@ -73,19 +84,20 @@ export default function WidgetBody(props) {
         />
       </Collapse>
 
-      <Collapse in={tokensList}>
+      <Collapse in={props.chain1 && props.chain2}>
         <Collapse in={!!expandedTokens}>
-          <h5>Token</h5>
+          <h5 className='token-text'>Token</h5>
         </Collapse>
         <Collapse in={!expandedFrom && !expandedTo}>
           <div className='marg-top-10'>
-            <TokenList
+            {props.loadingTokens ? (<Skeleton animation="wave" height={48} />) : (<TokenList
               tokens={props.tokens}
               setToken={props.setToken}
               token={props.token}
               expanded={expandedTokens}
               setExpanded={setExpandedTokens}
-            />
+            />)}
+         
           </div>
       </Collapse>
 
@@ -94,35 +106,31 @@ export default function WidgetBody(props) {
               <AmountInput
                 amount={props.amount}
                 setAmount={props.setAmount}
-                balance={props.balance}
+                balance={currentTokenBalance}
+                loading={props.loading}
+                activeStep={props.activeStep}
               />
-            </div>
-            <div className='flex-container'>
-              <div className='fl-grow'></div>
-                {props.balance == '' ? (
-                  <div>
-                    <h6 className='balance-text'>Loading balance...</h6>
-                  </div>
-                ) : (
-                  <div className='flex-container'>
-                    <h6 className='balance-text'>Balance: {roundBalance(props.balance)}</h6>
-                    <h6 className='balance-text uppercase marg-left-10 token-symbol-text'>{props.token}</h6>
-                  </div>
-                )}
             </div>
         </Collapse>
       </Collapse>
 
-      <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.amount != ''}>
+      <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
         <div className='marg-top-10'>
-          {props.balance == '' ? (
+          {!props.token ? (
             <div></div>
           ) : (
             <Stepper
               approveTransfer={props.approveTransfer}
               transfer={props.transfer}
               amount={props.amount}
+              setAmount={props.setAmount}
               allowance={props.allowance}
+
+              loading={props.loading}
+              setLoading={props.setLoading}
+
+              activeStep={props.activeStep}
+              setActiveStep={props.setActiveStep}
             />
           )}
         </div>

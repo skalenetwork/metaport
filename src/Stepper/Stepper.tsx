@@ -20,45 +20,37 @@ const steps = [
     button: 'Transfer',
     loading: 'Transfering'
   }
-  // {
-  //   label: 'Transaction broadcasted',
-  //   button: 'Transfer again',
-  //   loading: ''
-  // }
 ];
 
 export default function VerticalLinearStepper(props) {
-  const [loading, setLoading] = React.useState(false);
-  const [activeStep, setActiveStep] = React.useState(0);
-
   const handleNext = async () => {
-    setLoading(true);
-    if (activeStep == 0) {
-      await props.approveTransfer()
+    props.setLoading(true);
+    if (props.activeStep == 0) {
+      await props.approveTransfer();
+      props.setLoading(false);
     } else {
-      await props.transfer()
+      await props.transfer();
     }
-    setLoading(false);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    props.setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    props.setActiveStep(0);
+    props.setAmount(0);
+    props.setLoading(false);
   };
-
-  // allowance={props.allowance}
 
   useEffect(() => {
     if (props.allowance >= props.amount && props.amount != '') {
-      setActiveStep(1);
+      props.setActiveStep(1);
     } else {
-      setActiveStep(0);
+      props.setActiveStep(0);
     }
   }, [props.allowance, props.amount]);
 
   return (
     <Box>
-      <Stepper activeStep={activeStep} orientation="vertical">
+      <Stepper activeStep={props.activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>
             <StepLabel
@@ -68,7 +60,7 @@ export default function VerticalLinearStepper(props) {
             <StepContent>
               <Box sx={{ mb: 2 }}>
                 <div>
-                  {loading ? (
+                  {props.loading ? (
                     <LoadingButton
                       loading
                       loadingPosition="start"
@@ -93,9 +85,14 @@ export default function VerticalLinearStepper(props) {
           </Step>
         ))}
       </Stepper>
-      {activeStep === steps.length && (
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }} color="secondary" size="medium">
-            Reset
+      {props.activeStep === steps.length && (
+          <Button
+            onClick={handleReset}
+            color="secondary"
+            size="medium"
+            className='transfer-btn marg-top-10'
+          >
+            Start over
           </Button>
       )}
     </Box>
