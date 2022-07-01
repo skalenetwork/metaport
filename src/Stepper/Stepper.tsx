@@ -36,7 +36,7 @@ export default function VerticalLinearStepper(props) {
 
   const handleReset = () => {
     props.setActiveStep(0);
-    props.setAmount(0);
+    props.setAmount('');
     props.setLoading(false);
   };
 

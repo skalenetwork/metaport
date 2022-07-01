@@ -73,7 +73,9 @@ export function Widget(props) {
 
   async function getTokenBalances(tokens) {
     for (let [tokenName, tokenInfo] of Object.entries(tokens['erc20'])) {
-      sChain1.erc20.addToken(tokenName, initERC20(tokenInfo, sChain1.web3));
+      if (!sChain1.erc20.tokens[tokenName]) {
+        sChain1.erc20.addToken(tokenName, initERC20(tokenInfo, sChain1.web3));
+      }
       let balance = await getTokenBalance(tokenName);
       tokens['erc20'][tokenName]['balance'] = balance;
     }
@@ -153,8 +155,11 @@ export function Widget(props) {
       amountWei,
       {address: address}
     );
-    // getTokenBalance();
+    
+    await getTokenBalances(availableTokens);
+    setAvailableTokens(availableTokens);
   }
+
 
   function networkConnectFallback(accounts) {
     if (accounts.length === 0) {

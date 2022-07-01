@@ -73,7 +73,7 @@
     "@fontsource/roboto": "^4.5.7",
     "@mui/icons-material": "^5.8.0",
     "@mui/material": "^5.8.1",
-    "@skalenetwork/ima-js": "1.0.2",
+    "@skalenetwork/ima-js": "1.0.3-develop.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "react": "^18.1.0",
