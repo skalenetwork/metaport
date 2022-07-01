@@ -76,7 +76,7 @@ export function Widget(props) {
       sChain1.erc20.addToken(tokenName, initERC20(tokenInfo, sChain1.web3));
       let balance = await getTokenBalance(tokenName);
       tokens['erc20'][tokenName]['balance'] = balance;
-    }  
+    }
   }
 
   async function initSchain1() {
@@ -87,30 +87,30 @@ export function Widget(props) {
   }
 
   useEffect(() => {
-    if (chain1) {
+    if (address && chain1) {
       initSchain1()
       console.log('chain1 changed ' + chain1);
     }
-  }, [chain1]);
+  }, [chain1, address]);
 
   useEffect(() => {
-    if (chain2) {
+    if (address && chain2) {
       setSChain2(initSChain(
         props.network,
         chain2
       ))
       console.log('chain2 changed ' + chain2);
     }
-  }, [chain2]);
+  }, [chain2, address]);
 
   useEffect(() => {
     // const currentToken = token;
-    setAmount('');
-    setToken(undefined);
-    setLoading(false);
-    setActiveStep(0);
 
     if (sChain1 && sChain2) {
+      setAmount('');
+      setToken(undefined);
+      setLoading(false);
+      setActiveStep(0);
       tokenLookup()
       // if (availableTokens['erc20'][currentToken]){
       //   setToken(currentToken);

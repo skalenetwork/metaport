@@ -31,9 +31,15 @@ export async function initSChainMetamask(network: string, schainName: string) {
   const chainId = calcChainId(schainName);
   const networkParams = schainNetworkParams(schainName, endpoint, chainId);
 
+  console.log('changeMetamaskNetwork!!!');
   await changeMetamaskNetwork(networkParams);
 
+  console.log('changeMetamaskNetwork!!! - DONE!');
+
   const sChainWeb3 = new Web3(window.ethereum);
+
+  console.log('sChainWeb3!!!');
+
   return new SChain(sChainWeb3, sChainAbi);
 }
 
