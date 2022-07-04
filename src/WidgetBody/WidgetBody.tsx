@@ -38,7 +38,7 @@ export default function WidgetBody(props) {
       <div>
         <Collapse in={!expandedTo && !expandedTokens}>
           <div>
-            <h5 className='no-marg-top'>From</h5>
+            <p className='no-marg-top sm-gr-text'>From</p>
             <ChainsList
               schains={props.schains}
               setChain={props.setChain1}
@@ -58,6 +58,8 @@ export default function WidgetBody(props) {
       <Collapse className='arrow-down-icon' in={!expandedFrom && !expandedTo && !expandedTokens}>
         <IconButton
           color="secondary"
+          size="small"
+          
           onClick={() => {
             let chain1 = props.chain1;
             props.setChain1(props.chain2);
@@ -71,7 +73,7 @@ export default function WidgetBody(props) {
       </Collapse>
 
       <Collapse in={!expandedFrom && !expandedTokens}>
-        <h5>To</h5>
+        <p className='sm-gr-text marg-top-20-pt'>To</p>
         <ChainsList
           schains={props.schains}
           setChain={props.setChain2}

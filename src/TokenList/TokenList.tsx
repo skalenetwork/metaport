@@ -79,7 +79,7 @@ export default function TokenList(props) {
                 {props.tokens['erc20'][props.token]['name']}
                 
               </p>
-              <p className="balance-text flex-container marg-ri-5">
+              <p className="sm-gr-text flex-container marg-ri-5">
                 {props.tokens['erc20'][props.token]['balance']} {props.token}
               </p>
             </div>
@@ -107,7 +107,7 @@ export default function TokenList(props) {
                     <p className="schain-name flex-container fl-grow marg-ri-10">
                       {erc20Tokens[key]['name']}
                     </p>
-                    <p className="balance-text flex-container marg-ri-5">
+                    <p className="sm-gr-text flex-container marg-ri-5">
                       {erc20Tokens[key]['balance']} {key}
                     </p>
                   </div>  

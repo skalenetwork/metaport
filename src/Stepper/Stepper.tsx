@@ -53,8 +53,7 @@ export default function VerticalLinearStepper(props) {
       <Stepper activeStep={props.activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>
-            <StepLabel
-            >
+            <StepLabel>
               {step.label}
             </StepLabel>
             <StepContent>
