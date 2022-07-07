@@ -23,7 +23,7 @@ export default function AmountInput(props) {
           placeholder="0.00" 
           value={props.amount}
           onChange={handleChange}
-          disabled={props.loading || props.activeStep === 2}
+          disabled={props.loading || props.activeStep === 2 || props.amountLocked}
         />
       </div>
       <div className='flex-container'>
@@ -32,7 +32,7 @@ export default function AmountInput(props) {
           size="small"
           className='chain-name-btn'
           onClick={setMaxAmount}
-          disabled={props.loading || props.activeStep === 2 || !props.balance}
+          disabled={props.loading || props.activeStep === 2 || !props.balance || props.amountLocked}
         >
           MAX
         </Button>

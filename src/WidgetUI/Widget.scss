@@ -223,6 +223,15 @@ button {
     z-index: 9999;
   }
 
+  .Mui-disabled{
+    background-color: #363636 !important;
+    
+    svg{
+      color: rgb(115 115 115) !important
+    }
+    
+  }
+
   svg {
     width: 14pt;
     height: 14pt;
@@ -351,4 +360,13 @@ button {
 
 .btn-bg{
   background-color: #0d0d0d !important;
+}
+
+.Mui-disabled{
+  // -webkit-text-fill-color: rgb(255 255 255) !important;
+  // -webkit-text-fill-color: rgba(255, 255, 255, 0.7);
+}
+
+.hidden{
+  opacity: 0;
 }

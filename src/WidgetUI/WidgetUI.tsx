@@ -44,15 +44,20 @@ export function WidgetUI(props) {
 
   useEffect(() => {
     if (props.open) {
-      setAnchorEl(divRef.current);  
+      setAnchorEl(divRef.current);
+    } else {
+      setAnchorEl(null);
     }
+  }, [props.open]);
 
+
+  useEffect(() => {
     if (props.schains.length == 2) {
         props.setChain1(props.schains[0]);
         props.setChain2(props.schains[1]);
         setDisabledChains(true);
     }
-  }, []);
+  }, [props.schains]);
 
   useEffect(() => {
     if (props.tokens == undefined) return;
@@ -63,7 +68,8 @@ export function WidgetUI(props) {
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     // setAnchorEl(anchorEl ? null : event.currentTarget);
-    setAnchorEl(anchorEl ? null : divRef.current);
+    // setAnchorEl(anchorEl ? null : divRef.current);
+    props.setOpen(props.open ? false : true);
   };
 
   const open = Boolean(anchorEl);
@@ -76,7 +82,11 @@ export function WidgetUI(props) {
           {open ? (
             <CloseIcon />
           ) : (
-            <img className='skale-logo-sm' src={skaleLogo}/>
+           
+              <img className='skale-logo-sm' src={skaleLogo}/>
+           
+            
+            
           )
           }
         </Fab>
@@ -116,6 +126,9 @@ export function WidgetUI(props) {
                 
                     activeStep={props.activeStep}
                     setActiveStep={props.setActiveStep}
+
+                    setAmountLocked={props.setAmountLocked}
+                    amountLocked={props.amountLocked}
                   />
                 ) : (
                 <Connector

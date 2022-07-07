@@ -245,6 +245,8 @@ export const WidgetUITestLoading = () => (
     activeStep={1}
     setActiveStep={() => {}}
 
+    amountLocked={true}
+
   />
 );
 

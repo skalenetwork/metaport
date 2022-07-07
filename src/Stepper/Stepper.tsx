@@ -38,6 +38,7 @@ export default function VerticalLinearStepper(props) {
     props.setActiveStep(0);
     props.setAmount('');
     props.setLoading(false);
+    props.setAmountLocked(false);
   };
 
   useEffect(() => {

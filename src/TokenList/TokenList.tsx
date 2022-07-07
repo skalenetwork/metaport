@@ -77,7 +77,6 @@ export default function TokenList(props) {
               </div>
               <p className="schain-name flex-container fl-grow marg-ri-10">
                 {props.tokens['erc20'][props.token]['name']}
-                
               </p>
               <p className="sm-gr-text flex-container marg-ri-5">
                 {props.tokens['erc20'][props.token]['balance']} {props.token}

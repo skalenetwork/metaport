@@ -32,13 +32,12 @@ export default function WidgetBody(props) {
     currentTokenBalance = props.tokens['erc20'][props.token]['balance'];
   }
 
-
   return (
     <div>
       <div>
         <Collapse in={!expandedTo && !expandedTokens}>
           <div>
-            <p className='no-marg-top sm-gr-text'>From</p>
+            <p className='no-marg-top sm-gr-text'>Transfer from</p>
             <ChainsList
               schains={props.schains}
               setChain={props.setChain1}
@@ -59,6 +58,8 @@ export default function WidgetBody(props) {
         <IconButton
           color="secondary"
           size="small"
+
+          disabled={props.amountLocked}
           
           onClick={() => {
             let chain1 = props.chain1;
@@ -111,6 +112,7 @@ export default function WidgetBody(props) {
                 balance={currentTokenBalance}
                 loading={props.loading}
                 activeStep={props.activeStep}
+                amountLocked={props.amountLocked}
               />
             </div>
         </Collapse>
@@ -133,6 +135,8 @@ export default function WidgetBody(props) {
 
               activeStep={props.activeStep}
               setActiveStep={props.setActiveStep}
+
+              setAmountLocked={props.setAmountLocked}
             />
           )}
         </div>

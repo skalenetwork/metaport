@@ -14,8 +14,8 @@ const erc20Abi = require('../metadata/erc20_abi.json');
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 
-export function initERC20(token: any, web3: Web3) {
-  return new web3.eth.Contract(erc20Abi.abi, token['address']);
+export function initERC20(tokenAddress: string, web3: Web3) {
+  return new web3.eth.Contract(erc20Abi.abi, tokenAddress);
 }
 
 
@@ -73,14 +73,14 @@ async function addToken(
 
   if (fromChain) {
     availableTokens[tokenSymbol] = {
-      'address': token['address'],
+      'cloneAddress': tokenCloneAddress,
       'originAddress': token['address'],
       'name': token['name'],
       'clone': false
     };
   } else {
     availableTokens[tokenSymbol] = {
-      'address': tokenCloneAddress,
+      'cloneAddress': tokenCloneAddress,
       'originAddress': token['address'],
       'name': token['name'],
       'clone': true
