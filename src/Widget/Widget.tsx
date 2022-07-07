@@ -88,6 +88,15 @@ export function Widget(props) {
     );
   }, []);
 
+  function updateBalanceHandler() { // todo: refactor
+    window.addEventListener(
+      "requestBalance",
+      requestBalanceHandler,
+      false
+    );
+    console.log("updateBalanceHandler done");
+  }
+
 
   function closeWidget(e) {
     setOpen(false);
@@ -130,7 +139,31 @@ export function Widget(props) {
     console.log(tokens);
     await getTokenBalances(tokens);
     setAvailableTokens(tokens);
+    updateBalanceHandler();
     setLoadingTokens(false);
+  }
+
+  async function emitBalanceEvent(schainName, tokenName) {
+    console.log(chain1);
+    if (schainName === chain1) {
+      let tokenContract = sChain1.erc20.tokens[tokenName];
+      let balance = await sChain1.getERC20Balance(tokenContract, address);
+      return balanceEvent(tokenName, chain1, balance);
+    }
+
+    if (schainName === chain2) {
+      let tokenContract = sChain2.erc20.tokens[tokenName]; // todo: check token exist!
+      let balance = await sChain2.getERC20Balance(tokenContract, address);
+      return balanceEvent(tokenName, chain2, balance);
+    }
+    console.log('Error: can request balance only for active chains!'); // todo: replace with error!
+  }
+
+  function requestBalanceHandler(e) {
+    if (!sChain1 || !sChain2) {
+      console.log('chains are not inited yet'); // todo: replace with error
+    }
+    emitBalanceEvent(e.detail.schainName, e.detail.tokenName);
   }
 
   async function getTokenBalances(tokens) {
@@ -258,7 +291,11 @@ export function Widget(props) {
       }}
     );
     window.dispatchEvent(balanceEvent);
-    console.log('balanceEvent event emitted: ', tokenName + ', schainName: ' + schainName + ', balance: ' + balance);
+    // console.log('balanceEvent event emitted: ', tokenName + ', schainName: ' + schainName + ', balance: ' + balance);
+  }
+
+  function emitConnectedEvent() {
+    window.dispatchEvent(new CustomEvent("widgetConnected"));
   }
 
   function networkConnectFallback(accounts) {
@@ -270,6 +307,7 @@ export function Widget(props) {
 
     setAddress(accounts[0]);
     setWalletConnected(true);
+    emitConnectedEvent();
   }
 
   function connectMetamask() {
@@ -375,6 +413,18 @@ class IMAWidget {
   reset() {
     window.dispatchEvent(new CustomEvent("resetWidget"));
     console.log('resetWidget event sent');
+  }
+
+  requestBalance(schainName, tokenName) {
+    window.dispatchEvent(new CustomEvent(
+      "requestBalance",
+      {
+        detail: {
+          "schainName": schainName,
+          "tokenName": tokenName
+        }
+      }
+    ));
   }
 
 }

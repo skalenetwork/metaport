@@ -41,8 +41,10 @@ export default function VerticalLinearStepper(props) {
     props.setAmountLocked(false);
   };
 
-  useEffect(() => {
-    if (props.allowance >= props.amount && props.amount != '') {
+  useEffect(() => {   
+    let allowance = parseInt(props.allowance);
+    let amount = parseInt(props.amount);
+    if (allowance >= amount && props.amount != '') {
       props.setActiveStep(1);
     } else {
       props.setActiveStep(0);
