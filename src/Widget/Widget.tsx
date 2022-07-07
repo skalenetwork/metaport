@@ -313,6 +313,7 @@ export function Widget(props) {
   function connectMetamask() {
     console.log('connectMetamask...');
     connect(networkConnectFallback);
+    emitConnectedEvent();
     console.log('Done: connectMetamask...');
   }
 
