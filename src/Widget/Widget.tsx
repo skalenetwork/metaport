@@ -212,6 +212,7 @@ export function Widget(props) {
 
   useEffect(() => {
     // const currentToken = token;
+    emitConnectedEvent();
 
     if (sChain1 && sChain2) {
       // setAmount('');
