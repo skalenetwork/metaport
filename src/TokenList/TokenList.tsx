@@ -8,7 +8,19 @@ import Button from '@mui/material/Button';
 
 import './TokenList.scss';
 
-let reqSvgs = require.context('../icons', true, /\.png$/ );
+
+function importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
+
+const icons = importAll(require.context('../icons', false, /\.(png|jpe?g|svg)$/));
+
+
+console.log('icons  icons icons icons');
+console.log(icons);
+// let reqSvgs = require.context('../icons', true, /\.png$/ );
 
 // if (process.env.STORYBOOK) {
 //   try {
@@ -20,19 +32,19 @@ let reqSvgs = require.context('../icons', true, /\.png$/ );
 //   reqSvgs = require.context('./icons', true, /\.svg$/ );
 // }
 
-const svgs = reqSvgs
-  .keys ()
-  .reduce ( ( images, path ) => {
-    images[path] = reqSvgs ( path )
-    return images
-  }, {} )
+// const icons = reqSvgs
+//   .keys ()
+//   .reduce ( ( images, path ) => {
+//     images[path] = reqSvgs ( path )
+//     return images
+//   }, {} )
 
-function svgPath(name) {
-  const key = './'+ name + '.png';
-  if (svgs[key]) {
-    return svgs[key];
+function iconPath(name) {
+  const key = name + '.svg';
+  if (icons[key]) {
+    return icons[key];
   } else {
-    return svgs['./eth.png'];
+    return icons['eth.svg'];
   }
 }
 
@@ -74,7 +86,7 @@ export default function TokenList(props) {
           {props.token ? (
             <div className="flex-container chain-name-btn">
               <div className="flex-container fl-centered">
-                <img className='token-icon token-icon-accent' src={svgPath(props.token)}/>
+                <img className='token-icon token-icon-accent' src={iconPath(props.token)}/>
               </div>
               <p className="schain-name flex-container fl-grow marg-ri-10">
                 {props.tokens['erc20'][props.token]['name']}
@@ -86,7 +98,7 @@ export default function TokenList(props) {
           ) : (
             <div className="flex-container chain-name-btn">
               <div className="flex-container fl-centered">
-                <img className='token-icon' src={svgPath('eth')}/>
+                <img className='token-icon' src={iconPath('eth')}/>
               </div>
               <p className="schain-name flex-container marg-ri-10">
                 Select token
@@ -102,7 +114,7 @@ export default function TokenList(props) {
                 <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(key)}>
                   <div className="flex-container chain-name-btn">
                     <div className="flex-container fl-centered">
-                      <img className='token-icon token-icon-accent' src={svgPath(key)}/>
+                      <img className='token-icon token-icon-accent' src={iconPath(key)}/>
                     </div>
                     <p className="schain-name flex-container fl-grow marg-ri-10">
                       {erc20Tokens[key]['name']}

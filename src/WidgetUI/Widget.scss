@@ -215,21 +215,9 @@ button {
     z-index: 9999;
   }
 
-  .Mui-disabled{
-    background-color: #363636 !important;
-    
-    svg{
-      // color: rgb(115 115 115) !important
-    }
-    
-  }
-
   svg {
     width: 14pt;
     height: 14pt;
-    // color: #bdbdbd;
-    // color: black;
-    // color: black;
   }
 }
 
@@ -242,9 +230,21 @@ button {
     color: #bdbdbd;
   }
 
-  .MuiStepIcon-root.Mui-active{
+  .MuiStepIcon-root.Mui-active, .MuiStepIcon-root.Mui-completed {
     color: #ffffff !important;
   }
+
+
+  .MuiButton-root.Mui-disabled{
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .arrow-down-icon{
+    .Mui-disabled{
+      background-color: #363636 !important;
+    }
+  }
+
 }
 
 
@@ -252,8 +252,15 @@ button {
   .sm-gr-text {
     color: rgb(0 0 0 / 65%);
   }
-  .token-icon{
-    // filter: invert(1); 
+
+  .MuiInput-root{
+    .Mui-disabled{
+      color: rgb(0 0 0 / 60%);
+    }
+  }
+
+  .skale-logo-sm{
+    filter: invert(1);
   }
   
   
@@ -261,10 +268,20 @@ button {
     color: #4f4f4f;
   }
 
-  .MuiStepIcon-root.Mui-active{
+  .MuiStepIcon-root.Mui-active, .MuiStepIcon-root.Mui-completed {
     color: rgba(0, 0, 0, 0.87) !important;
   }
 
+  .MuiButton-root.Mui-disabled{
+    color: rgba(0, 0, 0, 0.26) !important;
+  }
+
+  .arrow-down-icon{
+    .Mui-disabled{
+      background-color: rgb(224 224 224) !important;
+    }
+  }
+  
 }
 
 
@@ -299,7 +316,6 @@ button {
   box-shadow: none !important;
   border-radius: 8px !important;
 }
-
 
 .MuiAccordion-root{
   border-radius: 10px !important;

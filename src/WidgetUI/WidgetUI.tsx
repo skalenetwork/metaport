@@ -75,7 +75,7 @@ export function WidgetUI(props) {
   return (
     <ThemeProvider theme={theme}>
       <div 
-        className="ima-widget-body"
+        className={"ima-widget-body " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}
       >
         <Fab ref={divRef} color="secondary" className='dbtn-bg' aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
           {open ? (
@@ -84,7 +84,10 @@ export function WidgetUI(props) {
                 color: widgetTheme.mode == 'dark' ? 'white' : 'black'
               }}
             />
-          ) : (<img className='skale-logo-sm' src={skaleLogo}/>)
+          ) : (<img
+              className='skale-logo-sm'
+              src={skaleLogo}
+            />)
           }
         </Fab>
         <Popper id={id} open={open} anchorEl={anchorEl}>

@@ -353,6 +353,8 @@ export function Widget(props) {
 
     setAmountLocked={setAmountLocked}
     amountLocked={amountLocked}
+
+    theme={props.theme}
   />)
 }
 
@@ -386,6 +388,7 @@ class IMAWidget {
         schainAliases={params['schainAliases']}
         open={params['open']}
         network={params['network']}
+        theme={params['theme']}
       />
     );
   }

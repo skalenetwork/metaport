@@ -34,6 +34,20 @@ export const WidgetUITestConnectLight = () => (
   />
 );
 
+export const WidgetUITestClosedLight = () => (
+  <WidgetUI
+    schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain']}
+    tokens={defaultTokens['staging']['rapping-zuben-elakrab']}
+    balance='3250.5'
+    walletConnected={false}
+    open={false}
+    theme={{
+      mode: 'light'
+    }}
+  />
+);
+
+
 export const WidgetUITestDefault = () => (
   <WidgetUI
     schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain']}
@@ -159,11 +173,10 @@ export const WidgetUITestAliases = () => (
         "usdt": {
           "name": "Tether",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "3250"
         }
       }
   }}
-    balance='3250.5'
     amount='1200'
     open={true}
 
@@ -197,11 +210,10 @@ export const WidgetUITestApproved = () => (
         "usdt": {
           "name": "Tether",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "3250"
         }
       }
   }}
-    balance='3250.5'
     amount='1200'
     open={true}
 
@@ -236,11 +248,10 @@ export const WidgetUITestLoading = () => (
         "usdt": {
           "name": "Tether",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "3250"
         }
       }
   }}
-    balance='3250.5'
     amount='1200'
     open={true}
 
@@ -277,11 +288,10 @@ export const WidgetUITestComplete = () => (
         "usdt": {
           "name": "Tether",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "3250"
         }
       }
   }}
-    balance='3250.5'
     amount='1200'
     open={true}
 
@@ -315,15 +325,14 @@ export const WidgetUITestCustom = () => (
     }}
     tokens={{
       "erc20": {
-        "usdt": {
-          "name": "Tether",
+        "ruby": {
+          "name": "Ruby",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "750000"
         }
       }
   }}
-    balance='3250.5'
-    amount='1200'
+    amount='2500'
     open={true}
 
     chain1='aaa-chain'
@@ -332,7 +341,7 @@ export const WidgetUITestCustom = () => (
     setChain2={setMock}
 
     setToken={setMock}
-    token='usdt'
+    token='ruby'
 
     walletConnected={true}
 
@@ -360,10 +369,10 @@ export const WidgetUITestCustomDark = () => (
     }}
     tokens={{
       "erc20": {
-        "usdt": {
-          "name": "Tether",
+        "zrx": {
+          "name": "0x",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "3250.5"
         }
       }
   }}
@@ -377,7 +386,7 @@ export const WidgetUITestCustomDark = () => (
     setChain2={setMock}
 
     setToken={setMock}
-    token='usdt'
+    token='zrx'
 
     walletConnected={true}
 
@@ -404,15 +413,14 @@ export const WidgetUITestCustomLight = () => (
     }}
     tokens={{
       "erc20": {
-        "usdt": {
-          "name": "Tether",
+        "link": {
+          "name": "Chainlink",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "32222"
         }
       }
   }}
-    balance='3250.5'
-    amount='1200'
+    amount='950'
     open={true}
 
     chain1='aaa-chain'
@@ -421,7 +429,7 @@ export const WidgetUITestCustomLight = () => (
     setChain2={setMock}
 
     setToken={setMock}
-    token='usdt'
+    token='link'
 
     walletConnected={true}
 
@@ -450,12 +458,11 @@ export const WidgetUITestCustomDark2 = () => (
         "usdt": {
           "name": "Tether",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "1115"
         }
       }
   }}
-    balance='3250.5'
-    amount='1200'
+    amount='10'
     open={true}
 
     chain1='aaa-chain'
@@ -489,15 +496,14 @@ export const WidgetUITestCustomLight2 = () => (
     }}
     tokens={{
       "erc20": {
-        "usdt": {
-          "name": "Tether",
+        "skl": {
+          "name": "Skale",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "3000.5"
         }
       }
   }}
-    balance='3250.5'
-    amount='1200'
+    amount='250'
     open={true}
 
     chain1='aaa-chain'
@@ -506,7 +512,7 @@ export const WidgetUITestCustomLight2 = () => (
     setChain2={setMock}
 
     setToken={setMock}
-    token='usdt'
+    token='skl'
 
     walletConnected={true}
 
@@ -531,15 +537,14 @@ export const WidgetUITestLightDefault = () => (
     }}
     tokens={{
       "erc20": {
-        "usdt": {
-          "name": "Tether",
+        "usdc": {
+          "name": "usdc",
           "address": "0x6e64b56869Ce34efAfF3D936CE67a24fD7618b8E",
-          "balance": "870.5"
+          "balance": "888.8"
         }
       }
   }}
-    balance='3250.5'
-    amount='1200'
+    amount='11.1'
     open={true}
 
     chain1='aaa-chain'
@@ -548,7 +553,7 @@ export const WidgetUITestLightDefault = () => (
     setChain2={setMock}
 
     setToken={setMock}
-    token='usdt'
+    token='usdc'
 
     walletConnected={true}
 
