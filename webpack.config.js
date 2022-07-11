@@ -28,6 +28,17 @@ module.exports = {
                   },
                 ],
               },
+              {
+                test: /\.png$/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                      limit: 10000,
+                    },
+                  },
+                ],
+              },
         
             {
                 test: /\.s[ac]ss$/i,

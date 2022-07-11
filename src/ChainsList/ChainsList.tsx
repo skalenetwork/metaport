@@ -99,7 +99,7 @@ export default function ChainsList(props) {
                 <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(schainName)}>
                   <div className="flex-container chain-name-btn">
                     <div className="flex-container fl-centered">
-                      <OfflineBoltIcon sx={{ color: stringToColour(schainName) }} className='opacityIcon'/>
+                      <OfflineBoltIcon sx={{ color: stringToColour(schainName, props.dark) }} className='opacityIcon'/>
                     </div>
                     <p className="schain-name flex-container marg-ri-10">
                       {getSChainName(schainName)}
