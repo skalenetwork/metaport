@@ -10,7 +10,6 @@
     }
 
     input {
-        background-color: #292929;
         border-radius: 4px 0 0 4px;
         padding: 9pt;
     }
@@ -20,9 +19,8 @@
         // border-radius: 4px;
     }
 
-    background-color: #0d0d0d;
-    // padding: 6pt;
-    border-radius: 4px;
+    background-color: rgb(161 161 161 / 34%);
+    border-radius: 10px;
 
     button {
         border-radius: 0 4px 4px 0;       

@@ -66,17 +66,20 @@ export default function VerticalLinearStepper(props) {
                     <LoadingButton
                       loading
                       loadingPosition="start"
-                      variant="contained" color="secondary" size="medium"
+                      variant="contained" color="primary" size="medium"
                       className='transfer-btn marg-top-5'
                     >
                       {step.loading}
                     </LoadingButton>
                   ) : (
                     <Button
-                      variant="contained" color="secondary" size="medium"
+                      variant="contained" color="primary" size="medium"
                       className='transfer-btn marg-top-5'
                       onClick={handleNext}
                       disabled={props.amount == ''}
+                      style={{
+                        color: props.theme.mode == 'dark' ? 'black' : 'white'
+                      }}
                     >
                       {step.button}
                     </Button>
@@ -90,7 +93,7 @@ export default function VerticalLinearStepper(props) {
       {props.activeStep === steps.length && (
           <Button
             onClick={handleReset}
-            color="secondary"
+            color="primary"
             size="medium"
             className='transfer-btn marg-top-10'
           >

@@ -18,8 +18,13 @@ function hashCode(str) {
   return hash;
 }
 
-function stringToColour(str) {
-  return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
+function stringToColour(str, dark) {
+  if (dark) {
+    // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
+    return 'hsl(120deg 2% 88%)';
+  }
+  return 'hsl(0deg 0% 15%)';
+  // return `hsl(${hashCode(str) % 360}, 55%, 40%)`;
 }
 
 
@@ -57,6 +62,7 @@ export default function ChainsList(props) {
         expanded={props.expanded === 'panel1'}
         onChange={handleChange('panel1')}
         disabled={props.disabled}
+        elevation={0}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -67,7 +73,7 @@ export default function ChainsList(props) {
             <Tooltip title={'SKALE Chain ' + props.chain}>
               <div className="flex-container chain-name-btn">
                 <div className="flex-container fl-centered">
-                  <OfflineBoltIcon sx={{ color: stringToColour(props.chain) }} width='20px'/>
+                  <OfflineBoltIcon sx={{ color: stringToColour(props.chain, props.dark) }} width='20px'/>
                 </div>
                 <p className="schain-name flex-container marg-ri-10">
                   {getSChainName(props.chain)}

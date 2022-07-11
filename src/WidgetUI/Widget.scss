@@ -44,15 +44,13 @@ button {
   margin: 0 20pt 10pt 20pt;
 
   .MuiPaper-root{
-    background-color: #070707;
+    background-image: none;
   }
 }
 
 .ima-widget-popup{
   padding: 17pt;
   max-height: calc(100vh - 110pt);
-  // width: 230pt;
-  // max-width: 100% !important;
 }
 
 @media all and (min-width:300pt) {  
@@ -63,6 +61,7 @@ button {
 
 .widget-paper{
   border-radius: 20px !important;
+  border: 1px #7f7f7f45 solid;
 }
 
 .flex-container {
@@ -161,7 +160,6 @@ button {
 .schain-name {
   font-weight: bold;
   padding-left: 10pt;
-  color: white !important;
 }
 
 
@@ -181,8 +179,6 @@ button {
 
 .transfer-btn{
   width: 100%;
-  // margin-top: 20pt !important;
-  // border-radius: 8pt;
 }
 
 .hidden.hiddable {
@@ -207,10 +203,6 @@ button {
   margin: 0 !important;
 }
 
-.amount-input{
-  color: red;
-}
-
 .arrow-down-icon{
   width: 100%;
   text-align: center;
@@ -219,7 +211,7 @@ button {
 
   button {
     border: 10px #1a1a1a solid;
-    background-color: #d9e021 !important;
+    // background-color: #d9e021 !important;
     z-index: 9999;
   }
 
@@ -227,7 +219,7 @@ button {
     background-color: #363636 !important;
     
     svg{
-      color: rgb(115 115 115) !important
+      // color: rgb(115 115 115) !important
     }
     
   }
@@ -237,12 +229,46 @@ button {
     height: 14pt;
     // color: #bdbdbd;
     // color: black;
-    color: black;
+    // color: black;
   }
 }
 
+
+.dark-theme{
+  .sm-gr-text {
+    color: rgb(255 255 255 / 65%);
+  }
+  .gray-text, .gray-icon {
+    color: #bdbdbd;
+  }
+
+  .MuiStepIcon-root.Mui-active{
+    color: #ffffff !important;
+  }
+}
+
+
+.light-theme{
+  .sm-gr-text {
+    color: rgb(0 0 0 / 65%);
+  }
+  .token-icon{
+    // filter: invert(1); 
+  }
+  
+  
+  .gray-text, .gray-icon {
+    color: #4f4f4f;
+  }
+
+  .MuiStepIcon-root.Mui-active{
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+
+}
+
+
 .sm-gr-text {
-  color: #bdbdbd !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   font-size: 0.6525rem !important;
@@ -252,7 +278,6 @@ button {
 
 
 .MuiStepLabel-label {
-  color: #bdbdbd !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   font-size: 0.6525rem !important;
@@ -268,23 +293,23 @@ button {
   margin-left: 2pt;
 }
 
-.widget-paper{
-  border: 1px solid #292929;
-}
 
 .MuiButton-root{
   font-weight: 600 !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
 }
 
 
 .MuiAccordion-root{
+  border-radius: 10px !important;
+  background-color: rgb(161 161 161 / 20%) !important;
   .Mui-disabled{
     .MuiAccordionSummary-expandIconWrapper{
       display: none !important;
     }
   
     opacity: 1 !important;
-    background-color: #0d0d0d !important;
     border-radius: 4px !important;
   }
   
@@ -294,8 +319,8 @@ button {
 .MetamaskSurface{
   width: 100%;
   margin: 10pt;
-  border-radius: 4px !important;
-
+  border-radius: 8px !important;
+  
   text-align: left;
 
   .surfaceIcon{
@@ -304,20 +329,17 @@ button {
   }
 
   .MuiPaper-root{
+    background-color: rgba(161, 161, 161, 0.2) !important;
     width: 100%;
     padding: 10pt 20pt;
+    border-radius: 8px !important;
   }
 
   .gray-icon {
-    color: #bdbdbd;
     width: 12pt;
   }
-
 }
 
-.gray-text {
-  color: #bdbdbd;
-}
 
 .MuiStepper-root{
   .MuiStepConnector-line{
@@ -328,23 +350,10 @@ button {
     margin-bottom: 5px !important;
   }
   
-  .Mui-active{
-    color: white !important;
-  }
-
-  .MuiStepIcon-text{
-    fill: black  !important;
-  }
 
   .MuiSvgIcon-root{
     width: 18px;
     height: 18px;
-  }
-
-  .MuiStepLabel-iconContainer{
-    .Mui-completed{
-      color: white !important;
-    }
   }
 
   .MuiStepContent-root{
@@ -360,11 +369,6 @@ button {
 
 .btn-bg{
   background-color: #0d0d0d !important;
-}
-
-.Mui-disabled{
-  // -webkit-text-fill-color: rgb(255 255 255) !important;
-  // -webkit-text-fill-color: rgba(255, 255, 255, 0.7);
 }
 
 .hidden{

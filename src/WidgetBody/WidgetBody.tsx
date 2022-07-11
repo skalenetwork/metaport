@@ -48,6 +48,7 @@ export default function WidgetBody(props) {
               fromChain={true}
               schainAliases={props.schainAliases}
               disabled={props.disabledChains}
+              dark={props.theme.mode === 'dark'}
             />
           </div>
         </Collapse>
@@ -56,8 +57,13 @@ export default function WidgetBody(props) {
       <div>
       <Collapse className='arrow-down-icon' in={!expandedFrom && !expandedTo && !expandedTokens}>
         <IconButton
-          color="secondary"
           size="small"
+          color="primary"
+
+          style={{
+            backgroundColor: props.theme.primary,
+            borderColor: props.theme.background,
+          }}
 
           disabled={props.amountLocked}
           
@@ -69,7 +75,11 @@ export default function WidgetBody(props) {
             props.setLoading(false);
             props.setActiveStep(0);
           }}>
-          <SwapVertIcon/>
+          <SwapVertIcon
+            style={{
+              color: props.theme.mode == 'dark' ? 'black' : 'white'
+            }}
+          />
         </IconButton>
       </Collapse>
 
@@ -84,6 +94,7 @@ export default function WidgetBody(props) {
           setExpanded={setExpandedTo}
           schainAliases={props.schainAliases}
           disabled={props.disabledChains}
+          dark={props.theme.mode === 'dark'}
         />
       </Collapse>
 
@@ -137,6 +148,8 @@ export default function WidgetBody(props) {
               setActiveStep={props.setActiveStep}
 
               setAmountLocked={props.setAmountLocked}
+
+              theme={props.theme}
             />
           )}
         </div>

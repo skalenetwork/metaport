@@ -9,12 +9,12 @@ import metamaskLogo from './metamask-fox.svg';
 export function Connector(props) {
   return (
     <div>
-        <h5 className='no-marg-top'>Connect to your wallet</h5>
+        <p className='no-marg-top sm-gr-text'>Connect to your wallet</p>
         <ButtonBase
           onClick={props.connectMetamask}
           className='MetamaskSurface'
         >
-         <Paper>
+         <Paper elevation={0}>
             <div className='flex-container fl-centered'>
               <div>
                 <img src={metamaskLogo} alt="logo" className='surfaceIcon'/>

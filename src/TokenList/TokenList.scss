@@ -1,12 +1,11 @@
 
 
 .token-icon {
-    width: 22px;
-    height: 22px;
-}
-
-.token-icon-accent{
-    filter: sepia(69%) saturate(1854%) hue-rotate(2deg) brightness(97%) contrast(81%);
+    width: 21px;
+    height: 21px;
+    // opacity: 0.85;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .default-token-icon {

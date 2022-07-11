@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
 
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
 
 import Fab from '@mui/material/Fab';
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,27 +9,12 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import skaleLogo from './skale_logo_short.svg';
+
+import { getWidgetTheme } from './Themes'
 import WidgetBody from '../WidgetBody';
 import { Connector } from '../WalletConnector';
 
 import "./Widget.scss";
-
-
-let theme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      paper: '#000000'
-    },
-    primary: {
-      main: '#000000',
-    },
-    secondary: {
-      // main: '#edf2ff',
-      main: '#d9e021'
-    },
-  },
-});
 
 
 export function WidgetUI(props) {
@@ -41,6 +22,22 @@ export function WidgetUI(props) {
   const divRef = React.useRef();
 
   const [disabledChains, setDisabledChains] = React.useState(undefined);
+
+  let widgetTheme = getWidgetTheme(props.theme);
+  let theme = createTheme({
+    palette: {
+    mode: widgetTheme.mode,
+    background: {
+        paper: widgetTheme.background
+    },
+    primary: {
+        main: widgetTheme.primary,
+    },
+    secondary: {    
+        main: widgetTheme.background
+    },
+    },
+  });
 
   useEffect(() => {
     if (props.open) {
@@ -77,21 +74,21 @@ export function WidgetUI(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="ima-widget-body">
-        <Fab ref={divRef} color="primary" className='btn-bg' aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
+      <div 
+        className="ima-widget-body"
+      >
+        <Fab ref={divRef} color="secondary" className='dbtn-bg' aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
           {open ? (
-            <CloseIcon />
-          ) : (
-           
-              <img className='skale-logo-sm' src={skaleLogo}/>
-           
-            
-            
-          )
+            <CloseIcon
+              style={{
+                color: widgetTheme.mode == 'dark' ? 'white' : 'black'
+              }}
+            />
+          ) : (<img className='skale-logo-sm' src={skaleLogo}/>)
           }
         </Fab>
         <Popper id={id} open={open} anchorEl={anchorEl}>
-          <div className="ima-widget-popup-wrapper">
+          <div className={"ima-widget-popup-wrapper " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}>
             <Paper elevation={3} className='widget-paper'>
               <div className='ima-widget-popup'>
                 {props.walletConnected ? (
@@ -129,6 +126,8 @@ export function WidgetUI(props) {
 
                     setAmountLocked={props.setAmountLocked}
                     amountLocked={props.amountLocked}
+
+                    theme={widgetTheme}
                   />
                 ) : (
                 <Connector

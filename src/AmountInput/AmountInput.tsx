@@ -28,7 +28,7 @@ export default function AmountInput(props) {
       </div>
       <div className='flex-container'>
         <Button
-          color="secondary"
+          color="primary"
           size="small"
           className='chain-name-btn'
           onClick={setMaxAmount}

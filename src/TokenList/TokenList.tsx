@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 
 import './TokenList.scss';
 
-let reqSvgs = require.context('../icons', true, /\.svg$/ );
+let reqSvgs = require.context('../icons', true, /\.png$/ );
 
 // if (process.env.STORYBOOK) {
 //   try {
@@ -28,11 +28,11 @@ const svgs = reqSvgs
   }, {} )
 
 function svgPath(name) {
-  const key = './'+ name + '.svg';
+  const key = './'+ name + '.png';
   if (svgs[key]) {
     return svgs[key];
   } else {
-    return svgs['./eth.svg'];
+    return svgs['./eth.png'];
   }
 }
 
@@ -64,6 +64,7 @@ export default function TokenList(props) {
         expanded={props.expanded === 'panel1'}
         onChange={handleChange('panel1')}
         disabled={disabled}
+        elevation={0}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
