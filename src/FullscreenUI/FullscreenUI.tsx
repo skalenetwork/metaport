@@ -16,24 +16,9 @@ import skaleLogo from './skale_logo_short.svg';
 import WidgetBody from '../WidgetBody';
 import { Connector } from '../WalletConnector';
 
+import { getWidgetTheme } from '../WidgetUI/Themes'
+
 import "./Widget.scss";
-
-
-let theme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      paper: '#000000'
-    },
-    primary: {
-      main: '#000000',
-    },
-    secondary: {
-      // main: '#edf2ff',
-      main: '#d9e021'
-    },
-  },
-});
 
 
 export function WidgetUI(props) {
@@ -41,6 +26,22 @@ export function WidgetUI(props) {
   const divRef = React.useRef();
 
   const [disabledChains, setDisabledChains] = React.useState(undefined);
+
+  let widgetTheme = getWidgetTheme(props.theme);
+  let theme = createTheme({
+    palette: {
+    mode: widgetTheme.mode,
+    background: {
+        paper: widgetTheme.background
+    },
+    primary: {
+        main: widgetTheme.primary,
+    },
+    secondary: {    
+        main: widgetTheme.background
+    },
+    },
+  });
 
   useEffect(() => {
     if (props.open) {
@@ -71,8 +72,8 @@ export function WidgetUI(props) {
 
   return (
     <ThemeProvider theme={theme}>
-          <div className="ima-widget-fullsreen-wrapper">
-            <Paper elevation={3} className='ima-widget-fullsreen widget-paper'>
+          <div className={"ima-widget-fullscreen-wrapper " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}>
+            <Paper elevation={3} className='ima-widget-fullscreen widget-paper'>
               <div className='ima-widget-popup'>
                 {props.walletConnected ? (
                   <WidgetBody
@@ -104,6 +105,8 @@ export function WidgetUI(props) {
                 
                     activeStep={props.activeStep}
                     setActiveStep={props.setActiveStep}
+
+                    theme={widgetTheme}
                   />
                 ) : (
                 <Connector

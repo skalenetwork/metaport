@@ -40,7 +40,7 @@ button {
   width: 18pt;
 }
 
-.ima-widget-popup-wrapper{
+.ima-widget-popup-wrapper, .ima-widget-fullscreen-wrapper{
   margin: 0 20pt 10pt 20pt;
 
   .MuiPaper-root{
@@ -223,6 +223,11 @@ button {
 
 
 .dark-theme{
+
+  .skale-logo-sm{
+    filter: invert(1);
+  }
+
   .sm-gr-text {
     color: rgb(255 255 255 / 65%);
   }
@@ -236,7 +241,12 @@ button {
 
 
   .MuiButton-root.Mui-disabled{
-    color: rgba(255, 255, 255, 0.3) !important;
+    // color: rgba(255, 255, 255, 0.3) !important;
+    background-color: rgba(161,161,161,.2) !important;
+
+    svg {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
   }
 
   .arrow-down-icon{
@@ -258,12 +268,7 @@ button {
       color: rgb(0 0 0 / 60%);
     }
   }
-
-  .skale-logo-sm{
-    filter: invert(1);
-  }
-  
-  
+ 
   .gray-text, .gray-icon {
     color: #4f4f4f;
   }
@@ -389,4 +394,8 @@ button {
 
 .hidden{
   opacity: 0;
+}
+
+.widget-fab{
+  // border: 1px rgba(127,127,127,.2705882353) solid !important;
 }

@@ -1,12 +1,12 @@
 
-.ima-widget-fullsreen-wrapper{
+.ima-widget-fullscreen-wrapper{
   // max-width: 400pt;
   display: flex;
   justify-content: center;
   align-items: center;   /* <---- NEW    */
-  height: 95vh;
+  height: 90vh;
 }
 
-.ima-widget-fullsreen{
+.ima-widget-fullscreen{
   min-width: 350pt;
 }

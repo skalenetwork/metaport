@@ -77,7 +77,7 @@ export function WidgetUI(props) {
       <div 
         className={"ima-widget-body " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}
       >
-        <Fab ref={divRef} color="secondary" className='dbtn-bg' aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
+        <Fab ref={divRef} color={props.open ? 'secondary' : 'primary'} className='widget-fab' aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
           {open ? (
             <CloseIcon
               style={{

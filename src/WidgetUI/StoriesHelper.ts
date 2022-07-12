@@ -1,0 +1,47 @@
+
+function setMock() {}
+
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+export const commonProps = {
+  schains: ['aaa-chain', 'bbb-chain'],
+  schainAliases: {
+    'aaa-chain': 'Europa SKALE Chain',
+    'bbb-chain': 'Block Brawlers'
+  },
+  open: true,
+  chain1: 'aaa-chain',
+  chain2: 'bbb-chain',
+  setChain1: setMock,
+  setChain2: setMock,
+  setToken: setMock,
+  setLoading: setMock,
+  setActiveStep: () => {},
+  walletConnected: true
+}
+
+
+export function generateTokenData(tokenSymbol, tokenName) {
+  let data = {
+    token: tokenSymbol,
+    amount: getRandomInt(1000, 10000),
+    tokens: {
+      "erc20": {
+      }
+    }
+  }
+  data.tokens.erc20[tokenSymbol] = {
+    "name": tokenName,
+    "address": "0x0",
+    "balance": getRandomInt(10000, 70000)
+  }
+  return data;
+}
+
+export const defaultTokenData = generateTokenData('usdt', 'Tether');
