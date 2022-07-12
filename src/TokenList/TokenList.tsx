@@ -18,27 +18,6 @@ function importAll(r) {
 const icons = importAll(require.context('../icons', false, /\.(png|jpe?g|svg)$/));
 
 
-console.log('icons  icons icons icons');
-console.log(icons);
-// let reqSvgs = require.context('../icons', true, /\.png$/ );
-
-// if (process.env.STORYBOOK) {
-//   try {
-//     reqSvgs = require.context('../icons', true, /\.svg$/ );
-//   } catch (e) {
-//     console.log(e);
-//   }
-// } else {
-//   reqSvgs = require.context('./icons', true, /\.svg$/ );
-// }
-
-// const icons = reqSvgs
-//   .keys ()
-//   .reduce ( ( images, path ) => {
-//     images[path] = reqSvgs ( path )
-//     return images
-//   }, {} )
-
 function iconPath(name) {
   const key = name + '.svg';
   if (icons[key]) {

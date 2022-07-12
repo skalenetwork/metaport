@@ -59,7 +59,6 @@ export default function WidgetBody(props) {
         <IconButton
           size="small"
           color="primary"
-
           style={{
             backgroundColor: props.theme.primary,
             borderColor: props.theme.background,
@@ -75,11 +74,7 @@ export default function WidgetBody(props) {
             props.setLoading(false);
             props.setActiveStep(0);
           }}>
-          <SwapVertIcon
-            style={{
-              color: props.theme.mode == 'dark' ? 'black' : 'white'
-            }}
-          />
+          <SwapVertIcon/>
         </IconButton>
       </Collapse>
 

@@ -77,9 +77,6 @@ export default function VerticalLinearStepper(props) {
                       className='transfer-btn marg-top-5'
                       onClick={handleNext}
                       disabled={props.amount == ''}
-                      style={{
-                        color: props.theme.mode == 'dark' ? 'black' : 'white'
-                      }}
                     >
                       {step.button}
                     </Button>

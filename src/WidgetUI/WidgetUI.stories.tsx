@@ -66,10 +66,13 @@ export const LoadingTokens = () => (
 );
 
 
-export const DefaultTransferUI = () => (
+export const TransferUIDark = () => (
   <WidgetUI {...commonProps} {...defaultTokenData}/>
 );
 
+export const TransferUILight = () => (
+  <WidgetUI {...commonProps} {...generateTokenData('usdc', 'usdc')} theme={{mode: 'light'}} />
+);
 
 export const Approved = () => (
   <WidgetUI {...commonProps} {...defaultTokenData} activeStep={1}/>
@@ -186,14 +189,5 @@ export const CustomLightViolet = () => (
       background: '#fbf8ff',
       mode: 'light'
     }}
-  />
-);
-
-
-export const LightDefault = () => (
-  <WidgetUI
-    {...generateTokenData('usdc', 'usdc')}
-    {...commonProps}
-    theme={{mode: 'light'}}
   />
 );

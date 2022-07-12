@@ -39,6 +39,8 @@ export function Widget(props) {
 
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
+  const [theme, setTheme] = React.useState(props.theme);
+
   async function getTokenBalance(tokenName) {
     console.log('getting token balance: ' + tokenName);
     let tokenContract = sChain1.erc20.tokens[tokenName];
@@ -86,7 +88,17 @@ export function Widget(props) {
       resetWidget,
       false
     );
+
+    window.addEventListener(
+      "setTheme",
+      handleSetTheme,
+      false
+    );
   }, []);
+
+  function handleSetTheme(e){
+    setTheme(e.detail.theme);
+  }
 
   function updateBalanceHandler() { // todo: refactor
     window.addEventListener(
@@ -354,7 +366,7 @@ export function Widget(props) {
     setAmountLocked={setAmountLocked}
     amountLocked={amountLocked}
 
-    theme={props.theme}
+    theme={theme}
   />)
 }
 
@@ -427,6 +439,17 @@ class IMAWidget {
         detail: {
           "schainName": schainName,
           "tokenName": tokenName
+        }
+      }
+    ));
+  }
+
+  setTheme(theme) {
+    window.dispatchEvent(new CustomEvent(
+      "setTheme",
+      {
+        detail: {
+          "theme": theme
         }
       }
     ));
