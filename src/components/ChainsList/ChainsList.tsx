@@ -9,6 +9,11 @@ import Button from '@mui/material/Button';
 
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
+import ethLogo from '../../icons/eth_white.svg';
+
+
+const MAINNET_CHAIN_NAME = 'mainnet';
+
 
 function hashCode(str) {
   let hash = 0;
@@ -47,17 +52,26 @@ export default function ChainsList(props) {
     props.setChain(schainName);
   }
 
-  function getSChainName(schainName: string) {
-    if (props.schainAliases && props.schainAliases[schainName]){
-      return props.schainAliases[schainName];
-    } else {
-      return schainName;
+  function getChainName(chainName: string) {
+    if (chainName == MAINNET_CHAIN_NAME) {
+      return 'Ethereum Mainnet';
     }
+    if (props.schainAliases && props.schainAliases[chainName]){
+      return props.schainAliases[chainName];
+    } else {
+      return chainName;
+    }
+  }
+
+  function getChainIcon(chainName: string) {
+    if (chainName == MAINNET_CHAIN_NAME) {
+      return <img src={ethLogo} className='eth-logo' height='20px' width='20px'/>;
+    }
+    return (<OfflineBoltIcon sx={{ color: stringToColour(props.chain, props.dark) }} width='20px'/>);
   }
 
   return (
     <div>
-      
       <Accordion
         expanded={props.expanded === 'panel1'}
         onChange={handleChange('panel1')}
@@ -73,10 +87,10 @@ export default function ChainsList(props) {
             <Tooltip title={'SKALE Chain ' + props.chain}>
               <div className="flex-container chain-name-btn">
                 <div className="flex-container fl-centered">
-                  <OfflineBoltIcon sx={{ color: stringToColour(props.chain, props.dark) }} width='20px'/>
+                  {getChainIcon(props.chain)}
                 </div>
                 <p className="schain-name flex-container marg-ri-10">
-                  {getSChainName(props.chain)}
+                  {getChainName(props.chain)}
                 </p>
               </div>
             </Tooltip>
@@ -94,15 +108,15 @@ export default function ChainsList(props) {
         </AccordionSummary>
         <AccordionDetails>
           <div className='chains-list'>
-            {schainNames.map((schainName)  => (
-              <Typography key={schainName}>
-                <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(schainName)}>
+            {schainNames.map((name)  => (
+              <Typography key={name}>
+                <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(name)}>
                   <div className="flex-container chain-name-btn">
                     <div className="flex-container fl-centered">
-                      <OfflineBoltIcon sx={{ color: stringToColour(schainName, props.dark) }} className='opacityIcon'/>
+                    {getChainIcon(name)}
                     </div>
                     <p className="schain-name flex-container marg-ri-10">
-                      {getSChainName(schainName)}
+                      {getChainName(name)}
                     </p>
                   </div>  
                 </Button>
@@ -111,7 +125,6 @@ export default function ChainsList(props) {
           </div>
         </AccordionDetails>
       </Accordion>
-    
     </div>
   )
 }

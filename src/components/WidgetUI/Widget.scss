@@ -1,5 +1,5 @@
-@import "../variables.scss";
-@import "../typography.scss";
+// @import "../variables.scss";
+// @import "../typography.scss";
 
 h1, h2, h3, h4, h5, h6, p {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -13,20 +13,6 @@ h5 {
 button {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
   -webkit-font-smoothing: antialiased;
-}
-
-
-.test-component {
-  background-color: var(--background);
-  color: var(--font-color);
-  border: 1px solid $harvey-black;
-  padding: 16px;
-  width: 360px;
-  text-align: center;
-
-  .heading {
-    @include heading;
-  }
 }
 
 .ima-widget-body {
@@ -223,6 +209,10 @@ button {
 
 
 .dark-theme{
+
+  .eth-logo{
+    filter: invert(1) contrast(1.5);
+  }
 
   .skale-logo-sm{
     filter: invert(1);

@@ -5,8 +5,7 @@ import { SChain } from '@skalenetwork/ima-js';
 
 import sChainAbi from '../metadata/schianAbi.json';
 import proxyEndpoints from '../metadata/proxy.json';
-import { schainNetworkParams, changeMetamaskNetwork } from '../WalletConnector'
-import { ConstructionOutlined } from '@mui/icons-material';
+import { schainNetworkParams, changeMetamaskNetwork } from '../components/WalletConnector'
 
 const erc20Abi = require('../metadata/erc20_abi.json');
 

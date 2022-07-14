@@ -1,3 +1,3 @@
-import IMAWidget from "./Widget";
+import IMAWidget from "./IMAWidget";
 
 export { IMAWidget };

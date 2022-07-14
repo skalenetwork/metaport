@@ -191,3 +191,41 @@ export const CustomLightViolet = () => (
     }}
   />
 );
+
+
+export const MainnetTransfer = () => (
+  <WidgetUI
+    {...generateTokenData('usdt', 'Tether')}
+    schains={['mainnet', 'bbb-chain']}
+    walletConnected={true}
+    open={true}
+
+    setChain1={() => {}}
+    setChain2={() => {}}
+    setToken={() => {}}
+    setActiveStep={() => {}}
+
+    chain1='mainnet'
+    chain2='bbb-chain'
+    
+  />
+);
+
+export const MainnetTransferLight = () => (
+  <WidgetUI
+    {...generateTokenData('usdc', 'USDC')}
+    schains={['mainnet', 'bbb-chain']}
+    walletConnected={true}
+    open={true}
+
+    setChain1={() => {}}
+    setChain2={() => {}}
+    setToken={() => {}}
+    setActiveStep={() => {}}
+
+    chain1='mainnet'
+    chain2='bbb-chain'
+    theme={{'mode': 'light'}}
+    
+  />
+);

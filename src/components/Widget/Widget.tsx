@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
 
 import WidgetUI from '../WidgetUI'
-import { initSChain, initSChainMetamask, initERC20, runTokenLookup } from '../WidgetCore'
+import { initSChain, initSChainMetamask, initERC20, runTokenLookup } from '../../WidgetCore'
 import { SChain } from '@skalenetwork/ima-js';
 
 import { connect, addListeners } from '../WalletConnector'
-
-import defaultTokens from '../metadata/tokens.json'
 
 
 export function Widget(props) {
@@ -369,93 +366,3 @@ export function Widget(props) {
     theme={theme}
   />)
 }
-
-
-class IMAWidget {
-  constructor(params: any) {
-    const widgetEl: HTMLElement = document.getElementById('ima-widget');  
-    const root = createRoot(widgetEl);
-    // params validation + transformation here
-
-    if (params['chains']) {
-      params['chainsFrom'] = params['chains'];
-      params['chainsTo'] = params['chains'];
-    }
-
-    let tokens;
-    if (params['tokens']) {
-      tokens = params['tokens'];
-    } else {
-      tokens = defaultTokens[params['network']];
-    }
-
-    if (!params['chains']) {
-      // todo: ALL network chains (request from proxy!)
-    }
-
-    root.render(
-      <Widget
-        tokens={tokens}
-        schains={params['schains']}
-        schainAliases={params['schainAliases']}
-        open={params['open']}
-        network={params['network']}
-        theme={params['theme']}
-      />
-    );
-  }
-
-  requestTransfer(params) {
-    var requestTransferEvent = new CustomEvent(
-      "requestTransfer",
-      {detail: {
-        "amount": params.amount,
-        "schains": params.schains
-      }}
-    );
-    window.dispatchEvent(requestTransferEvent);
-    console.log('requestTransfer event sent -> amount: ' + params.amount);
-  }
-
-  close() {
-    window.dispatchEvent(new CustomEvent("closeWidget"));
-    console.log('closeWidget event sent');
-  }
-
-  open() {
-    window.dispatchEvent(new CustomEvent("openWidget"));
-    console.log('openWidget event sent');
-  }
-
-  reset() {
-    window.dispatchEvent(new CustomEvent("resetWidget"));
-    console.log('resetWidget event sent');
-  }
-
-  requestBalance(schainName, tokenName) {
-    window.dispatchEvent(new CustomEvent(
-      "requestBalance",
-      {
-        detail: {
-          "schainName": schainName,
-          "tokenName": tokenName
-        }
-      }
-    ));
-  }
-
-  setTheme(theme) {
-    window.dispatchEvent(new CustomEvent(
-      "setTheme",
-      {
-        detail: {
-          "theme": theme
-        }
-      }
-    ));
-  }
-
-}
-
-
-export default IMAWidget;

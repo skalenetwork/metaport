@@ -2,7 +2,7 @@ const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 module.exports = {
-  stories: ["../src/**/*.stories.tsx"],
+  stories: ["../src/components/**/*.stories.tsx"],
   // Add any Storybook addons you want here: https://storybook.js.org/addons/
   addons: [],
   webpackFinal: async config => {

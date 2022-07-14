@@ -13,12 +13,6 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import IconButton from '@mui/material/IconButton';
 
 
-function roundBalance(balance) {
-  return balance;
-  // return Math.floor(balance * 100) / 100;
-}
-
-
 export default function WidgetBody(props) {
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);

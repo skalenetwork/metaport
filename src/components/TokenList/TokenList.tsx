@@ -15,7 +15,7 @@ function importAll(r) {
   return images;
 }
 
-const icons = importAll(require.context('../icons', false, /\.(png|jpe?g|svg)$/));
+const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
 
 
 function iconPath(name) {
