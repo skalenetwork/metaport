@@ -9,31 +9,7 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 
-const steps = [
-  {
-    label: 'Approve token transfer',
-    button: 'Approve',
-    loading: 'Approving'
-  },
-  {
-    label: 'Transfer tokens',
-    button: 'Transfer',
-    loading: 'Transfering'
-  }
-];
-
 export default function VerticalLinearStepper(props) {
-  const handleNext = async () => {
-    props.setLoading(true);
-    if (props.activeStep == 0) {
-      await props.approveTransfer();
-      props.setLoading(false);
-    } else {
-      await props.transfer();
-    }
-    props.setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
   const handleReset = () => {
     props.setActiveStep(0);
     props.setAmount('');
@@ -41,22 +17,23 @@ export default function VerticalLinearStepper(props) {
     props.setAmountLocked(false);
   };
 
-  useEffect(() => {   
-    let allowance = parseInt(props.allowance);
-    let amount = parseInt(props.amount);
-    if (allowance >= amount && props.amount != '') {
-      props.setActiveStep(1);
-    } else {
-      props.setActiveStep(0);
-    }
-  }, [props.allowance, props.amount]);
+  // useEffect(() => {   
+  //   let allowance = parseInt(props.allowance);
+  //   let amount = parseInt(props.amount);
+  //   if (allowance >= amount && props.amount != '') {
+  //     props.setActiveStep(1);
+  //   } else {
+  //     props.setActiveStep(0);
+  //   }
+  // }, [props.allowance, props.amount]);
 
   return (
     <Box>
       <Stepper activeStep={props.activeStep} orientation="vertical">
-        {steps.map((step, index) => (
+        {props.actionSteps.map((step, index) => (
           <Step key={step.label}>
             <StepLabel>
+              {step}
               {step.label}
             </StepLabel>
             <StepContent>
@@ -69,16 +46,16 @@ export default function VerticalLinearStepper(props) {
                       variant="contained" color="primary" size="medium"
                       className='transfer-btn marg-top-5'
                     >
-                      {step.loading}
+                      {step.loadingText}
                     </LoadingButton>
                   ) : (
                     <Button
                       variant="contained" color="primary" size="medium"
                       className='transfer-btn marg-top-5'
-                      onClick={handleNext}
+                      onClick={props.handleNextStep}
                       disabled={props.amount == ''}
                     >
-                      {step.button}
+                      {step.buttonText}
                     </Button>
                   )}
                 </div>
@@ -87,7 +64,7 @@ export default function VerticalLinearStepper(props) {
           </Step>
         ))}
       </Stepper>
-      {props.activeStep === steps.length && (
+      {props.activeStep === props.actionSteps.length && (
           <Button
             onClick={handleReset}
             color="primary"

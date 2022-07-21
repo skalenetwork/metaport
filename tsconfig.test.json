@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "include": [
+    "tests/*.ts"
+  ],
+  "exclude": ["src/components/**/*.ts"]
+}

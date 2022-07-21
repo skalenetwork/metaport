@@ -25,6 +25,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import{ Widget } from './components/Widget';
+import { externalEvents } from './core/events';
 import defaultTokens from './metadata/tokens.json';
 
 
@@ -33,23 +34,12 @@ export default class IMAWidget {
       const widgetEl: HTMLElement = document.getElementById('ima-widget');  
       const root = createRoot(widgetEl);
       // params validation + transformation here
-  
-      if (params['chains']) {
-        params['chainsFrom'] = params['chains'];
-        params['chainsTo'] = params['chains'];
-      }
-  
-      let tokens;
-      if (params['tokens']) {
-        tokens = params['tokens'];
-      } else {
-        tokens = defaultTokens[params['network']];
-      }
-  
+
+      let tokens = params.tokens ? params.tokens : defaultTokens[params.network];
       if (!params['chains']) {
         // todo: ALL network chains (request from proxy!)
       }
-  
+
       root.render(
         <Widget
           tokens={tokens}
@@ -58,63 +48,16 @@ export default class IMAWidget {
           open={params['open']}
           network={params['network']}
           theme={params['theme']}
+          mainnetEndpoint={params['mainnetEndpoint']}
         />
       );
     }
 
-    dispatchEvent(name, data) {
-      window.dispatchEvent(new CustomEvent(name, {detail: data}));
-      console.log('event sent: ' + name);
-    }
-
-    requestTransfer(params) {
-      var requestTransferEvent = new CustomEvent(
-        "requestTransfer",
-        {detail: {
-          "amount": params.amount,
-          "schains": params.schains
-        }}
-      );
-      window.dispatchEvent(requestTransferEvent);
-      console.log('requestTransfer event sent -> amount: ' + params.amount);
-    }
-  
-    close() {
-      window.dispatchEvent(new CustomEvent("closeWidget"));
-      console.log('closeWidget event sent');
-    }
-  
-    open() {
-      window.dispatchEvent(new CustomEvent("openWidget"));
-      console.log('openWidget event sent');
-    }
-  
-    reset() {
-      window.dispatchEvent(new CustomEvent("resetWidget"));
-      console.log('resetWidget event sent');
-    }
-  
-    requestBalance(schainName, tokenName) {
-      window.dispatchEvent(new CustomEvent(
-        "requestBalance",
-        {
-          detail: {
-            "schainName": schainName,
-            "tokenName": tokenName
-          }
-        }
-      ));
-    }
-  
-    setTheme(theme) {
-      window.dispatchEvent(new CustomEvent(
-        "setTheme",
-        {
-          detail: {
-            "theme": theme
-          }
-        }
-      ));
-    }
+    requestTransfer(params) { externalEvents.requestTransfer(params) }
+    requestBalance(params) { externalEvents.requestBalance(params) }
+    setTheme(theme) { externalEvents.setTheme(theme) }
+    close() { externalEvents.close() }
+    open() { externalEvents.open() }
+    reset() { externalEvents.reset() }
 }
   

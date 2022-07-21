@@ -61,6 +61,9 @@ export function WidgetUI(props) {
     if (Object.keys(props.tokens['erc20']).length == 1) {
       props.setToken(Object.keys(props.tokens['erc20'])[0]);
     }
+    if (Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth) {
+      props.setToken('eth');
+    }
   }, [props.tokens]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -116,9 +119,6 @@ export function WidgetUI(props) {
                     amount={props.amount}
                     setAmount={props.setAmount}
 
-                    approveTransfer={props.approveTransfer}
-                    transfer={props.transfer}
-
                     loading={props.loading}
                     setLoading={props.setLoading}
 
@@ -129,6 +129,9 @@ export function WidgetUI(props) {
 
                     setAmountLocked={props.setAmountLocked}
                     amountLocked={props.amountLocked}
+
+                    actionSteps={props.actionSteps}
+                    handleNextStep={props.handleNextStep}
 
                     theme={widgetTheme}
                   />

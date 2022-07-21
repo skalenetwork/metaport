@@ -27,7 +27,7 @@ export const commonProps = {
 }
 
 
-export function generateTokenData(tokenSymbol, tokenName) {
+export function generateTokenData(tokenSymbol, tokenName, wrapped=false) {
   let data = {
     token: tokenSymbol,
     amount: getRandomInt(1000, 10000),
@@ -40,6 +40,11 @@ export function generateTokenData(tokenSymbol, tokenName) {
     "name": tokenName,
     "address": "0x0",
     "balance": getRandomInt(10000, 70000)
+  }
+
+  if (wrapped) {
+    data.tokens.erc20[tokenSymbol]["unwrappedBalance"] = getRandomInt(10000, 70000);
+    data.tokens.erc20[tokenSymbol]["unwrappedSymbol"] = 'u' + tokenSymbol;
   }
   return data;
 }

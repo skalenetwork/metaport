@@ -25,6 +25,9 @@ export default function WidgetBody(props) {
   if (props.token && props.tokens['erc20'][props.token]) {
     currentTokenBalance = props.tokens['erc20'][props.token]['balance'];
   }
+  if (props.token && props.tokens.eth){
+    currentTokenBalance = props.tokens.eth.balance;
+  }
 
   return (
     <div>
@@ -123,9 +126,8 @@ export default function WidgetBody(props) {
           {!props.token ? (
             <div></div>
           ) : (
-            <Stepper
-              approveTransfer={props.approveTransfer}
-              transfer={props.transfer}
+            <div>
+              {!props.actionSteps ? (<Skeleton animation="wave" height={48} />) : (<Stepper
               amount={props.amount}
               setAmount={props.setAmount}
               allowance={props.allowance}
@@ -137,9 +139,12 @@ export default function WidgetBody(props) {
               setActiveStep={props.setActiveStep}
 
               setAmountLocked={props.setAmountLocked}
+              actionSteps={props.actionSteps}
+              handleNextStep={props.handleNextStep}
 
               theme={props.theme}
-            />
+            />)}
+            </div>
           )}
         </div>
       </Collapse>

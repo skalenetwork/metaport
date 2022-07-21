@@ -195,7 +195,7 @@ export const CustomLightViolet = () => (
 
 export const MainnetTransfer = () => (
   <WidgetUI
-    {...generateTokenData('usdt', 'Tether')}
+    {...generateTokenData('usdt', 'Tether', true)}
     schains={['mainnet', 'bbb-chain']}
     walletConnected={true}
     open={true}
@@ -213,7 +213,7 @@ export const MainnetTransfer = () => (
 
 export const MainnetTransferLight = () => (
   <WidgetUI
-    {...generateTokenData('usdc', 'USDC')}
+    {...generateTokenData('usdc', 'USDC', true)}
     schains={['mainnet', 'bbb-chain']}
     walletConnected={true}
     open={true}

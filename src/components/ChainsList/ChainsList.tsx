@@ -10,9 +10,7 @@ import Button from '@mui/material/Button';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
 import ethLogo from '../../icons/eth_white.svg';
-
-
-const MAINNET_CHAIN_NAME = 'mainnet';
+import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
 
 function hashCode(str) {

@@ -1,6 +1,13 @@
 import Web3 from 'web3';
 
 
+const CHAIN_IDS = {
+  'staging': '0x4',
+  'qatestnet': '0x4',
+  'mainnet': '0x1'
+}
+
+
 export async function changeMetamaskNetwork(networkParams) {
     try {
         await window.ethereum.request({
@@ -67,5 +74,13 @@ export function schainNetworkParams(schainName, schainChainUrl, schainChainId) {
         symbol: "sFUEL",
         decimals: 18
     }
+  };
+}
+
+
+export function mainnetNetworkParams(network: string, mainnetEndpoint: string) {
+  return {
+    chainId: CHAIN_IDS[network],
+    rpcUrls: [mainnetEndpoint],
   };
 }

@@ -28,13 +28,19 @@ function iconPath(name) {
 }
 
 
+function roundDown(number, decimals) {
+  decimals = decimals || 0;
+  return ( Math.floor( number * Math.pow(10, decimals) ) / Math.pow(10, decimals) );
+}
+
+
 export default function TokenList(props) {
 
-  let disabled = Object.keys(props.tokens['erc20']).length == 1;
+  let disabled = Object.keys(props.tokens['erc20']).length == 1 || Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth;
   useEffect(() => {
-    if (disabled) {
-      props.setToken(Object.keys(props.tokens['erc20'])[0])
-    }
+    // if (disabled) {
+    //   props.setToken(Object.keys(props.tokens['erc20'])[0])
+    // }
   }, []);
 
   const handleChange =
@@ -48,6 +54,13 @@ export default function TokenList(props) {
   }
 
   let erc20Tokens = props.tokens['erc20'];
+  let tokenInfo;
+  if (props.token == 'eth') {
+    tokenInfo = props.tokens.eth;
+  } else {
+    tokenInfo = props.tokens['erc20'][props.token];
+  }
+  
 
   return (
     <div>
@@ -68,10 +81,16 @@ export default function TokenList(props) {
                 <img className='token-icon token-icon-accent' src={iconPath(props.token)}/>
               </div>
               <p className="schain-name flex-container fl-grow marg-ri-10">
-                {props.tokens['erc20'][props.token]['name']}
+                {tokenInfo['name']}
               </p>
+              
+              {tokenInfo.unwrappedBalance ? (
+                <p className="sm-gr-text flex-container marg-ri-5">
+                {roundDown(tokenInfo.unwrappedBalance, 4)} {tokenInfo.unwrappedSymbol} /
+              </p>
+              ) : null}
               <p className="sm-gr-text flex-container marg-ri-5">
-                {props.tokens['erc20'][props.token]['balance']} {props.token}
+                {roundDown(tokenInfo['balance'], 4)} {props.token}
               </p>
             </div>
           ) : (
@@ -87,7 +106,7 @@ export default function TokenList(props) {
           }          
         </AccordionSummary>
         <AccordionDetails>
-          <div className='chains-list'>
+          {erc20Tokens ? (<div className='chains-list'>
             {Object.keys(erc20Tokens).map((key, i)  => (
               <Typography key={key}>
                 <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(key)}>
@@ -99,13 +118,14 @@ export default function TokenList(props) {
                       {erc20Tokens[key]['name']}
                     </p>
                     <p className="sm-gr-text flex-container marg-ri-5">
-                      {erc20Tokens[key]['balance']} {key}
+                      {roundDown(erc20Tokens[key]['balance'], 4)} {key}
                     </p>
                   </div>  
                 </Button>
             </Typography>
            ))}
-          </div>
+          </div>) : (<div></div>)}
+          
         </AccordionDetails>
       </Accordion>
      
