@@ -35,6 +35,8 @@ export class TokenData {
     type: string
     balance: number
 
+    iconUrl: string
+
     unwrappedSymbol: string
     unwrappedAddress: string
     unwrappedBalance: number
@@ -44,6 +46,7 @@ export class TokenData {
         originAddress: string,
         name: string,
         clone: boolean,
+        iconUrl: string,
         unwrappedSymbol: string,
         unwrappedAddress: string
     ) {
@@ -55,6 +58,7 @@ export class TokenData {
 
         this.name = name;
         this.clone = clone;
+        this.iconUrl = iconUrl;
         this.type = (name === ETH_TOKEN_NAME) ? 'eth' : 'erc20'
     }
 }
@@ -107,6 +111,7 @@ async function getETHToken(
                 ETH_TOKEN_NAME,
                 false,
                 null,
+                null,
                 null
             );
         }
@@ -117,12 +122,10 @@ async function getETHToken(
                 ETH_TOKEN_NAME,
                 true,
                 null,
+                null,
                 null
             );
         }
-
-        console.log(availableTokens[ETH_TOKEN_NAME]);
-        console.log('eth added!');
     }
 }
 
@@ -135,12 +138,6 @@ async function getERC20Tokens(
     tokens: Object,
     availableTokens: Object
 ) {
-
-    console.log(tokens);
-    console.log(tokens[chainName1]);
-    console.log(tokens[chainName2]);
-    console.log('----------------------------------------------------------------');
-
     if (tokens[chainName1] && tokens[chainName1]['erc20']) {
         for (const tokenSymbol in tokens[chainName1]['erc20']) {
             await addTokenData(
@@ -199,15 +196,12 @@ async function addTokenData(
         unwrappedAddress = token['wraps']['address'];
     }
 
-    console.log('adding tokenData!');
-    console.log(availableTokens);
-    console.log(tokenSymbol);
-
     availableTokens['erc20'][tokenSymbol] = new TokenData(
         cloneAddress,
         token['address'],
         token['name'],
         isClone,
+        token['iconUrl'],
         unwrappedSymbol,
         unwrappedAddress
     );

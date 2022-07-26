@@ -78,12 +78,12 @@ export default function TokenList(props) {
           {props.token ? (
             <div className="flex-container chain-name-btn">
               <div className="flex-container fl-centered">
-                <img className='token-icon token-icon-accent' src={iconPath(props.token)}/>
+                <img className='token-icon token-icon-accent' src={tokenInfo.iconUrl ? tokenInfo.iconUrl : iconPath(props.token)}/>
               </div>
               <p className="schain-name flex-container fl-grow marg-ri-10">
                 {tokenInfo['name']}
               </p>
-              
+
               {tokenInfo.unwrappedBalance ? (
                 <p className="sm-gr-text flex-container marg-ri-5">
                 {roundDown(tokenInfo.unwrappedBalance, 4)} {tokenInfo.unwrappedSymbol} /

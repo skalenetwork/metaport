@@ -32,6 +32,7 @@ export const commonProps = {
     '',
     true,
     null,
+    null,
     null
   ))
 }
