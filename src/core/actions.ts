@@ -34,8 +34,7 @@ import {
     S2S_POSTFIX,
     M2S_POSTFIX,
     S2M_POSTFIX,
-    WRAP_ACTION,
-    UNWRAP_ACTION
+    MAX_APPROVE_AMOUNT
 } from './constants';
 
 
@@ -63,6 +62,7 @@ export function isEth(tokenSymbol: string): boolean {
 
 abstract class Action {
     abstract execute(): void;
+    preAction(): void {};
 
     static label: string = '';
     static buttonText: string = '';
@@ -78,6 +78,11 @@ abstract class Action {
     tokenSymbol: string
     tokenData: TokenData
 
+    switchMetamaskChain: Function
+
+    setActiveStep: Function
+    activeStep: number
+
     constructor(
         mainnet: MainnetChain,
         sChain1: SChain,
@@ -87,7 +92,10 @@ abstract class Action {
         address: string,
         amount: string,
         tokenSymbol: string,
-        tokenData: TokenData
+        tokenData: TokenData,
+        switchMetamaskChain: Function,
+        setActiveStep: Function,
+        activeStep: number
     ) {
         this.mainnet = mainnet;
         this.sChain1 = sChain1;
@@ -98,6 +106,10 @@ abstract class Action {
         this.amount = amount;
         this.tokenSymbol = tokenSymbol;
         this.tokenData = tokenData;
+        this.switchMetamaskChain = switchMetamaskChain;
+
+        this.setActiveStep = setActiveStep;
+        this.activeStep = activeStep;
     }
 }
 
@@ -159,17 +171,29 @@ class UnlockETH_M extends Action {
 
 class ApproveERC20_S extends Action {
     static label = 'Approve transfer'
-    static buttonText = 'Approve'
+    static buttonText = 'Approve all'
     static loadingText = 'Approving'
 
     async execute() {
-        const amountWei = this.sChain1.web3.utils.toWei(this.amount);
+        // const amountWei = this.sChain1.web3.utils.toWei(this.amount);
         await this.sChain1.erc20.approve(
             this.tokenSymbol,
-            amountWei,
+            MAX_APPROVE_AMOUNT,
             this.sChain1.erc20.address,
             {address: this.address}
         );
+    }
+
+    async preAction() {
+        let tokenContract = this.sChain1.erc20.tokens[this.tokenSymbol];
+        let allowance = await tokenContract.methods.allowance(
+            this.address,
+            this.sChain1.erc20.address
+        ).call();
+        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+        if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
+            this.setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
     }
 }
 
@@ -189,24 +213,52 @@ class TransferERC20_S2S extends TransferAction {
         console.log('Transfer transaction done, waiting for money to be received');
         await this.sChain2.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
         console.log('Money to be received to destination chain');
-        internalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol);
+
+        const wrap = !!this.tokenData.unwrappedSymbol;
+        internalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol, wrap);
+    }
+
+    async preAction() {
+        let tokenContract = this.sChain1.erc20.tokens[this.tokenSymbol];
+        let allowance = await tokenContract.methods.allowance(
+            this.address,
+            this.sChain1.erc20.address
+        ).call();
+        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+
+        if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
+            this.setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
     }
 }
 
 
 class ApproveWrapERC20_S extends Action {
     static label = 'Approve wrap'
-    static buttonText = 'Approve'
+    static buttonText = 'Approve all'
     static loadingText = 'Approving'
 
     async execute() {
-        const amountWei = this.sChain1.web3.utils.toWei(this.amount);        
+        // const amountWei = this.sChain1.web3.utils.toWei(this.amount);        
         await this.sChain1.erc20.approve(
             this.tokenData.unwrappedSymbol,
-            amountWei,
+            MAX_APPROVE_AMOUNT,
             this.tokenData.originAddress,
             {address: this.address}
         );
+    }
+
+    async preAction() {
+        let tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
+        let allowance = await tokenContract.methods.allowance(
+            this.address,
+            this.tokenData.originAddress
+        ).call();
+        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+
+        if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
+            this.setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
     }
 }
 
@@ -224,30 +276,56 @@ class WrapERC20_S extends Action {
             {address: this.address}
         );
     }
+
+    async preAction() {
+        let tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
+        let allowance = await tokenContract.methods.allowance(
+            this.address,
+            this.tokenData.originAddress
+        ).call();
+        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+
+        if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
+            this.setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
+    }
+}
+
+
+class UnwrapERC20_S extends Action {
+    static label = 'Unwrap'
+    static buttonText = 'Unwrap'
+    static loadingText = 'Unwrapping'
+
+    async execute() {
+        
+        console.log('bf!');
+        let chains = await this.switchMetamaskChain();
+
+        this.sChain1 = chains[0];
+        this.sChain2 = chains[1];
+
+        console.log('swtched!');
+
+        const amountWei = this.sChain2.web3.utils.toWei(this.amount);
+        const tx = await this.sChain2.erc20.unwrap(
+            this.tokenSymbol,
+            amountWei,
+            {address: this.address}
+        );
+        internalEvents.unwrapComplete(tx, this.chainName2, this.tokenSymbol);
+    }
 }
 
 
 const wrapActions = [ApproveWrapERC20_S, WrapERC20_S];
-const unwrapActions = [ApproveWrapERC20_S, WrapERC20_S];
+const unwrapActions = [UnwrapERC20_S];
 
 
 export const actions = {
     eth_m2s: [TransferETH_M2S],
     eth_s2m: [TransferETH_S2M, UnlockETH_M],
-    erc20_s2s: [ApproveERC20_S, TransferERC20_S2S],
-
-    // erc20_s2s: [{
-    //     label: 'Approve transfer',
-    //     button: 'Approve',
-    //     loading: 'Approving',
-    //     action: approveERC20_S
-    // },
-    // {
-    //     label: 'Transfer',
-    //     button: 'Transfer',
-    //     loading: 'Transfering',
-    //     action: transferERC20_S2S
-    // }]
+    erc20_s2s: [ApproveERC20_S, TransferERC20_S2S]
 }
 
 
@@ -260,9 +338,9 @@ export function getActionSteps(
         actionsList.push(...wrapActions);
     }
     actionsList.push(...actions[actionName]);
-    if (tokenData.unwrappedSymbol && tokenData.clone) {
-        actionsList.push(...unwrapActions);
-    }
+    // if (tokenData.unwrappedSymbol && tokenData.clone) {
+    //     actionsList.push(...unwrapActions);
+    // }
     return actionsList;
 }
 

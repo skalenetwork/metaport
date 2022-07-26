@@ -10,6 +10,11 @@ import AmountInput from '../AmountInput';
 import Stepper from '../Stepper';
 
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import ForwardIcon from '@mui/icons-material/Forward';
+import SouthIcon from '@mui/icons-material/South';
 import IconButton from '@mui/material/IconButton';
 
 
@@ -71,7 +76,7 @@ export default function WidgetBody(props) {
             props.setLoading(false);
             props.setActiveStep(0);
           }}>
-          <SwapVertIcon/>
+          <KeyboardArrowDownIcon/>
         </IconButton>
       </Collapse>
 

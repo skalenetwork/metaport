@@ -66,6 +66,27 @@ export const LoadingTokens = () => (
 );
 
 
+export const LoadingSteps = () => (
+  <WidgetUI
+    {...generateTokenData('usdc', 'USDC', true)}
+    schains={['aaa-chain', 'bbb-chain']}
+    walletConnected={true}
+    open={true}
+
+    setChain1={() => {}}
+    setChain2={() => {}}
+    setToken={() => {}}
+    setActiveStep={() => {}}
+
+    loading={true}
+
+    chain1='aaa-chain'
+    chain2='bbb-chain'
+    theme={{'mode': 'dark'}}
+  />
+);
+
+
 export const TransferUIDark = () => (
   <WidgetUI {...commonProps} {...defaultTokenData}/>
 );

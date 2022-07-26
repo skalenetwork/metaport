@@ -1,3 +1,5 @@
+import { getActionSteps } from '../../core/actions';
+import { TokenData } from '../../core/tokens';
 
 function setMock() {}
 
@@ -23,7 +25,15 @@ export const commonProps = {
   setToken: setMock,
   setLoading: setMock,
   setActiveStep: () => {},
-  walletConnected: true
+  walletConnected: true,
+  actionSteps: getActionSteps('erc20_s2s', new TokenData(
+    '',
+    null,
+    '',
+    true,
+    null,
+    null
+  ))
 }
 
 

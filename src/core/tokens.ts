@@ -86,9 +86,6 @@ export async function getAvailableTokens(
         tokens,
         availableTokens
     );
-
-    console.log('availableTokens availableTokens -> ->');
-    console.log(availableTokens);
     return availableTokens;
 }
 
@@ -123,6 +120,9 @@ async function getETHToken(
                 null
             );
         }
+
+        console.log(availableTokens[ETH_TOKEN_NAME]);
+        console.log('eth added!');
     }
 }
 
@@ -135,7 +135,13 @@ async function getERC20Tokens(
     tokens: Object,
     availableTokens: Object
 ) {
-    if (tokens[chainName1]) {
+
+    console.log(tokens);
+    console.log(tokens[chainName1]);
+    console.log(tokens[chainName2]);
+    console.log('----------------------------------------------------------------');
+
+    if (tokens[chainName1] && tokens[chainName1]['erc20']) {
         for (const tokenSymbol in tokens[chainName1]['erc20']) {
             await addTokenData(
                 sChain1,
@@ -146,10 +152,12 @@ async function getERC20Tokens(
                 availableTokens,
                 false
             );
+
+            console.log(availableTokens);
         }
     }
-    if (tokens[chainName2]) {
-        for (const tokenSymbol in tokens[chainName2]['erc20']) { 
+    if (tokens[chainName2] && tokens[chainName2]['erc20']) {
+        for (const tokenSymbol in tokens[chainName2]['erc20']) {         
             await addTokenData(
                 sChain1,
                 sChain2,
@@ -173,7 +181,16 @@ async function addTokenData(
     availableTokens: Object,
     isClone: boolean
 ) {
-    let cloneAddress = isClone ? await getCloneAddress(sChain1, token['address'], sChainName) : await getCloneAddress(sChain2, token['address'], sChainName);
+    let cloneAddress;
+    if (sChain1 && isClone) {
+        cloneAddress = await getCloneAddress(sChain1, token['address'], sChainName);
+    }
+
+    if (sChain2 && !isClone) {
+        cloneAddress = await getCloneAddress(sChain2, token['address'], sChainName);;
+    }
+
+    // let cloneAddress = isClone ? await getCloneAddress(sChain1, token['address'], sChainName) : await getCloneAddress(sChain2, token['address'], sChainName);
     if (!cloneAddress) return;
     let unwrappedSymbol;
     let unwrappedAddress;
@@ -181,6 +198,11 @@ async function addTokenData(
         unwrappedSymbol = token['wraps']['symbol'];
         unwrappedAddress = token['wraps']['address'];
     }
+
+    console.log('adding tokenData!');
+    console.log(availableTokens);
+    console.log(tokenSymbol);
+
     availableTokens['erc20'][tokenSymbol] = new TokenData(
         cloneAddress,
         token['address'],
@@ -189,6 +211,9 @@ async function addTokenData(
         unwrappedSymbol,
         unwrappedAddress
     );
+
+    console.log('added tokenData!');
+    console.log(availableTokens);
 
     addERC20TokenContracts(
         sChain1,
@@ -219,19 +244,25 @@ function addERC20TokenContracts(
     tokenSymbol: string,
     tokenData: TokenData
 ) {
+
+    
+    console.log('tokenData tokenData tokenData');
+    console.log(tokenSymbol);
+    console.log(tokenData);
+    console.log('tokenData tokenData tokenData');
+
     let chain1Address = tokenData.clone ?  tokenData.cloneAddress : tokenData.originAddress;
     let chain2Address = tokenData.clone ?  tokenData.originAddress : tokenData.cloneAddress;
     
+    if (sChain1) { addERC20Token(sChain1, chain1Address, tokenSymbol, tokenData); };
+    if (sChain2) { addERC20Token(sChain2, chain2Address, tokenSymbol, tokenData); };
 
-    addERC20Token(sChain1, chain1Address, tokenSymbol, tokenData);
-    addERC20Token(sChain2, chain2Address, tokenSymbol, tokenData);
-
-    if (tokenData.unwrappedSymbol && !tokenData.clone) {
-        sChain1.erc20.addToken(
-            tokenData.unwrappedSymbol,
-            initERC20Wrapper(tokenData.unwrappedAddress, sChain1.web3)
-        );
-    }
+    // if (tokenData.unwrappedSymbol && !tokenData.clone) {
+    //     sChain1.erc20.addToken(
+    //         tokenData.unwrappedSymbol,
+    //         initERC20Wrapper(tokenData.unwrappedAddress, sChain1.web3)
+    //     );
+    // }
 }
 
 
@@ -242,7 +273,8 @@ function addERC20Token(
     tokenData: TokenData
 ) {
     if (!sChain.erc20.tokens[tokenSymbol]) {
-        if (tokenData.unwrappedSymbol && !tokenData.clone) {
+        // if (tokenData.unwrappedSymbol && !tokenData.clone) {
+        if (tokenData.unwrappedSymbol) {
             sChain.erc20.addToken(
                 tokenSymbol,
                 initERC20Wrapper(address, sChain.web3)

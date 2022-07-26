@@ -210,6 +210,10 @@ button {
 
 .dark-theme{
 
+  .schain-name {
+    color: white !important;
+  }
+
   .eth-logo{
     filter: invert(1) contrast(1.5);
   }
@@ -251,6 +255,11 @@ button {
 
 
 .light-theme{
+
+  .schain-name {
+    color: black !important;
+  }
+
   .sm-gr-text {
     color: rgb(0 0 0 / 65%);
   }

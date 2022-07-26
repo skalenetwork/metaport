@@ -19,6 +19,7 @@ import { isChainMainnet, getActionName, getActionSteps } from '../../core/action
 
 export function Widget(props) {
 
+  const [extTokens, setExtTokens] = React.useState({'erc20': {}});
   const [availableTokens, setAvailableTokens] = React.useState({'erc20': {}});
 
   const [open, setOpen] = React.useState(props.open);
@@ -61,69 +62,36 @@ export function Widget(props) {
     return sChain1.web3.utils.fromWei(balance);
   }
   
-  async function getTokenAllowance() {
-    console.log('getting token allowance: ' + token);
-    let tokenContract = sChain1.erc20.tokens[token];
-    let allowance = await tokenContract.methods.allowance(
-      address,
-      sChain1.erc20.address
-    ).call();
-    let allowanceEther = sChain1.web3.utils.fromWei(allowance);
-    setAllowance(allowanceEther);
-  }
-
   useEffect(() => {
     setWalletConnected(false);
     setSchains(props.schains);
     setMainnetEndpoint(props.mainnetEndpoint);
+    setExtTokens(props.tokens);
     addListeners(accountsChangedFallback);
-
-    window.addEventListener(
-      "metaport_requestTransfer",
-      requestTransfer,
-      false
-    );
-
-    window.addEventListener(
-      "closeWidget",
-      closeWidget,
-      false
-    );
-
-    window.addEventListener(
-      "openWidget",
-      openWidget,
-      false
-    );
-
-    window.addEventListener(
-      "resetWidget",
-      resetWidget,
-      false
-    );
-
-    window.addEventListener(
-      "setTheme",
-      handleSetTheme,
-      false
-    );
+    addExternalEventsListeners();
   }, []);
+
+  function addExternalEventsListeners() {
+    window.addEventListener("metaport_updateParams", updateParamsHandler, false);
+    window.addEventListener("metaport_requestTransfer", requestTransfer, false);
+    window.addEventListener("metaport_close", closeWidget, false);
+    window.addEventListener("metaport_open", openWidget, false);
+    window.addEventListener("metaport_reset",resetWidget, false);
+    window.addEventListener("metaport_setTheme", handleSetTheme, false);
+  }
 
   function handleSetTheme(e){
     setTheme(e.detail.theme);
   }
 
   function updateBalanceHandler() { // todo: refactor
-    window.addEventListener(
-      "requestBalance",
-      requestBalanceHandler,
-      false
-    );
+    window.addEventListener("metaport_requestBalance", requestBalanceHandler, false);
     console.log("updateBalanceHandler done");
   }
 
   function closeWidget(e) {
     setOpen(false);
+    setActiveStep(0);
     console.log('closeWidget event processed')
   }
 
@@ -146,8 +114,21 @@ export function Widget(props) {
     setAmount(e.detail.amount);
     setSchains(e.detail.schains);
 
+    if (e.detail.tokens) {
+      setExtTokens(e.detail.tokens);
+    }
+
     console.log("requestTransfer from: " + e.detail.schains[0], ", to: " + e.detail.schains[1]);
     console.log("amount inside react " + e.detail.amount);
+  }
+
+  function updateParamsHandler(e){
+    if (e.detail.schains) {
+      setSchains(e.detail.schains);
+    }
+    if (e.detail.tokens) {
+      setExtTokens(e.detail.tokens);
+    }
   }
 
   async function tokenLookup() {
@@ -158,7 +139,7 @@ export function Widget(props) {
       sChain2,
       chainName1,
       chainName2,
-      props.tokens
+      extTokens
     );
     await getTokenBalances(tokens);
     setAvailableTokens(tokens);
@@ -222,6 +203,30 @@ export function Widget(props) {
     setMainnet(await initMainnetMetamask(props.network, mainnetEndpoint))
   }
 
+  async function switchMetamaskChain() {
+    if (chainName1 === MAINNET_CHAIN_NAME) {
+      return
+    };
+    if (chainName2 === MAINNET_CHAIN_NAME) {
+      return
+    };
+    let chain1 = initSChain(
+      props.network,
+      chainName1
+    );
+    let chain2 = await initSChainMetamask(
+      props.network,
+      chainName2
+    );
+
+    setSChain1(chain1);
+    setSChain2(chain2);
+
+    await tokenLookup();
+
+    return [sChain1, sChain2];
+  }
+
   useEffect(() => {
     if (address && chainName1) {
       if (chainName1 == MAINNET_CHAIN_NAME) {
@@ -229,7 +234,6 @@ export function Widget(props) {
       } else {
         initSchain1();
       }
-      console.log('chain1 changed ' + chainName1);
     }
   }, [chainName1, address]);
 
@@ -248,22 +252,18 @@ export function Widget(props) {
   }, [chainName2, address]);
 
   useEffect(() => {
-    if ((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) {
+    if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && extTokens) {
       internalEvents.connected();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
       tokenLookup();
     }
-  }, [sChain1, sChain2, mainnet]);
+  }, [sChain1, sChain2, mainnet, extTokens]);
 
   useEffect(() => {
-    setBalance('');
-    if (sChain1 && token && availableTokens['erc20'][token] && address) {
-      let tokenInfo = availableTokens['erc20'][token];
-      getTokenAllowance();
-    }
-  }, [token, availableTokens, address]);
+    setActiveStep(0);
+  }, [token]);
 
   useEffect(() => {
     let actionName = getActionName(chainName1, chainName2, token);
@@ -274,6 +274,30 @@ export function Widget(props) {
       setActionSteps(getActionSteps(actionName, availableTokens['eth']));
     }
   }, [chainName1, chainName2, token, availableTokens]);
+
+  useEffect(() => {
+    runPreAction();
+  }, [actionSteps, activeStep, token, address, amount]);
+
+  async function runPreAction() {
+    if (actionSteps && actionSteps[activeStep]) {
+      const ActionClass = actionSteps[activeStep];
+      await new ActionClass(
+        mainnet,
+        sChain1,
+        sChain2,
+        chainName1,
+        chainName2,
+        address,
+        amount,
+        token,
+        availableTokens['erc20'][token],
+        switchMetamaskChain,
+        setActiveStep,
+        activeStep
+      ).preAction();
+    }
+  }
 
   function accountsChangedFallback(accounts) {
     if (accounts.length === 0) {
@@ -297,7 +321,8 @@ export function Widget(props) {
       address,
       amount,
       token,
-      availableTokens['erc20'][token]
+      availableTokens['erc20'][token],
+      switchMetamaskChain
     ).execute();
     await updateTokenBalances();
     setLoading(false);

@@ -53,6 +53,7 @@ export default class IMAWidget {
       );
     }
 
+    updateParams(params) { externalEvents.updateParams(params) }
     requestTransfer(params) { externalEvents.requestTransfer(params) }
     requestBalance(params) { externalEvents.requestBalance(params) }
     setTheme(theme) { externalEvents.setTheme(theme) }

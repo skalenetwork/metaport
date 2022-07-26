@@ -44,11 +44,25 @@ export namespace internalEvents {
         chainName1: string,
         chainName2: string,
         tokenSymbol: string,
+        unwrap: boolean = false
     ) {
         dispatchEvent('metaport_transferComplete', {
             'tokenSymbol': tokenSymbol,
             'from': chainName1,
             'to': chainName2,
+            'tx': tx,
+            'unwrap': unwrap
+        });
+    }
+
+    export function unwrapComplete(
+        tx: string,
+        chainName1: string,
+        tokenSymbol: string,
+    ) {
+        dispatchEvent('metaport_unwrapComplete', {
+            'tokenSymbol': tokenSymbol,
+            'chain': chainName1,
             'tx': tx
         });
     }
@@ -65,10 +79,18 @@ export namespace internalEvents {
 }
 
 export namespace externalEvents {
+    export function updateParams(params) {
+        dispatchEvent('metaport_updateParams', {
+            'tokens': params.tokens,
+            'schains': params.schains
+        });
+    }
+
     export function requestTransfer(params) {
         dispatchEvent('metaport_requestTransfer', {
             'amount': params.amount,
-            'schains': params.schains
+            'schains': params.schains,
+            'tokens': params.tokens
         });
     }
 
