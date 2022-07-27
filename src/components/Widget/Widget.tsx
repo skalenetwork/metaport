@@ -8,13 +8,13 @@ import {
   initMainnetMetamask,
   initERC20
 } from '../../core'
-import { getAvailableTokens } from '../../core/tokens';
+import { getAvailableTokens, getTokenBalances } from '../../core/tokens';
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
 import { connect, addListeners } from '../WalletConnector'
-import { internalEvents } from '../../core/events';
+import { externalEvents } from '../../core/events';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
-import { isChainMainnet, getActionName, getActionSteps } from '../../core/actions';
+import { getActionName, getActionSteps } from '../../core/actions';
 
 
 export function Widget(props) {
@@ -28,7 +28,6 @@ export function Widget(props) {
 
   const [address, setAddress] = React.useState(undefined);
   const [amount, setAmount] = React.useState<string>('');
-  const [allowance, setAllowance] = React.useState<string>('');
 
   const [walletConnected, setWalletConnected] = React.useState(undefined);
 
@@ -43,8 +42,6 @@ export function Widget(props) {
   const [mainnetEndpoint, setMainnetEndpoint] = React.useState<string>(undefined);
   const [mainnet, setMainnet] = React.useState<MainnetChain>(undefined);
 
-  const [balance, setBalance] = React.useState(undefined);
-
   const [loading, setLoading] = React.useState(false);
   const [amountLocked, setAmountLocked] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -53,14 +50,6 @@ export function Widget(props) {
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
   const [theme, setTheme] = React.useState(props.theme);
-
-  async function getTokenBalance(tokenSymbol) {
-    console.log('getting token balance: ' + tokenSymbol);
-    let tokenContract = sChain1.erc20.tokens[tokenSymbol];
-    let balance = await sChain1.getERC20Balance(tokenContract, address);
-    internalEvents.balance(tokenSymbol, chainName1, balance);
-    return sChain1.web3.utils.fromWei(balance);
-  }
   
   useEffect(() => {
     setWalletConnected(false);
@@ -68,16 +57,18 @@ export function Widget(props) {
     setMainnetEndpoint(props.mainnetEndpoint);
     setExtTokens(props.tokens);
     addListeners(accountsChangedFallback);
-    addExternalEventsListeners();
+    addinternalEventsListeners();
   }, []);
 
-  function addExternalEventsListeners() {
-    window.addEventListener("metaport_updateParams", updateParamsHandler, false);
-    window.addEventListener("metaport_requestTransfer", requestTransfer, false);
-    window.addEventListener("metaport_close", closeWidget, false);
-    window.addEventListener("metaport_open", openWidget, false);
-    window.addEventListener("metaport_reset",resetWidget, false);
-    window.addEventListener("metaport_setTheme", handleSetTheme, false);
+  function addinternalEventsListeners() {
+    window.addEventListener("_metaport_transfer", requestTransfer, false);
+    window.addEventListener("_metaport_transfer", requestTransfer, false);
+
+    window.addEventListener("_metaport_updateParams", updateParamsHandler, false);
+    window.addEventListener("_metaport_close", closeWidget, false);
+    window.addEventListener("_metaport_open", openWidget, false);
+    window.addEventListener("_metaport_reset",resetWidget, false);
+    window.addEventListener("_metaport_setTheme", handleSetTheme, false);
   }
 
   function handleSetTheme(e){
@@ -141,7 +132,14 @@ export function Widget(props) {
       chainName2,
       extTokens
     );
-    await getTokenBalances(tokens);
+    await getTokenBalances(
+      tokens,
+      chainName1,
+      mainnet,
+      sChain1,
+      token,
+      address
+    );
     setAvailableTokens(tokens);
     updateBalanceHandler();
     setLoadingTokens(false);
@@ -149,7 +147,18 @@ export function Widget(props) {
 
   async function updateTokenBalances() {
     let tokens = availableTokens;
-    await getTokenBalances(tokens);
+    await getTokenBalances(
+      tokens,
+      chainName1,
+      mainnet,
+      sChain1,
+      token,
+      address
+    );
+
+    console.log("getTokenBalances -> ->");
+    console.log(availableTokens);
+
     setAvailableTokens(tokens);
   }
 
@@ -157,13 +166,13 @@ export function Widget(props) {
     if (schainName === chainName1) {
       let tokenContract = sChain1.erc20.tokens[tokenSymbol];
       let balance = await sChain1.getERC20Balance(tokenContract, address);
-      return internalEvents.balance(tokenSymbol, chainName1, balance);
+      return externalEvents.balance(tokenSymbol, chainName1, balance);
     }
 
     if (schainName === chainName2) {
       let tokenContract = sChain2.erc20.tokens[tokenSymbol]; // todo: check token exist!
       let balance = await sChain2.getERC20Balance(tokenContract, address);
-      return internalEvents.balance(tokenSymbol, chainName2, balance);
+      return externalEvents.balance(tokenSymbol, chainName2, balance);
     }
     console.log('Error: can request balance only for active chains!'); // todo: replace with error!
   }
@@ -175,22 +184,6 @@ export function Widget(props) {
     emitBalanceEvent(e.detail.schainName, e.detail.tokenSymbol);
   }
 
-  async function getTokenBalances(tokens) {
-    for (let [tokenSymbol, tokenData] of Object.entries(tokens['erc20'])) {
-      let balance = await getTokenBalance(tokenSymbol);
-      tokens['erc20'][tokenSymbol]['balance'] = balance;
-
-      if (tokenData['unwrappedSymbol'] && !tokenData['clone']) {
-        let balance = await getTokenBalance(tokenData['unwrappedSymbol']);
-        tokens['erc20'][tokenSymbol]['unwrappedBalance'] = balance;
-      }
-    }
-    if (tokens['eth']) {
-      let ethBalance = isChainMainnet(chainName1) ? await mainnet.ethBalance(address) : await sChain1.ethBalance(address);
-      internalEvents.balance('eth', chainName1, ethBalance);
-      tokens.eth.balance = mainnet ? mainnet.web3.utils.fromWei(ethBalance) : sChain1.web3.utils.fromWei(ethBalance); // todo: fix!
-    }
-  }
 
   async function initSchain1() {
     setSChain1(await initSChainMetamask(
@@ -253,7 +246,7 @@ export function Widget(props) {
 
   useEffect(() => {
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && extTokens) {
-      internalEvents.connected();
+      externalEvents.connected();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
@@ -338,13 +331,13 @@ export function Widget(props) {
 
     setAddress(accounts[0]);
     setWalletConnected(true);
-    internalEvents.connected();
+    externalEvents.connected();
   }
 
   function connectMetamask() {
     console.log('connectMetamask...');
     connect(networkConnectFallback);
-    internalEvents.connected();
+    externalEvents.connected();
     console.log('Done: connectMetamask...');
   }
 
@@ -352,10 +345,9 @@ export function Widget(props) {
     schains={schains}
     tokens={availableTokens}
     schainAliases={props.schainAliases}
-    balance={balance}
     amount={amount}
     setAmount={setAmount}
-    allowance={allowance}
+
     open={open}
     setOpen={setOpen}
 

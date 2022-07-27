@@ -24,7 +24,7 @@
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
 import debug from './debug';
-import { internalEvents } from './events';
+import { externalEvents } from './events';
 import { TokenData } from './tokens';
 import {
     MAINNET_CHAIN_NAME,
@@ -134,7 +134,7 @@ class TransferETH_M2S extends TransferAction {
             }
         );
         await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore);
-        internalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol);
+        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol);
     }
 }
 
@@ -149,7 +149,7 @@ class TransferETH_S2M extends TransferAction {
             { address: this.address }
         );
         await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount);
-        internalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol);
+        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol);
     }
 }
 
@@ -164,7 +164,7 @@ class UnlockETH_M extends Action {
         let tx = await this.mainnet.eth.getMyEth(
             { address: this.address }
         );
-        internalEvents.ethUnlocked(tx);
+        externalEvents.ethUnlocked(tx);
     }
 }
 
@@ -215,7 +215,7 @@ class TransferERC20_S2S extends TransferAction {
         console.log('Money to be received to destination chain');
 
         const wrap = !!this.tokenData.unwrappedSymbol;
-        internalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol, wrap);
+        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol, wrap);
     }
 
     async preAction() {
@@ -313,7 +313,7 @@ class UnwrapERC20_S extends Action {
             amountWei,
             {address: this.address}
         );
-        internalEvents.unwrapComplete(tx, this.chainName2, this.tokenSymbol);
+        externalEvents.unwrapComplete(tx, this.chainName2, this.tokenSymbol);
     }
 }
 

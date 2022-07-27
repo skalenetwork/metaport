@@ -25,7 +25,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import{ Widget } from './components/Widget';
-import { externalEvents } from './core/events';
+import { internalEvents } from './core/events';
 import defaultTokens from './metadata/tokens.json';
 
 
@@ -53,12 +53,16 @@ export default class IMAWidget {
       );
     }
 
-    updateParams(params) { externalEvents.updateParams(params) }
-    requestTransfer(params) { externalEvents.requestTransfer(params) }
-    requestBalance(params) { externalEvents.requestBalance(params) }
-    setTheme(theme) { externalEvents.setTheme(theme) }
-    close() { externalEvents.close() }
-    open() { externalEvents.open() }
-    reset() { externalEvents.reset() }
+    transfer(params) { internalEvents.transfer(params) }
+    wrap(params) { internalEvents.wrap(params) }
+    unwrap(params) { internalEvents.unwrap(params) }
+    swap(params) { internalEvents.swap(params) }
+
+    updateParams(params) { internalEvents.updateParams(params) }
+    requestBalance(params) { internalEvents.requestBalance(params) }
+    setTheme(theme) { internalEvents.setTheme(theme) }
+    close() { internalEvents.close() }
+    open() { internalEvents.open() }
+    reset() { internalEvents.reset() }
 }
   

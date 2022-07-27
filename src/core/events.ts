@@ -30,7 +30,7 @@ function dispatchEvent(name: string, data = {}) {
 }
 
 
-export namespace internalEvents {    
+export namespace externalEvents {    
     export function balance(tokenSymbol: string, schainName: string, balance: string) {
         dispatchEvent('metaport_balance', {
             "tokenSymbol": tokenSymbol,
@@ -78,43 +78,67 @@ export namespace internalEvents {
     }
 }
 
-export namespace externalEvents {
+export namespace internalEvents {
     export function updateParams(params) {
-        dispatchEvent('metaport_updateParams', {
+        dispatchEvent('_metaport_updateParams', {
             'tokens': params.tokens,
             'schains': params.schains
         });
     }
 
-    export function requestTransfer(params) {
-        dispatchEvent('metaport_requestTransfer', {
+    export function transfer(params) {
+        dispatchEvent('_metaport_transfer', {
             'amount': params.amount,
             'schains': params.schains,
             'tokens': params.tokens
         });
     }
 
+    export function wrap(params) {
+        dispatchEvent('_metaport_wrap', {
+            'amount': params.amount,
+            'chain': params.chain,
+            'tokens': params.tokens
+        });
+    }
+
+    export function unwrap(params) {
+        dispatchEvent('_metaport_unwrap', {
+            'amount': params.amount,
+            'chain': params.chain,
+            'tokens': params.tokens
+        });
+    }
+
+    export function swap(params) {
+        dispatchEvent('_metaport_swap', {
+            'amount': params.amount,
+            'chain': params.chain,
+            'tokens': params.tokens // todo!
+        });
+    }
+
     export function close() {
-        dispatchEvent('metaport_close');
+        dispatchEvent('_metaport_close');
     }
 
     export function open() {
-        dispatchEvent('metaport_open');
+        dispatchEvent('_metaport_open');
     }
 
     export function reset() {
-        dispatchEvent('metaport_reset');
+        dispatchEvent('_metaport_reset');
     }
 
     export function requestBalance(params) {
-        dispatchEvent('metaport_requestBalance', {
+        dispatchEvent('_metaport_requestBalance', {
             'schainName': params.schainName,
             'tokenSymbol': params.tokenSymbol
         });
     }
 
     export function setTheme(theme) {
-        dispatchEvent('metaport_setTheme', {
+        dispatchEvent('_metaport_setTheme', {
             'theme': theme
         });
     }

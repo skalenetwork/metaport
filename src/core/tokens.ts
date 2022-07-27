@@ -24,7 +24,10 @@
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
 import { ZERO_ADDRESS, ETH_TOKEN_NAME, MAINNET_CHAIN_NAME, ETH_ERC20_ADDRESS } from './constants';
+import { externalEvents } from './events';
 import { initERC20, initERC20Wrapper } from './core';
+import { isChainMainnet } from './actions';
+
 
 export class TokenData {
     originAddress: string
@@ -72,7 +75,7 @@ export async function getAvailableTokens(
     chainName2: string,
     tokens: Object
 ) {
-    let availableTokens = {'erc20': {}};
+    let availableTokens = { 'erc20': {} };
     await getERC20Tokens(
         sChain1,
         sChain2,
@@ -154,7 +157,7 @@ async function getERC20Tokens(
         }
     }
     if (tokens[chainName2] && tokens[chainName2]['erc20']) {
-        for (const tokenSymbol in tokens[chainName2]['erc20']) {         
+        for (const tokenSymbol in tokens[chainName2]['erc20']) {
             await addTokenData(
                 sChain1,
                 sChain2,
@@ -187,7 +190,6 @@ async function addTokenData(
         cloneAddress = await getCloneAddress(sChain2, token['address'], sChainName);;
     }
 
-    // let cloneAddress = isClone ? await getCloneAddress(sChain1, token['address'], sChainName) : await getCloneAddress(sChain2, token['address'], sChainName);
     if (!cloneAddress) return;
     let unwrappedSymbol;
     let unwrappedAddress;
@@ -206,9 +208,6 @@ async function addTokenData(
         unwrappedAddress
     );
 
-    console.log('added tokenData!');
-    console.log(availableTokens);
-
     addERC20TokenContracts(
         sChain1,
         sChain2,
@@ -223,12 +222,12 @@ async function getCloneAddress(
     originTokenAddress: string,
     originChainName: string
 ) {
-  let tokenCloneAddress = await sChain.erc20.getTokenCloneAddress(
-    originTokenAddress,
-    originChainName
-  );
-  if (tokenCloneAddress === ZERO_ADDRESS) return;
-  return tokenCloneAddress;
+    let tokenCloneAddress = await sChain.erc20.getTokenCloneAddress(
+        originTokenAddress,
+        originChainName
+    );
+    if (tokenCloneAddress === ZERO_ADDRESS) return;
+    return tokenCloneAddress;
 }
 
 
@@ -238,25 +237,11 @@ function addERC20TokenContracts(
     tokenSymbol: string,
     tokenData: TokenData
 ) {
+    let chain1Address = tokenData.clone ? tokenData.cloneAddress : tokenData.originAddress;
+    let chain2Address = tokenData.clone ? tokenData.originAddress : tokenData.cloneAddress;
 
-    
-    console.log('tokenData tokenData tokenData');
-    console.log(tokenSymbol);
-    console.log(tokenData);
-    console.log('tokenData tokenData tokenData');
-
-    let chain1Address = tokenData.clone ?  tokenData.cloneAddress : tokenData.originAddress;
-    let chain2Address = tokenData.clone ?  tokenData.originAddress : tokenData.cloneAddress;
-    
     if (sChain1) { addERC20Token(sChain1, chain1Address, tokenSymbol, tokenData); };
     if (sChain2) { addERC20Token(sChain2, chain2Address, tokenSymbol, tokenData); };
-
-    // if (tokenData.unwrappedSymbol && !tokenData.clone) {
-    //     sChain1.erc20.addToken(
-    //         tokenData.unwrappedSymbol,
-    //         initERC20Wrapper(tokenData.unwrappedAddress, sChain1.web3)
-    //     );
-    // }
 }
 
 
@@ -267,7 +252,6 @@ function addERC20Token(
     tokenData: TokenData
 ) {
     if (!sChain.erc20.tokens[tokenSymbol]) {
-        // if (tokenData.unwrappedSymbol && !tokenData.clone) {
         if (tokenData.unwrappedSymbol) {
             sChain.erc20.addToken(
                 tokenSymbol,
@@ -281,4 +265,67 @@ function addERC20Token(
             sChain.erc20.addToken(tokenSymbol, initERC20(address, sChain.web3));
         }
     }
+}
+
+
+export async function getTokenBalance(
+    chainName: string,
+    sChain: SChain,
+    tokenSymbol: string,
+    address: string
+): Promise<string> {
+    let tokenContract = sChain.erc20.tokens[tokenSymbol];
+    let balance = await sChain.getERC20Balance(tokenContract, address);
+    externalEvents.balance(tokenSymbol, chainName, balance);
+    return sChain.web3.utils.fromWei(balance);
+}
+
+
+export async function getEthBalance(
+    mainnet: MainnetChain,
+    sChain: SChain,
+    chainName: string,
+    address: string
+) {
+    let ethBalance = isChainMainnet(chainName) ? await mainnet.ethBalance(address) : await sChain.ethBalance(address);
+    externalEvents.balance('eth', chainName, ethBalance);
+    return mainnet ? mainnet.web3.utils.fromWei(ethBalance) : sChain.web3.utils.fromWei(ethBalance);
+}
+
+
+export async function getTokenBalances(
+    tokens: Object,
+    chainName: string,
+    mainnet: MainnetChain,
+    sChain: SChain,
+    tokenSymbol: string,
+    address: string
+) {
+    for (let [tokenSymbol, tokenData] of Object.entries(tokens['erc20'])) {
+        let balance = await getTokenBalance(
+            chainName,
+            sChain,
+            tokenSymbol,
+            address
+        );
+        tokens['erc20'][tokenSymbol]['balance'] = balance;
+        if (tokenData['unwrappedSymbol'] && !tokenData['clone']) {
+            let balance = await getTokenBalance(
+                chainName,
+                sChain,
+                tokenData['unwrappedSymbol'],
+                address
+            );
+            tokens['erc20'][tokenSymbol]['unwrappedBalance'] = balance;
+        }
+    }
+
+    if (tokens['eth']) {
+        tokens['eth'].balance = await getEthBalance(
+            mainnet,
+            sChain,
+            chainName,
+            address
+        );
+    };
 }
