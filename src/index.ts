@@ -1,3 +1,3 @@
-import IMAWidget from "./IMAWidget";
+import Metaport from "./Metaport";
 
-export { IMAWidget };
+export { Metaport };

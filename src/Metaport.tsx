@@ -17,11 +17,10 @@
  */
 
 /**
- * @file IMAWidget.ts
+ * @file Metaport.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import{ Widget } from './components/Widget';

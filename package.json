@@ -1,7 +1,7 @@
 {
-  "name": "@skalenetwork/ima-widget",
-  "version": "0.0.1",
-  "description": "Simple JS/TS IMA widget",
+  "name": "@skalenetwork/metaport",
+  "version": "0.0.3",
+  "description": "SKALE Metaport widget",
   "keywords": [
     "skale",
     "web3",
@@ -19,7 +19,8 @@
     "storybook": "start-storybook -p 6006",
     "storybook:export": "build-storybook",
     "prepublish": "npm run build",
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack --mode=production",
+    "build-stats": " webpack --json > stats.json",
     "test": "TS_NODE_PROJECT=\"tsconfig.test.json\" mocha -r ts-node/register test/**/*Test.ts",
     "test-ts": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*Test.ts"
   },
@@ -48,7 +49,6 @@
     "identity-obj-proxy": "^3.0.0",
     "mocha": "^9.2.2",
     "node-polyfill-webpack-plugin": "^1.1.4",
-    "node-sass": "^6.0.1",
     "postcss": "^8.4.14",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -59,7 +59,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-svg-import": "^1.6.0",
     "rollup-plugin-typescript2": "^0.29.0",
-    "sass": "^1.52.3",
+    "sass": "^1.54.0",
     "sass-loader": "^13.0.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
@@ -71,9 +71,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2",
     "webpack": "^5.73.0",
-    "webpack-cli": "^4.10.0"
-  },
-  "dependencies": {
+    "webpack-cli": "^4.10.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@fontsource/roboto": "^4.5.7",
@@ -82,8 +80,6 @@
     "@skalenetwork/ima-js": "1.0.4-develop.1",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
     "react-script": "^2.0.5"
   }
 }
