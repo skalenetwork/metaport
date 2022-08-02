@@ -37,6 +37,8 @@ export default class IMAWidget {
       // params validation + transformation here
 
       let tokens = params.tokens ? params.tokens : defaultTokens[params.network];
+      let network = params.network ? params.network : 'mainnet';
+      
       if (!params['chains']) {
         // todo: ALL network chains (request from proxy!)
       }
@@ -47,7 +49,7 @@ export default class IMAWidget {
           schains={params['schains']}
           schainAliases={params['schainAliases']}
           open={params['open']}
-          network={params['network']}
+          network={network}
           theme={params['theme']}
           mainnetEndpoint={params['mainnetEndpoint']}
         />
