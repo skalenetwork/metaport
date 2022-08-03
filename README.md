@@ -1,16 +1,32 @@
 # SKALE Metaport Widget
 
-<div align="center">
-  <br><img src="https://global-uploads.webflow.com/625c39b93541414104a1d654/625c68f38c04ec14737f2ad8_svg-gobbler%20(3)%201.svg"><br><br>
-</div>
-
------------------
-
-<br>
-
 [![Discord](https://img.shields.io/discord/534485763354787851.svg)](https://discord.gg/vvUtWJB)
 
 Metaport is a Typescript/Javascript widget that could be embeded into a web application to add IMA functionality to any SKALE dApp.
+
+
+- [Documentation](#documentation)
+  * [Installation](#installation)
+    + [npm](#npm)
+    + [Yarn](#yarn)
+  * [Integration](#integration)
+  * [Initialization options](#initialization-options)
+  * [Functions](#functions)
+    + [Transfer](#transfer)
+    + [Wrap](#wrap)
+    + [Unwrap](#unwrap)
+    + [Swap](#swap)
+  * [Tips & tricks](#tips---tricks)
+    + [Locking a token](#locking-a-token)
+    + [Locking chains](#locking-chains)
+    + [Adding Mainnet & ETH](#adding-mainnet---eth)
+    + [Autowrap for tokens](#autowrap-for-tokens)
+  * [Events](#events)
+    + [Available Events](#available-events)
+  * [Themes](#themes)
+- [Development](#development)
+  * [Storybook setup](#storybook-setup)
+
 
 ## Documentation
 
@@ -175,7 +191,7 @@ Now token `tst` will be pre-selected and locked in the Metaport UI.
 
 If you're passing more that 2 chains to Metaport constructor or to `updateParams` function they will be available in the dropdown menu and no chain will be selected by default. 
 
-If you want to perform/request transfer from one particulat chain to another, pass exactly 2 chains to `schain` param:
+If you want to perform/request transfer from one particular chain to another, pass exactly 2 chain names to `schain` param:
 
 ```Javascript
 const widget = new Metaport({
@@ -208,13 +224,82 @@ With this setup you will have `ETH` as a pre-selected asset, `Mainnet` as `From`
 
 #### Autowrap for tokens
 
-todo!
+To wrap tokens before transfer (for example to wrap ETHC before transfer to other chain) you need to specify token wrapped token info (address):
+
+```Javascript
+const TRANSFER_PARAMS = {
+    amount: '1000',
+    schains: ['chainName1', 'chainName2'],
+    tokens: {
+        'chainName1': {
+            'erc20': {
+                'wreth': { // wrapper token
+                    'address': '0x0123', // wrapper token address
+                    'name': 'wreth', // wrapper token display name
+                    'wraps': { // token that needs to be wrapped
+                        'address': '0xD2Aaa00700000000000000000000000000000000', // unwrapped token address
+                        'symbol': 'ethc' // unwrapped token symbol
+                    }
+                }
+            }
+        }
+    }
+}
+metaport.transfer(TRANSFER_PARAMS);
+```
+
+You can use the same approach for `updateParams` and or during Metaport init.
 
 ### Events
 
-```bash
-b
+You can receive data from the Metaport widget using in-browser events.
+
+Here's an example that demonstrates how you can subscribe to events in your dApp:
+
+```Javascript
+window.addEventListener(
+    "metaport_transferComplete",
+    transferComplete,
+    false
+);
+
+function transferComplete(e) {
+    console.log('received transfer complete event, transaction hash: ' + e.details.tx);
+}
 ```
+
+#### Available Events
+
+- `metaport_transferComplete`: `{tokenSymbol, from, to, tx}` - emited when the transfer completed and funds are minted on destination chain
+- `metaport_unwrapComplete`: `{tokenSymbol, chain, tx}` - emited when unwrap transaction is mined
+- `metaport_ethUnlocked`: `{tx}` - emited when ETH unlock transaction is mined (on Mainnet and only for ETH)
+- `metaport_connected`: `{}` - emited when widget is initialized on a page
+- `metaport_balance`: `{tokenSymbol, schainName, balance}` - emited when token balance is retrieved in Metaport widget (after init, after transfer and on request)
+
+### Themes
+
+You can easily modify Metaport color scheme by providing a theme:
+
+```Javascript
+// option 1: during the init
+const widget = new Metaport({
+    ...
+    theme: {
+        primary: '#00d4ff', // primary accent color for action buttons
+        background: '#0a2540', // background color
+        mode: 'dark' // theme type - dark or light
+    }
+});
+
+// option 2: on the fly (e.g. when user switches theme on your dApp):
+metaport.setTheme({
+    primary: '#e41c5d',
+    background: '#ffffff',
+    mode: 'light'
+});
+```
+
+By default, SKALE dark theme will be used. You can also set `{mode: 'light'}` witout any additional param to use default SKALE light theme.
 
 ## Development
 
