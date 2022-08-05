@@ -5,27 +5,29 @@
 Metaport is a Typescript/Javascript widget that could be embeded into a web application to add IMA functionality to any SKALE dApp.
 
 
-- [Documentation](#documentation)
-  * [Installation](#installation)
-    + [npm](#npm)
-    + [Yarn](#yarn)
-  * [Integration](#integration)
-  * [Initialization options](#initialization-options)
-  * [Functions](#functions)
-    + [Transfer](#transfer)
-    + [Wrap](#wrap)
-    + [Unwrap](#unwrap)
-    + [Swap](#swap)
-  * [Tips & tricks](#tips---tricks)
-    + [Locking a token](#locking-a-token)
-    + [Locking chains](#locking-chains)
-    + [Adding Mainnet & ETH](#adding-mainnet---eth)
-    + [Autowrap for tokens](#autowrap-for-tokens)
-  * [Events](#events)
-    + [Available Events](#available-events)
-  * [Themes](#themes)
-- [Development](#development)
-  * [Storybook setup](#storybook-setup)
+- [SKALE Metaport Widget](#skale-metaport-widget)
+  - [Documentation](#documentation)
+    - [Installation](#installation)
+      - [npm](#npm)
+      - [Yarn](#yarn)
+    - [Integration](#integration)
+    - [Initialization options](#initialization-options)
+    - [Functions](#functions)
+      - [Transfer](#transfer)
+      - [Wrap](#wrap)
+      - [Unwrap](#unwrap)
+      - [Swap](#swap)
+    - [Tips & tricks](#tips--tricks)
+      - [Locking a token](#locking-a-token)
+      - [Locking chains](#locking-chains)
+      - [Adding Mainnet & ETH](#adding-mainnet--eth)
+      - [Autowrap for tokens](#autowrap-for-tokens)
+      - [Usage with SSR](#usage-with-ssr)
+    - [Events](#events)
+      - [Available Events](#available-events)
+    - [Themes](#themes)
+  - [Development](#development)
+    - [Storybook setup](#storybook-setup)
 
 
 ## Documentation
@@ -46,7 +48,15 @@ yarn add @skalenetwork/metaport
 
 ### Integration
 
-You can import Metaport into any modern web application (Vue/React/Angular/etc) and init the object:
+You can import Metaport into any modern web application (Vue/React/Angular/etc).
+
+1. Add empty div with `metaport` id in the root page of your application:
+
+```html
+<div id='metaport'></div>
+```
+
+2. Import metaport library and init the object:
 
 ```Javascript
 import { Metaport } from '@skalenetwork/metaport';
@@ -249,6 +259,40 @@ metaport.transfer(TRANSFER_PARAMS);
 ```
 
 You can use the same approach for `updateParams` and or during Metaport init.
+
+
+#### Usage with SSR
+
+Metaport has browser-only build, so to use it in an application that uses server-side rendering
+you need to adapt it using trick described [here](https://nextjs.org/docs/advanced-features/dynamic-import#with-external-libraries).
+
+Here is an example of Metaport import & usage in next.js app with SSR:
+
+```Javascript
+// in react component
+
+const [metaport, setMetaport] = React.useState();
+
+async function loadMetaport() {
+    const Metaport = (await import('@skalenetwork/metaport')).Metaport;
+    setMetaport(new Metaport({
+      open: true,
+      network: 'staging',
+      schains: ['mainnet', 'chainName1'],
+      tokens: {'mainnet': {'eth': {}}}
+    }));
+}
+
+useEffect(() => {
+    loadMetaport();
+}, []);
+
+useEffect(() => {
+    if (metaport) {
+      console.log('metaport widget initialized');
+    }
+}, [metaport]);
+```
 
 ### Events
 

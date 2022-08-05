@@ -32,7 +32,7 @@ import defaultTokens from './metadata/tokens.json';
 
 export default class IMAWidget {
     constructor(params: any) {
-      const widgetEl: HTMLElement = document.getElementById('ima-widget');  
+      const widgetEl: HTMLElement = document.getElementById('metaport');  
       const root = createRoot(widgetEl);
       // params validation + transformation here
 
