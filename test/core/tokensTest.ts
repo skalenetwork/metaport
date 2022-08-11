@@ -43,7 +43,9 @@ describe("Test for tokens core module", () => {
             sChain2,
             CHAIN_NAME_SCHAIN,
             CHAIN_NAME_SCHAIN_2,
-            tokens
+            tokens,
+            false,
+            true
         );
         console.log(availableTokens);
     })

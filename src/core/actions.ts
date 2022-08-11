@@ -298,15 +298,7 @@ class UnwrapERC20_S extends Action {
     static loadingText = 'Unwrapping'
 
     async execute() {
-        
-        console.log('bf!');
-        let chains = await this.switchMetamaskChain();
-
-        this.sChain1 = chains[0];
-        this.sChain2 = chains[1];
-
-        console.log('swtched!');
-
+        await this.switchMetamaskChain();
         const amountWei = this.sChain2.web3.utils.toWei(this.amount);
         const tx = await this.sChain2.erc20.unwrap(
             this.tokenSymbol,
@@ -338,9 +330,9 @@ export function getActionSteps(
         actionsList.push(...wrapActions);
     }
     actionsList.push(...actions[actionName]);
-    // if (tokenData.unwrappedSymbol && tokenData.clone) {
-    //     actionsList.push(...unwrapActions);
-    // }
+    if (tokenData.unwrappedSymbol && tokenData.clone) {
+        actionsList.push(...unwrapActions);
+    }
     return actionsList;
 }
 

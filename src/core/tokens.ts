@@ -73,7 +73,8 @@ export async function getAvailableTokens(
     sChain2: SChain,
     chainName1: string,
     chainName2: string,
-    tokens: Object
+    tokens: Object,
+    force: boolean
 ) {
     let availableTokens = { 'erc20': {} };
     await getERC20Tokens(
@@ -82,7 +83,8 @@ export async function getAvailableTokens(
         chainName1,
         chainName2,
         tokens,
-        availableTokens
+        availableTokens,
+        force
     );
     await getETHToken(
         mainnet,
@@ -139,7 +141,8 @@ async function getERC20Tokens(
     chainName1: string,
     chainName2: string,
     tokens: Object,
-    availableTokens: Object
+    availableTokens: Object,
+    force: boolean
 ) {
     if (tokens[chainName1] && tokens[chainName1]['erc20']) {
         for (const tokenSymbol in tokens[chainName1]['erc20']) {
@@ -150,7 +153,8 @@ async function getERC20Tokens(
                 tokens[chainName1]['erc20'][tokenSymbol],
                 tokenSymbol,
                 availableTokens,
-                false
+                false,
+                force
             );
 
             console.log(availableTokens);
@@ -165,7 +169,8 @@ async function getERC20Tokens(
                 tokens[chainName2]['erc20'][tokenSymbol],
                 tokenSymbol,
                 availableTokens,
-                true
+                true,
+                force
             );
         }
     }
@@ -179,7 +184,8 @@ async function addTokenData(
     token: Object,
     tokenSymbol: string,
     availableTokens: Object,
-    isClone: boolean
+    isClone: boolean,
+    force: boolean
 ) {
     let cloneAddress;
     if (sChain1 && isClone) {
@@ -212,7 +218,8 @@ async function addTokenData(
         sChain1,
         sChain2,
         tokenSymbol,
-        availableTokens['erc20'][tokenSymbol]
+        availableTokens['erc20'][tokenSymbol],
+        force
     );
 }
 
@@ -235,13 +242,14 @@ function addERC20TokenContracts(
     sChain1: SChain,
     sChain2: SChain,
     tokenSymbol: string,
-    tokenData: TokenData
+    tokenData: TokenData,
+    force: boolean
 ) {
     let chain1Address = tokenData.clone ? tokenData.cloneAddress : tokenData.originAddress;
     let chain2Address = tokenData.clone ? tokenData.originAddress : tokenData.cloneAddress;
 
-    if (sChain1) { addERC20Token(sChain1, chain1Address, tokenSymbol, tokenData); };
-    if (sChain2) { addERC20Token(sChain2, chain2Address, tokenSymbol, tokenData); };
+    if (sChain1) { addERC20Token(sChain1, chain1Address, tokenSymbol, tokenData, force); };
+    if (sChain2) { addERC20Token(sChain2, chain2Address, tokenSymbol, tokenData, force); };
 }
 
 
@@ -249,9 +257,10 @@ function addERC20Token(
     sChain: SChain,
     address: string,
     tokenSymbol: string,
-    tokenData: TokenData
+    tokenData: TokenData,
+    force: boolean
 ) {
-    if (!sChain.erc20.tokens[tokenSymbol]) {
+    if (!sChain.erc20.tokens[tokenSymbol] && !force) {
         if (tokenData.unwrappedSymbol) {
             sChain.erc20.addToken(
                 tokenSymbol,

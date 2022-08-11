@@ -72,14 +72,18 @@ const widget = new Metaport({
     open: true, // Open Metaport on load (optional, default = false)
     mainnetEndpoint: MAINNET_ENDPOINT, // Ethereum Mainnet endpoint, required only for M2S or S2M transfers (optional, default = null)
     network: 'staging', // SKALE network that will be used - mainnet or staging (optional, defualt = mainnet)
-    schains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])
+    chains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])
         'chainName1',
         'chainName2',
         'chainName3'
     ],
     chainsMetadata: { // Chain name aliases that will be displayed in the UI (optional, defualt = {})
-        'chainName1': 'Europa SKALE Chain',
-        'chainName2': 'NFT Hub'
+        'chainName1': {
+            alias: 'Europa SKALE Chain', // optional
+            minSfuelWei: '27000000000000', // optional
+            faucetUrl: '[FAUCET_URL]' // optional
+        },
+        ...
     },
     tokens: { // List of tokens that will be available in the Metaport UI (default = {})
         'chainName2': { // chain name where token origin deployed (mainnet or SKALE Chain name)
@@ -112,7 +116,7 @@ When sending a transfer request you can specify token and chains or keep ones th
 
 const TRANSFER_PARAMS = {
     amount: '1000', // amount to transfer (in wei)
-    schains: ['chainName1', 'chainName2'], // 'from' and 'to' chains
+    chains: ['chainName1', 'chainName2'], // 'from' and 'to' chains
     tokens: { // optional, if token is already selected in the Metaport UI
         'chainName1': {
             'erc20': {
@@ -196,7 +200,7 @@ If you want to perform/request transfer from one particular chain to another, pa
 ```Javascript
 const widget = new Metaport({
     ...,
-      schains: [
+    chains: [
         'chainName1', // this one will be set as 'From' chain
         'chainName2' // this one will be set as 'To' chain
     ],
@@ -212,7 +216,7 @@ ETH clone is already pre-deployed on each chain, so to have it in the Metaport U
 ```Javascript
 const widget = new Metaport({
     ...,
-    schains: ['mainnet', 'chainName1']
+    chains: ['mainnet', 'chainName1']
     tokens: {
         'mainnet': { 'eth': {} }
     }
@@ -229,7 +233,7 @@ To wrap tokens before transfer (for example to wrap ETHC before transfer to othe
 ```Javascript
 const TRANSFER_PARAMS = {
     amount: '1000',
-    schains: ['chainName1', 'chainName2'],
+    chains: ['chainName1', 'chainName2'],
     tokens: {
         'chainName1': {
             'erc20': {
@@ -268,7 +272,7 @@ async function loadMetaport() {
     setMetaport(new Metaport({
       open: true,
       network: 'staging',
-      schains: ['mainnet', 'chainName1'],
+      chains: ['mainnet', 'chainName1'],
       tokens: {'mainnet': {'eth': {}}}
     }));
 }

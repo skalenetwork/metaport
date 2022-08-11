@@ -42,6 +42,21 @@ export async function initSChainMetamask(network: string, schainName: string) {
   return new SChain(sChainWeb3, sChainAbi);
 }
 
+export function updateWeb3SChain(schain: SChain, network: string, schainName: string) {
+  const endpoint = getSChainEndpoint(network, schainName);
+  const sChainWeb3 = new Web3(endpoint);
+  schain.updateWeb3(sChainWeb3);
+}
+
+export async function updateWeb3SChainMetamask(schain: SChain, network: string, schainName: string) {
+  const endpoint = getSChainEndpoint(network, schainName);
+  const chainId = calcChainId(schainName);
+  const networkParams = schainNetworkParams(schainName, endpoint, chainId);
+  await changeMetamaskNetwork(networkParams);
+  const sChainWeb3 = new Web3(window.ethereum);
+  schain.updateWeb3(sChainWeb3);
+}
+
 
 export function initMainnet(mainnetEndpoint: string): MainnetChain {
   const web3 = new Web3(mainnetEndpoint);

@@ -6,7 +6,9 @@ import {
   initSChainMetamask,
   initMainnet,
   initMainnetMetamask,
-  initERC20
+  initERC20,
+  updateWeb3SChain,
+  updateWeb3SChainMetamask
 } from '../../core'
 import { getAvailableTokens, getTokenBalances } from '../../core/tokens';
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
@@ -136,7 +138,8 @@ export function Widget(props) {
       sChain2,
       chainName1,
       chainName2,
-      extTokens
+      extTokens,
+      false
     );
     await getTokenBalances(
       tokens,
@@ -209,21 +212,9 @@ export function Widget(props) {
     if (chainName2 === MAINNET_CHAIN_NAME) {
       return
     };
-    let chain1 = initSChain(
-      props.network,
-      chainName1
-    );
-    let chain2 = await initSChainMetamask(
-      props.network,
-      chainName2
-    );
-
-    setSChain1(chain1);
-    setSChain2(chain2);
-
-    await tokenLookup();
-
-    return [sChain1, sChain2];
+  
+    updateWeb3SChain(sChain1, props.network, chainName1);
+    await updateWeb3SChainMetamask(sChain2, props.network, chainName2);
   }
 
   useEffect(() => {

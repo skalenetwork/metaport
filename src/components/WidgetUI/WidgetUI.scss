@@ -213,7 +213,7 @@ button {
     z-index: 9999;
   }
 
-  svg {
+  :global(svg) {
     width: 14pt;
     height: 14pt;
   }
@@ -260,11 +260,10 @@ button {
   }
 
   .mp__btnSwitch {
-    .Mui-disabled {
+    :global(.Mui-disabled) {
       background-color: rgba(161, 161, 161, 0.2) !important;
     }
   }
-
 }
 
 
@@ -298,7 +297,7 @@ button {
   }
 
   .mp__btnSwitch {
-    .Mui-disabled {
+    :global(.Mui-disabled) {
       background-color: rgb(224 224 224) !important;
     }
   }
