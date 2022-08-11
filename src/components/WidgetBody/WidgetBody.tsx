@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Skeleton from '@mui/material/Skeleton';
+import IconButton from '@mui/material/IconButton';
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+import { clsNames } from '../../core/helper';
+import styles from '../WidgetUI/WidgetUI.scss';
 
 import ChainsList from '../ChainsList';
 import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
 import Stepper from '../Stepper';
-
-import SwapVertIcon from '@mui/icons-material/SwapVert';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import ForwardIcon from '@mui/icons-material/Forward';
-import SouthIcon from '@mui/icons-material/South';
-import IconButton from '@mui/material/IconButton';
 
 
 export default function WidgetBody(props) {
@@ -39,7 +36,7 @@ export default function WidgetBody(props) {
       <div>
         <Collapse in={!expandedTo && !expandedTokens}>
           <div>
-            <p className='no-marg-top sm-gr-text'>Transfer from</p>
+            <p className={clsNames(styles.mp__p3, styles.mp__margBott5)}>Transfer from</p>
             <ChainsList
               schains={props.schains}
               setChain={props.setChain1}
@@ -48,7 +45,7 @@ export default function WidgetBody(props) {
               expanded={expandedFrom}
               setExpanded={setExpandedFrom}
               fromChain={true}
-              schainAliases={props.schainAliases}
+              chainsMetadata={props.chainsMetadata}
               disabled={props.disabledChains}
               dark={props.theme.mode === 'dark'}
             />
@@ -57,7 +54,7 @@ export default function WidgetBody(props) {
       </div>
       
       <div>
-      <Collapse className='arrow-down-icon' in={!expandedFrom && !expandedTo && !expandedTokens}>
+      <Collapse className={styles.mp__btnSwitch} in={!expandedFrom && !expandedTo && !expandedTokens}>
         <IconButton
           size="small"
           color="primary"
@@ -81,7 +78,7 @@ export default function WidgetBody(props) {
       </Collapse>
 
       <Collapse in={!expandedFrom && !expandedTokens}>
-        <p className='sm-gr-text marg-top-20-pt'>To</p>
+        <p className={clsNames(styles.mp__p3, styles.mp__margBott5)}>To</p>
         <ChainsList
           schains={props.schains}
           setChain={props.setChain2}
@@ -89,7 +86,7 @@ export default function WidgetBody(props) {
           disabledChain={props.chain1}
           expanded={expandedTo}
           setExpanded={setExpandedTo}
-          schainAliases={props.schainAliases}
+          chainsMetadata={props.chainsMetadata}
           disabled={props.disabledChains}
           dark={props.theme.mode === 'dark'}
         />
@@ -97,10 +94,10 @@ export default function WidgetBody(props) {
 
       <Collapse in={props.chain1 && props.chain2}>
         <Collapse in={!!expandedTokens}>
-          <h5 className='token-text'>Token</h5>
+          <h5 className={clsNames(styles.mp__p3, styles.mp__margBott5, styles.mp__margTop20Pt)}>Token</h5>
         </Collapse>
         <Collapse in={!expandedFrom && !expandedTo}>
-          <div className='marg-top-10'>
+          <div className={styles.mp__margTop10}>
             {props.loadingTokens ? (<Skeleton animation="wave" height={48} />) : (<TokenList
               tokens={props.tokens}
               setToken={props.setToken}
@@ -113,7 +110,7 @@ export default function WidgetBody(props) {
       </Collapse>
 
         <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
-            <div className='marg-top-10'>
+            <div className={styles.mp__margTop10}>
               <AmountInput
                 amount={props.amount}
                 setAmount={props.setAmount}
@@ -127,7 +124,7 @@ export default function WidgetBody(props) {
       </Collapse>
 
       <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
-        <div className='marg-top-10'>
+        <div className={styles.mp__margTop10}>
           {!props.token ? (
             <div></div>
           ) : (

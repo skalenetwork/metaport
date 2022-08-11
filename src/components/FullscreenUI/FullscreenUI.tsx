@@ -74,7 +74,7 @@ export function WidgetUI(props) {
     <ThemeProvider theme={theme}>
           <div className={"ima-widget-fullscreen-wrapper " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}>
             <Paper elevation={3} className='ima-widget-fullscreen widget-paper'>
-              <div className='ima-widget-popup'>
+              <div className='mp__popup'>
                 {props.walletConnected ? (
                   <WidgetBody
                     schains={props.schains}
@@ -83,7 +83,7 @@ export function WidgetUI(props) {
                     chain1={props.chain1}
                     chain2={props.chain2}
 
-                    schainAliases={props.schainAliases}
+                    chainsMetadata={props.chainsMetadata}
 
                     setToken={props.setToken}
                     token={props.token}

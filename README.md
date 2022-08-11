@@ -16,7 +16,6 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Transfer](#transfer)
       - [Wrap](#wrap)
       - [Unwrap](#unwrap)
-      - [Swap](#swap)
     - [Tips & tricks](#tips--tricks)
       - [Locking a token](#locking-a-token)
       - [Locking chains](#locking-chains)
@@ -78,7 +77,7 @@ const widget = new Metaport({
         'chainName2',
         'chainName3'
     ],
-    schainAliases: { // Chain name aliases that will be displayed in the UI (optional, defualt = {})
+    chainsMetadata: { // Chain name aliases that will be displayed in the UI (optional, defualt = {})
         'chainName1': 'Europa SKALE Chain',
         'chainName2': 'NFT Hub'
     },
@@ -146,15 +145,6 @@ Will be available soon.
 ```Javascript
 metaport.unwrap(UNWRAP_PARAMS);
 ```
-
-#### Swap
-
-Will be available soon.
-
-```Javascript
-metaport.swap(SWAP_PARAMS);
-```
-
 
 ### Tips & tricks
 

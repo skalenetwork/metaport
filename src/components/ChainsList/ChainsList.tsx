@@ -12,6 +12,9 @@ import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 import ethLogo from '../../icons/eth_white.svg';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
+import { clsNames } from '../../core/helper';
+import styles from "../WidgetUI/WidgetUI.scss";
+
 
 function hashCode(str) {
   let hash = 0;
@@ -54,8 +57,8 @@ export default function ChainsList(props) {
     if (chainName == MAINNET_CHAIN_NAME) {
       return 'Ethereum Mainnet';
     }
-    if (props.schainAliases && props.schainAliases[chainName]){
-      return props.schainAliases[chainName];
+    if (props.chainsMetadata && props.chainsMetadata[chainName]){
+      return props.chainsMetadata[chainName].alias;
     } else {
       return chainName;
     }
@@ -83,21 +86,21 @@ export default function ChainsList(props) {
         >
           {props.chain ? (
             <Tooltip title={'SKALE Chain ' + props.chain}>
-              <div className="flex-container chain-name-btn">
-                <div className="flex-container fl-centered">
+              <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+                <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                   {getChainIcon(props.chain)}
                 </div>
-                <p className="schain-name flex-container marg-ri-10">
+                <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                   {getChainName(props.chain)}
                 </p>
               </div>
             </Tooltip>
           ) : (
-            <div className="flex-container chain-name-btn">
-              <div className="flex-container fl-centered">
-                <OfflineBoltIcon sx={{ color: 'white' }} className='opacityIcon'/>
+            <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+              <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                <OfflineBoltIcon sx={{ color: 'white' }}/>
               </div>
-              <p className="schain-name flex-container marg-ri-10">
+              <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                 Select chain
               </p>
             </div>
@@ -105,15 +108,20 @@ export default function ChainsList(props) {
           }
         </AccordionSummary>
         <AccordionDetails>
-          <div className='chains-list'>
+          <div className={styles.mp__chainsList}>
             {schainNames.map((name)  => (
               <Typography key={name}>
-                <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(name)}>
-                  <div className="flex-container chain-name-btn">
-                    <div className="flex-container fl-centered">
+                <Button
+                  color="secondary"
+                  size="small"
+                  className={clsNames(styles.mp__btnChain)}
+                  onClick={() => handle(name)}
+                >
+                  <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                     {getChainIcon(name)}
                     </div>
-                    <p className="schain-name flex-container marg-ri-10">
+                    <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                       {getChainName(name)}
                     </p>
                   </div>  

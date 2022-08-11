@@ -1,7 +1,13 @@
 // @import "../variables.scss";
 // @import "../typography.scss";
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -15,42 +21,49 @@ button {
   -webkit-font-smoothing: antialiased;
 }
 
-.ima-widget-body {
+.imaWidgetBody {
   position: fixed;
   bottom: 0;
   right: 0;
   margin: 0 20pt 20pt 0;
 }
 
-.skale-logo-sm{
+.skaleLogoSm {
   width: 18pt;
 }
 
-.ima-widget-popup-wrapper, .ima-widget-fullscreen-wrapper{
+.mp__popupWrapper,
+.mp__fullsreenWrapper {
   margin: 0 20pt 10pt 20pt;
 
-  .MuiPaper-root{
+  :global .MuiPaper-root {
     background-image: none;
   }
 }
 
-.ima-widget-popup{
+.mp__popup {
   padding: 17pt;
   max-height: calc(100vh - 110pt);
+
+  :global(.MuiButton-root) {
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+  }  
 }
 
-@media all and (min-width:300pt) {  
-  .ima-widget-popup{
+@media all and (min-width:300pt) {
+  .mp__popup {
     min-width: 230pt;
   }
 }
 
-.widget-paper{
+.mp__paper {
   border-radius: 20px !important;
   border: 1px #7f7f7f45 solid;
 }
 
-.flex-container {
+.mp__flex {
   display: flex;
   vertical-align: middle;
 }
@@ -59,40 +72,40 @@ button {
   justify-content: end;
 }
 
-.fl-centered {
+.mp__flexCentered {
   align-items: center;
   justify-content: center;
 }
 
-.fl-centered-vert{
+.mp__flexCenteredVert {
   align-items: center;
 }
 
-.fl-grow{
+.mp__flexGrow {
   flex-grow: 1;
 }
 
-.marg-top-10{
+.mp__margTop10 {
   margin-top: 10px !important;
 }
 
-.marg-left-10{
+.marg-left-10 {
   margin-left: 10px !important;
 }
 
-.marg-left-20{
+.marg-left-20 {
   margin-left: 20px !important;
 }
 
-.marg-ri-20{
+.marg-ri-20 {
   margin-right: 20px !important;
 }
 
-.marg-ri-10{
+.mp__margRi10 {
   margin-right: 10px !important;
 }
 
-.marg-ri-5{
+.mp__margRi5 {
   margin-right: 5px !important;
 }
 
@@ -101,7 +114,7 @@ button {
   margin-top: 20px !important;
 }
 
-.marg-top-20-pt{
+.mp__margTop20Pt {
   margin-top: 20pt !important;
 }
 
@@ -113,7 +126,7 @@ button {
   margin-bottom: 20px !important;
 }
 
-.marg-bott-10 {
+.mp__margBott10 {
   margin-bottom: 10px !important;
 }
 
@@ -121,40 +134,40 @@ button {
   margin-bottom: 40px !important;
 }
 
-.marg-bott-5 {
+.mp__margBott5 {
   margin-bottom: 5px !important;
 }
 
-.marg-top-5 {
+.mp__margTop5 {
   margin-top: 5px !important;
 }
 
 
-.no-marg-top{
+.mp__noMargTop {
   margin-top: 0 !important;
 }
 
 
-.no-marg-bott{
+.mp__noMarg-bott {
   margin-bottom: 0 !important;
 }
 
-.no-marg{
+.mp__noMarg {
   margin: 0 !important;
 }
 
-.schain-name {
+.mp__chainName {
   font-weight: bold;
   padding-left: 10pt;
 }
 
 
-.chains-list{
+.mp__chainsList {
   overflow: auto;
   max-height: 45vh;
 }
 
-.chain-name-btn{
+.mp__btnChain {
   width: 100%;
   text-align: left;
   text-transform: uppercase;
@@ -163,37 +176,36 @@ button {
   letter-spacing: 0.02857em;
 }
 
-.transfer-btn{
+.mp__btnAction {
   width: 100%;
 }
 
-.hidden.hiddable {
-  overflow: hidden;  /* Hide the element content, while height = 0 */
-  height: 0;
-  opacity: 0;
-  transition: height 0ms 1.5s, opacity 1.5s 0ms;
+
+.mp__popup {
+  :global .MuiAccordionSummary-content {
+    margin: 0 !important;
+  }
+
+  :global .MuiAccordion-root {
+    border-radius: 10px !important;
+    background-color: rgb(161 161 161 / 20%) !important;
+
+    .Mui-disabled {
+      .MuiAccordionSummary-expandIconWrapper {
+        display: none !important;
+      }
+
+      opacity: 1 !important;
+      border-radius: 4px !important;
+    }
+  }
 }
 
-.hiddable {
-  height: auto; opacity: 1;
-  transition: height 0ms 1.5s, opacity 1.5s 0ms;
-}
-
-.hidden-static {
-  overflow: hidden;  /* Hide the element content, while height = 0 */
-  height: 0;
-  opacity: 0;
-}
-
-.MuiAccordionSummary-content{
-  margin: 0 !important;
-}
-
-.arrow-down-icon{
+.mp__btnSwitch {
   width: 100%;
   text-align: center;
-  margin-top: -5pt;
-  margin-bottom: -45pt;
+  margin-top: -4pt;
+  margin-bottom: -22pt;
 
   button {
     border: 10px #1a1a1a solid;
@@ -208,45 +220,47 @@ button {
 }
 
 
-.dark-theme{
-
-  .schain-name {
+.darkTheme {
+  .mp__chainName {
     color: white !important;
   }
 
-  .eth-logo{
+  .eth-logo {
     filter: invert(1) contrast(1.5);
   }
 
-  .skale-logo-sm{
+  .skaleLogoSm {
     filter: invert(1);
   }
 
-  .sm-gr-text {
+  .mp__p3 {
     color: rgb(255 255 255 / 65%);
   }
-  .gray-text, .gray-icon {
+
+  .mp__textGray,
+  .mp__iconGray {
     color: #bdbdbd;
   }
 
-  .MuiStepIcon-root.Mui-active, .MuiStepIcon-root.Mui-completed {
+  :global(.MuiStepIcon-root.Mui-active,
+  .MuiStepIcon-root.Mui-completed) {
     color: #ffffff !important;
   }
 
-  .MuiIconButton-root{
-    svg{
+  :global .MuiIconButton-root {
+    svg {
       color: #000000;
     }
   }
 
-  .MuiIconButton-root.Mui-disabled{
-    svg{
+  .MuiIconButton-root.Mui-disabled {
+    svg {
       color: rgba(255, 255, 255, 0.3);
     }
   }
 
-  .arrow-down-icon{
-    .Mui-disabled{
+  .mp__btnSwitch {
+    .Mui-disabled {
       background-color: rgba(161, 161, 161, 0.2) !important;
     }
   }
@@ -254,57 +268,56 @@ button {
 }
 
 
-.light-theme{
-
-  .schain-name {
+.lightTheme {
+  .mp__chainName {
     color: black !important;
   }
 
-  .sm-gr-text {
+  .mp__p3 {
     color: rgb(0 0 0 / 65%);
   }
 
-  .MuiInput-root{
-    .Mui-disabled{
+  .MuiInput-root {
+    .Mui-disabled {
       color: rgb(0 0 0 / 60%);
     }
   }
- 
-  .gray-text, .gray-icon {
+
+  .mp__textGray,
+  .mp__iconGray {
     color: #4f4f4f;
   }
 
-  .MuiStepIcon-root.Mui-active, .MuiStepIcon-root.Mui-completed {
+  .MuiStepIcon-root.Mui-active,
+  .MuiStepIcon-root.Mui-completed {
     color: rgba(0, 0, 0, 0.87) !important;
   }
 
-  .MuiButton-root.Mui-disabled{
+  .MuiButton-root.Mui-disabled {
     color: rgba(0, 0, 0, 0.26) !important;
   }
 
-  .arrow-down-icon{
-    .Mui-disabled{
+  .mp__btnSwitch {
+    .Mui-disabled {
       background-color: rgb(224 224 224) !important;
     }
   }
 
-  .MuiIconButton-root{
-    svg{
+  :global(.MuiIconButton-root) {
+    svg {
       color: #ffffff;
     }
   }
 
-  .MuiIconButton-root.Mui-disabled{
-    svg{
+  :global(.MuiIconButton-root.Mui-disabled) {
+    svg {
       color: rgba(0, 0, 0, 0.26);
     }
   }
-
-  
 }
 
-
-.sm-gr-text {
+.mp__p3 {
+  margin: 0;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   font-size: 0.6525rem !important;
@@ -312,104 +325,43 @@ button {
   letter-spacing: 0.02857em !important;
 }
 
-
-.MuiStepLabel-label {
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  font-size: 0.6525rem !important;
-  line-height: 1.6 !important;
-  letter-spacing: 0.02857em !important;
-}
-
-.uppercase{
-  text-transform: uppercase;
-}
-
-.token-symbol-text {
-  margin-left: 2pt;
-}
-
-
-.MuiButton-root{
-  font-weight: 600 !important;
-  box-shadow: none !important;
-  border-radius: 8px !important;
-}
-
-.MuiAccordion-root{
-  border-radius: 10px !important;
-  background-color: rgb(161 161 161 / 20%) !important;
-  .Mui-disabled{
-    .MuiAccordionSummary-expandIconWrapper{
-      display: none !important;
-    }
-  
-    opacity: 1 !important;
-    border-radius: 4px !important;
-  }
-  
-}
-
-
-.MetamaskSurface{
+.mp__btnConnect {
   width: 100%;
-  margin: 10pt;
+  margin-top: 10pt;
   border-radius: 8px !important;
-  
+
   text-align: left;
 
-  .surfaceIcon{
+  .mp__iconConnect {
     padding-right: 20pt;
     width: 30pt !important;
   }
 
-  .MuiPaper-root{
+  :global(.MuiPaper-root) {
     background-color: rgba(161, 161, 161, 0.2) !important;
     width: 100%;
     padding: 10pt 20pt;
     border-radius: 8px !important;
   }
 
-  .gray-icon {
+  .mp__iconGray {
     width: 12pt;
   }
 }
 
 
-.MuiStepper-root{
-  .MuiStepConnector-line{
-    min-height: 0 !important;
-  }
-  
-  .MuiBox-root{
-    margin-bottom: 5px !important;
-  }
-  
-
-  .MuiSvgIcon-root{
-    width: 18px;
-    height: 18px;
-  }
-
-  .MuiStepContent-root{
-    padding-right: 0;
-    margin-left: 8px;
-    padding-left: 18px
-  }
-}
-
-.token-text{
+.mp__textToken {
   padding-top: 25pt !important;
 }
 
-.btn-bg{
+.btn-bg {
   background-color: #0d0d0d !important;
 }
 
-.hidden{
+.hidden {
   opacity: 0;
 }
 
-.widget-fab{
+.widget-fab {
   // border: 1px rgba(127,127,127,.2705882353) solid !important;
 }

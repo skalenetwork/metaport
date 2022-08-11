@@ -53,7 +53,7 @@ export function Widget(props) {
   
   useEffect(() => {
     setWalletConnected(false);
-    setSchains(props.schains);
+    setSchains(props.chains);
     setMainnetEndpoint(props.mainnetEndpoint);
     setExtTokens(props.tokens);
     addListeners(accountsChangedFallback);
@@ -62,13 +62,19 @@ export function Widget(props) {
 
   function addinternalEventsListeners() {
     window.addEventListener("_metaport_transfer", requestTransfer, false);
-    window.addEventListener("_metaport_transfer", requestTransfer, false);
+    window.addEventListener("_metaport_unwrap", unwrap, false);
 
     window.addEventListener("_metaport_updateParams", updateParamsHandler, false);
     window.addEventListener("_metaport_close", closeWidget, false);
     window.addEventListener("_metaport_open", openWidget, false);
     window.addEventListener("_metaport_reset",resetWidget, false);
     window.addEventListener("_metaport_setTheme", handleSetTheme, false);
+  }
+
+  function unwrap(e) {
+    // todo
+    e.detail.amount
+    e.detail.token
   }
 
   function handleSetTheme(e){
@@ -344,7 +350,7 @@ export function Widget(props) {
   return (<WidgetUI
     schains={schains}
     tokens={availableTokens}
-    schainAliases={props.schainAliases}
+    chainsMetadata={props.chainsMetadata}
     amount={amount}
     setAmount={setAmount}
 

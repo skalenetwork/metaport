@@ -1,20 +1,20 @@
 
-.amount-input {
+.mp__inputAmount {
 
-    .MuiInput-root::after {
+    :global .MuiInput-root::after {
         border-bottom: none !important;
     }
 
-    .MuiInput-root::before {
+    :global .MuiInput-root::before {
         border-bottom: none !important;
     }
 
-    input {
+    :global input {
         border-radius: 4px 0 0 4px;
         padding: 9pt 15pt;
     }
 
-    .MuiFormControl-root {
+    :global .MuiFormControl-root {
         width: 100%;
         // border-radius: 4px;
     }
@@ -22,8 +22,8 @@
     background-color: rgb(161 161 161 / 34%);
     border-radius: 10px;
 
-    button {
-        border-radius: 0 4px 4px 0;       
+    :global .MuiButton-root {
+        border-radius: 0 10px 10px 0 !important;
     }
 
     input::-webkit-outer-spin-button,
@@ -33,7 +33,7 @@
         margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
     }
 
-    input[type=number] {
+    :global input[type=number] {
         -moz-appearance:textfield; /* Firefox */
     }
 }

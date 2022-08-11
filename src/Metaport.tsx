@@ -30,7 +30,7 @@ import { internalEvents } from './core/events';
 import defaultTokens from './metadata/tokens.json';
 
 
-export default class IMAWidget {
+export default class Metaport {
     constructor(params: any) {
       const widgetEl: HTMLElement = document.getElementById('metaport');  
       const root = createRoot(widgetEl);
@@ -46,8 +46,8 @@ export default class IMAWidget {
       root.render(
         <Widget
           tokens={tokens}
-          schains={params['schains']}
-          schainAliases={params['schainAliases']}
+          chains={params['chains']}
+          chainsMetadata={params['chainsMetadata']}
           open={params['open']}
           network={network}
           theme={params['theme']}

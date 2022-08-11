@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-
+import { StyledEngineProvider } from '@mui/material/styles';
 
 import Fab from '@mui/material/Fab';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,7 +14,8 @@ import { getWidgetTheme } from './Themes'
 import WidgetBody from '../WidgetBody';
 import { Connector } from '../WalletConnector';
 
-import "./Widget.scss";
+import { clsNames } from '../../core/helper';
+import styles from "./WidgetUI.scss";
 
 
 export function WidgetUI(props) {
@@ -26,16 +27,16 @@ export function WidgetUI(props) {
   let widgetTheme = getWidgetTheme(props.theme);
   let theme = createTheme({
     palette: {
-    mode: widgetTheme.mode,
-    background: {
+      mode: widgetTheme.mode,
+      background: {
         paper: widgetTheme.background
-    },
-    primary: {
+      },
+      primary: {
         main: widgetTheme.primary,
-    },
-    secondary: {    
+      },
+      secondary: {
         main: widgetTheme.background
-    },
+      },
     },
   });
 
@@ -50,9 +51,9 @@ export function WidgetUI(props) {
 
   useEffect(() => {
     if (props.schains.length == 2) {
-        props.setChain1(props.schains[0]);
-        props.setChain2(props.schains[1]);
-        setDisabledChains(true);
+      props.setChain1(props.schains[0]);
+      props.setChain2(props.schains[1]);
+      setDisabledChains(true);
     }
   }, [props.schains]);
 
@@ -75,77 +76,89 @@ export function WidgetUI(props) {
   const open = Boolean(anchorEl);
   const id = open ? 'widget-body-popup' : undefined;
 
+  const themeCls = widgetTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
+
   return (
-    <ThemeProvider theme={theme}>
-      <div 
-        className={"ima-widget-body " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}
-      >
-        <Fab ref={divRef} color={props.open ? 'secondary' : 'primary'} className='widget-fab' aria-label="add" aria-describedby={id} type="button" onClick={handleClick}>
-          {open ? (
-            <CloseIcon
-              style={{
-                color: widgetTheme.mode == 'dark' ? 'white' : 'black'
-              }}
-            />
-          ) : (<img
-              className='skale-logo-sm'
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <div
+          className={clsNames(styles.imaWidgetBody, themeCls)}
+        >
+          <Fab
+            ref={divRef}
+            color={props.open ? 'secondary' : 'primary'}
+            className='widget-fab'
+            aria-label="add"
+            aria-describedby={id}
+            type="button"
+            onClick={handleClick}
+          >
+            {open ? (
+              <CloseIcon
+                style={{
+                  color: widgetTheme.mode == 'dark' ? 'white' : 'black'
+                }}
+              />
+            ) : (<img
+              className={styles.skaleLogoSm}
               src={skaleLogo}
             />)
-          }
-        </Fab>
-        <Popper id={id} open={open} anchorEl={anchorEl}>
-          <div className={"ima-widget-popup-wrapper " + (widgetTheme.mode == 'dark' ? 'dark-theme' : 'light-theme')}>
-            <Paper elevation={3} className='widget-paper'>
-              <div className='ima-widget-popup'>
-                {props.walletConnected ? (
-                  <WidgetBody
-                    schains={props.schains}
-                    setChain1={props.setChain1}
-                    setChain2={props.setChain2}
-                    chain1={props.chain1}
-                    chain2={props.chain2}
+            }
+          </Fab>
+          <Popper id={id} open={open} anchorEl={anchorEl}>
+            <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
+              <Paper elevation={3} className={styles.mp__paper}>
+                <div className={styles.mp__popup}>
+                  {props.walletConnected ? (
+                    <WidgetBody
+                      schains={props.schains}
+                      setChain1={props.setChain1}
+                      setChain2={props.setChain2}
+                      chain1={props.chain1}
+                      chain2={props.chain2}
 
-                    schainAliases={props.schainAliases}
+                      chainsMetadata={props.chainsMetadata}
 
-                    setToken={props.setToken}
-                    token={props.token}
-                    tokens={props.tokens}
+                      setToken={props.setToken}
+                      token={props.token}
+                      tokens={props.tokens}
 
-                    balance={props.balance}
-                    allowance={props.allowance}
+                      balance={props.balance}
+                      allowance={props.allowance}
 
-                    disabledChains={disabledChains}
+                      disabledChains={disabledChains}
 
-                    amount={props.amount}
-                    setAmount={props.setAmount}
+                      amount={props.amount}
+                      setAmount={props.setAmount}
 
-                    loading={props.loading}
-                    setLoading={props.setLoading}
+                      loading={props.loading}
+                      setLoading={props.setLoading}
 
-                    loadingTokens={props.loadingTokens}
-                
-                    activeStep={props.activeStep}
-                    setActiveStep={props.setActiveStep}
+                      loadingTokens={props.loadingTokens}
 
-                    setAmountLocked={props.setAmountLocked}
-                    amountLocked={props.amountLocked}
+                      activeStep={props.activeStep}
+                      setActiveStep={props.setActiveStep}
 
-                    actionSteps={props.actionSteps}
-                    handleNextStep={props.handleNextStep}
+                      setAmountLocked={props.setAmountLocked}
+                      amountLocked={props.amountLocked}
 
-                    theme={widgetTheme}
-                  />
-                ) : (
-                <Connector
-                  connectMetamask={props.connectMetamask}
-                />
-              )}
-              </div>
-            </Paper>
-          </div>
-        </Popper>
-      </div>
-    </ThemeProvider>
+                      actionSteps={props.actionSteps}
+                      handleNextStep={props.handleNextStep}
+
+                      theme={widgetTheme}
+                    />
+                  ) : (
+                    <Connector
+                      connectMetamask={props.connectMetamask}
+                    />
+                  )}
+                </div>
+              </Paper>
+            </div>
+          </Popper>
+        </div>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

@@ -65,6 +65,27 @@ export const LoadingTokens = () => (
   <WidgetUI loadingTokens={true} {...commonProps}/>
 );
 
+export const SelectToken = () => (
+  <WidgetUI
+    {...commonProps}
+    tokens={{"erc20": {
+      'usdc': {
+        "name": "USDC",
+        "address": "0x0123",
+        "balance": "1000"
+      },
+      'usdt': {
+        "name": "USDT",
+        "address": "0x0123",
+        "balance": "3500"
+      }
+    }}}
+    
+
+  />
+);
+
+
 
 export const LoadingSteps = () => (
   <WidgetUI

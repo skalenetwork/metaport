@@ -5,28 +5,39 @@ import ButtonBase from '@mui/material/ButtonBase/ButtonBase';
 
 import metamaskLogo from './metamask-fox.svg';
 
+import { clsNames } from '../../core/helper';
+import styles from '../WidgetUI/WidgetUI.scss';
+
 
 export function Connector(props) {
   return (
     <div>
-        <p className='no-marg-top sm-gr-text'>Connect to your wallet</p>
-        <ButtonBase
-          onClick={props.connectMetamask}
-          className='MetamaskSurface'
-        >
-         <Paper elevation={0}>
-            <div className='flex-container fl-centered'>
-              <div>
-                <img src={metamaskLogo} alt="logo" className='surfaceIcon'/>
-              </div>
-              <div className='fl-grow marg-top-10 marg-bott-10'>
-                <h3 className="no-marg-top marg-bott-5">Metamask</h3>
-                <h6 className='no-marg gray-text'>Connect using Metamask</h6>
-              </div>
-              <ArrowForwardIosIcon className='gray-icon'/>
+      <p className={styles.mp__p3}>Connect to your wallet</p>
+      <ButtonBase
+        onClick={props.connectMetamask}
+        className={styles.mp__btnConnect}
+      >
+        <Paper elevation={0}>
+          <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+            <img src={metamaskLogo} alt="logo" className={styles.mp__iconConnect} />
+            <div className={clsNames(
+              styles.mp__flexGrow,
+              styles.mp__margTop10,
+              styles.mp__margBott10
+            )}>
+              <h3 className={clsNames(
+                styles.mp__noMargTop,
+                styles.p__margBott5
+              )}>Metamask</h3>
+              <h6 className={clsNames(
+                styles.mp__noMarg,
+                styles.mp__textGray
+              )}>Connect using Metamask</h6>
             </div>
-          </Paper>
-        </ButtonBase>
+            <ArrowForwardIosIcon className={styles.mp__iconGray} />
+          </div>
+        </Paper>
+      </ButtonBase>
     </div>
   )
 }

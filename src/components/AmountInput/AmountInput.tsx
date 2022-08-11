@@ -2,7 +2,10 @@ import React from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import './AmountInput.scss';
+import { clsNames } from '../../core/helper';
+import styles from '../WidgetUI/WidgetUI.scss';
+import localStyles from './AmountInput.scss';
+
 
 export default function AmountInput(props) {
 
@@ -15,8 +18,8 @@ export default function AmountInput(props) {
   }
 
   return (
-    <div className='flex-container amount-input'>
-      <div className='flex-container fl-grow'>
+    <div className={clsNames(styles.mp__flex, localStyles.mp__inputAmount)}>
+      <div className={clsNames(styles.mp__flex, styles.mp__flexGrow)}>
         <TextField
           type="number"
           variant="standard"
@@ -26,11 +29,11 @@ export default function AmountInput(props) {
           disabled={props.loading || props.activeStep === 2 || props.amountLocked}
         />
       </div>
-      <div className='flex-container'>
+      <div className={styles.mp__flex}>
         <Button
           color="primary"
           size="small"
-          className='chain-name-btn'
+          className={styles.mp__btnChain}
           onClick={setMaxAmount}
           disabled={props.loading || props.activeStep === 2 || !props.balance || props.amountLocked}
         >

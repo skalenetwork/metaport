@@ -8,6 +8,10 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+import { clsNames } from '../../core/helper';
+import styles from '../WidgetUI/WidgetUI.scss';
+import localStyles from './Stepper.scss';
+
 
 export default function VerticalLinearStepper(props) {
   const handleReset = () => {
@@ -29,10 +33,10 @@ export default function VerticalLinearStepper(props) {
 
   return (
     <Box>
-      <Stepper activeStep={props.activeStep} orientation="vertical">
+      <Stepper className={localStyles.mp__stepper} activeStep={props.activeStep} orientation="vertical">
         {props.actionSteps.map((step, index) => (
           <Step key={step.label}>
-            <StepLabel>
+            <StepLabel className={localStyles.mp__labelStep}>
               {step}
               {step.label}
             </StepLabel>
@@ -44,14 +48,14 @@ export default function VerticalLinearStepper(props) {
                       loading
                       loadingPosition="start"
                       variant="contained" color="primary" size="medium"
-                      className='transfer-btn marg-top-5'
+                      className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                     >
                       {step.loadingText}
                     </LoadingButton>
                   ) : (
                     <Button
                       variant="contained" color="primary" size="medium"
-                      className='transfer-btn marg-top-5'
+                      className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                       onClick={props.handleNextStep}
                       disabled={props.amount == ''}
                     >
@@ -69,7 +73,7 @@ export default function VerticalLinearStepper(props) {
             onClick={handleReset}
             color="primary"
             size="medium"
-            className='transfer-btn marg-top-10'
+            className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
           >
             Start over
           </Button>

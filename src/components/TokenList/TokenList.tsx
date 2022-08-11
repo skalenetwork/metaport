@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 
-import './TokenList.scss';
+import { clsNames } from '../../core/helper';
+import styles from "../WidgetUI/WidgetUI.scss";
+import localStyles from "./TokenList.scss";
 
 
 function importAll(r) {
@@ -76,29 +78,51 @@ export default function TokenList(props) {
           id="panel1bh-header"
         >
           {props.token ? (
-            <div className="flex-container chain-name-btn">
-              <div className="flex-container fl-centered">
-                <img className='token-icon token-icon-accent' src={tokenInfo.iconUrl ? tokenInfo.iconUrl : iconPath(props.token)}/>
+            <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+              <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                <img
+                  className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
+                  src={tokenInfo.iconUrl ? tokenInfo.iconUrl : iconPath(props.token)}
+                />
               </div>
-              <p className="schain-name flex-container fl-grow marg-ri-10">
+              <p className={clsNames(
+                styles.mp__chainName,
+                styles.mp__flex,
+                styles.mp__flexGrow,
+                styles.mp__margRi10
+              )}>
                 {tokenInfo['name']}
               </p>
-
               {tokenInfo.unwrappedBalance ? (
-                <p className="sm-gr-text flex-container marg-ri-5">
-                {roundDown(tokenInfo.unwrappedBalance, 4)} {tokenInfo.unwrappedSymbol} /
-              </p>
+                <p className={clsNames(
+                  styles.mp__p3,
+                  styles.mp__flex,
+                  styles.mp__flexCenteredVert,
+                  styles.mp__margRi5
+                )}>
+                  {roundDown(tokenInfo.unwrappedBalance, 4)} {tokenInfo.unwrappedSymbol} /
+                </p>
               ) : null}
-              <p className="sm-gr-text flex-container marg-ri-5">
+              <p className={clsNames(
+                styles.mp__p3,
+                styles.mp__flex,
+                styles.mp__flexCenteredVert,
+                styles.mp__margRi5
+              )}>
                 {roundDown(tokenInfo['balance'], 4)} {props.token}
               </p>
             </div>
           ) : (
-            <div className="flex-container chain-name-btn">
-              <div className="flex-container fl-centered">
-                <img className='token-icon' src={iconPath('eth')}/>
+            <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+              <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                <img className={localStyles.mp__iconToken} src={iconPath('eth')}/>
               </div>
-              <p className="schain-name flex-container marg-ri-10">
+              <p className={clsNames(
+                styles.mp__chainName,
+                styles.mp__flex,
+                styles.mp__flexGrow,
+                styles.mp__margRi10
+              )}>
                 Select token
               </p>
             </div>
@@ -106,18 +130,33 @@ export default function TokenList(props) {
           }          
         </AccordionSummary>
         <AccordionDetails>
-          {erc20Tokens ? (<div className='chains-list'>
+          {erc20Tokens ? (<div className={styles.mp__chainsList}>
             {Object.keys(erc20Tokens).map((key, i)  => (
               <Typography key={key}>
-                <Button color="secondary" size="small" className='chain-name-btn' onClick={() => handle(key)}>
-                  <div className="flex-container chain-name-btn">
-                    <div className="flex-container fl-centered">
-                      <img className='token-icon token-icon-accent' src={iconPath(key)}/>
+                <Button
+                  color="secondary"
+                  size="small"
+                  className={styles.mp__btnChain}
+                  onClick={() => handle(key)}
+                >
+                  <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                      <img className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)} src={iconPath(key)}/>
                     </div>
-                    <p className="schain-name flex-container fl-grow marg-ri-10">
+                    <p className={clsNames(
+                      styles.mp__chainName,
+                      styles.mp__flex,
+                      styles.mp__flexGrow,
+                      styles.mp__margRi10
+                    )}>
                       {erc20Tokens[key]['name']}
                     </p>
-                    <p className="sm-gr-text flex-container marg-ri-5">
+                    <p className={clsNames(
+                        styles.mp__p3,
+                        styles.mp__flex,
+                        styles.mp__flexCenteredVert,
+                        styles.mp__margRi5
+                      )}>
                       {roundDown(erc20Tokens[key]['balance'], 4)} {key}
                     </p>
                   </div>  
