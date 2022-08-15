@@ -26,7 +26,8 @@ export default function AmountInput(props) {
           placeholder="0.00" 
           value={props.amount}
           onChange={handleChange}
-          disabled={props.loading || props.activeStep === 2 || props.amountLocked}
+          // disabled={props.loading || props.activeStep === 2 || props.amountLocked}
+          disabled={props.loading} // TODO: tmp
         />
       </div>
       <div className={styles.mp__flex}>
@@ -35,7 +36,8 @@ export default function AmountInput(props) {
           size="small"
           className={styles.mp__btnChain}
           onClick={setMaxAmount}
-          disabled={props.loading || props.activeStep === 2 || !props.balance || props.amountLocked}
+          //  disabled={props.loading || props.activeStep === 2 || !props.balance || props.amountLocked}
+          disabled={props.loading || !props.balance} // TODO: tmp
         >
           MAX
         </Button>

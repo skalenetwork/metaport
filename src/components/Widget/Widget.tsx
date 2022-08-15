@@ -100,10 +100,19 @@ export function Widget(props) {
   }
 
   function resetWidget(e) {
+    setChainName1(null);
+    setChainName2(null);
+
+    setSChain1(null);
+    setSChain2(null);
+    setMainnet(null);
+
     setAmount('');
     setLoading(false);
+    setToken(null);
     setAmountLocked(false);
     setActiveStep(0);
+    setActionSteps(undefined);
     console.log('resetWidget event processed')
   }
 
@@ -122,12 +131,14 @@ export function Widget(props) {
   }
 
   function updateParamsHandler(e){
-    if (e.detail.schains) {
-      setSchains(e.detail.schains);
+    if (e.detail.chains) {
+      setSchains(e.detail.chains);
     }
     if (e.detail.tokens) {
       setExtTokens(e.detail.tokens);
     }
+    console.log('params updated');
+    console.log(e.detail.chains);
   }
 
   async function tokenLookup() {
@@ -265,9 +276,31 @@ export function Widget(props) {
     }
   }, [chainName1, chainName2, token, availableTokens]);
 
+  // useEffect(() => {
+  //   runPreAction();
+  // }, [actionSteps, activeStep, token, address, amount]);
   useEffect(() => {
+    console.log('running pre-action, actionSteps');
     runPreAction();
-  }, [actionSteps, activeStep, token, address, amount]);
+  }, [actionSteps]);
+  useEffect(() => {
+    console.log('running pre-action, activeStep');
+    runPreAction();
+  }, [activeStep]);
+  useEffect(() => {
+    console.log('running pre-action, token');
+    runPreAction();
+  }, [token]);
+  useEffect(() => {
+    console.log('running pre-action, address');
+    runPreAction();
+  }, [address]);
+  useEffect(() => {
+    console.log('running pre-action, amount');
+    runPreAction();
+  }, [amount]);
+
+
 
   async function runPreAction() {
     if (actionSteps && actionSteps[activeStep]) {

@@ -105,7 +105,6 @@ export default function WidgetBody(props) {
               expanded={expandedTokens}
               setExpanded={setExpandedTokens}
             />)}
-         
           </div>
       </Collapse>
 
@@ -133,6 +132,7 @@ export default function WidgetBody(props) {
               amount={props.amount}
               setAmount={props.setAmount}
               allowance={props.allowance}
+              balance={currentTokenBalance}
 
               loading={props.loading}
               setLoading={props.setLoading}

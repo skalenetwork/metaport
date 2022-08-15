@@ -54,6 +54,8 @@ export function WidgetUI(props) {
       props.setChain1(props.schains[0]);
       props.setChain2(props.schains[1]);
       setDisabledChains(true);
+    } else {
+      setDisabledChains(false);
     }
   }, [props.schains]);
 

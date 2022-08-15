@@ -214,8 +214,14 @@ class TransferERC20_S2S extends TransferAction {
         await this.sChain2.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
         console.log('Money to be received to destination chain');
 
-        const wrap = !!this.tokenData.unwrappedSymbol;
-        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol, wrap);
+        const unwrap = !!this.tokenData.unwrappedSymbol && this.tokenData.clone;
+        externalEvents.transferComplete(
+            tx,
+            this.chainName1,
+            this.chainName2,
+            this.tokenSymbol,
+            unwrap
+        );
     }
 
     async preAction() {

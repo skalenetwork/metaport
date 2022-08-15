@@ -82,7 +82,7 @@ export namespace internalEvents {
     export function updateParams(params) {
         dispatchEvent('_metaport_updateParams', {
             'tokens': params.tokens,
-            'schains': params.schains
+            'chains': params.chains
         });
     }
 
