@@ -17,6 +17,7 @@ import { connect, addListeners } from '../WalletConnector'
 import { externalEvents } from '../../core/events';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
+import { getSFuelData } from '../../core/sfuel';
 
 
 export function Widget(props) {
@@ -52,7 +53,10 @@ export function Widget(props) {
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
   const [theme, setTheme] = React.useState(props.theme);
-  
+
+  const [sFuelData1, setSFuelData1] = React.useState(undefined);
+  const [sFuelData2, setSFuelData2] = React.useState(undefined);
+
   useEffect(() => {
     setWalletConnected(false);
     setSchains(props.chains);
@@ -255,6 +259,7 @@ export function Widget(props) {
   useEffect(() => {
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && extTokens) {
       externalEvents.connected();
+      initSFuelData();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
@@ -276,31 +281,9 @@ export function Widget(props) {
     }
   }, [chainName1, chainName2, token, availableTokens]);
 
-  // useEffect(() => {
-  //   runPreAction();
-  // }, [actionSteps, activeStep, token, address, amount]);
   useEffect(() => {
-    console.log('running pre-action, actionSteps');
     runPreAction();
-  }, [actionSteps]);
-  useEffect(() => {
-    console.log('running pre-action, activeStep');
-    runPreAction();
-  }, [activeStep]);
-  useEffect(() => {
-    console.log('running pre-action, token');
-    runPreAction();
-  }, [token]);
-  useEffect(() => {
-    console.log('running pre-action, address');
-    runPreAction();
-  }, [address]);
-  useEffect(() => {
-    console.log('running pre-action, amount');
-    runPreAction();
-  }, [amount]);
-
-
+  }, [actionSteps, activeStep, amount]);
 
   async function runPreAction() {
     if (actionSteps && actionSteps[activeStep]) {
@@ -371,6 +354,21 @@ export function Widget(props) {
     console.log('Done: connectMetamask...');
   }
 
+  async function initSFuelData() {
+    setSFuelData1(await getSFuelData(
+      props.chainsMetadata,
+      chainName1,
+      sChain1.web3,
+      address
+    ));
+    setSFuelData2(await getSFuelData(
+      props.chainsMetadata,
+      chainName2,
+      sChain2.web3,
+      address
+    ));
+  }
+
   return (<WidgetUI
     schains={schains}
     tokens={availableTokens}
@@ -405,6 +403,9 @@ export function Widget(props) {
 
     setAmountLocked={setAmountLocked}
     amountLocked={amountLocked}
+
+    sFuelData1={sFuelData1}
+    sFuelData2={sFuelData2}
 
     theme={theme}
   />)

@@ -1,0 +1,20 @@
+.mp__chip {
+    opacity: 0.9;
+    // color: #3fb354 !important;
+
+    height: 20px !important;
+
+    :global(.MuiChip-label) {
+        font-size: 0.6125rem;
+        // opacity: 0.8;
+    }
+
+    :global(.MuiChip-filledSuccess) {
+        background-color: #3fb354 !important;
+    }
+
+    :global(svg) {
+        width: 10pt;
+        height: 10pt;
+    }
+}

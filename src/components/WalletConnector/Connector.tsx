@@ -27,7 +27,7 @@ export function Connector(props) {
             )}>
               <h3 className={clsNames(
                 styles.mp__noMargTop,
-                styles.p__margBott5
+                styles.mp__margBott5
               )}>Metamask</h3>
               <h6 className={clsNames(
                 styles.mp__noMarg,

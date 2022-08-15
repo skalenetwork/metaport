@@ -147,6 +147,9 @@ export function WidgetUI(props) {
                       actionSteps={props.actionSteps}
                       handleNextStep={props.handleNextStep}
 
+                      sFuelData1={props.sFuelData1}
+                      sFuelData2={props.sFuelData2}
+
                       theme={widgetTheme}
                     />
                   ) : (
