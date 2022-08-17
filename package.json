@@ -22,7 +22,8 @@
     "build": "NODE_ENV=production webpack --mode=production",
     "build-stats": " webpack --json > stats.json",
     "test": "TS_NODE_PROJECT=\"tsconfig.test.json\" mocha -r ts-node/register test/**/*Test.ts",
-    "test-ts": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*Test.ts"
+    "test-ts": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*Test.ts",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
