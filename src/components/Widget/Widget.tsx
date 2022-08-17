@@ -22,8 +22,8 @@ import { getSFuelData } from '../../core/sfuel';
 
 export function Widget(props) {
 
-  const [extTokens, setExtTokens] = React.useState({'erc20': {}});
-  const [availableTokens, setAvailableTokens] = React.useState({'erc20': {}});
+  const [extTokens, setExtTokens] = React.useState({ 'erc20': {} });
+  const [availableTokens, setAvailableTokens] = React.useState({ 'erc20': {} });
 
   const [open, setOpen] = React.useState(props.open);
 
@@ -73,7 +73,7 @@ export function Widget(props) {
     window.addEventListener("_metaport_updateParams", updateParamsHandler, false);
     window.addEventListener("_metaport_close", closeWidget, false);
     window.addEventListener("_metaport_open", openWidget, false);
-    window.addEventListener("_metaport_reset",resetWidget, false);
+    window.addEventListener("_metaport_reset", resetWidget, false);
     window.addEventListener("_metaport_setTheme", handleSetTheme, false);
   }
 
@@ -83,7 +83,7 @@ export function Widget(props) {
     e.detail.token
   }
 
-  function handleSetTheme(e){
+  function handleSetTheme(e) {
     setTheme(e.detail.theme);
   }
 
@@ -134,7 +134,7 @@ export function Widget(props) {
     console.log("amount inside react " + e.detail.amount);
   }
 
-  function updateParamsHandler(e){
+  function updateParamsHandler(e) {
     if (e.detail.chains) {
       setSchains(e.detail.chains);
     }
@@ -227,7 +227,7 @@ export function Widget(props) {
     if (chainName2 === MAINNET_CHAIN_NAME) {
       return
     };
-  
+
     updateWeb3SChain(sChain1, props.network, chainName1);
     await updateWeb3SChainMetamask(sChain2, props.network, chainName2);
   }
@@ -355,18 +355,22 @@ export function Widget(props) {
   }
 
   async function initSFuelData() {
-    setSFuelData1(await getSFuelData(
-      props.chainsMetadata,
-      chainName1,
-      sChain1.web3,
-      address
-    ));
-    setSFuelData2(await getSFuelData(
-      props.chainsMetadata,
-      chainName2,
-      sChain2.web3,
-      address
-    ));
+    if (sChain1) {
+      setSFuelData1(await getSFuelData(
+        props.chainsMetadata,
+        chainName1,
+        sChain1.web3,
+        address
+      ));
+    }
+    if (sChain2) {
+      setSFuelData2(await getSFuelData(
+        props.chainsMetadata,
+        chainName2,
+        sChain2.web3,
+        address
+      ));
+    }
   }
 
   return (<WidgetUI
