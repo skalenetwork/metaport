@@ -90,7 +90,8 @@ export namespace internalEvents {
         dispatchEvent('_metaport_transfer', {
             'amount': params.amount,
             'schains': params.schains,
-            'tokens': params.tokens
+            'tokens': params.tokens,
+            'lockAmount': params.lockAmount
         });
     }
 

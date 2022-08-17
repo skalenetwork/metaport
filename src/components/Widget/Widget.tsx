@@ -122,9 +122,9 @@ export function Widget(props) {
 
   function requestTransfer(e) {
     setOpen(true);
-    setAmountLocked(true);
     setAmount(e.detail.amount);
     setSchains(e.detail.schains);
+    setAmountLocked(!!e.detail.lockAmount);
 
     if (e.detail.tokens) {
       setExtTokens(e.detail.tokens);
