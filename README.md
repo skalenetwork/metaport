@@ -126,7 +126,8 @@ const TRANSFER_PARAMS = {
                 }
             }
         }
-    }
+    },
+    lockAmount: true // optional, boolean - lock the amount in the Metaport UI
 }
 
 metaport.transfer(TRANSFER_PARAMS);

@@ -253,7 +253,7 @@ button {
     }
   }
 
-  .MuiIconButton-root.Mui-disabled {
+  :global(.MuiIconButton-root.Mui-disabled) {
     svg {
       color: rgba(255, 255, 255, 0.3);
     }

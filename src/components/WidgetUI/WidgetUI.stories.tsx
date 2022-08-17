@@ -22,7 +22,7 @@ export const ConnectScreenLight = () => (
     {...commonProps}
     {...defaultTokenData}
     walletConnected={false}
-    theme={{mode: 'light'}}
+    theme={{ mode: 'light' }}
   />
 );
 
@@ -54,7 +54,7 @@ export const ClosedDark = () => (
 export const SelectChains = () => (
   <WidgetUI
     schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain', 'eee-chain']}
-    tokens={{"erc20": {}}}
+    tokens={{ "erc20": {} }}
     walletConnected={true}
     open={true}
   />
@@ -62,25 +62,27 @@ export const SelectChains = () => (
 
 
 export const LoadingTokens = () => (
-  <WidgetUI loadingTokens={true} {...commonProps}/>
+  <WidgetUI loadingTokens={true} {...commonProps} />
 );
 
 export const SelectToken = () => (
   <WidgetUI
     {...commonProps}
-    tokens={{"erc20": {
-      'usdc': {
-        "name": "USDC",
-        "address": "0x0123",
-        "balance": "1000"
-      },
-      'usdt': {
-        "name": "USDT",
-        "address": "0x0123",
-        "balance": "3500"
+    tokens={{
+      "erc20": {
+        'usdc': {
+          "name": "USDC",
+          "address": "0x0123",
+          "balance": "1000"
+        },
+        'usdt': {
+          "name": "USDT",
+          "address": "0x0123",
+          "balance": "3500"
+        }
       }
-    }}}
-    
+    }}
+
 
   />
 );
@@ -94,30 +96,30 @@ export const LoadingSteps = () => (
     walletConnected={true}
     open={true}
 
-    setChain1={() => {}}
-    setChain2={() => {}}
-    setToken={() => {}}
-    setActiveStep={() => {}}
+    setChain1={() => { }}
+    setChain2={() => { }}
+    setToken={() => { }}
+    setActiveStep={() => { }}
 
     loading={true}
 
     chain1='aaa-chain'
     chain2='bbb-chain'
-    theme={{'mode': 'dark'}}
+    theme={{ 'mode': 'dark' }}
   />
 );
 
 
 export const TransferUIDark = () => (
-  <WidgetUI {...commonProps} {...defaultTokenData}/>
+  <WidgetUI {...commonProps} {...defaultTokenData} />
 );
 
 export const TransferUILight = () => (
-  <WidgetUI {...commonProps} {...generateTokenData('usdc', 'usdc')} theme={{mode: 'light'}} />
+  <WidgetUI {...commonProps} {...generateTokenData('usdc', 'usdc')} theme={{ mode: 'light' }} />
 );
 
 export const Approved = () => (
-  <WidgetUI {...commonProps} {...defaultTokenData} activeStep={1}/>
+  <WidgetUI {...commonProps} {...defaultTokenData} activeStep={1} />
 );
 
 
@@ -155,7 +157,7 @@ export const LoadingLight = () => (
     activeStep={1}
     loading={true}
     amountLocked={true}
-    theme={{mode: 'light'}}
+    theme={{ mode: 'light' }}
   />
 );
 
@@ -242,14 +244,14 @@ export const MainnetTransfer = () => (
     walletConnected={true}
     open={true}
 
-    setChain1={() => {}}
-    setChain2={() => {}}
-    setToken={() => {}}
-    setActiveStep={() => {}}
+    setChain1={() => { }}
+    setChain2={() => { }}
+    setToken={() => { }}
+    setActiveStep={() => { }}
 
     chain1='mainnet'
     chain2='bbb-chain'
-    
+
   />
 );
 
@@ -260,14 +262,36 @@ export const MainnetTransferLight = () => (
     walletConnected={true}
     open={true}
 
-    setChain1={() => {}}
-    setChain2={() => {}}
-    setToken={() => {}}
-    setActiveStep={() => {}}
+    setChain1={() => { }}
+    setChain2={() => { }}
+    setToken={() => { }}
+    setActiveStep={() => { }}
 
     chain1='mainnet'
     chain2='bbb-chain'
-    theme={{'mode': 'light'}}
-    
+    theme={{ 'mode': 'light' }}
+  />
+);
+
+
+export const sFuelIcons = () => (
+  <WidgetUI
+    {...commonProps}
+    {...defaultTokenData}
+    theme={{ 'mode': 'light' }}
+
+    sFuelData1={{
+      faucetUrl: 'https://example.com/',
+      minSfuelWei: '200000000000000000',
+      balance: '0',
+      ok: false
+    }}
+
+    sFuelData2={{
+      faucetUrl: 'https://example.com/',
+      minSfuelWei: '200000000000000000',
+      balance: '0',
+      ok: false
+    }}
   />
 );

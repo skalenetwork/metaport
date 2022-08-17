@@ -54,6 +54,8 @@ export function WidgetUI(props) {
       props.setChain1(props.schains[0]);
       props.setChain2(props.schains[1]);
       setDisabledChains(true);
+    } else {
+      setDisabledChains(false);
     }
   }, [props.schains]);
 
@@ -144,6 +146,9 @@ export function WidgetUI(props) {
 
                       actionSteps={props.actionSteps}
                       handleNextStep={props.handleNextStep}
+
+                      sFuelData1={props.sFuelData1}
+                      sFuelData2={props.sFuelData2}
 
                       theme={widgetTheme}
                     />

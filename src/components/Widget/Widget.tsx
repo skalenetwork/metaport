@@ -17,12 +17,13 @@ import { connect, addListeners } from '../WalletConnector'
 import { externalEvents } from '../../core/events';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
+import { getSFuelData } from '../../core/sfuel';
 
 
 export function Widget(props) {
 
-  const [extTokens, setExtTokens] = React.useState({'erc20': {}});
-  const [availableTokens, setAvailableTokens] = React.useState({'erc20': {}});
+  const [extTokens, setExtTokens] = React.useState({ 'erc20': {} });
+  const [availableTokens, setAvailableTokens] = React.useState({ 'erc20': {} });
 
   const [open, setOpen] = React.useState(props.open);
 
@@ -52,7 +53,10 @@ export function Widget(props) {
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
   const [theme, setTheme] = React.useState(props.theme);
-  
+
+  const [sFuelData1, setSFuelData1] = React.useState(undefined);
+  const [sFuelData2, setSFuelData2] = React.useState(undefined);
+
   useEffect(() => {
     setWalletConnected(false);
     setSchains(props.chains);
@@ -69,7 +73,7 @@ export function Widget(props) {
     window.addEventListener("_metaport_updateParams", updateParamsHandler, false);
     window.addEventListener("_metaport_close", closeWidget, false);
     window.addEventListener("_metaport_open", openWidget, false);
-    window.addEventListener("_metaport_reset",resetWidget, false);
+    window.addEventListener("_metaport_reset", resetWidget, false);
     window.addEventListener("_metaport_setTheme", handleSetTheme, false);
   }
 
@@ -79,7 +83,7 @@ export function Widget(props) {
     e.detail.token
   }
 
-  function handleSetTheme(e){
+  function handleSetTheme(e) {
     setTheme(e.detail.theme);
   }
 
@@ -100,18 +104,27 @@ export function Widget(props) {
   }
 
   function resetWidget(e) {
+    setChainName1(null);
+    setChainName2(null);
+
+    setSChain1(null);
+    setSChain2(null);
+    setMainnet(null);
+
     setAmount('');
     setLoading(false);
+    setToken(null);
     setAmountLocked(false);
     setActiveStep(0);
+    setActionSteps(undefined);
     console.log('resetWidget event processed')
   }
 
   function requestTransfer(e) {
     setOpen(true);
-    setAmountLocked(true);
     setAmount(e.detail.amount);
     setSchains(e.detail.schains);
+    setAmountLocked(!!e.detail.lockAmount);
 
     if (e.detail.tokens) {
       setExtTokens(e.detail.tokens);
@@ -121,13 +134,15 @@ export function Widget(props) {
     console.log("amount inside react " + e.detail.amount);
   }
 
-  function updateParamsHandler(e){
-    if (e.detail.schains) {
-      setSchains(e.detail.schains);
+  function updateParamsHandler(e) {
+    if (e.detail.chains) {
+      setSchains(e.detail.chains);
     }
     if (e.detail.tokens) {
       setExtTokens(e.detail.tokens);
     }
+    console.log('params updated');
+    console.log(e.detail.chains);
   }
 
   async function tokenLookup() {
@@ -212,7 +227,7 @@ export function Widget(props) {
     if (chainName2 === MAINNET_CHAIN_NAME) {
       return
     };
-  
+
     updateWeb3SChain(sChain1, props.network, chainName1);
     await updateWeb3SChainMetamask(sChain2, props.network, chainName2);
   }
@@ -244,6 +259,7 @@ export function Widget(props) {
   useEffect(() => {
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && extTokens) {
       externalEvents.connected();
+      initSFuelData();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
@@ -267,7 +283,7 @@ export function Widget(props) {
 
   useEffect(() => {
     runPreAction();
-  }, [actionSteps, activeStep, token, address, amount]);
+  }, [actionSteps, activeStep, amount]);
 
   async function runPreAction() {
     if (actionSteps && actionSteps[activeStep]) {
@@ -338,6 +354,25 @@ export function Widget(props) {
     console.log('Done: connectMetamask...');
   }
 
+  async function initSFuelData() {
+    if (sChain1) {
+      setSFuelData1(await getSFuelData(
+        props.chainsMetadata,
+        chainName1,
+        sChain1.web3,
+        address
+      ));
+    }
+    if (sChain2) {
+      setSFuelData2(await getSFuelData(
+        props.chainsMetadata,
+        chainName2,
+        sChain2.web3,
+        address
+      ));
+    }
+  }
+
   return (<WidgetUI
     schains={schains}
     tokens={availableTokens}
@@ -372,6 +407,9 @@ export function Widget(props) {
 
     setAmountLocked={setAmountLocked}
     amountLocked={amountLocked}
+
+    sFuelData1={sFuelData1}
+    sFuelData2={sFuelData2}
 
     theme={theme}
   />)

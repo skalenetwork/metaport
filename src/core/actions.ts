@@ -83,6 +83,8 @@ abstract class Action {
     setActiveStep: Function
     activeStep: number
 
+    wrap: boolean
+
     constructor(
         mainnet: MainnetChain,
         sChain1: SChain,
@@ -110,6 +112,8 @@ abstract class Action {
 
         this.setActiveStep = setActiveStep;
         this.activeStep = activeStep;
+
+        this.wrap = !!this.tokenData.unwrappedSymbol && !this.tokenData.clone;
     }
 }
 
@@ -192,7 +196,8 @@ class ApproveERC20_S extends Action {
         ).call();
         let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
-            this.setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            let step = this.wrap ? 3 : 1;
+            this.setActiveStep(step);
         }
     }
 }
@@ -214,8 +219,14 @@ class TransferERC20_S2S extends TransferAction {
         await this.sChain2.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
         console.log('Money to be received to destination chain');
 
-        const wrap = !!this.tokenData.unwrappedSymbol;
-        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenSymbol, wrap);
+        const unwrap = !!this.tokenData.unwrappedSymbol && this.tokenData.clone;
+        externalEvents.transferComplete(
+            tx,
+            this.chainName1,
+            this.chainName2,
+            this.tokenSymbol,
+            unwrap
+        );
     }
 
     async preAction() {
@@ -227,7 +238,8 @@ class TransferERC20_S2S extends TransferAction {
         let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
 
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
-            this.setActiveStep((prevActiveStep) => prevActiveStep - 1);
+            let step = this.wrap ? 2 : 0;
+            this.setActiveStep(step);
         }
     }
 }
@@ -257,7 +269,7 @@ class ApproveWrapERC20_S extends Action {
         let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
 
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
-            this.setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            this.setActiveStep(1);
         }
     }
 }
@@ -286,7 +298,7 @@ class WrapERC20_S extends Action {
         let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
 
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
-            this.setActiveStep((prevActiveStep) => prevActiveStep - 1);
+            this.setActiveStep(0);
         }
     }
 }

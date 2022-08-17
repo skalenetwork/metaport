@@ -13,7 +13,7 @@ import styles from '../WidgetUI/WidgetUI.scss';
 import localStyles from './Stepper.scss';
 
 
-export default function VerticalLinearStepper(props) {
+export default function ActionsStepper(props) {
   const handleReset = () => {
     props.setActiveStep(0);
     props.setAmount('');
@@ -57,7 +57,7 @@ export default function VerticalLinearStepper(props) {
                       variant="contained" color="primary" size="medium"
                       className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                       onClick={props.handleNextStep}
-                      disabled={props.amount == ''}
+                      disabled={props.amount == '' || (Number(props.amount) > Number(props.balance) && step.label !== 'Unwrap')} // TODO: tmp unwrap fix!
                     >
                       {step.buttonText}
                     </Button>
