@@ -41,9 +41,9 @@ export const connect = (connectFallback) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
         // If this happens, the user rejected the connection request.
-        console.log('Please connect to MetaMask.');
+        // console.log('Please connect to MetaMask.');
       } else {
-        console.error(err);
+        // console.error(err);
       }
     });
 }
@@ -59,7 +59,7 @@ export const addListeners = (accountsChangedFallback) => {
     // Some unexpected error.
     // For backwards compatibility reasons, if no accounts are available,
     // eth_accounts will return an empty array.
-    console.error(err);
+    // console.error(err);
   });
 }
 

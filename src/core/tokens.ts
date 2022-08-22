@@ -73,10 +73,10 @@ export async function getAvailableTokens(
     sChain2: SChain,
     chainName1: string,
     chainName2: string,
-    tokens: Object,
+    tokens: object,
     force: boolean
 ) {
-    let availableTokens = { 'erc20': {} };
+    const availableTokens = { 'erc20': {} };
     await getERC20Tokens(
         sChain1,
         sChain2,
@@ -105,8 +105,8 @@ async function getETHToken(
     sChain2: SChain,
     chainName1: string,
     chainName2: string,
-    tokens: Object,
-    availableTokens: Object
+    tokens: object,
+    availableTokens: object
 ) {
     if (tokens[MAINNET_CHAIN_NAME] && tokens[MAINNET_CHAIN_NAME][ETH_TOKEN_NAME]) {
         if (chainName1 === MAINNET_CHAIN_NAME) {
@@ -140,38 +140,40 @@ async function getERC20Tokens(
     sChain2: SChain,
     chainName1: string,
     chainName2: string,
-    tokens: Object,
-    availableTokens: Object,
+    tokens: object,
+    availableTokens: object,
     force: boolean
 ) {
-    if (tokens[chainName1] && tokens[chainName1]['erc20']) {
-        for (const tokenSymbol in tokens[chainName1]['erc20']) {
-            await addTokenData(
-                sChain1,
-                sChain2,
-                chainName1,
-                tokens[chainName1]['erc20'][tokenSymbol],
-                tokenSymbol,
-                availableTokens,
-                false,
-                force
-            );
-
-            console.log(availableTokens);
+    if (tokens[chainName1] && tokens[chainName1].erc20) {
+        for (const tokenSymbol in tokens[chainName1].erc20) {
+            if (tokens[chainName1].erc20.hasOwnProperty(tokenSymbol)) {
+                await addTokenData(
+                    sChain1,
+                    sChain2,
+                    chainName1,
+                    tokens[chainName1].erc20[tokenSymbol],
+                    tokenSymbol,
+                    availableTokens,
+                    false,
+                    force
+                );
+            }
         }
     }
-    if (tokens[chainName2] && tokens[chainName2]['erc20']) {
-        for (const tokenSymbol in tokens[chainName2]['erc20']) {
-            await addTokenData(
-                sChain1,
-                sChain2,
-                chainName2,
-                tokens[chainName2]['erc20'][tokenSymbol],
-                tokenSymbol,
-                availableTokens,
-                true,
-                force
-            );
+    if (tokens[chainName2] && tokens[chainName2].erc20) {
+        for (const tokenSymbol in tokens[chainName2].erc20) {
+            if (tokens[chainName2].erc20.hasOwnProperty(tokenSymbol)) {
+                await addTokenData(
+                    sChain1,
+                    sChain2,
+                    chainName2,
+                    tokens[chainName2].erc20[tokenSymbol],
+                    tokenSymbol,
+                    availableTokens,
+                    true,
+                    force
+                );
+            }
         }
     }
 }
@@ -181,35 +183,35 @@ async function addTokenData(
     sChain1: SChain,
     sChain2: SChain,
     sChainName: string,
-    token: Object,
+    token: any,
     tokenSymbol: string,
-    availableTokens: Object,
+    availableTokens: any,
     isClone: boolean,
     force: boolean
 ) {
     let cloneAddress;
     if (sChain1 && isClone) {
-        cloneAddress = await getCloneAddress(sChain1, token['address'], sChainName);
+        cloneAddress = await getCloneAddress(sChain1, token.address, sChainName);
     }
 
     if (sChain2 && !isClone) {
-        cloneAddress = await getCloneAddress(sChain2, token['address'], sChainName);;
+        cloneAddress = await getCloneAddress(sChain2, token.address, sChainName);;
     }
 
     if (!cloneAddress) return;
     let unwrappedSymbol;
     let unwrappedAddress;
-    if (token['wraps']) {
-        unwrappedSymbol = token['wraps']['symbol'];
-        unwrappedAddress = token['wraps']['address'];
+    if (token.wraps) {
+        unwrappedSymbol = token.wraps.symbol;
+        unwrappedAddress = token.wraps.address;
     }
 
-    availableTokens['erc20'][tokenSymbol] = new TokenData(
+    availableTokens.erc20[tokenSymbol] = new TokenData(
         cloneAddress,
-        token['address'],
-        token['name'],
+        token.address,
+        token.name,
         isClone,
-        token['iconUrl'],
+        token.iconUrl,
         unwrappedSymbol,
         unwrappedAddress
     );
@@ -218,7 +220,7 @@ async function addTokenData(
         sChain1,
         sChain2,
         tokenSymbol,
-        availableTokens['erc20'][tokenSymbol],
+        availableTokens.erc20[tokenSymbol],
         force
     );
 }
@@ -229,7 +231,7 @@ async function getCloneAddress(
     originTokenAddress: string,
     originChainName: string
 ) {
-    let tokenCloneAddress = await sChain.erc20.getTokenCloneAddress(
+    const tokenCloneAddress = await sChain.erc20.getTokenCloneAddress(
         originTokenAddress,
         originChainName
     );
@@ -245,8 +247,8 @@ function addERC20TokenContracts(
     tokenData: TokenData,
     force: boolean
 ) {
-    let chain1Address = tokenData.clone ? tokenData.cloneAddress : tokenData.originAddress;
-    let chain2Address = tokenData.clone ? tokenData.originAddress : tokenData.cloneAddress;
+    const chain1Address = tokenData.clone ? tokenData.cloneAddress : tokenData.originAddress;
+    const chain2Address = tokenData.clone ? tokenData.originAddress : tokenData.cloneAddress;
 
     if (sChain1) { addERC20Token(sChain1, chain1Address, tokenSymbol, tokenData, force); };
     if (sChain2) { addERC20Token(sChain2, chain2Address, tokenSymbol, tokenData, force); };
@@ -283,8 +285,8 @@ export async function getTokenBalance(
     tokenSymbol: string,
     address: string
 ): Promise<string> {
-    let tokenContract = sChain.erc20.tokens[tokenSymbol];
-    let balance = await sChain.getERC20Balance(tokenContract, address);
+    const tokenContract = sChain.erc20.tokens[tokenSymbol];
+    const balance = await sChain.getERC20Balance(tokenContract, address);
     externalEvents.balance(tokenSymbol, chainName, balance);
     return sChain.web3.utils.fromWei(balance);
 }
@@ -296,41 +298,41 @@ export async function getEthBalance(
     chainName: string,
     address: string
 ) {
-    let ethBalance = isChainMainnet(chainName) ? await mainnet.ethBalance(address) : await sChain.ethBalance(address);
+    const ethBalance = isChainMainnet(chainName) ? await mainnet.ethBalance(address) : await sChain.ethBalance(address);
     externalEvents.balance('eth', chainName, ethBalance);
     return mainnet ? mainnet.web3.utils.fromWei(ethBalance) : sChain.web3.utils.fromWei(ethBalance);
 }
 
 
 export async function getTokenBalances(
-    tokens: Object,
+    tokens: any,
     chainName: string,
     mainnet: MainnetChain,
     sChain: SChain,
     tokenSymbol: string,
     address: string
 ) {
-    for (let [tokenSymbol, tokenData] of Object.entries(tokens['erc20'])) {
-        let balance = await getTokenBalance(
+    for (const [symbol, _] of Object.entries(tokens.erc20)) {
+        const balance = await getTokenBalance(
             chainName,
             sChain,
-            tokenSymbol,
+            symbol,
             address
         );
-        tokens['erc20'][tokenSymbol]['balance'] = balance;
-        if (tokenData['unwrappedSymbol'] && !tokenData['clone']) {
-            let balance = await getTokenBalance(
+        tokens.erc20[symbol].balance = balance;
+        if (tokens.erc20[symbol].unwrappedSymbol && !tokens.erc20[symbol].clone) {
+            const wBalance = await getTokenBalance(
                 chainName,
                 sChain,
-                tokenData['unwrappedSymbol'],
+                tokens.erc20[symbol].unwrappedSymbol,
                 address
             );
-            tokens['erc20'][tokenSymbol]['unwrappedBalance'] = balance;
+            tokens.erc20[symbol].unwrappedBalance = wBalance;
         }
     }
 
-    if (tokens['eth']) {
-        tokens['eth'].balance = await getEthBalance(
+    if (tokens.eth) {
+        tokens.eth.balance = await getEthBalance(
             mainnet,
             sChain,
             chainName,
