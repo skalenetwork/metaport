@@ -23,7 +23,6 @@
 
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
-import debug from './debug';
 import { externalEvents } from './events';
 import { TokenData } from './tokens';
 import {
@@ -62,7 +61,7 @@ export function isEth(tokenSymbol: string): boolean {
 
 abstract class Action {
     abstract execute(): void;
-    preAction(): void {};
+    preAction(): void { return; };
 
     static label: string = '';
     static buttonText: string = '';
@@ -78,9 +77,8 @@ abstract class Action {
     tokenSymbol: string
     tokenData: TokenData
 
-    switchMetamaskChain: Function
-
-    setActiveStep: Function
+    switchMetamaskChain: () => void
+    setActiveStep: (stepNumber: number) => void
     activeStep: number
 
     wrap: boolean
@@ -95,8 +93,8 @@ abstract class Action {
         amount: string,
         tokenSymbol: string,
         tokenData: TokenData,
-        switchMetamaskChain: Function,
-        setActiveStep: Function,
+        switchMetamaskChain: () => void,
+        setActiveStep: () => void,
         activeStep: number
     ) {
         this.mainnet = mainnet;
@@ -125,12 +123,12 @@ abstract class TransferAction extends Action {
 }
 
 
-class TransferETH_M2S extends TransferAction {
+class TransferEthM2S extends TransferAction {
     async execute() {
-        debug('TransferETH_M2S: started');
+        // debug('TransferEthM2S: started');
         const amountWei = this.mainnet.web3.utils.toWei(this.amount);
-        let sChainBalanceBefore = await this.sChain2.ethBalance(this.address);
-        let tx = await this.mainnet.eth.deposit(
+        const sChainBalanceBefore = await this.sChain2.ethBalance(this.address);
+        const tx = await this.mainnet.eth.deposit(
             this.chainName2,
             {
                 address: this.address,
@@ -143,12 +141,12 @@ class TransferETH_M2S extends TransferAction {
 }
 
 
-class TransferETH_S2M extends TransferAction {
+class TransferEthS2M extends TransferAction {
     async execute() {
-        debug('TransferETH_S2M: started');
+        // debug('TransferEthS2M: started');
         const amountWei = this.sChain1.web3.utils.toWei(this.amount);
-        let lockedETHAmount = await this.mainnet.eth.lockedETHAmount(this.address);
-        let tx = await this.sChain1.eth.withdraw(
+        const lockedETHAmount = await this.mainnet.eth.lockedETHAmount(this.address);
+        const tx = await this.sChain1.eth.withdraw(
             amountWei,
             { address: this.address }
         );
@@ -158,14 +156,14 @@ class TransferETH_S2M extends TransferAction {
 }
 
 
-class UnlockETH_M extends Action {
+class UnlockEthM extends Action {
     static label = 'Unlock ETH'
     static buttonText = 'Unlock'
     static loadingText = 'Unlocking'
 
     async execute() {
-        debug('UnlockETH_M: started');
-        let tx = await this.mainnet.eth.getMyEth(
+        // debug('UnlockEthM: started');
+        const tx = await this.mainnet.eth.getMyEth(
             { address: this.address }
         );
         externalEvents.ethUnlocked(tx);
@@ -173,7 +171,7 @@ class UnlockETH_M extends Action {
 }
 
 
-class ApproveERC20_S extends Action {
+class ApproveERC20S extends Action {
     static label = 'Approve transfer'
     static buttonText = 'Approve all'
     static loadingText = 'Approving'
@@ -189,35 +187,35 @@ class ApproveERC20_S extends Action {
     }
 
     async preAction() {
-        let tokenContract = this.sChain1.erc20.tokens[this.tokenSymbol];
-        let allowance = await tokenContract.methods.allowance(
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenSymbol];
+        const allowance = await tokenContract.methods.allowance(
             this.address,
             this.sChain1.erc20.address
         ).call();
-        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+        const allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
-            let step = this.wrap ? 3 : 1;
+            const step = this.wrap ? 3 : 1;
             this.setActiveStep(step);
         }
     }
 }
 
 
-class TransferERC20_S2S extends TransferAction {
+class TransferERC20S2S extends TransferAction {
     async execute() {
         const amountWei = this.sChain1.web3.utils.toWei(this.amount);
-        let destTokenContract = this.sChain2.erc20.tokens[this.tokenSymbol];
-        let balanceOnDestination = await this.sChain2.getERC20Balance(destTokenContract, this.address);
-    
-        let tx = await this.sChain1.erc20.transferToSchain(
+        const destTokenContract = this.sChain2.erc20.tokens[this.tokenSymbol];
+        const balanceOnDestination = await this.sChain2.getERC20Balance(destTokenContract, this.address);
+
+        const tx = await this.sChain1.erc20.transferToSchain(
             this.chainName2,
             this.tokenData.originAddress,
             amountWei,
             {address: this.address}
         );
-        console.log('Transfer transaction done, waiting for money to be received');
+        // debug console.log('Transfer transaction done, waiting for money to be received');
         await this.sChain2.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
-        console.log('Money to be received to destination chain');
+        // debug console.log('Money to be received to destination chain');
 
         const unwrap = !!this.tokenData.unwrappedSymbol && this.tokenData.clone;
         externalEvents.transferComplete(
@@ -230,28 +228,28 @@ class TransferERC20_S2S extends TransferAction {
     }
 
     async preAction() {
-        let tokenContract = this.sChain1.erc20.tokens[this.tokenSymbol];
-        let allowance = await tokenContract.methods.allowance(
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenSymbol];
+        const allowance = await tokenContract.methods.allowance(
             this.address,
             this.sChain1.erc20.address
         ).call();
-        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+        const allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
 
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
-            let step = this.wrap ? 2 : 0;
+            const step = this.wrap ? 2 : 0;
             this.setActiveStep(step);
         }
     }
 }
 
 
-class ApproveWrapERC20_S extends Action {
+class ApproveWrapERC20S extends Action {
     static label = 'Approve wrap'
     static buttonText = 'Approve all'
     static loadingText = 'Approving'
 
     async execute() {
-        // const amountWei = this.sChain1.web3.utils.toWei(this.amount);        
+        // const amountWei = this.sChain1.web3.utils.toWei(this.amount);
         await this.sChain1.erc20.approve(
             this.tokenData.unwrappedSymbol,
             MAX_APPROVE_AMOUNT,
@@ -261,12 +259,12 @@ class ApproveWrapERC20_S extends Action {
     }
 
     async preAction() {
-        let tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        let allowance = await tokenContract.methods.allowance(
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
+        const allowance = await tokenContract.methods.allowance(
             this.address,
             this.tokenData.originAddress
         ).call();
-        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+        const allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
 
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
             this.setActiveStep(1);
@@ -275,7 +273,7 @@ class ApproveWrapERC20_S extends Action {
 }
 
 
-class WrapERC20_S extends Action {
+class WrapERC20S extends Action {
     static label = 'Wrap'
     static buttonText = 'Wrap'
     static loadingText = 'Wrapping'
@@ -290,12 +288,12 @@ class WrapERC20_S extends Action {
     }
 
     async preAction() {
-        let tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        let allowance = await tokenContract.methods.allowance(
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
+        const allowance = await tokenContract.methods.allowance(
             this.address,
             this.tokenData.originAddress
         ).call();
-        let allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
+        const allowanceEther = this.sChain1.web3.utils.fromWei(allowance);
 
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
             this.setActiveStep(0);
@@ -304,7 +302,7 @@ class WrapERC20_S extends Action {
 }
 
 
-class UnwrapERC20_S extends Action {
+class UnWrapERC20S extends Action {
     static label = 'Unwrap'
     static buttonText = 'Unwrap'
     static loadingText = 'Unwrapping'
@@ -322,14 +320,14 @@ class UnwrapERC20_S extends Action {
 }
 
 
-const wrapActions = [ApproveWrapERC20_S, WrapERC20_S];
-const unwrapActions = [UnwrapERC20_S];
+const wrapActions = [ApproveWrapERC20S, WrapERC20S];
+const unwrapActions = [UnWrapERC20S];
 
 
 export const actions = {
-    eth_m2s: [TransferETH_M2S],
-    eth_s2m: [TransferETH_S2M, UnlockETH_M],
-    erc20_s2s: [ApproveERC20_S, TransferERC20_S2S]
+    eth_m2s: [TransferEthM2S],
+    eth_s2m: [TransferEthS2M, UnlockEthM],
+    erc20_s2s: [ApproveERC20S, TransferERC20S2S]
 }
 
 
@@ -337,7 +335,7 @@ export function getActionSteps(
     actionName: string,
     tokenData: TokenData
 ) {
-    let actionsList = [];
+    const actionsList = [];
     if (tokenData.unwrappedSymbol && !tokenData.clone) {
         actionsList.push(...wrapActions);
     }

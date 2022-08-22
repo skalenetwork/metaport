@@ -1,0 +1,29 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test_ima_js:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14]
+    env:
+      TEST: true
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Set up Node ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - name: Update submodules
+      run: |
+        git submodule update --remote
+    - name: Install dependencies
+      run: |
+        yarn install --production=false
+    - name: Lint code
+      run: |
+        yarn global add tslint typescript
+        yarn lint
