@@ -73,6 +73,7 @@ All currently available options are listed below:
 ```Javascript
 const widget = new Metaport({
     open: true, // Open Metaport on load (optional, default = false)
+    openButton: false, // Show open/close action button (optional, default = true)
     mainnetEndpoint: MAINNET_ENDPOINT, // Ethereum Mainnet endpoint, required only for M2S or S2M transfers (optional, default = null)
     network: 'staging', // SKALE network that will be used - mainnet or staging (optional, defualt = mainnet)
     chains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])

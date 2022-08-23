@@ -25,7 +25,8 @@ button {
   position: fixed;
   bottom: 0;
   right: 0;
-  margin: 0 20pt 20pt 0;
+  z-index: 9999 !important;
+  // margin: 0 20pt 20pt 0;
 }
 
 .skaleLogoSm {
@@ -34,9 +35,9 @@ button {
 
 .mp__popupWrapper,
 .mp__fullsreenWrapper {
-  margin: 0 20pt 10pt 20pt;
+  margin: 0 20pt 20pt 20pt;
 
-  :global .MuiPaper-root {
+  :global(.MuiPaper-root) {
     background-image: none;
   }
 }
@@ -361,6 +362,15 @@ button {
   opacity: 0;
 }
 
-.widget-fab {
-  // border: 1px rgba(127,127,127,.2705882353) solid !important;
+.skaleBtnHidden{
+  display: none !important;
+}
+
+.skaleBtn{
+  margin: -10pt 20pt 20pt 0;
+  z-index: 9999 !important;
+}
+
+.mp__popper{
+  z-index: 9999 !important;
 }

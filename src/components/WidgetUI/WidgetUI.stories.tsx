@@ -295,3 +295,11 @@ export const sFuelIcons = () => (
     }}
   />
 );
+
+export const NoButton = () => (
+  <WidgetUI
+    {...commonProps}
+    {...defaultTokenData}
+    openButton={false}
+  />
+);

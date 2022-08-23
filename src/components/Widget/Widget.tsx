@@ -381,6 +381,7 @@ export function Widget(props) {
     setAmount={setAmount}
 
     open={open}
+    openButton={props.openButton}
     setOpen={setOpen}
 
     chain1={chainName1}

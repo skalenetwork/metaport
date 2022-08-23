@@ -24,6 +24,7 @@ export const commonProps = {
     }
   },
   open: true,
+  openButton: true,
   chain1: 'aaa-chain',
   chain2: 'bbb-chain',
   setChain1: setMock,
