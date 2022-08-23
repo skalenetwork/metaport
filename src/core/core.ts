@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { soliditySha3 } from 'web3-utils';
+import { soliditySha3, AbiItem } from 'web3-utils';
 
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
@@ -11,18 +11,19 @@ import {
   mainnetNetworkParams,
   changeMetamaskNetwork
 } from '../components/WalletConnector';
-import { MAINNET_CHAIN_NAME, ETH_ERC20_ADDRESS } from './constants';
 
-const erc20Abi = require('../metadata/erc20_abi.json');
-const erc20WrapperAbi = require('../metadata/erc20_wrapper_abi.json');
+
+import erc20Abi from '../metadata/erc20_abi.json';
+import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json';
 
 
 export function initERC20(tokenAddress: string, web3: Web3) {
-  return new web3.eth.Contract(erc20Abi.abi, tokenAddress);
+  return new web3.eth.Contract(erc20Abi.abi as AbiItem[], tokenAddress);
 }
 
+
 export function initERC20Wrapper(tokenAddress: string, web3: Web3) {
-  return new web3.eth.Contract(erc20WrapperAbi.abi, tokenAddress);
+  return new web3.eth.Contract(erc20WrapperAbi.abi as AbiItem[], tokenAddress);
 }
 
 
@@ -73,8 +74,7 @@ export async function initMainnetMetamask(network: string, mainnetEndpoint: stri
 
 
 function getSChainEndpoint(network: string, sChainName: string): string {
-  let proxyEndpoint = getProxyEndpoint(network);
-  return proxyEndpoint + '/v1/' + sChainName;
+  return getProxyEndpoint(network) + '/v1/' + sChainName;
 }
 
 
@@ -87,8 +87,8 @@ function getProxyEndpoint(network: string) {
 function calcChainId(sChainName) {
   let h = soliditySha3(sChainName);
   h = remove0x(h).toLowerCase();
-  while(h.length < 64)
-      h = "0" + h;
+  while (h.length < 64)
+    h = "0" + h;
   h = h.substr(0, 13);
   h = h.replace(/^0+/, '');
   return "0x" + h;

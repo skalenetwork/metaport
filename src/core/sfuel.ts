@@ -25,12 +25,12 @@ import Web3 from 'web3';
 import { DEFAULT_MIN_SFUEL_WEI } from './constants';
 
 
-function getFaucetUrl(chainsMetadata: Object, chainName: string): string {
+function getFaucetUrl(chainsMetadata: object, chainName: string): string {
     if (chainsMetadata && chainsMetadata[chainName]) return chainsMetadata[chainName].faucetUrl;
 }
 
 
-function getMinSfuelWei(chainsMetadata: Object, chainName: string): string {
+function getMinSfuelWei(chainsMetadata: object, chainName: string): string {
     if (chainsMetadata && chainsMetadata[chainName] && chainsMetadata[chainName].minSfuelWei) {
         return chainsMetadata[chainName].minSfuelWei;
     } else {
@@ -45,17 +45,17 @@ async function getSfuelBalance(web3: Web3, address: string): Promise<string> {
 
 
 export async function getSFuelData(
-    chainsMetadata: Object,
+    chainsMetadata: object,
     chainName: string,
     web3: Web3,
     address: string
-): Promise<Object>{
+): Promise<object>{
     const minSfuelWei = getMinSfuelWei(chainsMetadata, chainName);
     const balance = await getSfuelBalance(web3, address);
     return {
         faucetUrl: getFaucetUrl(chainsMetadata, chainName),
-        minSfuelWei: minSfuelWei,
-        balance: balance,
+        minSfuelWei,
+        balance,
         ok: Number(balance) >= Number(minSfuelWei)
     }
 }

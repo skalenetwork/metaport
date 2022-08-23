@@ -21,21 +21,20 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import debug from './debug';
 
 
 function dispatchEvent(name: string, data = {}) {
     window.dispatchEvent(new CustomEvent(name, {detail: data}));
-    debug('event sent: ' + name);
+    // debug('event sent: ' + name);
 }
 
 
-export namespace externalEvents {    
-    export function balance(tokenSymbol: string, schainName: string, balance: string) {
+export namespace externalEvents {
+    export function balance(tokenSymbol: string, schainName: string, _balance: string) {
         dispatchEvent('metaport_balance', {
             "tokenSymbol": tokenSymbol,
             "schainName": schainName,
-            "balance": balance
+            "balance": _balance
         });
     }
 

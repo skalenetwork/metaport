@@ -1,7 +1,7 @@
 import { getActionSteps } from '../../core/actions';
 import { TokenData } from '../../core/tokens';
 
-function setMock() {}
+function setMock() { return };
 
 
 function getRandomInt(min, max) {
@@ -31,7 +31,7 @@ export const commonProps = {
   setChain2: setMock,
   setToken: setMock,
   setLoading: setMock,
-  setActiveStep: () => {},
+  setActiveStep: () => { return },
   walletConnected: true,
   actionSteps: getActionSteps('erc20_s2s', new TokenData(
     '',
@@ -46,7 +46,7 @@ export const commonProps = {
 
 
 export function generateTokenData(tokenSymbol, tokenName, wrapped=false) {
-  let data = {
+  const data = {
     token: tokenSymbol,
     amount: getRandomInt(1000, 10000),
     tokens: {
@@ -61,8 +61,8 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped=false) {
   }
 
   if (wrapped) {
-    data.tokens.erc20[tokenSymbol]["unwrappedBalance"] = getRandomInt(10000, 70000);
-    data.tokens.erc20[tokenSymbol]["unwrappedSymbol"] = 'u' + tokenSymbol;
+    data.tokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(10000, 70000);
+    data.tokens.erc20[tokenSymbol].unwrappedSymbol = 'u' + tokenSymbol;
   }
   return data;
 }

@@ -27,6 +27,9 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
     - [Themes](#themes)
   - [Development](#development)
     - [Storybook setup](#storybook-setup)
+    - [Linter](#linter)
+      - [Linter git hook](#linter-git-hook)
+  - [License](#license)
 
 
 ## Documentation
@@ -350,3 +353,28 @@ yarn install
 npx sb init --builder webpack5
 yarn run storybook
 ```
+
+### Linter
+
+Used linter: https://palantir.github.io/tslint/  
+
+Install the global CLI and its peer dependency:
+
+```shell
+yarn global add tslint typescript
+```
+
+#### Linter git hook
+
+Be sure to add pre-commit git hook:
+
+```shell
+echo 'yarn lint' > .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+## License
+
+![GitHub](https://img.shields.io/github/license/skalenetwork/skale.py.svg)
+
+All contributions are made under the [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html). See [LICENSE](LICENSE).
