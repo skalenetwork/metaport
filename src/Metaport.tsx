@@ -43,12 +43,15 @@ export default class Metaport {
         // todo: ALL network chains (request from proxy!)
       }
 
+      if (params.openButton === undefined) params.openButton = true;
+
       root.render(
         <Widget
           tokens={tokens}
           chains={params['chains']}
           chainsMetadata={params['chainsMetadata']}
           open={params['open']}
+          openButton={params['openButton']}
           network={network}
           theme={params['theme']}
           mainnetEndpoint={params['mainnetEndpoint']}

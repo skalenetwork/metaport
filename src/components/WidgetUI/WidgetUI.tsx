@@ -86,28 +86,30 @@ export function WidgetUI(props) {
         <div
           className={clsNames(styles.imaWidgetBody, themeCls)}
         >
-          <Fab
-            ref={divRef}
-            color={props.open ? 'secondary' : 'primary'}
-            className='widget-fab'
-            aria-label="add"
-            aria-describedby={id}
-            type="button"
-            onClick={handleClick}
-          >
-            {open ? (
-              <CloseIcon
-                style={{
-                  color: widgetTheme.mode == 'dark' ? 'white' : 'black'
-                }}
-              />
-            ) : (<img
-              className={styles.skaleLogoSm}
-              src={skaleLogo}
-            />)
-            }
-          </Fab>
-          <Popper id={id} open={open} anchorEl={anchorEl}>
+          <div ref={divRef}>
+            <Fab
+              color={props.open ? 'secondary' : 'primary'}
+              className={props.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
+              aria-label="add"
+              aria-describedby={id}
+              type="button"
+              onClick={handleClick}
+            >
+              {open ? (
+                <CloseIcon
+                  style={{
+                    color: widgetTheme.mode == 'dark' ? 'white' : 'black'
+                  }}
+                />
+              ) : (<img
+                className={styles.skaleLogoSm}
+                src={skaleLogo}
+              />)
+              }
+            </Fab>
+          </div>
+
+          <Popper className={styles.mp__popper} id={id} open={open} anchorEl={anchorEl}>
             <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
               <Paper elevation={3} className={styles.mp__paper}>
                 <div className={styles.mp__popup}>
