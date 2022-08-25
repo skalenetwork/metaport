@@ -141,7 +141,10 @@ export default function TokenList(props) {
                 >
                   <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
                     <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                      <img className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)} src={iconPath(key)}/>
+                      <img
+                        className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
+                        src={erc20Tokens[key].iconUrl ? erc20Tokens[key].iconUrl : iconPath(key)}
+                      />
                     </div>
                     <p className={clsNames(
                       styles.mp__chainName,
