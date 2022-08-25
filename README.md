@@ -22,6 +22,7 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Adding Mainnet & ETH](#adding-mainnet--eth)
       - [Autowrap for tokens](#autowrap-for-tokens)
       - [Usage with SSR](#usage-with-ssr)
+      - [Token icons](#token-icons)
     - [Events](#events)
       - [Available Events](#available-events)
     - [Themes](#themes)
@@ -94,7 +95,8 @@ const widget = new Metaport({
             'erc20': { // token type (erc20 and eth are supported)
                 'symbol1': { // token symbol
                     'name': 'TOKEN_NAME1', // token display name
-                    'address': '0x0357' // token origin address
+                    'address': '0x0357', // token origin address
+                    'iconUrl': 'https://example.com/my_token_icon.png' // optional
                 }               
             }
         }
@@ -291,6 +293,27 @@ useEffect(() => {
       console.log('metaport widget initialized');
     }
 }, [metaport]);
+```
+
+#### Token icons
+
+Metaport has built-in support for 471 well-known tokens. If token icon is not available for your
+token, default Ethereum icon will be used.  
+
+Also, it's possible to set a custom token icon by adding `iconUrl` option to the token definition:
+
+```javascript
+const TOKENS = {
+  'SCHAIN_NAME': {
+    'erc20': {
+      'mytkn': {
+        'name': 'MYTKN',
+        'address': '0x123456',
+        'iconUrl': 'https://example.com/my_token_icon.png'
+      },
+    }
+  }
+};
 ```
 
 ### Events
