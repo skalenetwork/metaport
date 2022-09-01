@@ -3,7 +3,7 @@ import { soliditySha3, AbiItem } from 'web3-utils';
 
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
-import sChainAbi from '../metadata/schianAbi.json';
+import sChainAbi from '../metadata/schainAbi.json';
 import mainnetAbi from '../metadata/mainnetAbi.json';
 import proxyEndpoints from '../metadata/proxy.json';
 import {
@@ -15,6 +15,9 @@ import {
 
 import erc20Abi from '../metadata/erc20_abi.json';
 import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json';
+
+import mainnetAddresses from '../metadata/addresses/mainnet.json';
+import stagingAddresses from '../metadata/addresses/staging.json';
 
 
 export function initERC20(tokenAddress: string, web3: Web3) {
@@ -59,9 +62,17 @@ export async function updateWeb3SChainMetamask(schain: SChain, network: string, 
 }
 
 
-export function initMainnet(mainnetEndpoint: string): MainnetChain {
+function getMainnetAbi(network: string) {
+  if (network === 'staging') {
+    return { ...mainnetAbi, ...stagingAddresses }
+  }
+  return { ...mainnetAbi, ...mainnetAddresses }
+}
+
+
+export function initMainnet(network: string, mainnetEndpoint: string): MainnetChain {
   const web3 = new Web3(mainnetEndpoint);
-  return new MainnetChain(web3, mainnetAbi);
+  return new MainnetChain(web3, getMainnetAbi(network));
 }
 
 
@@ -69,7 +80,7 @@ export async function initMainnetMetamask(network: string, mainnetEndpoint: stri
   const networkParams = mainnetNetworkParams(network, mainnetEndpoint);
   await changeMetamaskNetwork(networkParams);
   const web3 = new Web3(window.ethereum);
-  return new MainnetChain(web3, mainnetAbi);
+  return new MainnetChain(web3, getMainnetAbi(network));
 }
 
 

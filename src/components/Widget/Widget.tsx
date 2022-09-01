@@ -104,6 +104,7 @@ export function Widget(props) {
   }
 
   function resetWidget(e) {
+    setSchains([]);
     setChainName1(null);
     setChainName2(null);
 
@@ -154,16 +155,19 @@ export function Widget(props) {
       chainName1,
       chainName2,
       extTokens,
-      false
+      false,
+      props.autoLookup
     );
     await getTokenBalances(
       tokens,
       chainName1,
       mainnet,
       sChain1,
+      sChain2,
       token,
       address
     );
+
     setAvailableTokens(tokens);
     updateBalanceHandler();
     setLoadingTokens(false);
@@ -176,13 +180,10 @@ export function Widget(props) {
       chainName1,
       mainnet,
       sChain1,
+      sChain2,
       token,
       address
     );
-
-    console.log("getTokenBalances -> ->");
-    console.log(availableTokens);
-
     setAvailableTokens(tokens);
   }
 
@@ -245,7 +246,7 @@ export function Widget(props) {
   useEffect(() => {
     if (address && chainName2) {
       if (chainName2 == MAINNET_CHAIN_NAME) {
-        setMainnet(initMainnet(mainnetEndpoint))
+        setMainnet(initMainnet(props.network, mainnetEndpoint))
       } else {
         setSChain2(initSChain(
           props.network,

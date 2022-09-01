@@ -21,7 +21,7 @@ const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)
 
 
 function iconPath(name) {
-  const key = name + '.svg';
+  const key = name.toLowerCase() + '.svg';
   if (icons[key]) {
     return icons[key];
   } else {
@@ -32,13 +32,13 @@ function iconPath(name) {
 
 function roundDown(number, decimals) {
   decimals = decimals || 0;
-  return ( Math.floor( number * Math.pow(10, decimals) ) / Math.pow(10, decimals) );
+  return (Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
 }
 
 
 export default function TokenList(props) {
 
-  let disabled = Object.keys(props.tokens['erc20']).length == 1 || Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth;
+  let disabled = Object.keys(props.tokens['erc20']).length == 1 && !props.tokens.eth || Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth;
   useEffect(() => {
     // if (disabled) {
     //   props.setToken(Object.keys(props.tokens['erc20'])[0])
@@ -55,14 +55,19 @@ export default function TokenList(props) {
     props.setToken(token);
   }
 
-  let erc20Tokens = props.tokens['erc20'];
+  let allTokens = props.tokens['erc20'];
   let tokenInfo;
+
+  if (props.tokens.eth) {
+    allTokens.eth = props.tokens.eth;
+  }
+
   if (props.token == 'eth') {
     tokenInfo = props.tokens.eth;
   } else {
     tokenInfo = props.tokens['erc20'][props.token];
   }
-  
+
 
   return (
     <div>
@@ -82,7 +87,7 @@ export default function TokenList(props) {
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                 <img
                   className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                  src={tokenInfo.iconUrl ? tokenInfo.iconUrl : iconPath(props.token)}
+                  src={tokenInfo.iconUrl ? tokenInfo.iconUrl : iconPath(tokenInfo.symbol)}
                 />
               </div>
               <p className={clsNames(
@@ -91,7 +96,7 @@ export default function TokenList(props) {
                 styles.mp__flexGrow,
                 styles.mp__margRi10
               )}>
-                {tokenInfo['name']}
+                {tokenInfo.name}
               </p>
               {tokenInfo.unwrappedBalance ? (
                 <p className={clsNames(
@@ -109,13 +114,13 @@ export default function TokenList(props) {
                 styles.mp__flexCenteredVert,
                 styles.mp__margRi5
               )}>
-                {roundDown(tokenInfo['balance'], 4)} {props.token}
+                {roundDown(tokenInfo['balance'], 4)} {tokenInfo.symbol}
               </p>
             </div>
           ) : (
             <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                <img className={localStyles.mp__iconToken} src={iconPath('eth')}/>
+                <img className={localStyles.mp__iconToken} src={iconPath('eth')} />
               </div>
               <p className={clsNames(
                 styles.mp__chainName,
@@ -127,11 +132,11 @@ export default function TokenList(props) {
               </p>
             </div>
           )
-          }          
+          }
         </AccordionSummary>
         <AccordionDetails>
-          {erc20Tokens ? (<div className={styles.mp__chainsList}>
-            {Object.keys(erc20Tokens).map((key, i)  => (
+          {allTokens ? (<div className={styles.mp__chainsList}>
+            {Object.keys(allTokens).map((key, i) => (
               <Typography key={key}>
                 <Button
                   color="secondary"
@@ -143,7 +148,7 @@ export default function TokenList(props) {
                     <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                       <img
                         className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                        src={erc20Tokens[key].iconUrl ? erc20Tokens[key].iconUrl : iconPath(key)}
+                        src={allTokens[key].iconUrl ? allTokens[key].iconUrl : iconPath(allTokens[key].symbol)}
                       />
                     </div>
                     <p className={clsNames(
@@ -152,25 +157,23 @@ export default function TokenList(props) {
                       styles.mp__flexGrow,
                       styles.mp__margRi10
                     )}>
-                      {erc20Tokens[key]['name']}
+                      {allTokens[key].name}
                     </p>
                     <p className={clsNames(
-                        styles.mp__p3,
-                        styles.mp__flex,
-                        styles.mp__flexCenteredVert,
-                        styles.mp__margRi5
-                      )}>
-                      {roundDown(erc20Tokens[key]['balance'], 4)} {key}
+                      styles.mp__p3,
+                      styles.mp__flex,
+                      styles.mp__flexCenteredVert,
+                      styles.mp__margRi5
+                    )}>
+                      {roundDown(allTokens[key].balance, 4)} {allTokens[key].symbol}
                     </p>
-                  </div>  
+                  </div>
                 </Button>
-            </Typography>
-           ))}
+              </Typography>
+            ))}
           </div>) : (<div></div>)}
-          
         </AccordionDetails>
       </Accordion>
-     
     </div>
   )
 }

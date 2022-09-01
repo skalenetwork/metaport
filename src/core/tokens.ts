@@ -21,6 +21,8 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import debug from 'debug';
+
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
 import { ZERO_ADDRESS, ETH_TOKEN_NAME, MAINNET_CHAIN_NAME, ETH_ERC20_ADDRESS } from './constants';
@@ -29,11 +31,17 @@ import { initERC20, initERC20Wrapper } from './core';
 import { isChainMainnet } from './actions';
 
 
+debug.enable('*');
+const log = debug('metaport:tokens');
+
+
 export class TokenData {
     originAddress: string
     cloneAddress: string
 
     name: string
+    symbol: string
+
     clone: boolean
     type: string
     balance: number
@@ -48,6 +56,7 @@ export class TokenData {
         cloneAddress: string,
         originAddress: string,
         name: string,
+        symbol: string,
         clone: boolean,
         iconUrl: string,
         unwrappedSymbol: string,
@@ -60,6 +69,7 @@ export class TokenData {
         this.unwrappedSymbol = unwrappedSymbol;
 
         this.name = name;
+        this.symbol = symbol;
         this.clone = clone;
         this.iconUrl = iconUrl;
         this.type = (name === ETH_TOKEN_NAME) ? 'eth' : 'erc20'
@@ -74,18 +84,46 @@ export async function getAvailableTokens(
     chainName1: string,
     chainName2: string,
     tokens: object,
-    force: boolean
+    force: boolean,
+    autoLookup: boolean
 ) {
+    log('Collecting available tokens for ' + chainName1 + ' -> ' + chainName2);
     const availableTokens = { 'erc20': {} };
-    await getERC20Tokens(
-        sChain1,
-        sChain2,
-        chainName1,
-        chainName2,
-        tokens,
-        availableTokens,
-        force
-    );
+    if (mainnet) {
+        const sChain = (chainName1 === MAINNET_CHAIN_NAME) ? sChain2 : sChain1;
+        const schainName = (chainName1 === MAINNET_CHAIN_NAME) ? chainName2 : chainName1;
+        if (autoLookup) {
+            log('Starting automatic lookup for M2S tokens...');
+            await getM2STokensAutomatic(
+                mainnet,
+                sChain,
+                schainName,
+                availableTokens,
+                tokens
+            );
+        } else {
+            log('Starting manual lookup for M2S tokens...');
+            await getM2STokensManual(
+                mainnet,
+                sChain,
+                schainName,
+                availableTokens,
+                tokens
+            );
+        }
+    } else {
+        log('Starting manual lookup for S2S tokens...');
+        await getERC20Tokens(
+            sChain1,
+            sChain2,
+            chainName1,
+            chainName2,
+            tokens,
+            availableTokens,
+            force
+        );
+    }
+    log('Adding ETH token...');
     await getETHToken(
         mainnet,
         sChain1,
@@ -114,6 +152,7 @@ async function getETHToken(
                 ETH_ERC20_ADDRESS,
                 null,
                 ETH_TOKEN_NAME,
+                ETH_TOKEN_NAME,
                 false,
                 null,
                 null,
@@ -124,6 +163,7 @@ async function getETHToken(
             availableTokens[ETH_TOKEN_NAME] = new TokenData(
                 ETH_ERC20_ADDRESS,
                 null,
+                ETH_TOKEN_NAME,
                 ETH_TOKEN_NAME,
                 true,
                 null,
@@ -179,6 +219,100 @@ async function getERC20Tokens(
 }
 
 
+async function getM2STokensManual(
+    mainnet: MainnetChain,
+    sChain: SChain,
+    chainName: string,
+    availableTokens: any,
+    tokens: any
+) {
+    if (tokens[MAINNET_CHAIN_NAME] && tokens[MAINNET_CHAIN_NAME].erc20) {
+        for (const tokenSymbol in tokens[MAINNET_CHAIN_NAME].erc20) {
+            if (tokens[MAINNET_CHAIN_NAME].erc20.hasOwnProperty(tokenSymbol)) {
+                const tokenInfo = tokens[MAINNET_CHAIN_NAME].erc20[tokenSymbol];
+                const cloneAddress = await sChain.erc20.getTokenCloneAddress(tokenInfo.address);
+                availableTokens.erc20[tokenSymbol] = new TokenData(
+                    cloneAddress,
+                    tokenInfo.address,
+                    tokenInfo.name,
+                    tokenSymbol,
+                    false,
+                    tokenInfo.iconUrl,
+                    null,
+                    null
+                );
+                mainnet.erc20.addToken(tokenSymbol, initERC20(tokenInfo.address, mainnet.web3));
+                sChain.erc20.addToken(tokenSymbol, initERC20(cloneAddress, sChain.web3));
+            }
+        }
+    }
+}
+
+
+
+async function getM2STokensAutomatic(
+    mainnet: MainnetChain,
+    sChain: SChain,
+    chainName: string,
+    availableTokens: any,
+    tokens: any
+) {
+    log('Getting token pairs...');
+    const erc20Len = await mainnet.erc20.getTokenMappingsLength(chainName);
+
+    if (erc20Len === '0') {
+        log('No linked tokens, exiting.')
+        return;
+    }
+
+    const erc20Tokens = await mainnet.erc20.getTokenMappings(chainName, 0, erc20Len); // todo: opt
+    log('Number of token pairs: ' + erc20Len);
+    for (const address of erc20Tokens) {
+        const tokenContract = initERC20(address, mainnet.web3);
+        const symbol = await tokenContract.methods.symbol().call();
+        let name = await tokenContract.methods.name().call();
+        const cloneAddress = await sChain.erc20.getTokenCloneAddress(address);
+        let tokenIcon;
+
+        const key = '_' + symbol + '_' + address;
+        log('Adding token: ' + key);
+
+        if (tokens[MAINNET_CHAIN_NAME] && tokens[MAINNET_CHAIN_NAME].erc20 && tokens[MAINNET_CHAIN_NAME].erc20[key]) {
+            tokenIcon = tokens[MAINNET_CHAIN_NAME].erc20[key].iconUrl;
+            if (tokens[MAINNET_CHAIN_NAME].erc20[key].name) {
+                name = tokens[MAINNET_CHAIN_NAME].erc20[key].name
+            }
+        }
+
+        if (chainName === MAINNET_CHAIN_NAME) {
+            availableTokens.erc20[key] = new TokenData(
+                cloneAddress,
+                address,
+                name,
+                symbol,
+                true,
+                tokenIcon,
+                null,
+                null
+            );
+        } else {
+            availableTokens.erc20[key] = new TokenData(
+                cloneAddress,
+                address,
+                name,
+                symbol,
+                false,
+                tokenIcon,
+                null,
+                null
+            );
+        }
+        mainnet.erc20.addToken(key, initERC20(address, mainnet.web3));
+        sChain.erc20.addToken(key, initERC20(cloneAddress, sChain.web3));
+    }
+}
+
+
 async function addTokenData(
     sChain1: SChain,
     sChain2: SChain,
@@ -210,6 +344,7 @@ async function addTokenData(
         cloneAddress,
         token.address,
         token.name,
+        tokenSymbol,
         isClone,
         token.iconUrl,
         unwrappedSymbol,
@@ -281,14 +416,14 @@ function addERC20Token(
 
 export async function getTokenBalance(
     chainName: string,
-    sChain: SChain,
+    chain: any,
     tokenSymbol: string,
     address: string
 ): Promise<string> {
-    const tokenContract = sChain.erc20.tokens[tokenSymbol];
-    const balance = await sChain.getERC20Balance(tokenContract, address);
+    const tokenContract = chain.erc20.tokens[tokenSymbol];
+    const balance = await chain.getERC20Balance(tokenContract, address);
     externalEvents.balance(tokenSymbol, chainName, balance);
-    return sChain.web3.utils.fromWei(balance);
+    return chain.web3.utils.fromWei(balance);
 }
 
 
@@ -308,35 +443,48 @@ export async function getTokenBalances(
     tokens: any,
     chainName: string,
     mainnet: MainnetChain,
-    sChain: SChain,
+    sChain1: SChain,
+    sChain2: SChain,
     tokenSymbol: string,
     address: string
 ) {
+    log('Getting token balances...');
     for (const [symbol, _] of Object.entries(tokens.erc20)) {
-        const balance = await getTokenBalance(
-            chainName,
-            sChain,
-            symbol,
-            address
-        );
-        tokens.erc20[symbol].balance = balance;
-        if (tokens.erc20[symbol].unwrappedSymbol && !tokens.erc20[symbol].clone) {
-            const wBalance = await getTokenBalance(
+        if (chainName === MAINNET_CHAIN_NAME) {
+            const balance = await getTokenBalance(
                 chainName,
-                sChain,
-                tokens.erc20[symbol].unwrappedSymbol,
+                mainnet,
+                symbol,
                 address
             );
-            tokens.erc20[symbol].unwrappedBalance = wBalance;
+            tokens.erc20[symbol].balance = balance;
+        } else {
+            const balance = await getTokenBalance(
+                chainName,
+                sChain1,
+                symbol,
+                address
+            );
+            tokens.erc20[symbol].balance = balance;
+            if (tokens.erc20[symbol].unwrappedSymbol && !tokens.erc20[symbol].clone) {
+                const wBalance = await getTokenBalance(
+                    chainName,
+                    sChain1,
+                    tokens.erc20[symbol].unwrappedSymbol,
+                    address
+                );
+                tokens.erc20[symbol].unwrappedBalance = wBalance;
+            }
         }
     }
-
     if (tokens.eth) {
         tokens.eth.balance = await getEthBalance(
             mainnet,
-            sChain,
+            sChain1,
             chainName,
             address
         );
     };
+    log('tokens with balances:');
+    log(tokens);
 }

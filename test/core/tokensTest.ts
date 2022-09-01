@@ -39,12 +39,12 @@ describe("Test for tokens core module", () => {
 
     it.only("Test getAvailableTokens", async () => {
         const availableTokens = await getAvailableTokens(
+            mainnet,
             sChain1,
             sChain2,
             CHAIN_NAME_SCHAIN,
             CHAIN_NAME_SCHAIN_2,
             tokens,
-            false,
             true
         );
         console.log(availableTokens);
