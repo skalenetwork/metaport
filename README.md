@@ -17,6 +17,7 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Wrap](#wrap)
       - [Unwrap](#unwrap)
     - [Tips & tricks](#tips--tricks)
+      - [Automatic M2S token lookup](#automatic-m2s-token-lookup)
       - [Locking a token](#locking-a-token)
       - [Locking chains](#locking-chains)
       - [Adding Mainnet & ETH](#adding-mainnet--eth)
@@ -75,6 +76,7 @@ All currently available options are listed below:
 const widget = new Metaport({
     open: true, // Open Metaport on load (optional, default = false)
     openButton: false, // Show open/close action button (optional, default = true)
+    autoLookup: false, // Automatic token lookup for M2S tokens (default = true)
     mainnetEndpoint: MAINNET_ENDPOINT, // Ethereum Mainnet endpoint, required only for M2S or S2M transfers (optional, default = null)
     network: 'staging', // SKALE network that will be used - mainnet or staging (optional, defualt = mainnet)
     chains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])
@@ -158,6 +160,34 @@ metaport.unwrap(UNWRAP_PARAMS);
 ```
 
 ### Tips & tricks
+
+#### Automatic M2S token lookup
+
+> Only for tokens with origin on Mainnet
+
+By default, automatic token lookup is enabled for Mainnet to SKALE Chain transfers. You can disable
+it by setting `autoLookup` value to `false`. Also, you can override info retrieved by the automatic 
+lookup by adding token to the tokens list in the following way: `_{TOKEN_SYMBOL}_{TOKEN_ADDRRESS}`:
+
+```javascript
+const TOKENS_OVERRIDE = {
+  'mainnet': {
+    'erc20': {
+      "_TST_0x123456": {
+        "name": "MY TEST TOKEN",
+        "iconUrl": "https://example.com/test.png"
+      }
+  }
+};
+
+const widget = new Metaport({
+    ...
+    autoLookup: true,
+    tokens: TOKENS_OVERRIDE
+    ...
+})
+```
+
 
 #### Locking a token
 
