@@ -28,7 +28,7 @@ export default function WidgetBody(props) {
   if (props.token && props.tokens['erc20'][props.token]) {
     currentTokenBalance = props.tokens['erc20'][props.token]['balance'];
   }
-  if (props.token && props.tokens.eth) {
+  if (props.token && props.tokens.eth && props.token == 'eth') {
     currentTokenBalance = props.tokens.eth.balance;
   }
 
@@ -42,7 +42,7 @@ export default function WidgetBody(props) {
                 Transfer from
               </p>
               <div className={styles.mp__flex}>
-                <SFuelBadge from={true} data={props.sFuelData1}/>
+                <SFuelBadge from={true} data={props.sFuelData1} />
               </div>
             </div>
             <ChainsList
@@ -77,7 +77,7 @@ export default function WidgetBody(props) {
               let chain1 = props.chain1;
               props.setChain1(props.chain2);
               props.setChain2(chain1);
-              props.setAmount(0);
+              props.setAmount(null);
               props.setLoading(false);
               props.setActiveStep(0);
             }}>
@@ -91,7 +91,7 @@ export default function WidgetBody(props) {
               To
             </p>
             <div className={styles.mp__flex}>
-              <SFuelBadge from={false} data={props.sFuelData2}/>
+              <SFuelBadge from={false} data={props.sFuelData2} />
             </div>
           </div>
 

@@ -25,50 +25,51 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import{ Widget } from './components/Widget';
+import { Widget } from './components/Widget';
 import { internalEvents } from './core/events';
 import defaultTokens from './metadata/tokens.json';
 
 
 export default class Metaport {
-    constructor(params: any) {
-      const widgetEl: HTMLElement = document.getElementById('metaport');  
-      const root = createRoot(widgetEl);
-      // params validation + transformation here
+  constructor(params: any) {
+    const widgetEl: HTMLElement = document.getElementById('metaport');
+    const root = createRoot(widgetEl);
+    // params validation + transformation here
 
-      let tokens = params.tokens ? params.tokens : defaultTokens[params.network];
-      let network = params.network ? params.network : 'mainnet';
-      
-      if (!params['chains']) {
-        // todo: ALL network chains (request from proxy!)
-      }
+    let tokens = params.tokens ? params.tokens : defaultTokens[params.network];
+    let network = params.network ? params.network : 'mainnet';
 
-      if (params.openButton === undefined) params.openButton = true;
-
-      root.render(
-        <Widget
-          tokens={tokens}
-          chains={params['chains']}
-          chainsMetadata={params['chainsMetadata']}
-          open={params['open']}
-          openButton={params['openButton']}
-          network={network}
-          theme={params['theme']}
-          mainnetEndpoint={params['mainnetEndpoint']}
-        />
-      );
+    if (!params['chains']) {
+      // todo: ALL network chains (request from proxy!)
     }
 
-    transfer(params) { internalEvents.transfer(params) }
-    wrap(params) { internalEvents.wrap(params) }
-    unwrap(params) { internalEvents.unwrap(params) }
-    swap(params) { internalEvents.swap(params) }
+    if (params.openButton === undefined) params.openButton = true;
+    if (params.autoLookup === undefined) params.autoLookup = true;
 
-    updateParams(params) { internalEvents.updateParams(params) }
-    requestBalance(params) { internalEvents.requestBalance(params) }
-    setTheme(theme) { internalEvents.setTheme(theme) }
-    close() { internalEvents.close() }
-    open() { internalEvents.open() }
-    reset() { internalEvents.reset() }
+    root.render(
+      <Widget
+        tokens={tokens}
+        chains={params.chains}
+        chainsMetadata={params.chainsMetadata}
+        open={params.open}
+        openButton={params.openButton}
+        autoLookup={params.autoLookup}
+        network={network}
+        theme={params.theme}
+        mainnetEndpoint={params.mainnetEndpoint}
+      />
+    );
+  }
+
+  transfer(params) { internalEvents.transfer(params) }
+  wrap(params) { internalEvents.wrap(params) }
+  unwrap(params) { internalEvents.unwrap(params) }
+  swap(params) { internalEvents.swap(params) }
+
+  updateParams(params) { internalEvents.updateParams(params) }
+  requestBalance(params) { internalEvents.requestBalance(params) }
+  setTheme(theme) { internalEvents.setTheme(theme) }
+  close() { internalEvents.close() }
+  open() { internalEvents.open() }
+  reset() { internalEvents.reset() }
 }
-  
