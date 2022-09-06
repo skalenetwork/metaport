@@ -98,7 +98,8 @@ const widget = new Metaport({
                 'symbol1': { // token symbol
                     'name': 'TOKEN_NAME1', // token display name
                     'address': '0x0357', // token origin address
-                    'iconUrl': 'https://example.com/my_token_icon.png' // optional
+                    'iconUrl': 'https://example.com/my_token_icon.png', // optional
+                    'decimals': '6' // optional (default = '18')
                 }               
             }
         }
@@ -175,7 +176,8 @@ const TOKENS_OVERRIDE = {
     'erc20': {
       "_TST_0x123456": {
         "name": "MY TEST TOKEN",
-        "iconUrl": "https://example.com/test.png"
+        "iconUrl": "https://example.com/test.png",
+        "decimals": "6"
       }
   }
 };
@@ -204,7 +206,7 @@ const widget = new Metaport({
                 'tst': { 
                     'name': 'TEST_TOKEN',
                     'address': '0x0357'
-                }               
+                }
             }
         }
     }

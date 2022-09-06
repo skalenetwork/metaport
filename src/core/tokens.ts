@@ -29,52 +29,12 @@ import { ZERO_ADDRESS, ETH_TOKEN_NAME, MAINNET_CHAIN_NAME, ETH_ERC20_ADDRESS } f
 import { externalEvents } from './events';
 import { initERC20, initERC20Wrapper } from './core';
 import { isChainMainnet } from './actions';
+import TokenData from './dataclasses/TokenData';
+import { toWei, fromWei } from './convertation';
 
 
 debug.enable('*');
 const log = debug('metaport:tokens');
-
-
-export class TokenData {
-    originAddress: string
-    cloneAddress: string
-
-    name: string
-    symbol: string
-
-    clone: boolean
-    type: string
-    balance: number
-
-    iconUrl: string
-
-    unwrappedSymbol: string
-    unwrappedAddress: string
-    unwrappedBalance: number
-
-    constructor(
-        cloneAddress: string,
-        originAddress: string,
-        name: string,
-        symbol: string,
-        clone: boolean,
-        iconUrl: string,
-        unwrappedSymbol: string,
-        unwrappedAddress: string
-    ) {
-        this.cloneAddress = cloneAddress;
-        this.originAddress = originAddress;
-
-        this.unwrappedAddress = unwrappedAddress;
-        this.unwrappedSymbol = unwrappedSymbol;
-
-        this.name = name;
-        this.symbol = symbol;
-        this.clone = clone;
-        this.iconUrl = iconUrl;
-        this.type = (name === ETH_TOKEN_NAME) ? 'eth' : 'erc20'
-    }
-}
 
 
 export async function getAvailableTokens(
@@ -156,6 +116,7 @@ async function getETHToken(
                 false,
                 null,
                 null,
+                null,
                 null
             );
         }
@@ -166,6 +127,7 @@ async function getETHToken(
                 ETH_TOKEN_NAME,
                 ETH_TOKEN_NAME,
                 true,
+                null,
                 null,
                 null,
                 null
@@ -239,7 +201,8 @@ async function getM2STokensManual(
                     false,
                     tokenInfo.iconUrl,
                     null,
-                    null
+                    null,
+                    tokenInfo.decimals
                 );
                 mainnet.erc20.addToken(tokenSymbol, initERC20(tokenInfo.address, mainnet.web3));
                 sChain.erc20.addToken(tokenSymbol, initERC20(cloneAddress, sChain.web3));
@@ -271,14 +234,16 @@ async function getM2STokensAutomatic(
         const tokenContract = initERC20(address, mainnet.web3);
         const symbol = await tokenContract.methods.symbol().call();
         let name = await tokenContract.methods.name().call();
+        let decimals = await tokenContract.methods.decimals().call();
         const cloneAddress = await sChain.erc20.getTokenCloneAddress(address);
-        let tokenIcon;
+        let tokenIcon: string;
 
         const key = '_' + symbol + '_' + address;
         log('Adding token: ' + key);
 
         if (tokens[MAINNET_CHAIN_NAME] && tokens[MAINNET_CHAIN_NAME].erc20 && tokens[MAINNET_CHAIN_NAME].erc20[key]) {
             tokenIcon = tokens[MAINNET_CHAIN_NAME].erc20[key].iconUrl;
+            decimals = tokens[MAINNET_CHAIN_NAME].erc20[key].decimals;
             if (tokens[MAINNET_CHAIN_NAME].erc20[key].name) {
                 name = tokens[MAINNET_CHAIN_NAME].erc20[key].name
             }
@@ -293,7 +258,8 @@ async function getM2STokensAutomatic(
                 true,
                 tokenIcon,
                 null,
-                null
+                null,
+                decimals
             );
         } else {
             availableTokens.erc20[key] = new TokenData(
@@ -304,7 +270,8 @@ async function getM2STokensAutomatic(
                 false,
                 tokenIcon,
                 null,
-                null
+                null,
+                decimals
             );
         }
         mainnet.erc20.addToken(key, initERC20(address, mainnet.web3));
@@ -348,7 +315,8 @@ async function addTokenData(
         isClone,
         token.iconUrl,
         unwrappedSymbol,
-        unwrappedAddress
+        unwrappedAddress,
+        token.decimals
     );
 
     addERC20TokenContracts(
@@ -418,12 +386,13 @@ export async function getTokenBalance(
     chainName: string,
     chain: any,
     tokenSymbol: string,
+    decimals: string,
     address: string
 ): Promise<string> {
     const tokenContract = chain.erc20.tokens[tokenSymbol];
     const balance = await chain.getERC20Balance(tokenContract, address);
     externalEvents.balance(tokenSymbol, chainName, balance);
-    return chain.web3.utils.fromWei(balance);
+    return fromWei(chain.web3, balance, decimals);
 }
 
 
@@ -449,12 +418,14 @@ export async function getTokenBalances(
     address: string
 ) {
     log('Getting token balances...');
-    for (const [symbol, _] of Object.entries(tokens.erc20)) {
+    for (const [symbol, tokenData] of Object.entries(tokens.erc20)) {
+        const td = (tokenData as TokenData);
         if (chainName === MAINNET_CHAIN_NAME) {
             const balance = await getTokenBalance(
                 chainName,
                 mainnet,
                 symbol,
+                td.decimals,
                 address
             );
             tokens.erc20[symbol].balance = balance;
@@ -463,6 +434,7 @@ export async function getTokenBalances(
                 chainName,
                 sChain1,
                 symbol,
+                td.decimals,
                 address
             );
             tokens.erc20[symbol].balance = balance;
@@ -471,6 +443,7 @@ export async function getTokenBalances(
                     chainName,
                     sChain1,
                     tokens.erc20[symbol].unwrappedSymbol,
+                    td.decimals,
                     address
                 );
                 tokens.erc20[symbol].unwrappedBalance = wBalance;

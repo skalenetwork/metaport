@@ -17,25 +17,22 @@
  */
 
 /**
- * @file constants.ts
+ * @file convertation.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-export const MAINNET_CHAIN_NAME = 'mainnet';
-export const ETH_TOKEN_NAME = 'eth';
-export const ETH_ERC20_ADDRESS = '0xD2Aaa00700000000000000000000000000000000';
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+import Web3 from 'web3';
+import { Unit } from 'web3-utils';
 
-export const ETH_PREFIX = 'eth_';
-export const ERC20_PREFIX = 'erc20_';
-export const M2S_POSTFIX = 'm2s';
-export const S2M_POSTFIX = 's2m';
-export const S2S_POSTFIX = 's2s';
-export const WRAP_ACTION = 'wrap';
-export const UNWRAP_ACTION = 'unwrap';
 
-export const MAX_APPROVE_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'; // (2^256 - 1 )
+export function toWei(web3: Web3, value: string, decimals: string): string {
+    return web3.utils.toWei(value, decimalsToUnit(web3, decimals));
+}
 
-export const DEFAULT_MIN_SFUEL_WEI = '21000000000000';
+export function fromWei(web3: Web3, value: string, decimals: string): string {
+    return web3.utils.fromWei(value, decimalsToUnit(web3, decimals));
+}
 
-export const DEFAULT_ERC20_DECIMALS = '18';
+function decimalsToUnit(web3: Web3, decimals: string): Unit {
+    return Object.keys(web3.utils.unitMap).find(key => web3.utils.unitMap[key] === web3.utils.toBN(10).pow(web3.utils.toBN(decimals)).toString()) as Unit;
+}
