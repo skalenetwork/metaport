@@ -29,34 +29,37 @@ import { Widget } from './components/Widget';
 import { internalEvents } from './core/events';
 import defaultTokens from './metadata/tokens.json';
 
+import * as interfaces from './core/interfaces/index';
+export * as interfaces from './core/interfaces/index';
+
 
 export default class Metaport {
-  constructor(params: any) {
+  constructor(config: interfaces.MetaportConfig) {
     const widgetEl: HTMLElement = document.getElementById('metaport');
     const root = createRoot(widgetEl);
     // params validation + transformation here
 
-    let tokens = params.tokens ? params.tokens : defaultTokens[params.network];
-    let network = params.network ? params.network : 'mainnet';
+    let tokens = config.tokens ? config.tokens : defaultTokens[config.skaleNetwork];
+    let network = config.skaleNetwork ? config.skaleNetwork : 'mainnet';
 
-    if (!params['chains']) {
+    if (!config.chains) {
       // todo: ALL network chains (request from proxy!)
     }
 
-    if (params.openButton === undefined) params.openButton = true;
-    if (params.autoLookup === undefined) params.autoLookup = true;
+    if (config.openButton === undefined) config.openButton = true;
+    if (config.autoLookup === undefined) config.autoLookup = true;
 
     root.render(
       <Widget
         tokens={tokens}
-        chains={params.chains}
-        chainsMetadata={params.chainsMetadata}
-        open={params.open}
-        openButton={params.openButton}
-        autoLookup={params.autoLookup}
+        chains={config.chains}
+        chainsMetadata={config.chainsMetadata}
+        open={config.openOnLoad}
+        openButton={config.openButton}
+        autoLookup={config.autoLookup}
         network={network}
-        theme={params.theme}
-        mainnetEndpoint={params.mainnetEndpoint}
+        theme={config.theme}
+        mainnetEndpoint={config.mainnetEndpoint}
       />
     );
   }
