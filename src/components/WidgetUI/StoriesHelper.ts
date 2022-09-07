@@ -59,7 +59,8 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped=false) {
   data.tokens.erc20[tokenSymbol] = {
     "name": tokenName,
     "address": "0x0",
-    "balance": getRandomInt(10000, 70000)
+    "balance": getRandomInt(10000, 70000),
+    "symbol": tokenSymbol
   }
 
   if (wrapped) {
