@@ -1,5 +1,5 @@
 import { getActionSteps } from '../../core/actions';
-import { TokenData } from '../../core/tokens';
+import TokenData from '../../core/dataclasses/TokenData';
 
 function setMock() { return };
 
@@ -37,7 +37,9 @@ export const commonProps = {
     '',
     null,
     '',
-    true,
+    'test',
+    null,
+    null,
     null,
     null,
     null
