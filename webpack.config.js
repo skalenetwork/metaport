@@ -13,12 +13,6 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.tsx?$/,
-      //   loader: 'ts-loader',
-      //   //include: path.resolve(__dirname, 'src'),
-      //   exclude: /node_modules/
-      // },
       {
         test: /\.(ts|tsx)$/,
         loader: require.resolve("babel-loader"),
@@ -28,6 +22,12 @@ module.exports = {
             typescript: true
           }]]
         }
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        // include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/
       },
       {
         test: /\.svg$/,

@@ -33,7 +33,7 @@ import * as interfaces from './core/interfaces/index';
 export * as interfaces from './core/interfaces/index';
 
 
-export default class Metaport {
+export class Metaport {
   constructor(config: interfaces.MetaportConfig) {
     const widgetEl: HTMLElement = document.getElementById('metaport');
     const root = createRoot(widgetEl);
