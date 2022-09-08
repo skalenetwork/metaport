@@ -1,0 +1,1 @@
+yarn run build && cd ../ima-widget-demo/ && rm -rf node_modules/ && yarn install && cd ../metaport/

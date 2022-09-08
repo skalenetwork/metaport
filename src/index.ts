@@ -1,3 +1,1 @@
-import Metaport from "./Metaport";
-
-export { Metaport };
+export { Metaport, interfaces } from "./Metaport";

@@ -19,10 +19,13 @@ import { MAINNET_CHAIN_NAME } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
 import { getSFuelData } from '../../core/sfuel';
 
+import * as interfaces from '../../core/interfaces/index';
+
 
 export function Widget(props) {
 
-  const [extTokens, setExtTokens] = React.useState({ 'erc20': {} });
+  const [extTokens, setExtTokens] = React.useState<interfaces.TokensMap>({ 'erc20': {} });
+  // const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>({ 'erc20': {} });
   const [availableTokens, setAvailableTokens] = React.useState({ 'erc20': {} });
 
   const [open, setOpen] = React.useState(props.open);

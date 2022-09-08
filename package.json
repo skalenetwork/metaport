@@ -1,7 +1,7 @@
 {
   "name": "@skalenetwork/metaport",
-  "version": "0.0.13",
-  "description": "SKALE Metaport widget",
+  "version": "0.1.0",
+  "description": "SKALE Metaport Widget",
   "keywords": [
     "skale",
     "web3",
