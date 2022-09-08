@@ -73,12 +73,14 @@ export const SelectToken = () => (
         'usdc': {
           "name": "USDC",
           "address": "0x0123",
-          "balance": "1000"
+          "balance": "1000",
+          "symbol": "USDC"
         },
         'usdt': {
           "name": "USDT",
           "address": "0x0123",
-          "balance": "3500"
+          "balance": "3500",
+          "symbol": "USDT"
         }
       }
     }}
