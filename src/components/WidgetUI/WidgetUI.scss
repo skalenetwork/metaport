@@ -1,25 +1,4 @@
-// @import "../variables.scss";
-// @import "../typography.scss";
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-h5 {
-  margin-block-end: 1em;
-}
-
-button {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-}
 
 .imaWidgetBody {
   position: fixed;
@@ -37,6 +16,16 @@ button {
 .mp__fullsreenWrapper {
   margin: 0 20pt 20pt 20pt;
 
+  p {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+  }
+
   :global(.MuiPaper-root) {
     background-image: none;
   }
@@ -50,7 +39,7 @@ button {
     font-weight: 600 !important;
     box-shadow: none !important;
     border-radius: 8px !important;
-  }  
+  }
 }
 
 @media all and (min-width:300pt) {
@@ -244,7 +233,7 @@ button {
   }
 
   :global(.MuiStepIcon-root.Mui-active,
-  .MuiStepIcon-root.Mui-completed) {
+    .MuiStepIcon-root.Mui-completed) {
     color: #ffffff !important;
   }
 
@@ -362,15 +351,15 @@ button {
   opacity: 0;
 }
 
-.skaleBtnHidden{
+.skaleBtnHidden {
   display: none !important;
 }
 
-.skaleBtn{
+.skaleBtn {
   margin: -10pt 20pt 20pt 0;
   z-index: 9999 !important;
 }
 
-.mp__popper{
+.mp__popper {
   z-index: 9999 !important;
 }
