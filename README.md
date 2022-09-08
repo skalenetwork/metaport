@@ -24,6 +24,7 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Autowrap for tokens](#autowrap-for-tokens)
       - [Usage with SSR](#usage-with-ssr)
       - [Token icons](#token-icons)
+      - [Type definitions](#type-definitions)
     - [Events](#events)
       - [Available Events](#available-events)
     - [Themes](#themes)
@@ -74,11 +75,11 @@ All currently available options are listed below:
 
 ```Javascript
 const widget = new Metaport({
-    open: true, // Open Metaport on load (optional, default = false)
+    openOnLoad: true, // Open Metaport on load (optional, default = false)
     openButton: false, // Show open/close action button (optional, default = true)
     autoLookup: false, // Automatic token lookup for M2S tokens (default = true)
     mainnetEndpoint: MAINNET_ENDPOINT, // Ethereum Mainnet endpoint, required only for M2S or S2M transfers (optional, default = null)
-    network: 'staging', // SKALE network that will be used - mainnet or staging (optional, defualt = mainnet)
+    skaleNetwork: 'staging', // SKALE network that will be used - mainnet or staging (optional, defualt = mainnet)
     chains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])
         'chainName1',
         'chainName2',
@@ -309,8 +310,8 @@ const [metaport, setMetaport] = React.useState();
 async function loadMetaport() {
     const Metaport = (await import('@skalenetwork/metaport')).Metaport;
     setMetaport(new Metaport({
-      open: true,
-      network: 'staging',
+      openOnLoad: true,
+      skaleNetwork: 'staging',
       chains: ['mainnet', 'chainName1'],
       tokens: {'mainnet': {'eth': {}}}
     }));
@@ -346,6 +347,25 @@ const TOKENS = {
     }
   }
 };
+```
+
+#### Type definitions
+
+You can import interface definitions for the Metaport config and other data structures:
+
+```typescript
+import { interfaces } from '@skalenetwork/metaport';
+
+const theme: interfaces.MetaportTheme = {
+    primary: '#00d4ff',
+    background: '#0a2540',
+    mode: 'dark'
+}
+
+const config: interfaces.MetaportConfig = {
+    skaleNetwork: 'staging',
+    theme: theme
+}
 ```
 
 ### Events

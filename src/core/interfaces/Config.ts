@@ -31,7 +31,7 @@ export interface MetaportConfig {
     openButton?: boolean;
     autoLookup?: boolean;
 
-    skaleNetwork: string;
+    skaleNetwork?: string;
     mainnetEndpoint?: string;
     chains?: string[];
 
