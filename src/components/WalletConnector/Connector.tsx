@@ -12,7 +12,7 @@ import styles from '../WidgetUI/WidgetUI.scss';
 export function Connector(props) {
   return (
     <div>
-      <p className={styles.mp__p3}>Connect to your wallet</p>
+      <p className={clsNames(styles.mp__p3, styles.mp__noMarg)}>Connect to your wallet</p>
       <ButtonBase
         onClick={props.connectMetamask}
         className={styles.mp__btnConnect}
@@ -23,7 +23,7 @@ export function Connector(props) {
             <div className={clsNames(
               styles.mp__flexGrow,
               styles.mp__margTop10,
-              styles.mp__margBott10
+              styles.mp__margBott20
             )}>
               <h3 className={clsNames(
                 styles.mp__noMargTop,

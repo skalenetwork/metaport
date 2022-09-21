@@ -17,29 +17,14 @@
  */
 
 /**
- * @file MetaportConfig.ts
+ * @file Position.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-import { MetaportTheme } from './Theme';
-import { ChainsMetadataMap } from './ChainsMetadata';
-import { TokensMap } from './Tokens';
-import { Position } from '../dataclasses/Position';
 
-
-export interface MetaportConfig {
-    openOnLoad?: boolean;
-    openButton?: boolean;
-    autoLookup?: boolean;
-
-    position?: Position;
-
-    skaleNetwork?: string;
-    mainnetEndpoint?: string;
-    chains?: string[];
-
-    chainsMetadata?: ChainsMetadataMap,
-    tokens?: TokensMap,
-
-    theme?: MetaportTheme,
+export enum Position {
+    topLeft,
+    topRight,
+    bottomRight,
+    bottomLeft
 }

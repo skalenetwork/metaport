@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 
 
-const CHAIN_IDS = {
+export const CHAIN_IDS = {
   'staging': '0x4',
   'qatestnet': '0x4',
   'mainnet': '0x1'
@@ -50,7 +50,7 @@ export const connect = (connectFallback) => {
 
 
 
-export const addListeners = (accountsChangedFallback) => {
+export const addAccountChangedListener = (accountsChangedFallback) => {
   window.ethereum.on('accountsChanged', accountsChangedFallback); // todo: do only once!!!!
   window.ethereum
   .request({ method: 'eth_accounts' })
@@ -61,6 +61,11 @@ export const addListeners = (accountsChangedFallback) => {
     // eth_accounts will return an empty array.
     // console.error(err);
   });
+}
+
+
+export const addChainChangedListener = (chainChangedFallback) => {
+  window.ethereum.on('chainChanged', chainChangedFallback);
 }
 
 

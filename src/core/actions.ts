@@ -128,7 +128,7 @@ abstract class Action {
 abstract class TransferAction extends Action {
     static label = 'Transfer'
     static buttonText = 'Transfer'
-    static loadingText = 'Transfering'
+    static loadingText = 'Transferring'
 }
 
 

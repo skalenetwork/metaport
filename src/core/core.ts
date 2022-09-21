@@ -9,7 +9,8 @@ import proxyEndpoints from '../metadata/proxy.json';
 import {
   schainNetworkParams,
   mainnetNetworkParams,
-  changeMetamaskNetwork
+  changeMetamaskNetwork,
+  CHAIN_IDS
 } from '../components/WalletConnector';
 
 
@@ -18,6 +19,8 @@ import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json';
 
 import mainnetAddresses from '../metadata/addresses/mainnet.json';
 import stagingAddresses from '../metadata/addresses/staging.json';
+
+import { MAINNET_CHAIN_NAME } from './constants';
 
 
 export function initERC20(tokenAddress: string, web3: Web3) {
@@ -34,6 +37,25 @@ export function initSChain(network: string, schainName: string) {
   const endpoint = getSChainEndpoint(network, schainName);
   const sChainWeb3 = new Web3(endpoint);
   return new SChain(sChainWeb3, sChainAbi);
+}
+
+
+export async function switchMetamaskNetwork( // TODO: use new function
+  network: string,
+  chainName: string,
+  mainnetEndpoint: string
+) {
+  if (chainName === MAINNET_CHAIN_NAME) {
+    return await initMainnetMetamask(network, mainnetEndpoint);
+  } else {
+    return await initSChainMetamask(network, chainName);
+  }
+}
+
+
+export function getChainId(network: string, chainName: string): string { // TODO: use new function
+  if (chainName === MAINNET_CHAIN_NAME) return CHAIN_IDS[network];
+  return calcChainId(chainName);
 }
 
 

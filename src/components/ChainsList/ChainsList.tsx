@@ -90,7 +90,11 @@ export default function ChainsList(props) {
                 <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                   {getChainIcon(props.chain)}
                 </div>
-                <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
+                <p className={clsNames(
+                  styles.mp__flex,
+                  styles.mp__chainName,
+                  styles.mp__margRi10
+                )}>
                   {getChainName(props.chain)}
                 </p>
               </div>
@@ -98,7 +102,7 @@ export default function ChainsList(props) {
           ) : (
             <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                <OfflineBoltIcon sx={{ color: 'white' }}/>
+                <OfflineBoltIcon sx={{ color: stringToColour(props.chain, props.dark) }}/>
               </div>
               <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                 Select chain
