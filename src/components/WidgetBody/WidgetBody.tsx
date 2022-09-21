@@ -4,8 +4,6 @@ import Collapse from '@mui/material/Collapse';
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
 
@@ -14,6 +12,10 @@ import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
 import Stepper from '../Stepper';
 import SFuelBadge from '../SFuelBadge';
+import CurrentChain from '../CurrentChain';
+import ErrorMessage from '../ErrorMessage';
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
 export default function WidgetBody(props) {
@@ -34,34 +36,28 @@ export default function WidgetBody(props) {
 
   return (
     <div>
-      <div>
-        <Collapse in={!expandedTo && !expandedTokens}>
-          <div>
-            <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margBott5)}>
-              <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__flexGrow)}>
-                Transfer from
-              </p>
-              <div className={styles.mp__flex}>
-                <SFuelBadge from={true} data={props.sFuelData1} />
-              </div>
-            </div>
-            <ChainsList
-              schains={props.schains}
-              setChain={props.setChain1}
-              chain={props.chain1}
-              disabledChain={props.chain2}
-              expanded={expandedFrom}
-              setExpanded={setExpandedFrom}
-              fromChain={true}
-              chainsMetadata={props.chainsMetadata}
-              disabled={props.disabledChains}
-              dark={props.theme.mode === 'dark'}
-            />
-          </div>
-        </Collapse>
-      </div>
+      <CurrentChain
+        schains={props.schains}
+        setChain={props.setChain1}
+        chain={props.chain1}
+        disabledChain={props.chain2}
+        fromChain={true}
+        chainsMetadata={props.chainsMetadata}
+        disabled={props.disabledChains}
 
-      <div>
+        theme={props.theme}
+        expanded={expandedFrom}
+        setExpanded={setExpandedFrom}
+
+        expandedTo={expandedTo}
+        expandedTokens={expandedTokens}
+      />
+      <Collapse in={props.errorMessage && !expandedFrom}>
+        <ErrorMessage
+          errorMessage={props.errorMessage}
+        />
+      </Collapse>
+      <Collapse in={!props.errorMessage}>
         <Collapse className={styles.mp__btnSwitch} in={!expandedFrom && !expandedTo && !expandedTokens}>
           <IconButton
             size="small"
@@ -87,8 +83,8 @@ export default function WidgetBody(props) {
 
         <Collapse in={!expandedFrom && !expandedTokens}>
           <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margBott5)}>
-            <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__flexGrow)}>
-              To
+            <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, (expandedTo ? styles.mp__transferToFix : null))}>
+              Transfer to
             </p>
             <div className={styles.mp__flex}>
               <SFuelBadge from={false} data={props.sFuelData2} />
@@ -110,7 +106,9 @@ export default function WidgetBody(props) {
 
         <Collapse in={props.chain1 && props.chain2}>
           <Collapse in={!!expandedTokens}>
-            <h5 className={clsNames(styles.mp__p3, styles.mp__margBott5, styles.mp__margTop20Pt)}>Token</h5>
+            <p className={clsNames(styles.mp__p3, styles.mp__p, styles.mp__margBott5, styles.mp__margTop20Pt)}>
+              Token
+            </p>
           </Collapse>
           <Collapse in={!expandedFrom && !expandedTo}>
             <div className={styles.mp__margTop10}>
@@ -166,7 +164,7 @@ export default function WidgetBody(props) {
             )}
           </div>
         </Collapse>
-      </div>
-    </div>
+      </Collapse>
+    </div >
   )
 }

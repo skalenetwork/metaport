@@ -2,6 +2,8 @@ import React from "react";
 import { WidgetUI } from "./WidgetUI";
 import { commonProps, defaultTokenData, generateTokenData } from './StoriesHelper';
 
+import PublicOffIcon from '@mui/icons-material/PublicOff';
+
 
 export default {
   title: "Widget UI"
@@ -60,6 +62,16 @@ export const SelectChains = () => (
   />
 );
 
+export const SelectChainsLight = () => (
+  <WidgetUI
+    schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain', 'eee-chain']}
+    tokens={{ "erc20": {} }}
+    walletConnected={true}
+    open={true}
+    theme={{ mode: 'light' }}
+  />
+);
+
 
 export const LoadingTokens = () => (
   <WidgetUI loadingTokens={true} {...commonProps} />
@@ -84,11 +96,16 @@ export const SelectToken = () => (
         }
       }
     }}
-
-
   />
 );
 
+
+export const NoTokenPairs = () => (<WidgetUI {...commonProps} tokens={{ "erc20": {} }} />);
+
+
+export const NoTokenPairsLight = () => (
+  <WidgetUI {...commonProps} tokens={{ "erc20": {} }} theme={{ mode: 'light' }} />
+);
 
 
 export const LoadingSteps = () => (
@@ -303,5 +320,36 @@ export const NoButton = () => (
     {...commonProps}
     {...defaultTokenData}
     openButton={false}
+  />
+);
+
+export const WrongNetwork = () => (
+  <WidgetUI
+    {...commonProps}
+    {...defaultTokenData}
+    openButton={false}
+    error={true}
+    errorMessage={{
+      icon: <PublicOffIcon />,
+      text: 'test test test test test test test test test test',
+      btnText: 'aaaa',
+      fallback: () => { console.log('test test test') }
+    }}
+  />
+);
+
+
+export const WrongNetworkLight = () => (
+  <WidgetUI
+    {...commonProps}
+    {...defaultTokenData}
+    theme={{ mode: 'light' }}
+    openButton={false}
+    errorMessage={{
+      icon: <PublicOffIcon />,
+      text: 'test test test test test test test test test test',
+      btnText: 'aaaa',
+      fallback: () => { console.log('test test test') }
+    }}
   />
 );

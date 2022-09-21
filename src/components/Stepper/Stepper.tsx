@@ -21,16 +21,6 @@ export default function ActionsStepper(props) {
     props.setAmountLocked(false);
   };
 
-  // useEffect(() => {   
-  //   let allowance = parseInt(props.allowance);
-  //   let amount = parseInt(props.amount);
-  //   if (allowance >= amount && props.amount != '') {
-  //     props.setActiveStep(1);
-  //   } else {
-  //     props.setActiveStep(0);
-  //   }
-  // }, [props.allowance, props.amount]);
-
   return (
     <Box>
       <Stepper className={localStyles.mp__stepper} activeStep={props.activeStep} orientation="vertical">
@@ -69,14 +59,14 @@ export default function ActionsStepper(props) {
         ))}
       </Stepper>
       {props.activeStep === props.actionSteps.length && (
-          <Button
-            onClick={handleReset}
-            color="primary"
-            size="medium"
-            className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
-          >
-            Start over
-          </Button>
+        <Button
+          onClick={handleReset}
+          color="primary"
+          size="medium"
+          className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
+        >
+          Start over
+        </Button>
       )}
     </Box>
   );

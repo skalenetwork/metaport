@@ -26,6 +26,9 @@ export function WidgetUI(props) {
 
   let widgetTheme = getWidgetTheme(props.theme);
   let theme = createTheme({
+    zIndex: {
+      tooltip: 9998
+    },
     palette: {
       mode: widgetTheme.mode,
       background: {
@@ -70,13 +73,8 @@ export function WidgetUI(props) {
   }, [props.tokens]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    // setAnchorEl(anchorEl ? null : event.currentTarget);
-    // setAnchorEl(anchorEl ? null : divRef.current);
     props.setOpen(props.open ? false : true);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'widget-body-popup' : undefined;
 
   const themeCls = widgetTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
 
@@ -86,30 +84,7 @@ export function WidgetUI(props) {
         <div
           className={clsNames(styles.imaWidgetBody, themeCls)}
         >
-          <div ref={divRef}>
-            <Fab
-              color={props.open ? 'secondary' : 'primary'}
-              className={props.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
-              aria-label="add"
-              aria-describedby={id}
-              type="button"
-              onClick={handleClick}
-            >
-              {open ? (
-                <CloseIcon
-                  style={{
-                    color: widgetTheme.mode == 'dark' ? 'white' : 'black'
-                  }}
-                />
-              ) : (<img
-                className={styles.skaleLogoSm}
-                src={skaleLogo}
-              />)
-              }
-            </Fab>
-          </div>
-
-          <Popper className={styles.mp__popper} id={id} open={open} anchorEl={anchorEl}>
+          <div className={clsNames(styles.mp__popper, (props.open ? null : styles.noDisplay))}>
             <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
               <Paper elevation={3} className={styles.mp__paper}>
                 <div className={styles.mp__popup}>
@@ -153,6 +128,8 @@ export function WidgetUI(props) {
                       sFuelData2={props.sFuelData2}
 
                       theme={widgetTheme}
+
+                      errorMessage={props.errorMessage}
                     />
                   ) : (
                     <Connector
@@ -162,7 +139,31 @@ export function WidgetUI(props) {
                 </div>
               </Paper>
             </div>
-          </Popper>
+          </div>
+          <div className={clsNames(styles.mp__flex)}>
+            <div className={clsNames(styles.mp__flexGrow)}></div>
+            <div className={styles.mp__flex}>
+              <Fab
+                color={props.open ? 'secondary' : 'primary'}
+                className={props.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
+                aria-label="add"
+                type="button"
+                onClick={handleClick}
+              >
+                {props.open ? (
+                  <CloseIcon
+                    style={{
+                      color: widgetTheme.mode == 'dark' ? 'white' : 'black'
+                    }}
+                  />
+                ) : (<img
+                  className={styles.skaleLogoSm}
+                  src={skaleLogo}
+                />)
+                }
+              </Fab>
+            </div>
+          </div>
         </div>
       </ThemeProvider>
     </StyledEngineProvider>

@@ -1,10 +1,8 @@
-
-
 .imaWidgetBody {
   position: fixed;
   bottom: 0;
   right: 0;
-  z-index: 9999 !important;
+  z-index: 9997 !important;
   // margin: 0 20pt 20pt 0;
 }
 
@@ -19,6 +17,13 @@
   p {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
     -webkit-font-smoothing: antialiased;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mp__p__marg {
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
   }
 
   button {
@@ -39,12 +44,6 @@
     font-weight: 600 !important;
     box-shadow: none !important;
     border-radius: 8px !important;
-  }
-}
-
-@media all and (min-width:300pt) {
-  .mp__popup {
-    min-width: 230pt;
   }
 }
 
@@ -112,7 +111,7 @@
   margin-top: 30px !important;
 }
 
-.marg-bott-20 {
+.mp__margBott20 {
   margin-bottom: 20px !important;
 }
 
@@ -149,6 +148,8 @@
 .mp__chainName {
   font-weight: bold;
   padding-left: 10pt;
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
 }
 
 
@@ -200,7 +201,7 @@
   button {
     border: 10px #1a1a1a solid;
     // background-color: #d9e021 !important;
-    z-index: 9999;
+    z-index: 9997;
   }
 
   :global(svg) {
@@ -223,7 +224,8 @@
     filter: invert(1);
   }
 
-  .mp__p3 {
+  .mp__p,
+  .mp__infoIcon {
     color: rgb(255 255 255 / 65%);
   }
 
@@ -262,7 +264,8 @@
     color: black !important;
   }
 
-  .mp__p3 {
+  .mp__p,
+  .mp__infoIcon {
     color: rgb(0 0 0 / 65%);
   }
 
@@ -314,6 +317,15 @@
   letter-spacing: 0.02857em !important;
 }
 
+.mp__p2 {
+  margin: 0;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 0.8525rem !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.03857em !important;
+}
+
 .mp__btnConnect {
   width: 100%;
   margin-top: 10pt;
@@ -351,15 +363,41 @@
   opacity: 0;
 }
 
+.noDisplay {
+  display: none !important;
+}
+
 .skaleBtnHidden {
   display: none !important;
 }
 
 .skaleBtn {
   margin: -10pt 20pt 20pt 0;
-  z-index: 9999 !important;
+  z-index: 9997 !important;
 }
 
 .mp__popper {
-  z-index: 9999 !important;
+  z-index: 9997 !important;
+  min-width: 305pt;
+}
+
+
+.mp__transferToFix {
+  margin-top: 26pt !important;
+}
+
+.mp__textCentered {
+  text-align: center;
+}
+
+
+.mp__infoIcon {
+  svg {
+    height: 25pt;
+    width: 100%;
+  }
+}
+
+.mp__minContent {
+  width: min-content;
 }

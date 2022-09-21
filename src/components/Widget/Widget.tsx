@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 
-import WidgetUI from '../WidgetUI'
+import WidgetUI from '../WidgetUI';
+import { WrongNetworkMessage, TransactionErrorMessage } from '../ErrorMessage';
+
 import {
   initSChain,
   initSChainMetamask,
@@ -8,14 +10,15 @@ import {
   initMainnetMetamask,
   initERC20,
   updateWeb3SChain,
-  updateWeb3SChainMetamask
-} from '../../core'
+  updateWeb3SChainMetamask,
+  getChainId
+} from '../../core';
 import { getAvailableTokens, getTokenBalances } from '../../core/tokens';
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
-import { connect, addListeners } from '../WalletConnector'
+import { connect, addAccountChangedListener, addChainChangedListener } from '../WalletConnector'
 import { externalEvents } from '../../core/events';
-import { MAINNET_CHAIN_NAME } from '../../core/constants';
+import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
 import { getSFuelData } from '../../core/sfuel';
 
@@ -39,6 +42,10 @@ export function Widget(props) {
 
   const [chainName1, setChainName1] = React.useState(undefined);
   const [chainName2, setChainName2] = React.useState(undefined);
+
+  const [chainId, setChainId] = React.useState(undefined);
+  const [extChainId, setExtChainId] = React.useState(undefined);
+  const [errorMessage, setErrorMessage] = React.useState(undefined);
 
   const [token, setToken] = React.useState(undefined);
 
@@ -65,7 +72,8 @@ export function Widget(props) {
     setSchains(props.chains);
     setMainnetEndpoint(props.mainnetEndpoint);
     setExtTokens(props.tokens);
-    addListeners(accountsChangedFallback);
+    addAccountChangedListener(accountsChangedFallback);
+    addChainChangedListener(chainChangedFallback);
     addinternalEventsListeners();
   }, []);
 
@@ -198,20 +206,19 @@ export function Widget(props) {
     }
 
     if (schainName === chainName2) {
-      let tokenContract = sChain2.erc20.tokens[tokenSymbol]; // todo: check token exist!
+      let tokenContract = sChain2.erc20.tokens[tokenSymbol]; // TODO: check token exist!
       let balance = await sChain2.getERC20Balance(tokenContract, address);
       return externalEvents.balance(tokenSymbol, chainName2, balance);
     }
-    console.log('Error: can request balance only for active chains!'); // todo: replace with error!
+    console.log('Error: can request balance only for active chains!'); // TODO: replace with error!
   }
 
   function requestBalanceHandler(e) {
     if (!sChain1 || !sChain2) {
-      console.log('chains are not inited yet'); // todo: replace with error
+      console.log('chains are not inited yet'); // TODO: replace with error
     }
     emitBalanceEvent(e.detail.schainName, e.detail.tokenSymbol);
   }
-
 
   async function initSchain1() {
     setSChain1(await initSChainMetamask(
@@ -224,19 +231,28 @@ export function Widget(props) {
     setMainnet(await initMainnetMetamask(props.network, mainnetEndpoint))
   }
 
-  async function switchMetamaskChain() {
+  async function enforceMetamaskNetwork() {
     if (chainName1 === MAINNET_CHAIN_NAME) {
+      await initMainnet1();
+    } else {
+      await initSchain1();
+    }
+  }
+
+  async function switchMetamaskChain() {
+    if (chainName1 === MAINNET_CHAIN_NAME) { // TODO: FIX
       return
     };
     if (chainName2 === MAINNET_CHAIN_NAME) {
       return
     };
-
     updateWeb3SChain(sChain1, props.network, chainName1);
     await updateWeb3SChainMetamask(sChain2, props.network, chainName2);
   }
 
   useEffect(() => {
+    if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
+    if (chainName1) setChainId(getChainId(props.network, chainName1));
     if (address && chainName1) {
       if (chainName1 == MAINNET_CHAIN_NAME) {
         initMainnet1();
@@ -247,6 +263,7 @@ export function Widget(props) {
   }, [chainName1, address]);
 
   useEffect(() => {
+    if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
     if (address && chainName2) {
       if (chainName2 == MAINNET_CHAIN_NAME) {
         setMainnet(initMainnet(props.network, mainnetEndpoint))
@@ -289,6 +306,14 @@ export function Widget(props) {
     runPreAction();
   }, [actionSteps, activeStep, amount]);
 
+  useEffect(() => {
+    if (extChainId && chainId && extChainId !== chainId) {
+      setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
+    } else {
+      setErrorMessage(undefined);
+    }
+  }, [extChainId, chainId]);
+
   async function runPreAction() {
     if (actionSteps && actionSteps[activeStep]) {
       const ActionClass = actionSteps[activeStep];
@@ -309,6 +334,10 @@ export function Widget(props) {
     }
   }
 
+  function chainChangedFallback(_extChainId: string): void {
+    setExtChainId(_extChainId);
+  }
+
   function accountsChangedFallback(accounts) {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
@@ -319,21 +348,35 @@ export function Widget(props) {
     }
   }
 
+  function errorMessageClosedFallback() {
+    setLoading(false);
+    setAmountLocked(false);
+    setErrorMessage(undefined);
+  }
+
   const handleNextStep = async () => {
     setLoading(true);
     const ActionClass = actionSteps[activeStep];
-    await new ActionClass(
-      mainnet,
-      sChain1,
-      sChain2,
-      chainName1,
-      chainName2,
-      address,
-      amount,
-      token,
-      availableTokens['erc20'][token],
-      switchMetamaskChain
-    ).execute();
+
+    try {
+      await new ActionClass(
+        mainnet,
+        sChain1,
+        sChain2,
+        chainName1,
+        chainName2,
+        address,
+        amount,
+        token,
+        availableTokens['erc20'][token],
+        switchMetamaskChain
+      ).execute();
+    } catch (err) {
+      console.error(err);    
+      const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
+      setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
+      return;
+    }
     await updateTokenBalances();
     setLoading(false);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -417,5 +460,8 @@ export function Widget(props) {
     sFuelData2={sFuelData2}
 
     theme={theme}
+    position={props.position}
+
+    errorMessage={errorMessage}
   />)
 }

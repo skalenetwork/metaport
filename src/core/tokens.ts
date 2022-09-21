@@ -231,7 +231,9 @@ async function getM2STokensAutomatic(
     const erc20Tokens = await mainnet.erc20.getTokenMappings(chainName, 0, erc20Len); // todo: opt
     log('Number of token pairs: ' + erc20Len);
     for (const address of erc20Tokens) {
+        log('Adding contract: ' + address);
         const tokenContract = initERC20(address, mainnet.web3);
+        log('Added contract: ' + address);
         const symbol = await tokenContract.methods.symbol().call();
         let name = await tokenContract.methods.name().call();
         let decimals = await tokenContract.methods.decimals().call();

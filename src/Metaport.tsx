@@ -27,6 +27,8 @@ import { createRoot } from 'react-dom/client';
 
 import { Widget } from './components/Widget';
 import { internalEvents } from './core/events';
+import { Position } from './core/dataclasses/Position';
+
 import defaultTokens from './metadata/tokens.json';
 
 import * as interfaces from './core/interfaces/index';
@@ -48,6 +50,7 @@ export class Metaport {
 
     if (config.openButton === undefined) config.openButton = true;
     if (config.autoLookup === undefined) config.autoLookup = true;
+    if (config.position === undefined) config.position = Position.bottomRight;
 
     root.render(
       <Widget
@@ -60,6 +63,7 @@ export class Metaport {
         network={network}
         theme={config.theme}
         mainnetEndpoint={config.mainnetEndpoint}
+        position={config.position}
       />
     );
   }

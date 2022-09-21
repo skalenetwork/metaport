@@ -3,9 +3,11 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import ErrorMessage, { NoTokenPairsMessage } from '../ErrorMessage';
 import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 import localStyles from "./TokenList.scss";
@@ -39,6 +41,8 @@ function roundDown(number, decimals) {
 export default function TokenList(props) {
 
   let disabled = Object.keys(props.tokens['erc20']).length == 1 && !props.tokens.eth || Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth;
+  let noTokens = !props.tokens.eth && Object.keys(props.tokens['erc20']).length == 0;
+
   useEffect(() => {
     // if (disabled) {
     //   props.setToken(Object.keys(props.tokens['erc20'])[0])
@@ -66,6 +70,12 @@ export default function TokenList(props) {
     tokenInfo = props.tokens.eth;
   } else {
     tokenInfo = props.tokens['erc20'][props.token];
+  }
+
+  if (noTokens) {
+    return (<ErrorMessage
+      errorMessage={new NoTokenPairsMessage()}
+    />)
   }
 
 
@@ -100,6 +110,7 @@ export default function TokenList(props) {
               </p>
               {tokenInfo.unwrappedBalance ? (
                 <p className={clsNames(
+                  styles.mp__p,
                   styles.mp__p3,
                   styles.mp__flex,
                   styles.mp__flexCenteredVert,
@@ -109,6 +120,7 @@ export default function TokenList(props) {
                 </p>
               ) : null}
               <p className={clsNames(
+                styles.mp__p,
                 styles.mp__p3,
                 styles.mp__flex,
                 styles.mp__flexCenteredVert,
@@ -160,6 +172,7 @@ export default function TokenList(props) {
                       {allTokens[key].name}
                     </p>
                     <p className={clsNames(
+                      styles.mp__p,
                       styles.mp__p3,
                       styles.mp__flex,
                       styles.mp__flexCenteredVert,
