@@ -24,7 +24,7 @@ function hashCode(str) {
   return hash;
 }
 
-function stringToColour(str, dark) {
+function stringToColor(str, dark) {
   if (dark) {
     // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
     return 'hsl(120deg 2% 88%)';
@@ -68,7 +68,7 @@ export default function ChainsList(props) {
     if (chainName == MAINNET_CHAIN_NAME) {
       return <img src={ethLogo} className='eth-logo' height='20px' width='20px'/>;
     }
-    return (<OfflineBoltIcon sx={{ color: stringToColour(props.chain, props.dark) }} width='20px'/>);
+    return (<OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} width='20px'/>);
   }
 
   return (
@@ -102,7 +102,7 @@ export default function ChainsList(props) {
           ) : (
             <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                <OfflineBoltIcon sx={{ color: stringToColour(props.chain, props.dark) }}/>
+                <OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }}/>
               </div>
               <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                 Select chain
