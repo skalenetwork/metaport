@@ -193,6 +193,7 @@ async function getM2STokensManual(
             if (tokens[MAINNET_CHAIN_NAME].erc20.hasOwnProperty(tokenSymbol)) {
                 const tokenInfo = tokens[MAINNET_CHAIN_NAME].erc20[tokenSymbol];
                 const cloneAddress = await sChain.erc20.getTokenCloneAddress(tokenInfo.address);
+                if (cloneAddress === ZERO_ADDRESS) { continue; }
                 availableTokens.erc20[tokenSymbol] = new TokenData(
                     cloneAddress,
                     tokenInfo.address,

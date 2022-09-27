@@ -372,7 +372,7 @@ export function Widget(props) {
         switchMetamaskChain
       ).execute();
     } catch (err) {
-      console.error(err);    
+      console.error(err);
       const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
       setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
       return;
