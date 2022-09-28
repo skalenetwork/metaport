@@ -3,6 +3,7 @@ import React from 'react';
 import Collapse from '@mui/material/Collapse';
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
@@ -15,7 +16,7 @@ import SFuelBadge from '../SFuelBadge';
 import CurrentChain from '../CurrentChain';
 import ErrorMessage from '../ErrorMessage';
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 
 export default function WidgetBody(props) {
@@ -59,26 +60,28 @@ export default function WidgetBody(props) {
       </Collapse>
       <Collapse in={!props.errorMessage}>
         <Collapse className={styles.mp__btnSwitch} in={!expandedFrom && !expandedTo && !expandedTokens}>
-          <IconButton
-            size="small"
-            color="primary"
-            style={{
-              backgroundColor: props.theme.primary,
-              borderColor: props.theme.background,
-            }}
+          <Tooltip title='Switch transfer direction'>
+            <IconButton
+              size="small"
+              color="primary"
+              style={{
+                backgroundColor: props.theme.primary,
+                borderColor: props.theme.background,
+              }}
 
-            disabled={props.amountLocked}
+              disabled={props.amountLocked}
 
-            onClick={() => {
-              let chain1 = props.chain1;
-              props.setChain1(props.chain2);
-              props.setChain2(chain1);
-              props.setAmount(null);
-              props.setLoading(false);
-              props.setActiveStep(0);
-            }}>
-            <KeyboardArrowDownIcon />
-          </IconButton>
+              onClick={() => {
+                let chain1 = props.chain1;
+                props.setChain1(props.chain2);
+                props.setChain2(chain1);
+                props.setAmount(null);
+                props.setLoading(false);
+                props.setActiveStep(0);
+              }}>
+              <ImportExportIcon />
+            </IconButton>
+          </Tooltip>
         </Collapse>
 
         <Collapse in={!expandedFrom && !expandedTokens}>
