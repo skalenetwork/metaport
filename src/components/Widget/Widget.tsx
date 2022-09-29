@@ -31,6 +31,7 @@ export function Widget(props) {
   // const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>({ 'erc20': {} });
   const [availableTokens, setAvailableTokens] = React.useState({ 'erc20': {} });
 
+  const [firstOpen, setFirstOpen] = React.useState(props.open);
   const [open, setOpen] = React.useState(props.open);
 
   const [schains, setSchains] = React.useState([]);
@@ -251,6 +252,7 @@ export function Widget(props) {
   }
 
   useEffect(() => {
+    if (!open && !firstOpen) return;
     if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
     if (chainName1) setChainId(getChainId(props.network, chainName1));
     if (address && chainName1) {
@@ -260,7 +262,11 @@ export function Widget(props) {
         initSchain1();
       }
     }
-  }, [chainName1, address]);
+  }, [chainName1, address, firstOpen]);
+
+  useEffect(() => {
+    if (open && !firstOpen) setFirstOpen(true);
+  }, [open]);
 
   useEffect(() => {
     if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
@@ -372,7 +378,7 @@ export function Widget(props) {
         switchMetamaskChain
       ).execute();
     } catch (err) {
-      console.error(err);    
+      console.error(err);
       const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
       setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
       return;
