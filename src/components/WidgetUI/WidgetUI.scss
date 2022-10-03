@@ -334,19 +334,24 @@
   text-align: left;
 
   .mp__iconConnect {
-    padding-right: 20pt;
-    width: 30pt !important;
+    width: 20pt !important;
   }
 
   :global(.MuiPaper-root) {
     background-color: rgba(161, 161, 161, 0.2) !important;
     width: 100%;
-    padding: 10pt 20pt;
+    padding: 10pt 15pt;
     border-radius: 8px !important;
   }
 
   .mp__iconGray {
     width: 12pt;
+  }
+}
+
+:global(.Mui-disabled) {
+  .mp__iconConnect {
+    filter: saturate(0) !important;
   }
 }
 
