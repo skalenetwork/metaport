@@ -26,16 +26,11 @@ import debug from 'debug';
 
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
-
 import { initContract } from '../core';
-
-import { addETHToken, getEthBalance } from './eth';
-
 import * as interfaces from '../interfaces/index';
 import { TokenType } from '../dataclasses/TokenType';
 import TokenData, { getTokenKeyname } from '../dataclasses/TokenData';
-import { MAINNET_CHAIN_NAME, ZERO_ADDRESS } from '../constants';
-import { eqArrays, isMainnet } from '../helper';
+import { ZERO_ADDRESS } from '../constants';
 
 
 debug.enable('*');
