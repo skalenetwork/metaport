@@ -21,10 +21,10 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
+import * as interfaces from './interfaces/index';
 
 function dispatchEvent(name: string, data = {}) {
-    window.dispatchEvent(new CustomEvent(name, {detail: data}));
+    window.dispatchEvent(new CustomEvent(name, { detail: data }));
     // debug('event sent: ' + name);
 }
 
@@ -85,12 +85,14 @@ export namespace internalEvents {
         });
     }
 
-    export function transfer(params) {
+    export function transfer(transferParams: interfaces.TransferParams): void {
         dispatchEvent('_metaport_transfer', {
-            'amount': params.amount,
-            'schains': params.schains,
-            'tokens': params.tokens,
-            'lockAmount': params.lockAmount
+            'amount': transferParams.amount,
+            'tokenId': transferParams.tokenId,
+            'chains': transferParams.chains,
+            'tokenKeyname': transferParams.tokenKeyname,
+            'tokenType': transferParams.tokenType,
+            'lockAmount': transferParams.lockAmount
         });
     }
 

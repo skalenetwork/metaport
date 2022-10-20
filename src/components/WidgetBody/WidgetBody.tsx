@@ -11,10 +11,14 @@ import styles from '../WidgetUI/WidgetUI.scss';
 import ChainsList from '../ChainsList';
 import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
+import TokenIdInput from '../TokenIdInput';
 import Stepper from '../Stepper';
 import SFuelBadge from '../SFuelBadge';
 import CurrentChain from '../CurrentChain';
 import ErrorMessage from '../ErrorMessage';
+import AmountErrorMessage from '../AmountErrorMessage';
+
+import { TokenType } from '../../core/dataclasses/TokenType';
 
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 
@@ -23,17 +27,6 @@ export default function WidgetBody(props) {
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
-
-  // let tokensList = Object.keys(props.tokens['erc20']).length != 0;
-  let currentTokenBalance;
-
-  // todo: optimize
-  if (props.token && props.tokens['erc20'][props.token]) {
-    currentTokenBalance = props.tokens['erc20'][props.token]['balance'];
-  }
-  if (props.token && props.tokens.eth && props.token == 'eth') {
-    currentTokenBalance = props.tokens.eth.balance;
-  }
 
   return (
     <div>
@@ -73,6 +66,7 @@ export default function WidgetBody(props) {
 
               onClick={() => {
                 let chain1 = props.chain1;
+                props.setAmountErrorMessage(undefined);
                 props.setChain1(props.chain2);
                 props.setChain2(chain1);
                 props.setAmount(null);
@@ -116,7 +110,7 @@ export default function WidgetBody(props) {
           <Collapse in={!expandedFrom && !expandedTo}>
             <div className={styles.mp__margTop10}>
               {props.loadingTokens ? (<Skeleton animation="wave" height={48} />) : (<TokenList
-                tokens={props.tokens}
+                availableTokens={props.availableTokens}
                 setToken={props.setToken}
                 token={props.token}
                 expanded={expandedTokens}
@@ -124,19 +118,35 @@ export default function WidgetBody(props) {
               />)}
             </div>
           </Collapse>
-
-          <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
+          <Collapse in={(!expandedFrom && !expandedTo && !expandedTokens && props.token) && [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)}>
+            <div className={styles.mp__margTop10}>
+              <TokenIdInput
+                tokenId={props.tokenId}
+                setTokenId={props.setTokenId}
+                token={props.token}
+                loading={props.loading}
+                activeStep={props.activeStep}
+                amountLocked={props.amountLocked}
+                dark={props.theme.mode === 'dark'}
+              />
+            </div>
+          </Collapse>
+          <Collapse in={(!expandedFrom && !expandedTo && !expandedTokens && props.token) && [TokenType.erc20, TokenType.erc1155].includes(props.token.type)}>
             <div className={styles.mp__margTop10}>
               <AmountInput
                 amount={props.amount}
                 setAmount={props.setAmount}
-                balance={currentTokenBalance}
+                token={props.token}
                 loading={props.loading}
                 activeStep={props.activeStep}
                 amountLocked={props.amountLocked}
               />
             </div>
           </Collapse>
+          <AmountErrorMessage
+            amountErrorMessage={props.amountErrorMessage}
+            actionBtnDisabled={props.actionBtnDisabled}
+          />
         </Collapse>
 
         <Collapse in={!expandedFrom && !expandedTo && !expandedTokens && props.token}>
@@ -147,12 +157,15 @@ export default function WidgetBody(props) {
               <div>
                 {!props.actionSteps ? (<Skeleton animation="wave" height={48} />) : (<Stepper
                   amount={props.amount}
+                  tokenId={props.tokenId}
                   setAmount={props.setAmount}
                   allowance={props.allowance}
-                  balance={currentTokenBalance}
+                  token={props.token}
 
                   loading={props.loading}
                   setLoading={props.setLoading}
+
+                  actionBtnDisabled={props.actionBtnDisabled}
 
                   activeStep={props.activeStep}
                   setActiveStep={props.setActiveStep}
@@ -160,6 +173,8 @@ export default function WidgetBody(props) {
                   setAmountLocked={props.setAmountLocked}
                   actionSteps={props.actionSteps}
                   handleNextStep={props.handleNextStep}
+
+                  amountErrorMessage={props.amountErrorMessage}
 
                   theme={props.theme}
                 />)}

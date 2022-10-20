@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import debug from 'debug';
 
 import WidgetUI from '../WidgetUI';
 import { WrongNetworkMessage, TransactionErrorMessage } from '../ErrorMessage';
@@ -13,23 +14,32 @@ import {
   updateWeb3SChainMetamask,
   getChainId
 } from '../../core';
-import { getAvailableTokens, getTokenBalances } from '../../core/tokens';
+
+
+import { getAvailableTokens, getTokenBalances } from '../../core/tokens/index';
+import { getEmptyTokenDataMap, getDefaultToken } from '../../core/tokens/helper';
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
 import { connect, addAccountChangedListener, addChainChangedListener } from '../WalletConnector'
 import { externalEvents } from '../../core/events';
 import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
+import { ActionType } from '../../core/actions/action';
 import { getSFuelData } from '../../core/sfuel';
 
 import * as interfaces from '../../core/interfaces/index';
+import TokenData from '../../core/dataclasses/TokenData';
+
+
+debug.enable('*');
+const log = debug('metaport:Widget');
 
 
 export function Widget(props) {
 
-  const [extTokens, setExtTokens] = React.useState<interfaces.TokensMap>({ 'erc20': {} });
-  // const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>({ 'erc20': {} });
-  const [availableTokens, setAvailableTokens] = React.useState({ 'erc20': {} });
+  const [configTokens, setConfigTokens] = React.useState<interfaces.TokensMap>(undefined);
+  const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>(getEmptyTokenDataMap());
+  const [token, setToken] = React.useState<TokenData>(undefined);
 
   const [firstOpen, setFirstOpen] = React.useState(props.open);
   const [open, setOpen] = React.useState(props.open);
@@ -38,6 +48,7 @@ export function Widget(props) {
 
   const [address, setAddress] = React.useState(undefined);
   const [amount, setAmount] = React.useState<string>('');
+  const [tokenId, setTokenId] = React.useState<number>(undefined);
 
   const [walletConnected, setWalletConnected] = React.useState(undefined);
 
@@ -46,9 +57,9 @@ export function Widget(props) {
 
   const [chainId, setChainId] = React.useState(undefined);
   const [extChainId, setExtChainId] = React.useState(undefined);
-  const [errorMessage, setErrorMessage] = React.useState(undefined);
 
-  const [token, setToken] = React.useState(undefined);
+  const [errorMessage, setErrorMessage] = React.useState(undefined);
+  const [amountErrorMessage, setAmountErrorMessage] = React.useState<string>(undefined);
 
   const [sChain1, setSChain1] = React.useState<SChain>(undefined);
   const [sChain2, setSChain2] = React.useState<SChain>(undefined);
@@ -58,6 +69,7 @@ export function Widget(props) {
 
   const [loading, setLoading] = React.useState(false);
   const [amountLocked, setAmountLocked] = React.useState(false);
+  const [actionBtnDisabled, setActionBtnDisabled] = React.useState<boolean>(false);
   const [activeStep, setActiveStep] = React.useState(0);
   const [actionSteps, setActionSteps] = React.useState(undefined);
 
@@ -72,7 +84,7 @@ export function Widget(props) {
     setWalletConnected(false);
     setSchains(props.chains);
     setMainnetEndpoint(props.mainnetEndpoint);
-    setExtTokens(props.tokens);
+    setConfigTokens(props.tokens);
     addAccountChangedListener(accountsChangedFallback);
     addChainChangedListener(chainChangedFallback);
     addinternalEventsListeners();
@@ -101,18 +113,18 @@ export function Widget(props) {
 
   function updateBalanceHandler() { // todo: refactor
     window.addEventListener("metaport_requestBalance", requestBalanceHandler, false);
-    console.log("updateBalanceHandler done");
+    log("updateBalanceHandler done");
   }
 
   function closeWidget(e) {
     setOpen(false);
     setActiveStep(0);
-    console.log('closeWidget event processed')
+    log('closeWidget event processed');
   }
 
   function openWidget(e) {
     setOpen(true);
-    console.log('openWidget event processed')
+    log('openWidget event processed');
   }
 
   function resetWidget(e) {
@@ -126,11 +138,11 @@ export function Widget(props) {
 
     setAmount('');
     setLoading(false);
-    setToken(null);
+    setToken(undefined);
     setAmountLocked(false);
     setActiveStep(0);
     setActionSteps(undefined);
-    console.log('resetWidget event processed')
+    log('resetWidget event processed');
   }
 
   function requestTransfer(e) {
@@ -140,11 +152,11 @@ export function Widget(props) {
     setAmountLocked(!!e.detail.lockAmount);
 
     if (e.detail.tokens) {
-      setExtTokens(e.detail.tokens);
+      setConfigTokens(e.detail.tokens);
     }
 
-    console.log("requestTransfer from: " + e.detail.schains[0], ", to: " + e.detail.schains[1]);
-    console.log("amount inside react " + e.detail.amount);
+    log("requestTransfer from: " + e.detail.schains[0], ", to: " + e.detail.schains[1]);
+    log("amount inside react " + e.detail.amount);
   }
 
   function updateParamsHandler(e) {
@@ -152,10 +164,10 @@ export function Widget(props) {
       setSchains(e.detail.chains);
     }
     if (e.detail.tokens) {
-      setExtTokens(e.detail.tokens);
+      setConfigTokens(e.detail.tokens);
     }
-    console.log('params updated');
-    console.log(e.detail.chains);
+    log('params updated');
+    log(e.detail.chains);
   }
 
   async function tokenLookup() {
@@ -166,7 +178,7 @@ export function Widget(props) {
       sChain2,
       chainName1,
       chainName2,
-      extTokens,
+      configTokens,
       false,
       props.autoLookup
     );
@@ -175,8 +187,6 @@ export function Widget(props) {
       chainName1,
       mainnet,
       sChain1,
-      sChain2,
-      token,
       address
     );
 
@@ -192,8 +202,6 @@ export function Widget(props) {
       chainName1,
       mainnet,
       sChain1,
-      sChain2,
-      token,
       address
     );
     setAvailableTokens(tokens);
@@ -211,12 +219,13 @@ export function Widget(props) {
       let balance = await sChain2.getERC20Balance(tokenContract, address);
       return externalEvents.balance(tokenSymbol, chainName2, balance);
     }
-    console.log('Error: can request balance only for active chains!'); // TODO: replace with error!
+    console.error('Error: can request balance only for active chains!'); // TODO: replace with error!
   }
 
   function requestBalanceHandler(e) {
     if (!sChain1 || !sChain2) {
-      console.log('chains are not inited yet'); // TODO: replace with error
+      console.error('chains are not inited yet'); // TODO: replace with error
+      return
     }
     emitBalanceEvent(e.detail.schainName, e.detail.tokenSymbol);
   }
@@ -284,7 +293,7 @@ export function Widget(props) {
   }, [chainName2, address]);
 
   useEffect(() => {
-    if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && extTokens) {
+    if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && configTokens) {
       externalEvents.connected();
       initSFuelData();
       setToken(undefined);
@@ -292,25 +301,28 @@ export function Widget(props) {
       setActiveStep(0);
       tokenLookup();
     }
-  }, [sChain1, sChain2, mainnet, extTokens]);
+  }, [sChain1, sChain2, mainnet, configTokens]);
 
   useEffect(() => {
     setActiveStep(0);
   }, [token]);
 
   useEffect(() => {
+    setAmountErrorMessage(undefined);
+    if (token === undefined) return;
     let actionName = getActionName(chainName1, chainName2, token);
-    if (actionName && availableTokens['erc20'] && availableTokens['erc20'][token]) {
-      setActionSteps(getActionSteps(actionName, availableTokens['erc20'][token]));
-    }
-    if (actionName && availableTokens['eth']) {
-      setActionSteps(getActionSteps(actionName, availableTokens['eth']));
-    }
+    setActionSteps(getActionSteps(actionName, token));
   }, [chainName1, chainName2, token, availableTokens]);
 
   useEffect(() => {
+    const defaultToken = getDefaultToken(availableTokens);
+    if (defaultToken) setToken(defaultToken);
+  }, [availableTokens]);
+
+  useEffect(() => {
+    setAmountErrorMessage(undefined);
     runPreAction();
-  }, [actionSteps, activeStep, amount]);
+  }, [actionSteps, activeStep, amount, tokenId]);
 
   useEffect(() => {
     if (extChainId && chainId && extChainId !== chainId) {
@@ -322,7 +334,9 @@ export function Widget(props) {
 
   async function runPreAction() {
     if (actionSteps && actionSteps[activeStep]) {
-      const ActionClass = actionSteps[activeStep];
+      log('Running preAction');
+      setActionBtnDisabled(true);
+      const ActionClass: ActionType = actionSteps[activeStep];
       await new ActionClass(
         mainnet,
         sChain1,
@@ -331,12 +345,15 @@ export function Widget(props) {
         chainName2,
         address,
         amount,
+        tokenId,
         token,
-        availableTokens['erc20'][token],
         switchMetamaskChain,
         setActiveStep,
-        activeStep
+        activeStep,
+        setAmountErrorMessage
       ).preAction();
+      setActionBtnDisabled(false);
+      log('preAction done');
     }
   }
 
@@ -362,7 +379,7 @@ export function Widget(props) {
 
   const handleNextStep = async () => {
     setLoading(true);
-    const ActionClass = actionSteps[activeStep];
+    const ActionClass: ActionType = actionSteps[activeStep];
 
     try {
       await new ActionClass(
@@ -373,9 +390,12 @@ export function Widget(props) {
         chainName2,
         address,
         amount,
+        tokenId,
         token,
-        availableTokens['erc20'][token],
-        switchMetamaskChain
+        switchMetamaskChain,
+        setActiveStep,
+        activeStep,
+        setAmountErrorMessage
       ).execute();
     } catch (err) {
       console.error(err);
@@ -428,10 +448,13 @@ export function Widget(props) {
 
   return (<WidgetUI
     schains={schains}
-    tokens={availableTokens}
+    availableTokens={availableTokens}
     chainsMetadata={props.chainsMetadata}
+
     amount={amount}
     setAmount={setAmount}
+    tokenId={tokenId}
+    setTokenId={setTokenId}
 
     open={open}
     openButton={props.openButton}
@@ -451,6 +474,8 @@ export function Widget(props) {
     loading={loading}
     setLoading={setLoading}
 
+    actionBtnDisabled={actionBtnDisabled}
+
     loadingTokens={loadingTokens}
 
     activeStep={activeStep}
@@ -469,5 +494,7 @@ export function Widget(props) {
     position={props.position}
 
     errorMessage={errorMessage}
+    amountErrorMessage={amountErrorMessage}
+    setAmountErrorMessage={setAmountErrorMessage}
   />)
 }

@@ -3,6 +3,7 @@ import Web3 from 'web3';
 
 export const CHAIN_IDS = {
   'staging': '0x4',
+  'staging3': '0x5',
   'qatestnet': '0x4',
   'mainnet': '0x1'
 }

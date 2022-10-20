@@ -8,6 +8,8 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+import { TokenType } from '../../core/dataclasses/TokenType';
+
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
 import localStyles from './Stepper.scss';
@@ -20,6 +22,12 @@ export default function ActionsStepper(props) {
     props.setLoading(false);
     props.setAmountLocked(false);
   };
+
+  if (!props.token) return;
+
+  const nextStepDisabledAmount = [TokenType.erc20, TokenType.erc1155].includes(props.token.type) && (props.amount === '' || props.amount === '0');
+  const nextStepDisabledTokenId = [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type) && !props.tokenId;
+  const nextStepDisabled = nextStepDisabledAmount || nextStepDisabledTokenId || props.loading || props.actionBtnDisabled;
 
   return (
     <Box>
@@ -47,7 +55,7 @@ export default function ActionsStepper(props) {
                       variant="contained" color="primary" size="medium"
                       className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                       onClick={props.handleNextStep}
-                      disabled={props.amount == '' || (Number(props.amount) > Number(props.balance) && step.label !== 'Unwrap')} // TODO: tmp unwrap fix!
+                      disabled={nextStepDisabled || props.amountErrorMessage || (Number(props.amount) > Number(props.token.balance) && step.label !== 'Unwrap')} // TODO: tmp unwrap fix!
                     >
                       {step.buttonText}
                     </Button>

@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
+
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import ErrorMessage, { NoTokenPairsMessage } from '../ErrorMessage';
+import { getAvailableTokensTotal } from '../../core/tokens/helper';
+
+import TokenData from '../../core/dataclasses/TokenData';
+
 import { clsNames } from '../../core/helper';
+
+import ErrorMessage, { NoTokenPairsMessage } from '../ErrorMessage';
+
+import TokenListSection from '../TokenListSection';
+import TokenBalance from './TokenBalance';
+
 import styles from "../WidgetUI/WidgetUI.scss";
 import localStyles from "./TokenList.scss";
 
@@ -23,6 +31,7 @@ const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)
 
 
 function iconPath(name) {
+  if (!name) return;
   const key = name.toLowerCase() + '.svg';
   if (icons[key]) {
     return icons[key];
@@ -32,52 +41,22 @@ function iconPath(name) {
 }
 
 
-function roundDown(number, decimals) {
-  decimals = decimals || 0;
-  return (Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
-}
-
 
 export default function TokenList(props) {
-
-  let disabled = Object.keys(props.tokens['erc20']).length == 1 && !props.tokens.eth || Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth;
-  let noTokens = !props.tokens.eth && Object.keys(props.tokens['erc20']).length == 0;
-
-  useEffect(() => {
-    // if (disabled) {
-    //   props.setToken(Object.keys(props.tokens['erc20'])[0])
-    // }
-  }, []);
+  let availableTokensTotal = getAvailableTokensTotal(props.availableTokens);
+  let disabled = availableTokensTotal === 1;
+  let noTokens = availableTokensTotal === 0;
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       props.setExpanded(isExpanded ? panel : false);
     };
 
-  function handle(token) {
-    props.setExpanded(false);
-    props.setToken(token);
-  }
-
-  let allTokens = props.tokens['erc20'];
-  let tokenInfo;
-
-  if (props.tokens.eth) {
-    allTokens.eth = props.tokens.eth;
-  }
-
-  if (props.token == 'eth') {
-    tokenInfo = props.tokens.eth;
-  } else {
-    tokenInfo = props.tokens['erc20'][props.token];
-  }
-
   if (noTokens) {
     return (<ErrorMessage
       errorMessage={new NoTokenPairsMessage()}
     />)
   }
-
 
   return (
     <div>
@@ -97,7 +76,7 @@ export default function TokenList(props) {
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                 <img
                   className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                  src={tokenInfo.iconUrl ? tokenInfo.iconUrl : iconPath(tokenInfo.symbol)}
+                  src={props.token.iconUrl ? props.token.iconUrl : iconPath(props.token.symbol)}
                 />
               </div>
               <p className={clsNames(
@@ -106,28 +85,9 @@ export default function TokenList(props) {
                 styles.mp__flexGrow,
                 styles.mp__margRi10
               )}>
-                {tokenInfo.name}
+                {props.token.name}
               </p>
-              {tokenInfo.unwrappedBalance ? (
-                <p className={clsNames(
-                  styles.mp__p,
-                  styles.mp__p3,
-                  styles.mp__flex,
-                  styles.mp__flexCenteredVert,
-                  styles.mp__margRi5
-                )}>
-                  {roundDown(tokenInfo.unwrappedBalance, 4)} {tokenInfo.unwrappedSymbol} /
-                </p>
-              ) : null}
-              <p className={clsNames(
-                styles.mp__p,
-                styles.mp__p3,
-                styles.mp__flex,
-                styles.mp__flexCenteredVert,
-                styles.mp__margRi5
-              )}>
-                {roundDown(tokenInfo['balance'], 4)} {tokenInfo.symbol}
-              </p>
+              <TokenBalance token={props.token} />
             </div>
           ) : (
             <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
@@ -147,44 +107,36 @@ export default function TokenList(props) {
           }
         </AccordionSummary>
         <AccordionDetails>
-          {allTokens ? (<div className={styles.mp__chainsList}>
-            {Object.keys(allTokens).map((key, i) => (
-              <Typography key={key}>
-                <Button
-                  color="secondary"
-                  size="small"
-                  className={styles.mp__btnChain}
-                  onClick={() => handle(key)}
-                >
-                  <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                      <img
-                        className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                        src={allTokens[key].iconUrl ? allTokens[key].iconUrl : iconPath(allTokens[key].symbol)}
-                      />
-                    </div>
-                    <p className={clsNames(
-                      styles.mp__chainName,
-                      styles.mp__flex,
-                      styles.mp__flexGrow,
-                      styles.mp__margRi10
-                    )}>
-                      {allTokens[key].name}
-                    </p>
-                    <p className={clsNames(
-                      styles.mp__p,
-                      styles.mp__p3,
-                      styles.mp__flex,
-                      styles.mp__flexCenteredVert,
-                      styles.mp__margRi5
-                    )}>
-                      {roundDown(allTokens[key].balance, 4)} {allTokens[key].symbol}
-                    </p>
-                  </div>
-                </Button>
-              </Typography>
-            ))}
-          </div>) : (<div></div>)}
+          <TokenListSection
+            tokens={props.availableTokens.eth}
+            type='ETH'
+            setToken={props.setToken}
+            setExpanded={props.setExpanded}
+          />
+          <TokenListSection
+            tokens={props.availableTokens.erc20}
+            type='ERC20'
+            setToken={props.setToken}
+            setExpanded={props.setExpanded}
+          />
+          <TokenListSection
+            tokens={props.availableTokens.erc721}
+            type='ERC721'
+            setToken={props.setToken}
+            setExpanded={props.setExpanded}
+          />
+          <TokenListSection
+            tokens={props.availableTokens.erc721meta}
+            type='ERC721 with Metadata'
+            setToken={props.setToken}
+            setExpanded={props.setExpanded}
+          />
+          <TokenListSection
+            tokens={props.availableTokens.erc1155}
+            type='ERC1155'
+            setToken={props.setToken}
+            setExpanded={props.setExpanded}
+          />
         </AccordionDetails>
       </Accordion>
     </div>

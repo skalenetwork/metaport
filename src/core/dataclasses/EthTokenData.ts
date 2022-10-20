@@ -17,24 +17,28 @@
  */
 
 /**
- * @file constants.ts
+ * @file EthTokenData.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-export const MAINNET_CHAIN_NAME = 'mainnet';
+import { ETH_ERC20_ADDRESS } from '../constants';
+import { TokenType } from './TokenType';
+import TokenData from './TokenData';
 
-export const ETH_ERC20_ADDRESS = '0xD2Aaa00700000000000000000000000000000000';
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-export const M2S_POSTFIX = 'm2s';
-export const S2M_POSTFIX = 's2m';
-export const S2S_POSTFIX = 's2s';
-export const WRAP_ACTION = 'wrap';
-export const UNWRAP_ACTION = 'unwrap';
-
-export const MAX_APPROVE_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'; // (2^256 - 1 )
-
-export const DEFAULT_MIN_SFUEL_WEI = '21000000000000';
-
-export const DEFAULT_ERC20_DECIMALS = '18';
-export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...';
+export default class EthTokenData extends TokenData {
+    constructor(clone: boolean) {
+        super(
+            ETH_ERC20_ADDRESS,
+            null,
+            TokenType.eth,
+            TokenType.eth,
+            clone,
+            null,
+            null,
+            TokenType.eth,
+            null,
+            null
+        );
+    }
+}

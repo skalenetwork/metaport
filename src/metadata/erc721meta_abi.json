@@ -520,6 +520,28 @@
         },
         {
             "type": "function",
+            "name": "setTokenURI",
+            "constant": false,
+            "payable": false,
+            "inputs": [
+                {
+                    "type": "uint256",
+                    "name": "tokenId"
+                },
+                {
+                    "type": "string",
+                    "name": "tokenUri"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool",
+                    "name": ""
+                }
+            ]
+        },
+        {
+            "type": "function",
             "name": "supportsInterface",
             "constant": true,
             "stateMutability": "view",

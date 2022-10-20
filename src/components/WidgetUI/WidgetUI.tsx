@@ -62,16 +62,6 @@ export function WidgetUI(props) {
     }
   }, [props.schains]);
 
-  useEffect(() => {
-    if (props.tokens == undefined) return;
-    if (Object.keys(props.tokens['erc20']).length == 1) {
-      props.setToken(Object.keys(props.tokens['erc20'])[0]);
-    }
-    if (Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth) {
-      props.setToken('eth');
-    }
-  }, [props.tokens]);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     props.setOpen(props.open ? false : true);
   };
@@ -100,7 +90,7 @@ export function WidgetUI(props) {
 
                       setToken={props.setToken}
                       token={props.token}
-                      tokens={props.tokens}
+                      availableTokens={props.availableTokens}
 
                       balance={props.balance}
                       allowance={props.allowance}
@@ -110,8 +100,13 @@ export function WidgetUI(props) {
                       amount={props.amount}
                       setAmount={props.setAmount}
 
+                      tokenId={props.tokenId}
+                      setTokenId={props.setTokenId}
+
                       loading={props.loading}
                       setLoading={props.setLoading}
+
+                      actionBtnDisabled={props.actionBtnDisabled}
 
                       loadingTokens={props.loadingTokens}
 
@@ -130,6 +125,8 @@ export function WidgetUI(props) {
                       theme={widgetTheme}
 
                       errorMessage={props.errorMessage}
+                      amountErrorMessage={props.amountErrorMessage}
+                      setAmountErrorMessage={props.setAmountErrorMessage}
                     />
                   ) : (
                     <Connector

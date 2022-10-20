@@ -22,6 +22,18 @@
  */
 
 import TokenData from '../../core/dataclasses/TokenData';
+import EthTokenData from '../../core/dataclasses/EthTokenData';
+import { TokenType } from '../../core/dataclasses/TokenType';
+
 
 export interface TokenDataMap { [tokenSymbol: string]: TokenData; }
-export interface TokenDataTypesMap { [tokenType: string]: TokenDataMap; }
+export interface EthTokenDataMap { [tokenSymbol: string]: EthTokenData; }
+
+
+export type TokenDataTypesMap = {
+    [TokenType.eth]: EthTokenDataMap
+    [TokenType.erc20]: TokenDataMap
+    [TokenType.erc721]: TokenDataMap
+    [TokenType.erc721meta]: TokenDataMap
+    [TokenType.erc1155]: TokenDataMap
+}

@@ -16,14 +16,6 @@ import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 
 
-function hashCode(str) {
-  let hash = 0;
-  for (var i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return hash;
-}
-
 function stringToColor(str, dark) {
   if (dark) {
     // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
@@ -43,7 +35,7 @@ export default function ChainsList(props) {
   const schainNames = [];
 
   for (let chain of props.schains) {
-    if (chain != props.disabledChain && chain != props.chain){
+    if (chain != props.disabledChain && chain != props.chain) {
       schainNames.push(chain);
     }
   }
@@ -57,7 +49,7 @@ export default function ChainsList(props) {
     if (chainName == MAINNET_CHAIN_NAME) {
       return 'Ethereum Mainnet';
     }
-    if (props.chainsMetadata && props.chainsMetadata[chainName]){
+    if (props.chainsMetadata && props.chainsMetadata[chainName]) {
       return props.chainsMetadata[chainName].alias;
     } else {
       return chainName;
@@ -66,9 +58,9 @@ export default function ChainsList(props) {
 
   function getChainIcon(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return <img src={ethLogo} className='eth-logo' height='20px' width='20px'/>;
+      return <img src={ethLogo} className='eth-logo' height='20px' width='20px' />;
     }
-    return (<OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} width='20px'/>);
+    return (<OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} width='20px' />);
   }
 
   return (
@@ -102,7 +94,7 @@ export default function ChainsList(props) {
           ) : (
             <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                <OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }}/>
+                <OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} />
               </div>
               <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                 Select chain
@@ -113,7 +105,7 @@ export default function ChainsList(props) {
         </AccordionSummary>
         <AccordionDetails>
           <div className={styles.mp__chainsList}>
-            {schainNames.map((name)  => (
+            {schainNames.map((name) => (
               <Typography key={name}>
                 <Button
                   color="secondary"
@@ -123,15 +115,15 @@ export default function ChainsList(props) {
                 >
                   <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
                     <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                    {getChainIcon(name)}
+                      {getChainIcon(name)}
                     </div>
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                       {getChainName(name)}
                     </p>
-                  </div>  
+                  </div>
                 </Button>
-            </Typography>
-           ))}
+              </Typography>
+            ))}
           </div>
         </AccordionDetails>
       </Accordion>

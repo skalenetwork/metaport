@@ -1,6 +1,7 @@
 import { getActionSteps } from '../../core/actions';
 import TokenData from '../../core/dataclasses/TokenData';
-
+import { TokenType } from '../../core/dataclasses/TokenType';
+import { getEmptyTokenDataMap } from '../../core/tokens/helper';
 function setMock() { return };
 
 
@@ -41,33 +42,89 @@ export const commonProps = {
     null,
     null,
     null,
+    TokenType.erc20,
     null,
     null
   ))
 }
 
 
-export function generateTokenData(tokenSymbol, tokenName, wrapped=false) {
+export function generateTokenData(tokenSymbol, tokenName, wrapped = false) {
   const data = {
     token: tokenSymbol,
     amount: getRandomInt(1000, 10000),
-    tokens: {
-      "erc20": {
-      }
-    }
+    availableTokens: getEmptyTokenDataMap()
   }
-  data.tokens.erc20[tokenSymbol] = {
-    "name": tokenName,
-    "address": "0x0",
-    "balance": getRandomInt(10000, 70000),
-    "symbol": tokenSymbol
-  }
-
+  data.availableTokens.erc20[tokenSymbol] = new TokenData(
+    '0x0',
+    '0x0',
+    tokenName,
+    tokenSymbol,
+    false,
+    undefined,
+    '18',
+    TokenType.erc20,
+    undefined,
+    undefined
+  );
   if (wrapped) {
-    data.tokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(10000, 70000);
-    data.tokens.erc20[tokenSymbol].unwrappedSymbol = 'u' + tokenSymbol;
-  }
+    data.availableTokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(10000, 70000).toString();
+    data.availableTokens.erc20[tokenSymbol].unwrappedSymbol = 'u' + tokenSymbol;
+  };
+  data.availableTokens.erc20[tokenSymbol].balance = getRandomInt(10000, 70000).toString();
+  data.token = data.availableTokens.erc20[tokenSymbol];
   return data;
 }
 
 export const defaultTokenData = generateTokenData('usdt', 'Tether');
+
+
+export function generateERC721TokenData(tokenSymbol, tokenName) {
+  const data = {
+    token: tokenSymbol,
+    amount: getRandomInt(1000, 10000),
+    availableTokens: getEmptyTokenDataMap()
+  }
+  data.availableTokens.erc721[tokenSymbol] = new TokenData(
+    '0x0',
+    '0x0',
+    tokenName,
+    tokenSymbol,
+    false,
+    undefined,
+    undefined,
+    TokenType.erc721,
+    undefined,
+    undefined
+  );
+  data.token = data.availableTokens.erc721[tokenSymbol];
+  return data;
+}
+
+export const defaultERC721TokenData = generateERC721TokenData('skl', 'SKALE Space');
+
+
+export function generateERC1155TokenData(tokenSymbol, tokenName) {
+  const data = {
+    token: tokenSymbol,
+    amount: getRandomInt(1000, 10000),
+    availableTokens: getEmptyTokenDataMap()
+  }
+  data.availableTokens.erc1155[tokenSymbol] = new TokenData(
+    '0x0',
+    '0x0',
+    tokenName,
+    tokenSymbol,
+    false,
+    undefined,
+    '18',
+    TokenType.erc1155,
+    undefined,
+    undefined
+  );
+  // data.availableTokens.erc1155[tokenSymbol].balance = getRandomInt(10000, 70000).toString();
+  data.token = data.availableTokens.erc1155[tokenSymbol];
+  return data;
+}
+
+export const defaultERC1155TokenData = generateERC1155TokenData('XEM', 'SKALIENS');

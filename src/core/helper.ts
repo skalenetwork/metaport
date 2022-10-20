@@ -21,6 +21,20 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+
+import { MAINNET_CHAIN_NAME } from './constants';
+
+
 export function clsNames(...args) {
- return args.join(' ');
+    return args.join(' ');
+}
+
+
+export function eqArrays(arr1, arr2) {
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+}
+
+
+export function isMainnet(chainName: string): boolean {
+    return chainName === MAINNET_CHAIN_NAME;
 }

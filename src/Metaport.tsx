@@ -68,7 +68,7 @@ export class Metaport {
     );
   }
 
-  transfer(params) { internalEvents.transfer(params) }
+  transfer(params: interfaces.TransferParams): void { internalEvents.transfer(params) }
   wrap(params) { internalEvents.wrap(params) }
   unwrap(params) { internalEvents.unwrap(params) }
   swap(params) { internalEvents.swap(params) }
