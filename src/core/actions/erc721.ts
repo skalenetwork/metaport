@@ -23,83 +23,118 @@
 
 
 import debug from 'debug';
+import { Contract } from 'web3-eth-contract';
 
+import { Action } from './action';
 import { TokenType } from '../dataclasses/TokenType';
 import { externalEvents } from '../events';
-import { toWei, fromWei } from '../convertation';
-import { MAX_APPROVE_AMOUNT, ZERO_ADDRESS } from '../constants';
-
-import { TransferAction, ApproveAction } from './action';
+import { addressesEqual } from '../helper';
 
 
 debug.enable('*');
 const log = debug('metaport:actions:erc721');
 
 
-export class ApproveERC721M extends ApproveAction {
+interface CheckRes {
+    res: boolean;
+    approved: boolean;
+    msg?: string;
+}
 
-    isMeta(): boolean {
-        return this.tokenData.type === TokenType.erc721meta;
+
+async function checkERC721(
+    address: string,
+    approvalAddress: string,
+    tokenId: number,
+    tokenContract: Contract
+): Promise<CheckRes> {
+    let approvedAddress: string;
+    const checkRes: CheckRes = { res: true, approved: false };
+    if (!tokenId) return checkRes;
+    try {
+        approvedAddress = await tokenContract.methods.getApproved(tokenId).call();
+        log(`approvedAddress: ${approvedAddress}, address: ${address}`);
+    } catch (err) {
+        console.error(err);
+        checkRes.msg = 'tokenId does not exist, try again'
+        return checkRes;
     }
+    try {
+        const currentOwner = await tokenContract.methods.ownerOf(tokenId).call();;
+        log(`currentOwner: ${currentOwner}, address: ${address}`);
+        if (!addressesEqual(currentOwner, address)) {
+            checkRes.msg = 'This account is not an owner of this tokenId';
+            return checkRes;
+        }
+    } catch (err) {
+        console.error(err);
+        checkRes.msg = 'Something went wrong, check developer console';
+        return checkRes;
+    }
+    checkRes.approved = addressesEqual(approvedAddress, approvalAddress);
+    return checkRes;
+}
 
-    async execute() {
-        this.isMeta() ? await this.mainnet.erc721meta.approve(
+
+class ERC721Action extends Action {
+    isMeta(): boolean { return this.tokenData.type === TokenType.erc721meta; };
+    mn() { return this.isMeta() ? this.mainnet.erc721meta : this.mainnet.erc721; };
+    s1() { return this.isMeta() ? this.sChain1.erc721meta : this.sChain1.erc721; };
+    s2() { return this.isMeta() ? this.sChain2.erc721meta : this.sChain2.erc721; };
+}
+
+class ERC721Approve extends ERC721Action {
+    static label = 'Approve transfer'
+    static buttonText = 'Approve'
+    static loadingText = 'Approving'
+}
+
+class ERC721Transfer extends ERC721Action {
+    static label = 'Transfer'
+    static buttonText = 'Transfer'
+    static loadingText = 'Transferring'
+
+    transferComplete(tx): void {
+        externalEvents.transferComplete(
+            tx,
+            this.chainName1,
+            this.chainName2,
             this.tokenData.keyname,
-            this.tokenId,
-            { address: this.address }
-        ) : await this.mainnet.erc721.approve(
+            false
+        );
+    }
+}
+
+
+export class ApproveERC721M extends ERC721Approve {
+    async execute() {
+        await this.mn().approve(
             this.tokenData.keyname,
             this.tokenId,
             { address: this.address }
         )
     }
-    async preAction() { // TODO: optimize! - reuse this code
-        const tokenContract = this.isMeta() ? this.mainnet.erc721meta.tokens[this.tokenData.keyname] : this.mainnet.erc721.tokens[this.tokenData.keyname];
-        if (!this.tokenId) {
-            this.setAmountErrorMessage(undefined);
-            return;
-        }
-        let approvedAddress: string;
-        try {
-            approvedAddress = await tokenContract.methods.getApproved(this.tokenId).call();
-            log(`approvedAddress: ${approvedAddress}, address: ${this.address}`);
-        } catch (err) {
-            console.error(err);
-            this.setAmountErrorMessage('tokenId does not exist, try again');
-            return
-        }
-        try {
-            const currentOwner = await this.mainnet.getERC721OwnerOf(tokenContract, this.tokenId);
-            if (currentOwner !== this.address) {
-                this.setAmountErrorMessage('This account is not an owner of this tokenId');
-                return;
-            }
-        } catch (err) {
-            this.setAmountErrorMessage(err);
-            return;
-        }
-        this.setAmountErrorMessage(undefined);
-        if (approvedAddress === this.address) this.setActiveStep(1);
+    async preAction() {
+        const checkRes = await checkERC721(
+            this.address,
+            this.mn().address,
+            this.tokenId,
+            this.mn().tokens[this.tokenData.keyname]
+        );
+        this.setAmountErrorMessage(checkRes.msg);
+        if (checkRes.approved) this.setActiveStep(1);
     }
 }
 
 
-export class TransferERC721M2S extends TransferAction {
-
-    isMeta(): boolean { return this.tokenData.type === TokenType.erc721meta; }
-
+export class TransferERC721M2S extends ERC721Transfer {
     async execute() {
-        const destTokenContract = this.isMeta() ? this.sChain2.erc721meta.tokens[this.tokenData.keyname] : this.sChain2.erc721.tokens[this.tokenData.keyname];
+        const destTokenContract = this.s2().tokens[this.tokenData.keyname]
         const ownerOnDestination = await this.sChain2.getERC721OwnerOf(
             destTokenContract,
             this.tokenId
         );
-        const tx = this.isMeta() ? await this.mainnet.erc721meta.deposit(
-            this.chainName2,
-            this.tokenData.keyname,
-            this.tokenId,
-            { address: this.address }
-        ) : await this.mainnet.erc721.deposit(
+        const tx = await this.mn().deposit(
             this.chainName2,
             this.tokenData.keyname,
             this.tokenId,
@@ -109,92 +144,53 @@ export class TransferERC721M2S extends TransferAction {
         await this.sChain2.waitERC721OwnerChange(
             destTokenContract, this.tokenId, ownerOnDestination);
         log('Token received to destination chain');
-        externalEvents.transferComplete(
-            tx,
-            this.chainName1,
-            this.chainName2,
-            this.tokenData.keyname,
-            false
-        );
+        this.transferComplete(tx);
     }
 
     async preAction() {
-        // const tokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
-        // const allowance = await tokenContract.methods.allowance(
-        //     this.address,
-        //     this.mainnet.erc20.address
-        // ).call();
-        // const allowanceEther = fromWei(this.mainnet.web3, allowance, this.tokenData.decimals);
-        // if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
-        //     this.setActiveStep(0);
-        // }
+        const checkRes = await checkERC721(
+            this.address,
+            this.mn().address,
+            this.tokenId,
+            this.mn().tokens[this.tokenData.keyname]
+        );
+        this.setAmountErrorMessage(checkRes.msg);
+        if (!checkRes.approved) this.setActiveStep(0);
     }
 }
 
 
 
-export class ApproveERC721S extends ApproveAction {
-
-    isMeta(): boolean { return this.tokenData.type === TokenType.erc721meta; }
-
+export class ApproveERC721S extends ERC721Approve {
     async execute() {
-        this.isMeta() ? await this.sChain1.erc721meta.approve(
+        await this.s1().approve(
             this.tokenData.keyname,
             this.tokenId,
             { address: this.address }
-        ) : await this.sChain1.erc721.approve(
-            this.tokenData.keyname,
-            this.tokenId,
-            { address: this.address }
-        )
+        );
     }
-
-    async preAction() { // TODO: optimize! - reuse this code
-        const tokenContract = this.isMeta() ? this.sChain1.erc721meta.tokens[this.tokenData.keyname] : this.sChain1.erc721.tokens[this.tokenData.keyname];
-        if (!this.tokenId) {
-            this.setAmountErrorMessage(undefined);
-            return;
-        }
-        let approvedAddress: string;
-        try {
-            approvedAddress = await tokenContract.methods.getApproved(this.tokenId).call();
-            log(`approvedAddress: ${approvedAddress}, address: ${this.address}`);
-        } catch (err) {
-            console.error(err);
-            this.setAmountErrorMessage('tokenId does not exist, try again');
-            return
-        }
-        try {
-            const currentOwner = await this.sChain1.getERC721OwnerOf(tokenContract, this.tokenId);
-            if (currentOwner !== this.address) {
-                this.setAmountErrorMessage('This account is not an owner of this tokenId');
-                return;
-            }
-        } catch (err) {
-            this.setAmountErrorMessage(err);
-            return;
-        }
-        this.setAmountErrorMessage(undefined);
-        if (approvedAddress === this.address) this.setActiveStep(1);
+    async preAction() {
+        const checkRes = await checkERC721(
+            this.address,
+            this.s1().address,
+            this.tokenId,
+            this.s1().tokens[this.tokenData.keyname]
+        );
+        this.setAmountErrorMessage(checkRes.msg);
+        if (checkRes.approved) this.setActiveStep(1);
     }
 }
 
 
-export class TransferERC721S2M extends TransferAction {
-    isMeta(): boolean { return this.tokenData.type === TokenType.erc721meta; }
-
+export class TransferERC721S2M extends ERC721Transfer {
     async execute() {
-        const destTokenContract = this.isMeta() ? this.mainnet.erc721meta.tokens[this.tokenData.keyname] : this.mainnet.erc721.tokens[this.tokenData.keyname];
+        const destTokenContract = this.mn().tokens[this.tokenData.keyname];
         const ownerOnDestination = await this.mainnet.getERC721OwnerOf(
             destTokenContract,
             this.tokenId
         );
-        const tx = this.isMeta() ? await this.sChain1.erc721meta.withdraw(
-            this.tokenData.cloneAddress,
-            this.tokenId,
-            { address: this.address }
-        ) : await this.sChain1.erc721.withdraw(
-            this.tokenData.cloneAddress,
+        const tx = await this.s1().withdraw(
+            this.tokenData.originAddress,
             this.tokenId,
             { address: this.address }
         );
@@ -202,24 +198,50 @@ export class TransferERC721S2M extends TransferAction {
         await this.mainnet.waitERC721OwnerChange(
             destTokenContract, this.tokenId, ownerOnDestination);
         log('Token received to destination chain');
-        externalEvents.transferComplete(
-            tx,
-            this.chainName1,
-            this.chainName2,
-            this.tokenData.keyname,
-            false
-        );
+        this.transferComplete(tx);
     }
 
     async preAction() {
-        // const tokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
-        // const allowance = await tokenContract.methods.allowance(
-        //     this.address,
-        //     this.mainnet.erc20.address
-        // ).call();
-        // const allowanceEther = fromWei(this.mainnet.web3, allowance, this.tokenData.decimals);
-        // if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
-        //     this.setActiveStep(0);
-        // }
+        const checkRes = await checkERC721(
+            this.address,
+            this.s1().address,
+            this.tokenId,
+            this.s1().tokens[this.tokenData.keyname]
+        );
+        this.setAmountErrorMessage(checkRes.msg);
+        if (!checkRes.approved) this.setActiveStep(0);
+    }
+}
+
+
+export class TransferERC721S2S extends ERC721Transfer {
+    async execute() {
+        const destTokenContract = this.s2().tokens[this.tokenData.keyname];
+        const ownerOnDestination = await this.sChain2.getERC721OwnerOf(
+            destTokenContract,
+            this.tokenId
+        );
+        const tx = await this.sChain1.erc721.transferToSchain(
+            this.chainName2,
+            this.tokenData.originAddress,
+            this.tokenId,
+            { address: this.address }
+        );
+        log('Transfer transaction done, waiting for token to be received');
+        await this.sChain2.waitERC721OwnerChange(
+            destTokenContract, this.tokenId, ownerOnDestination);
+        log('Token received to destination chain');
+        this.transferComplete(tx);
+    }
+
+    async preAction() {
+        const checkRes = await checkERC721(
+            this.address,
+            this.s1().address,
+            this.tokenId,
+            this.s1().tokens[this.tokenData.keyname]
+        );
+        this.setAmountErrorMessage(checkRes.msg);
+        if (!checkRes.approved) this.setActiveStep(0);
     }
 }

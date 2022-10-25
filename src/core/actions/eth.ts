@@ -36,7 +36,7 @@ const log = debug('metaport:actions:eth');
 export class TransferEthM2S extends TransferAction {
     async execute() {
         log('TransferEthM2S: started');
-        const amountWei = toWei(this.mainnet.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         const sChainBalanceBefore = await this.sChain2.ethBalance(this.address);
         const tx = await this.mainnet.eth.deposit(
             this.chainName2,
@@ -54,7 +54,7 @@ export class TransferEthM2S extends TransferAction {
 export class TransferEthS2M extends TransferAction {
     async execute() {
         log('TransferEthS2M: started');
-        const amountWei = toWei(this.sChain1.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         const lockedETHAmount = await this.mainnet.eth.lockedETHAmount(this.address);
         const tx = await this.sChain1.eth.withdraw(
             amountWei,

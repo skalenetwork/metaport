@@ -137,12 +137,16 @@
 }
 
 
-.mp__noMarg-bott {
+.mp__noMargBott {
   margin-bottom: 0 !important;
 }
 
 .mp__noMarg {
   margin: 0 !important;
+}
+
+.mp__paddTop10 {
+  padding-top: 10px !important;
 }
 
 .mp__chainName {
@@ -326,7 +330,7 @@
   letter-spacing: 0.03857em !important;
 }
 
-.mp__errorMessage{
+.mp__errorMessage {
   color: #ff3737 !important;
 }
 
@@ -412,10 +416,20 @@
   width: min-content;
 }
 
-.tokenIdIcon{
+.tokenIdIcon {
   padding: 0 0 0 16px;
 
   :global(svg) {
     //width: 20px;
+  }
+}
+
+
+.mp__amountErrorMessage {
+  height: 15px !important;
+  margin-bottom: -5px !important;
+
+  :global(p) {
+    font-size: 0.5525rem !important
   }
 }

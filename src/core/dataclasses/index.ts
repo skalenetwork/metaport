@@ -17,30 +17,8 @@
  */
 
 /**
- * @file helper.ts
+ * @file index.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-
-import { MAINNET_CHAIN_NAME } from './constants';
-import utils from 'web3-utils';
-
-
-export function clsNames(...args) {
-    return args.join(' ');
-}
-
-
-export function eqArrays(arr1, arr2) {
-    return JSON.stringify(arr1) === JSON.stringify(arr2);
-}
-
-
-export function isMainnet(chainName: string): boolean {
-    return chainName === MAINNET_CHAIN_NAME;
-}
-
-
-export function addressesEqual(address1: string, address2: string): boolean {
-    return utils.toChecksumAddress(address1) === utils.toChecksumAddress(address2);
-}
+export * from "./TokenType";

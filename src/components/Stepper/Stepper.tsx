@@ -17,18 +17,16 @@ import localStyles from './Stepper.scss';
 
 export default function ActionsStepper(props) {
   const handleReset = () => {
-    props.setActiveStep(0);
     props.setAmount('');
+    props.setTokenId('');
     props.setLoading(false);
     props.setAmountLocked(false);
+    props.setActiveStep(0);
   };
-
   if (!props.token) return;
-
   const nextStepDisabledAmount = [TokenType.erc20, TokenType.erc1155].includes(props.token.type) && (props.amount === '' || props.amount === '0');
   const nextStepDisabledTokenId = [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type) && !props.tokenId;
   const nextStepDisabled = nextStepDisabledAmount || nextStepDisabledTokenId || props.loading || props.actionBtnDisabled;
-
   return (
     <Box>
       <Stepper className={localStyles.mp__stepper} activeStep={props.activeStep} orientation="vertical">

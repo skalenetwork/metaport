@@ -23,6 +23,8 @@
 
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 import TokenData from '../dataclasses/TokenData';
+import { externalEvents } from '../events';
+import { toWei, fromWei } from '../convertation';
 
 
 export type ActionType = typeof Action;
@@ -43,6 +45,7 @@ export class Action {
     chainName2: string
     address: string
     amount: string
+    amountWei: string
     tokenId: number
     tokenData: TokenData
 
@@ -76,7 +79,8 @@ export class Action {
         this.chainName2 = chainName2;
         this.address = address;
         this.amount = amount;
-        this.tokenId = tokenId;
+        if (amount) this.amountWei = toWei(amount, tokenData.decimals);
+        this.tokenId = Number(tokenId);
         this.tokenData = tokenData;
         this.switchMetamaskChain = switchMetamaskChain;
 
@@ -94,6 +98,16 @@ export abstract class TransferAction extends Action {
     static label = 'Transfer'
     static buttonText = 'Transfer'
     static loadingText = 'Transferring'
+
+    transferComplete(tx): void {
+        externalEvents.transferComplete(
+            tx,
+            this.chainName1,
+            this.chainName2,
+            this.tokenData.keyname,
+            false
+        );
+    }
 }
 
 

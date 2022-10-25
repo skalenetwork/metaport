@@ -92,7 +92,7 @@ export namespace internalEvents {
             'chains': transferParams.chains,
             'tokenKeyname': transferParams.tokenKeyname,
             'tokenType': transferParams.tokenType,
-            'lockAmount': transferParams.lockAmount
+            'lockValue': transferParams.lockValue
         });
     }
 

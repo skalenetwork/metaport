@@ -87,5 +87,5 @@ export async function getTokenBalance(
     const tokenContract = chain.erc20.tokens[tokenSymbol];
     const balance = await chain.getERC20Balance(tokenContract, address);
     externalEvents.balance(tokenSymbol, chainName, balance);
-    return fromWei(chain.web3, balance, decimals);
+    return fromWei(balance, decimals);
 }

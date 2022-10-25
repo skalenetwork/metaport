@@ -34,6 +34,8 @@ import defaultTokens from './metadata/tokens.json';
 import * as interfaces from './core/interfaces/index';
 export * as interfaces from './core/interfaces/index';
 
+export * as dataclasses from './core/dataclasses/index';
+
 
 export class Metaport {
   constructor(config: interfaces.MetaportConfig) {

@@ -45,7 +45,6 @@ export default function AmountInput(props) {
           Amount
         </p>
       </div>
-
     </div>
   )
 }

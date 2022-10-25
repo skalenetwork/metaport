@@ -28,7 +28,7 @@ export interface TransferParams {
     tokenKeyname: string;
     tokenType: TokenType;
     amount?: string;
-    tokenId?: string;
+    tokenId?: number;
     chains?: string[];
-    lockAmount?: boolean;
+    lockValue?: boolean;
 }

@@ -41,9 +41,16 @@ import {
     ApproveERC721M,
     TransferERC721M2S,
     ApproveERC721S,
-    TransferERC721S2M
+    TransferERC721S2M,
+    TransferERC721S2S
 } from './erc721';
-// import {  } from './erc1155';
+import {
+    ApproveERC1155M,
+    TransferERC1155M2S,
+    ApproveERC1155S,
+    TransferERC1155S2M,
+    TransferERC1155S2S
+} from './erc1155';
 
 import { isMainnet } from '../helper';
 import TokenData from '../dataclasses/TokenData';
@@ -82,22 +89,23 @@ const unwrapActions = [UnWrapERC20S];
 export const ACTIONS = {
     eth_m2s: [TransferEthM2S],
     eth_s2m: [TransferEthS2M, UnlockEthM],
+    eth_s2s: [],
 
-    erc20_s2s: [ApproveERC20S, TransferERC20S2S],
     erc20_m2s: [ApproveERC20M, TransferERC20M2S],
     erc20_s2m: [ApproveERC20S, TransferERC20S2M],
+    erc20_s2s: [ApproveERC20S, TransferERC20S2S],
 
     erc721_m2s: [ApproveERC721M, TransferERC721M2S],
     erc721_s2m: [ApproveERC721S, TransferERC721S2M],
-    erc721_s2s: [],
+    erc721_s2s: [ApproveERC721S, TransferERC721S2S],
 
     erc721meta_m2s: [ApproveERC721M, TransferERC721M2S],
     erc721meta_s2m: [ApproveERC721S, TransferERC721S2M],
-    erc721meta_s2s: [],
+    erc721meta_s2s: [ApproveERC721S, TransferERC721S2S],
 
-    erc1155_m2s: [],
-    erc1155_s2m: [],
-    erc1155_s2s: []
+    erc1155_m2s: [ApproveERC1155M, TransferERC1155M2S],
+    erc1155_s2m: [ApproveERC1155S, TransferERC1155S2M],
+    erc1155_s2s: [ApproveERC1155S, TransferERC1155S2S]
 }
 
 

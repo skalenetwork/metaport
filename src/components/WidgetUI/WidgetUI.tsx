@@ -127,6 +127,8 @@ export function WidgetUI(props) {
                       errorMessage={props.errorMessage}
                       amountErrorMessage={props.amountErrorMessage}
                       setAmountErrorMessage={props.setAmountErrorMessage}
+
+                      cleanData={props.cleanData}
                     />
                   ) : (
                     <Connector

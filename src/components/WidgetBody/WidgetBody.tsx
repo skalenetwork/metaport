@@ -66,12 +66,9 @@ export default function WidgetBody(props) {
 
               onClick={() => {
                 let chain1 = props.chain1;
-                props.setAmountErrorMessage(undefined);
+                props.cleanData();
                 props.setChain1(props.chain2);
                 props.setChain2(chain1);
-                props.setAmount(null);
-                props.setLoading(false);
-                props.setActiveStep(0);
               }}>
               <ImportExportIcon />
             </IconButton>
@@ -131,7 +128,7 @@ export default function WidgetBody(props) {
               />
             </div>
           </Collapse>
-          <Collapse in={(!expandedFrom && !expandedTo && !expandedTokens && props.token) && [TokenType.erc20, TokenType.erc1155].includes(props.token.type)}>
+          <Collapse in={(!expandedFrom && !expandedTo && !expandedTokens && props.token) && [TokenType.eth, TokenType.erc20, TokenType.erc1155].includes(props.token.type)}>
             <div className={styles.mp__margTop10}>
               <AmountInput
                 amount={props.amount}
@@ -170,6 +167,8 @@ export default function WidgetBody(props) {
                   activeStep={props.activeStep}
                   setActiveStep={props.setActiveStep}
 
+                  setTokenId={props.setTokenId}
+
                   setAmountLocked={props.setAmountLocked}
                   actionSteps={props.actionSteps}
                   handleNextStep={props.handleNextStep}
@@ -177,6 +176,8 @@ export default function WidgetBody(props) {
                   amountErrorMessage={props.amountErrorMessage}
 
                   theme={props.theme}
+
+                  cleanData={props.cleanData}
                 />)}
               </div>
             )}

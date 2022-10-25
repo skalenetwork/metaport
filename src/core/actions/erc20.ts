@@ -55,7 +55,7 @@ export class ApproveERC20S extends Action {
             this.address,
             this.sChain1.erc20.address
         ).call();
-        const allowanceEther = fromWei(this.sChain1.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
             const step = this.wrap ? 3 : 1;
             this.setActiveStep(step);
@@ -66,7 +66,7 @@ export class ApproveERC20S extends Action {
 
 export class TransferERC20S2S extends TransferAction {
     async execute() {
-        const amountWei = toWei(this.sChain1.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.sChain2.getERC20Balance(destTokenContract, this.address);
 
@@ -97,7 +97,7 @@ export class TransferERC20S2S extends TransferAction {
             this.address,
             this.sChain1.erc20.address
         ).call();
-        const allowanceEther = fromWei(this.sChain1.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
             const step = this.wrap ? 2 : 0;
             this.setActiveStep(step);
@@ -126,7 +126,7 @@ export class ApproveWrapERC20S extends Action {
             this.address,
             this.tokenData.originAddress
         ).call();
-        const allowanceEther = fromWei(this.sChain1.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
             this.setActiveStep(1);
         }
@@ -140,7 +140,7 @@ export class WrapERC20S extends Action {
     static loadingText = 'Wrapping'
 
     async execute() {
-        const amountWei = toWei(this.sChain1.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         await this.sChain1.erc20.wrap(
             this.tokenData.keyname,
             amountWei,
@@ -154,7 +154,7 @@ export class WrapERC20S extends Action {
             this.address,
             this.tokenData.originAddress
         ).call();
-        const allowanceEther = fromWei(this.sChain1.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
             this.setActiveStep(0);
         }
@@ -169,7 +169,7 @@ export class UnWrapERC20S extends Action {
 
     async execute() {
         await this.switchMetamaskChain();
-        const amountWei = toWei(this.sChain2.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         const tx = await this.sChain2.erc20.unwrap(
             this.tokenData.keyname,
             amountWei,
@@ -200,7 +200,7 @@ export class ApproveERC20M extends Action {
             this.address,
             this.mainnet.erc20.address
         ).call();
-        const allowanceEther = fromWei(this.mainnet.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
             this.setActiveStep(1);
         }
@@ -210,7 +210,7 @@ export class ApproveERC20M extends Action {
 
 export class TransferERC20M2S extends TransferAction {
     async execute() {
-        const amountWei = toWei(this.mainnet.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.sChain2.getERC20Balance(
             destTokenContract,
@@ -243,7 +243,7 @@ export class TransferERC20M2S extends TransferAction {
             this.address,
             this.mainnet.erc20.address
         ).call();
-        const allowanceEther = fromWei(this.mainnet.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
             this.setActiveStep(0);
         }
@@ -253,7 +253,7 @@ export class TransferERC20M2S extends TransferAction {
 
 export class TransferERC20S2M extends TransferAction {
     async execute() {
-        const amountWei = toWei(this.sChain1.web3, this.amount, this.tokenData.decimals);
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.mainnet.getERC20Balance(destTokenContract, this.address);
 
@@ -281,7 +281,7 @@ export class TransferERC20S2M extends TransferAction {
             this.address,
             this.sChain1.erc20.address
         ).call();
-        const allowanceEther = fromWei(this.sChain1.web3, allowance, this.tokenData.decimals);
+        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
         if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
             this.setActiveStep(0);
         }

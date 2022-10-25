@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import debug from 'debug';
 
 import WidgetUI from '../WidgetUI';
-import { WrongNetworkMessage, TransactionErrorMessage } from '../ErrorMessage';
+import { WrongNetworkMessage, TransactionErrorMessage, CustomErrorMessage } from '../ErrorMessage';
 
 import {
   initSChain,
   initSChainMetamask,
   initMainnet,
   initMainnetMetamask,
-  initERC20,
   updateWeb3SChain,
   updateWeb3SChainMetamask,
   getChainId
@@ -48,7 +47,7 @@ export function Widget(props) {
 
   const [address, setAddress] = React.useState(undefined);
   const [amount, setAmount] = React.useState<string>('');
-  const [tokenId, setTokenId] = React.useState<number>(undefined);
+  const [tokenId, setTokenId] = React.useState<number | null>(undefined);
 
   const [walletConnected, setWalletConnected] = React.useState(undefined);
 
@@ -80,6 +79,8 @@ export function Widget(props) {
   const [sFuelData1, setSFuelData1] = React.useState(undefined);
   const [sFuelData2, setSFuelData2] = React.useState(undefined);
 
+  const [transferRequest, setTransferRequest] = React.useState<interfaces.TransferParams>(undefined);
+
   useEffect(() => {
     setWalletConnected(false);
     setSchains(props.chains);
@@ -91,7 +92,7 @@ export function Widget(props) {
   }, []);
 
   function addinternalEventsListeners() {
-    window.addEventListener("_metaport_transfer", requestTransfer, false);
+    window.addEventListener("_metaport_transfer", transferHandler, false);
     window.addEventListener("_metaport_unwrap", unwrap, false);
 
     window.addEventListener("_metaport_updateParams", updateParamsHandler, false);
@@ -142,21 +143,38 @@ export function Widget(props) {
     setAmountLocked(false);
     setActiveStep(0);
     setActionSteps(undefined);
+    setAmountErrorMessage(undefined);
+    setActionBtnDisabled(false);
     log('resetWidget event processed');
   }
 
-  function requestTransfer(e) {
+  function transferHandler(e) {
+    const params: interfaces.TransferParams = e.detail;
+    setTransferRequest(params);
+  }
+
+  function transfer(params: interfaces.TransferParams): void {
+    log('Transfer request');
+    log(params);
     setOpen(true);
-    setAmount(e.detail.amount);
-    setSchains(e.detail.schains);
-    setAmountLocked(!!e.detail.lockAmount);
-
-    if (e.detail.tokens) {
-      setConfigTokens(e.detail.tokens);
+    setAmountLocked(!!params.lockValue);
+    if (params.chains) {
+      if (params.chains.length != 2) {
+        log(`Incorrect number of chains: ${params.chains.length} (must be 2)`);
+        setErrorMessage(new CustomErrorMessage('Incorrect number of chains'));
+        return
+      }
+      if (!schains.includes(params.chains[0]) || !schains.includes(params.chains[1])) {
+        setErrorMessage(new CustomErrorMessage(`Reqested chains are not found in the list: ${params.chains}`));
+        return
+      }
+      if (chainName1 == params.chains[0] && chainName2 == params.chains[1]) {
+        finishTransferRequest();
+      } else {
+        setChainName1(params.chains[0]);
+        setChainName2(params.chains[1]);
+      }
     }
-
-    log("requestTransfer from: " + e.detail.schains[0], ", to: " + e.detail.schains[1]);
-    log("amount inside react " + e.detail.amount);
   }
 
   function updateParamsHandler(e) {
@@ -189,7 +207,6 @@ export function Widget(props) {
       sChain1,
       address
     );
-
     setAvailableTokens(tokens);
     updateBalanceHandler();
     setLoadingTokens(false);
@@ -262,6 +279,7 @@ export function Widget(props) {
 
   useEffect(() => {
     if (!open && !firstOpen) return;
+    cleanData();
     if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
     if (chainName1) setChainId(getChainId(props.network, chainName1));
     if (address && chainName1) {
@@ -278,6 +296,7 @@ export function Widget(props) {
   }, [open]);
 
   useEffect(() => {
+    cleanData();
     if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
     if (address && chainName2) {
       if (chainName2 == MAINNET_CHAIN_NAME) {
@@ -305,6 +324,13 @@ export function Widget(props) {
 
   useEffect(() => {
     setActiveStep(0);
+    if (token) {
+      if (transferRequest) {
+        setTransferRequest(undefined);
+      } else {
+        setAmountLocked(false);
+      }
+    }
   }, [token]);
 
   useEffect(() => {
@@ -315,6 +341,10 @@ export function Widget(props) {
   }, [chainName1, chainName2, token, availableTokens]);
 
   useEffect(() => {
+    if (transferRequest) {
+      finishTransferRequest();
+      return
+    }
     const defaultToken = getDefaultToken(availableTokens);
     if (defaultToken) setToken(defaultToken);
   }, [availableTokens]);
@@ -332,28 +362,59 @@ export function Widget(props) {
     }
   }, [extChainId, chainId]);
 
+  useEffect(() => {
+    if (transferRequest) transfer(transferRequest);
+  }, [transferRequest]);
+
+  function cleanData() {
+    setAmountErrorMessage(undefined);
+    setActionBtnDisabled(false);
+    setTokenId(undefined);
+    setAmount('');
+    setLoading(false);
+    setActiveStep(0);
+  }
+
+  function finishTransferRequest() {
+    const tokenData = availableTokens[transferRequest.tokenType][transferRequest.tokenKeyname];
+    if (!tokenData) {
+      setErrorMessage(new CustomErrorMessage(
+        `Token not found: ${transferRequest.tokenType}, ${transferRequest.tokenKeyname}`
+      ));
+      return
+    }
+    setAmount(transferRequest.amount);
+    setTokenId(transferRequest.tokenId);
+    setToken(tokenData);
+  }
+
   async function runPreAction() {
     if (actionSteps && actionSteps[activeStep]) {
       log('Running preAction');
       setActionBtnDisabled(true);
       const ActionClass: ActionType = actionSteps[activeStep];
-      await new ActionClass(
-        mainnet,
-        sChain1,
-        sChain2,
-        chainName1,
-        chainName2,
-        address,
-        amount,
-        tokenId,
-        token,
-        switchMetamaskChain,
-        setActiveStep,
-        activeStep,
-        setAmountErrorMessage
-      ).preAction();
-      setActionBtnDisabled(false);
-      log('preAction done');
+      try {
+        await new ActionClass(
+          mainnet,
+          sChain1,
+          sChain2,
+          chainName1,
+          chainName2,
+          address,
+          amount,
+          tokenId,
+          token,
+          switchMetamaskChain,
+          setActiveStep,
+          activeStep,
+          setAmountErrorMessage
+        ).preAction();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setActionBtnDisabled(false);
+        log('preAction done');
+      }
     }
   }
 
@@ -496,5 +557,7 @@ export function Widget(props) {
     errorMessage={errorMessage}
     amountErrorMessage={amountErrorMessage}
     setAmountErrorMessage={setAmountErrorMessage}
+
+    cleanData={cleanData}
   />)
 }
