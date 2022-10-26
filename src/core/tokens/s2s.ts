@@ -136,15 +136,8 @@ async function addTokenData(
         unwrappedSymbol,
         unwrappedAddress
     );
-
-    addTokenContracts(
-        sChain1,
-        sChain2,
-        tokenKeyname,
-        availableTokens[tokenType][tokenKeyname],
-        force,
-        tokenType
-    );
+    addToken(sChain1, availableTokens[tokenType][tokenKeyname], true);
+    addToken(sChain2, availableTokens[tokenType][tokenKeyname], false);
 }
 
 
@@ -154,6 +147,7 @@ async function getCloneAddress(
     originChainName: string,
     tokenType: TokenType
 ): Promise<string> {
+    log(`Getting clone address for ${originTokenAddress} on a chain`);
     const tokenCloneAddress = await sChain[tokenType].getTokenCloneAddress(
         originTokenAddress,
         originChainName
@@ -163,42 +157,19 @@ async function getCloneAddress(
 }
 
 
-function addTokenContracts(
-    sChain1: SChain,
-    sChain2: SChain,
-    tokenKeyname: string,
-    tokenData: TokenData,
-    force: boolean,
-    tokenType: TokenType
-) {
-    const chain1Address = tokenData.clone ? tokenData.cloneAddress : tokenData.originAddress;
-    const chain2Address = tokenData.clone ? tokenData.originAddress : tokenData.cloneAddress;
-
-    if (sChain1) { addToken(sChain1, chain1Address, tokenKeyname, tokenData, force, tokenType); };
-    if (sChain2) { addToken(sChain2, chain2Address, tokenKeyname, tokenData, force, tokenType); };
-}
-
-
-function addToken(
-    sChain: SChain,
-    address: string,
-    tokenSymbol: string,
-    tokenData: TokenData,
-    force: boolean,
-    tokenType: TokenType
-) {
-    if (!sChain[tokenType].tokens[tokenSymbol] && !force) {
-        if (tokenData.unwrappedSymbol) {
-            sChain[tokenType].addToken(
-                tokenSymbol,
-                initContract('erc20wrap', address, sChain.web3)
-            );
-            sChain[tokenType].addToken(
-                tokenData.unwrappedSymbol,
-                initContract(tokenType, tokenData.unwrappedAddress, sChain.web3)
-            );
-        } else {
-            sChain[tokenType].addToken(tokenSymbol, initContract(tokenType, address, sChain.web3));
-        }
+function addToken(sChain: SChain, token: TokenData, fromChain: boolean): void {
+    log(`Adding token to sChain object - ${token.keyname}`);
+    const address = (fromChain && token.clone) || (!fromChain && !token.clone) ? token.cloneAddress : token.originAddress;
+    if (token.unwrappedSymbol) {
+        sChain[token.type].addToken(
+            token.keyname,
+            initContract('erc20wrap', address, sChain.web3)
+        );
+        sChain[token.type].addToken(
+            token.unwrappedSymbol,
+            initContract(token.type, token.unwrappedAddress, sChain.web3)
+        );
+    } else {
+        sChain[token.type].addToken(token.keyname, initContract(token.type, address, sChain.web3));
     }
 }

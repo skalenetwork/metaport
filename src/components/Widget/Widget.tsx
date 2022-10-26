@@ -248,6 +248,7 @@ export function Widget(props) {
   }
 
   async function initSchain1() {
+    log('Running initSchain1...');
     setSChain1(await initSChainMetamask(
       props.network,
       chainName1
@@ -289,7 +290,7 @@ export function Widget(props) {
         initSchain1();
       }
     }
-  }, [chainName1, address, firstOpen]);
+  }, [chainName1, address]);
 
   useEffect(() => {
     if (open && !firstOpen) setFirstOpen(true);
@@ -302,12 +303,13 @@ export function Widget(props) {
       if (chainName2 == MAINNET_CHAIN_NAME) {
         setMainnet(initMainnet(props.network, mainnetEndpoint))
       } else {
+        log('Running initSchain2...');
         setSChain2(initSChain(
           props.network,
           chainName2
         ));
       }
-      console.log('chain2 changed ' + chainName2);
+      log(`chain2 changed ${chainName2}`);
     }
   }, [chainName2, address]);
 
@@ -326,7 +328,7 @@ export function Widget(props) {
     setActiveStep(0);
     if (token) {
       if (transferRequest) {
-        setTransferRequest(undefined);
+        // setTransferRequest(undefined);
       } else {
         setAmountLocked(false);
       }
@@ -378,14 +380,16 @@ export function Widget(props) {
   function finishTransferRequest() {
     const tokenData = availableTokens[transferRequest.tokenType][transferRequest.tokenKeyname];
     if (!tokenData) {
-      setErrorMessage(new CustomErrorMessage(
-        `Token not found: ${transferRequest.tokenType}, ${transferRequest.tokenKeyname}`
-      ));
+      // setErrorMessage(new CustomErrorMessage(
+      //   `Token not found: ${transferRequest.tokenType}, ${transferRequest.tokenKeyname}`
+      // ));
       return
     }
+    setErrorMessage(undefined);
     setAmount(transferRequest.amount);
     setTokenId(transferRequest.tokenId);
     setToken(tokenData);
+    setTransferRequest(undefined);
   }
 
   async function runPreAction() {
@@ -559,5 +563,6 @@ export function Widget(props) {
     setAmountErrorMessage={setAmountErrorMessage}
 
     cleanData={cleanData}
+    transferRequest={transferRequest}
   />)
 }
