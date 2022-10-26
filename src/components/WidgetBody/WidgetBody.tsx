@@ -106,7 +106,7 @@ export default function WidgetBody(props) {
           </Collapse>
           <Collapse in={!expandedFrom && !expandedTo}>
             <div className={styles.mp__margTop10}>
-              {props.loadingTokens ? (<Skeleton animation="wave" height={48} />) : (<TokenList
+              {(props.loadingTokens  || props.transferRequest) ? (<Skeleton animation="wave" height={48} />) : (<TokenList
                 availableTokens={props.availableTokens}
                 setToken={props.setToken}
                 token={props.token}
@@ -151,7 +151,7 @@ export default function WidgetBody(props) {
               <div></div>
             ) : (
               <div>
-                {(!props.actionSteps || props.transferRequest) ? (<Skeleton animation="wave" height={48} />) : (<Stepper
+                {(!props.actionSteps) ? (<Skeleton animation="wave" height={48} />) : (<Stepper
                   amount={props.amount}
                   tokenId={props.tokenId}
                   setAmount={props.setAmount}

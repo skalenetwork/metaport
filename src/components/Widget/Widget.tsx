@@ -343,10 +343,7 @@ export function Widget(props) {
   }, [chainName1, chainName2, token, availableTokens]);
 
   useEffect(() => {
-    if (transferRequest) {
-      finishTransferRequest();
-      return
-    }
+    if (transferRequest) return finishTransferRequest();
     const defaultToken = getDefaultToken(availableTokens);
     if (defaultToken) setToken(defaultToken);
   }, [availableTokens]);
@@ -378,8 +375,13 @@ export function Widget(props) {
   }
 
   function finishTransferRequest() {
+    log('Running finishTransferRequest');
+    log(transferRequest);
     const tokenData = availableTokens[transferRequest.tokenType][transferRequest.tokenKeyname];
     if (!tokenData) {
+      log(`No token data!`);
+      log(availableTokens);
+      log(transferRequest.tokenKeyname);
       // setErrorMessage(new CustomErrorMessage(
       //   `Token not found: ${transferRequest.tokenType}, ${transferRequest.tokenKeyname}`
       // ));
