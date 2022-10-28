@@ -25,10 +25,11 @@
 import debug from 'debug';
 
 import { externalEvents } from '../events';
-import { toWei, fromWei } from '../convertation';
+import { toWei } from '../convertation';
 import { MAX_APPROVE_AMOUNT } from '../constants';
 
 import { TransferAction, Action } from './action';
+import { checkERC20Balance, checkERC20Allowance } from './checks';
 
 
 debug.enable('*');
@@ -50,15 +51,32 @@ export class ApproveERC20S extends Action {
     }
 
     async preAction() {
+        const nextStep = this.wrap ? 3 : 1;
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-        const allowance = await tokenContract.methods.allowance(
+
+        if (this.wrap) {
+            const checkResBalance = await checkERC20Balance(
+                this.address,
+                this.amount,
+                this.tokenData,
+                tokenContract
+            );
+            if (!checkResBalance.res) {
+                this.setActiveStep(1);
+                return
+            }
+        }
+
+        const checkResAllowance = await checkERC20Allowance(
             this.address,
-            this.sChain1.erc20.address
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
-            const step = this.wrap ? 3 : 1;
-            this.setActiveStep(step);
+            this.sChain1.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (checkResAllowance.res) {
+            this.setActiveStep(nextStep);
+            return;
         }
     }
 }
@@ -92,18 +110,38 @@ export class TransferERC20S2S extends TransferAction {
     }
 
     async preAction() {
+        const previousStep = this.wrap ? 2 : 0;
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-        const allowance = await tokenContract.methods.allowance(
+
+        const checkResAllowance = await checkERC20Allowance(
             this.address,
-            this.sChain1.erc20.address
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
-            const step = this.wrap ? 2 : 0;
-            this.setActiveStep(step);
+            this.sChain1.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResAllowance.res) {
+            this.setActiveStep(previousStep);
+            return;
+        }
+
+        const checkResBalance = await checkERC20Balance(
+            this.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+
+        if (!checkResBalance.res) {
+            if (this.wrap) {
+                this.setActiveStep(previousStep);
+                return;
+            }
+            this.setAmountErrorMessage(checkResBalance.msg);
         }
     }
 }
+
 
 
 export class ApproveWrapERC20S extends Action {
@@ -122,14 +160,27 @@ export class ApproveWrapERC20S extends Action {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        const allowance = await tokenContract.methods.allowance(
+        const wrappedTokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
+
+        const checkResBalance = await checkERC20Balance(
             this.address,
-            this.tokenData.originAddress
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
+            this.amount,
+            this.tokenData,
+            wrappedTokenContract
+        );
+        if (checkResBalance.res) {
             this.setActiveStep(1);
+            return
         }
+
+        const checkResAllowance = await checkERC20Allowance(
+            this.address,
+            this.tokenData.originAddress,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (checkResAllowance.res) this.setActiveStep(1);
     }
 }
 
@@ -150,13 +201,40 @@ export class WrapERC20S extends Action {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        const allowance = await tokenContract.methods.allowance(
+        const wrappedTokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
+
+        const checkResBalanceWr = await checkERC20Balance(
             this.address,
-            this.tokenData.originAddress
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
+            this.amount,
+            this.tokenData,
+            wrappedTokenContract
+        );
+        if (checkResBalanceWr.res) {
+            this.setActiveStep(2);
+            return
+        }
+
+        const checkResAllowance = await checkERC20Allowance(
+            this.address,
+            this.tokenData.originAddress,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResAllowance.res) {
             this.setActiveStep(0);
+            return;
+        }
+
+        const checkResBalance = await checkERC20Balance(
+            this.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResBalance.res) {
+            this.setAmountErrorMessage(checkResBalance.msg);
+            return
         }
     }
 }
@@ -196,14 +274,14 @@ export class ApproveERC20M extends Action {
 
     async preAction() {
         const tokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
-        const allowance = await tokenContract.methods.allowance(
+        const checkResAllowance = await checkERC20Allowance(
             this.address,
-            this.mainnet.erc20.address
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) >= Number(this.amount) && this.amount !== '') {
-            this.setActiveStep(1);
-        }
+            this.mainnet.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (checkResAllowance.res) this.setActiveStep(1);
     }
 }
 
@@ -239,13 +317,26 @@ export class TransferERC20M2S extends TransferAction {
 
     async preAction() {
         const tokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
-        const allowance = await tokenContract.methods.allowance(
+        const checkResAllowance = await checkERC20Allowance(
             this.address,
-            this.mainnet.erc20.address
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
+            this.mainnet.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResAllowance.res) {
             this.setActiveStep(0);
+            return
+        }
+        const checkResBalance = await checkERC20Balance(
+            this.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResBalance.res) {
+            this.setAmountErrorMessage(checkResBalance.msg);
+            return
         }
     }
 }
@@ -277,13 +368,26 @@ export class TransferERC20S2M extends TransferAction {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-        const allowance = await tokenContract.methods.allowance(
+        const checkResAllowance = await checkERC20Allowance(
             this.address,
-            this.sChain1.erc20.address
-        ).call();
-        const allowanceEther = fromWei(allowance, this.tokenData.decimals);
-        if (Number(allowanceEther) < Number(this.amount) && this.amount !== '') {
+            this.sChain1.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResAllowance.res) {
             this.setActiveStep(0);
+            return
+        }
+        const checkResBalance = await checkERC20Balance(
+            this.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResBalance.res) {
+            this.setAmountErrorMessage(checkResBalance.msg);
+            return
         }
     }
 }

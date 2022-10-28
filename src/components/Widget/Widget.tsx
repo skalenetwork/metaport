@@ -120,16 +120,17 @@ export function Widget(props) {
   function closeWidget(e) {
     setOpen(false);
     setActiveStep(0);
+    setAmountLocked(false);
     log('closeWidget event processed');
   }
 
   function openWidget(e) {
     setOpen(true);
+    setAmountLocked(false);
     log('openWidget event processed');
   }
 
   function resetWidget(e) {
-    setSchains([]);
     setChainName1(null);
     setChainName2(null);
 
@@ -330,7 +331,7 @@ export function Widget(props) {
       if (transferRequest) {
         // setTransferRequest(undefined);
       } else {
-        setAmountLocked(false);
+        // setAmountLocked(false);
       }
     }
   }, [token]);
@@ -344,6 +345,7 @@ export function Widget(props) {
 
   useEffect(() => {
     if (transferRequest) return finishTransferRequest();
+    // setAmountLocked(false);
     const defaultToken = getDefaultToken(availableTokens);
     if (defaultToken) setToken(defaultToken);
   }, [availableTokens]);

@@ -24,7 +24,7 @@ export default function ActionsStepper(props) {
     props.setActiveStep(0);
   };
   if (!props.token) return;
-  const nextStepDisabledAmount = [TokenType.erc20, TokenType.erc1155].includes(props.token.type) && (props.amount === '' || props.amount === '0');
+  const nextStepDisabledAmount = [TokenType.erc20, TokenType.erc1155].includes(props.token.type) && (props.amount === '' || Number(props.amount) === 0);
   const nextStepDisabledTokenId = [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type) && !props.tokenId;
   const nextStepDisabled = nextStepDisabledAmount || nextStepDisabledTokenId || props.loading || props.actionBtnDisabled;
   return (
@@ -53,7 +53,7 @@ export default function ActionsStepper(props) {
                       variant="contained" color="primary" size="medium"
                       className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                       onClick={props.handleNextStep}
-                      disabled={nextStepDisabled || props.amountErrorMessage || (Number(props.amount) > Number(props.token.balance) && step.label !== 'Unwrap')} // TODO: tmp unwrap fix!
+                      disabled={nextStepDisabled || props.amountErrorMessage}
                     >
                       {step.buttonText}
                     </Button>

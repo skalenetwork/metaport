@@ -23,56 +23,13 @@
 
 
 import debug from 'debug';
-import { Contract } from 'web3-eth-contract';
 
 import { TransferAction, ApproveAction } from './action';
-
-import { TokenType } from '../dataclasses/TokenType';
-import { addressesEqual } from '../helper';
-
-import TokenData from '../dataclasses/TokenData';
-
+import { checkERC1155 } from './checks';
 
 
 debug.enable('*');
 const log = debug('metaport:actions:erc1155');
-
-
-interface CheckRes {
-    res: boolean;
-    approved: boolean;
-    msg?: string;
-}
-
-
-async function checkERC1155(
-    address: string,
-    approvalAddress: string,
-    tokenId: number,
-    amount: string,
-    tokenData: TokenData,
-    tokenContract: Contract
-): Promise<CheckRes> {
-    const checkRes: CheckRes = { res: true, approved: false };
-    if (!tokenId || !amount) return checkRes;
-
-    try {
-        const balance = await tokenContract.methods.balanceOf(address, tokenId).call();
-        log(`address: ${address}, balanceEther: ${balance}, amount: ${amount}`);
-        if (Number(amount) > Number(balance)) {
-            checkRes.msg = `Current balance: ${balance} ${tokenData.symbol}`;
-        }
-        checkRes.approved = await tokenContract.methods.isApprovedForAll(
-            address,
-            approvalAddress
-        ).call();
-    } catch (err) {
-        console.error(err);
-        checkRes.msg = 'Something went wrong, check developer console';
-        return checkRes;
-    }
-    return checkRes;
-}
 
 
 export class ApproveERC1155M extends ApproveAction {

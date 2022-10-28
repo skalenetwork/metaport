@@ -23,57 +23,15 @@
 
 
 import debug from 'debug';
-import { Contract } from 'web3-eth-contract';
 
 import { Action } from './action';
 import { TokenType } from '../dataclasses/TokenType';
 import { externalEvents } from '../events';
-import { addressesEqual } from '../helper';
+import { checkERC721 } from './checks';
 
 
 debug.enable('*');
 const log = debug('metaport:actions:erc721');
-
-
-interface CheckRes {
-    res: boolean;
-    approved: boolean;
-    msg?: string;
-}
-
-
-async function checkERC721(
-    address: string,
-    approvalAddress: string,
-    tokenId: number,
-    tokenContract: Contract
-): Promise<CheckRes> {
-    let approvedAddress: string;
-    const checkRes: CheckRes = { res: true, approved: false };
-    if (!tokenId) return checkRes;
-    try {
-        approvedAddress = await tokenContract.methods.getApproved(tokenId).call();
-        log(`approvedAddress: ${approvedAddress}, address: ${address}`);
-    } catch (err) {
-        console.error(err);
-        checkRes.msg = 'tokenId does not exist, try again'
-        return checkRes;
-    }
-    try {
-        const currentOwner = await tokenContract.methods.ownerOf(tokenId).call();;
-        log(`currentOwner: ${currentOwner}, address: ${address}`);
-        if (!addressesEqual(currentOwner, address)) {
-            checkRes.msg = 'This account is not an owner of this tokenId';
-            return checkRes;
-        }
-    } catch (err) {
-        console.error(err);
-        checkRes.msg = 'Something went wrong, check developer console';
-        return checkRes;
-    }
-    checkRes.approved = addressesEqual(approvedAddress, approvalAddress);
-    return checkRes;
-}
 
 
 class ERC721Action extends Action {

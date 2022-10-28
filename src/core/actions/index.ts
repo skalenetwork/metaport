@@ -72,11 +72,10 @@ export function getActionName(
 ): string {
     if (!chainName1 || !chainName2 || !tokenData) return;
     log('Getting action name: ' + chainName1 + ' ' + chainName2 + ' ' + tokenData.symbol + ' (' + tokenData.type + ')');
-    let prefix = tokenData.type;
     let postfix = S2S_POSTFIX;
     if (isMainnet(chainName1)) { postfix = M2S_POSTFIX; };
     if (isMainnet(chainName2)) { postfix = S2M_POSTFIX; };
-    const actionName = prefix + '_' + postfix;
+    const actionName = tokenData.type + '_' + postfix;
     log('Action name: ' + actionName);
     return actionName;
 }

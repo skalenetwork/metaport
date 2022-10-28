@@ -27,6 +27,7 @@ import debug from 'debug';
 import { externalEvents } from '../events';
 import { toWei } from '../convertation';
 import { TransferAction, Action } from './action';
+import { checkEthBalance, checkERC20Balance } from './checks';
 
 
 debug.enable('*');
@@ -48,6 +49,16 @@ export class TransferEthM2S extends TransferAction {
         await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore);
         externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenData.keyname);
     }
+
+    async preAction() {
+        const checkResBalance = await checkEthBalance(
+            this.mainnet,
+            this.address,
+            this.amount,
+            this.tokenData
+        );
+        if (!checkResBalance.res) this.setAmountErrorMessage(checkResBalance.msg);
+    }
 }
 
 
@@ -62,6 +73,16 @@ export class TransferEthS2M extends TransferAction {
         );
         await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount);
         externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenData.keyname);
+    }
+
+    async preAction() {
+        const checkResBalance = await checkEthBalance(
+            this.sChain1,
+            this.address,
+            this.amount,
+            this.tokenData
+        );
+        if (!checkResBalance.res) this.setAmountErrorMessage(checkResBalance.msg);
     }
 }
 
