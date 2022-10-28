@@ -106,7 +106,7 @@ async function addTokenData(
     force: boolean,
     tokenType: TokenType
 ): Promise<void> {
-    let cloneAddress = await getCloneAddress(
+    const cloneAddress = await getCloneAddress(
         isClone ? sChain1 : sChain2,
         configToken.address,
         sChainName,

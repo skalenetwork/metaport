@@ -70,7 +70,7 @@ async function getM2STokensAutomatic(
     availableTokens: interfaces.TokenDataTypesMap
 ): Promise<void> {
     log('Starting automatic lookup for M2S tokens...');
-    for (let tokenType in TokenType) {
+    for (const tokenType in TokenType) {
         await addM2STokensAutomatic(
             tokenType,
             mainnet,
@@ -110,10 +110,9 @@ async function addM2STokensAutomatic(
 
         const symbol = await contract.methods.symbol().call();
         const isClone = isMainnet(destChainName);
-        let name = await contract.methods.name().call();
+        const name = await contract.methods.name().call();
 
         let decimals: string;
-        let tokenIcon: string;
 
         if (tokenType === TokenType.erc20) {
             decimals = await contract.methods.decimals().call();
@@ -130,7 +129,7 @@ async function addM2STokensAutomatic(
             name,
             symbol,
             isClone,
-            tokenIcon,
+            null,
             decimals,
             tokenType as TokenType,
             null,
