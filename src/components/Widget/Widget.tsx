@@ -356,7 +356,8 @@ export function Widget(props) {
   }, [actionSteps, activeStep, amount, tokenId]);
 
   useEffect(() => {
-    if (extChainId && chainId && extChainId !== chainId) {
+    const isUwrapAction = token && token.unwrappedSymbol && token.clone; // TODO: tmp fix for unwrap
+    if (extChainId && chainId && extChainId !== chainId && !isUwrapAction) {
       setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
     } else {
       setErrorMessage(undefined);

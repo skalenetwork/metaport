@@ -258,7 +258,6 @@ export class UnWrapERC20S extends Action {
 }
 
 
-
 export class ApproveERC20M extends Action {
     static label = 'Approve transfer'
     static buttonText = 'Approve all'
