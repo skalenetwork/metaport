@@ -159,7 +159,8 @@ async function getCloneAddress(
 
 function addToken(sChain: SChain, token: TokenData, fromChain: boolean): void {
     log(`Adding token to sChain object - ${token.keyname}`);
-    const address = (fromChain && token.clone) || (!fromChain && !token.clone) ? token.cloneAddress : token.originAddress;
+    const isCloneAddress = (fromChain && token.clone) || (!fromChain && !token.clone);
+    const address = isCloneAddress ? token.cloneAddress : token.originAddress;
     if (token.unwrappedSymbol) {
         sChain[token.type].addToken(
             token.keyname,

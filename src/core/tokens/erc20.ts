@@ -62,7 +62,8 @@ export async function updateERC20TokenBalances(
                 address
             );
             availableTokens.erc20[symbol].balance = balance;
-            if (availableTokens.erc20[symbol].unwrappedSymbol && !availableTokens.erc20[symbol].clone) {
+            if (availableTokens.erc20[symbol].unwrappedSymbol &&
+                !availableTokens.erc20[symbol].clone) {
                 const wBalance = await getTokenBalance(
                     chainName,
                     sChain1,

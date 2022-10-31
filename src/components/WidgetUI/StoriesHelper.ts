@@ -68,7 +68,8 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped = false) {
     undefined
   );
   if (wrapped) {
-    data.availableTokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(10000, 70000).toString();
+    data.availableTokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(
+      10000, 70000).toString();
     data.availableTokens.erc20[tokenSymbol].unwrappedSymbol = 'u' + tokenSymbol;
   };
   data.availableTokens.erc20[tokenSymbol].balance = getRandomInt(10000, 70000).toString();

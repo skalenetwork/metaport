@@ -86,7 +86,10 @@ export class TransferERC20S2S extends TransferAction {
     async execute() {
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
-        const balanceOnDestination = await this.sChain2.getERC20Balance(destTokenContract, this.address);
+        const balanceOnDestination = await this.sChain2.getERC20Balance(
+            destTokenContract,
+            this.address
+        );
 
         const tx = await this.sChain1.erc20.transferToSchain(
             this.chainName2,
@@ -96,7 +99,11 @@ export class TransferERC20S2S extends TransferAction {
         );
         log('Transfer transaction done, waiting for tokens to be received');
         log(tx);
-        await this.sChain2.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
+        await this.sChain2.waitERC20BalanceChange(
+            destTokenContract,
+            this.address,
+            balanceOnDestination
+        );
         log('Tokens received to destination chain');
 
         const unwrap = !!this.tokenData.unwrappedSymbol && this.tokenData.clone;
@@ -302,7 +309,8 @@ export class TransferERC20M2S extends TransferAction {
         log('Transfer transaction done, waiting for tokens to be received');
         log(tx);
 
-        await this.sChain2.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
+        await this.sChain2.waitERC20BalanceChange(
+            destTokenContract, this.address, balanceOnDestination);
         log('Tokens received to destination chain');
 
         externalEvents.transferComplete(
@@ -345,7 +353,8 @@ export class TransferERC20S2M extends TransferAction {
     async execute() {
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
-        const balanceOnDestination = await this.mainnet.getERC20Balance(destTokenContract, this.address);
+        const balanceOnDestination = await this.mainnet.getERC20Balance(
+            destTokenContract, this.address);
 
         const tx = await this.sChain1.erc20.withdraw(
             this.tokenData.originAddress,

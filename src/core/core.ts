@@ -92,7 +92,11 @@ export function updateWeb3SChain(schain: SChain, network: string, schainName: st
   schain.updateWeb3(sChainWeb3);
 }
 
-export async function updateWeb3SChainMetamask(schain: SChain, network: string, schainName: string) {
+export async function updateWeb3SChainMetamask(
+  schain: SChain,
+  network: string,
+  schainName: string
+): Promise<void> {
   const endpoint = getSChainEndpoint(network, schainName);
   const chainId = calcChainId(schainName);
   const networkParams = schainNetworkParams(schainName, endpoint, chainId);
@@ -119,7 +123,10 @@ export function initMainnet(network: string, mainnetEndpoint: string): MainnetCh
 }
 
 
-export async function initMainnetMetamask(network: string, mainnetEndpoint: string): Promise<MainnetChain> {
+export async function initMainnetMetamask(
+  network: string,
+  mainnetEndpoint: string
+): Promise<MainnetChain> {
   const networkParams = mainnetNetworkParams(network, mainnetEndpoint);
   await changeMetamaskNetwork(networkParams);
   const web3 = new Web3(window.ethereum);

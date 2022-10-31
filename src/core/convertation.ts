@@ -33,5 +33,6 @@ export function fromWei(value: string, decimals: string): string {
 }
 
 function decimalsToUnit(decimals: string): Unit {
-    return Object.keys(unitMap).find(key => unitMap[key] === toBN(10).pow(toBN(decimals)).toString()) as Unit;
+    return Object.keys(unitMap).find(
+        key => unitMap[key] === toBN(10).pow(toBN(decimals)).toString()) as Unit;
 }

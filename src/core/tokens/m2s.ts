@@ -135,7 +135,11 @@ async function addM2STokensAutomatic(
             null,
             null
         );
-        availableTokens[tokenType][key] = overrideTokenDataFromConfig(configTokens, tokenData, tokenType);
+        availableTokens[tokenType][key] = overrideTokenDataFromConfig(
+            configTokens,
+            tokenData,
+            tokenType
+        );
         mainnet[tokenType].addToken(key, contract);
         sChain[tokenType].addToken(key, initContract(tokenType, cloneAddress, sChain.web3));
     }
@@ -146,7 +150,10 @@ function overrideTokenDataFromConfig(
     tokenData: TokenData,
     tokenType: string
 ): TokenData {
-    if (!configTokens[MAINNET_CHAIN_NAME] || !configTokens[MAINNET_CHAIN_NAME][tokenType] || !configTokens[MAINNET_CHAIN_NAME][tokenType][tokenData.keyname]) return tokenData;
+    if (!configTokens[MAINNET_CHAIN_NAME]) return tokenData;
+    if (!configTokens[MAINNET_CHAIN_NAME][tokenType]) return tokenData;
+    if (!configTokens[MAINNET_CHAIN_NAME][tokenType][tokenData.keyname]) return tokenData;
+
     const configTokenData = configTokens[MAINNET_CHAIN_NAME][tokenType][tokenData.keyname];
     log(`Overriding token data from config ${tokenData.keyname}: ${configTokenData}`);
     tokenData.iconUrl = configTokenData.iconUrl ? configTokenData.iconUrl : tokenData.iconUrl;
@@ -189,8 +196,10 @@ async function getM2STokensManual(
                 null,
                 null
             );
-            mainnet[tokenType].addToken(tokenKeyname, initContract(tokenType, tokenInfo.address, mainnet.web3));
-            sChain[tokenType].addToken(tokenKeyname, initContract(tokenType, cloneAddress, sChain.web3));
+            mainnet[tokenType].addToken(
+                tokenKeyname, initContract(tokenType, tokenInfo.address, mainnet.web3));
+            sChain[tokenType].addToken(
+                tokenKeyname, initContract(tokenType, cloneAddress, sChain.web3));
         }
     }
 }

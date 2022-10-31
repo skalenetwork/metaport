@@ -47,7 +47,8 @@ export class TransferEthM2S extends TransferAction {
             }
         );
         await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore);
-        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenData.keyname);
+        externalEvents.transferComplete(
+            tx,this.chainName1, this.chainName2, this.tokenData.keyname);
     }
 
     async preAction() {
@@ -72,7 +73,8 @@ export class TransferEthS2M extends TransferAction {
             { address: this.address }
         );
         await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount);
-        externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.tokenData.keyname);
+        externalEvents.transferComplete(
+            tx, this.chainName1, this.chainName2, this.tokenData.keyname);
     }
 
     async preAction() {

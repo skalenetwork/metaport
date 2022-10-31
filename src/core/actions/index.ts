@@ -71,7 +71,7 @@ export function getActionName(
     tokenData: TokenData
 ): string {
     if (!chainName1 || !chainName2 || !tokenData) return;
-    log('Getting action name: ' + chainName1 + ' ' + chainName2 + ' ' + tokenData.symbol + ' (' + tokenData.type + ')');
+    log(`Getting action name: ${chainName1} ${chainName2} ${tokenData.symbol} ${tokenData.type}`);
     let postfix = S2S_POSTFIX;
     if (isMainnet(chainName1)) { postfix = M2S_POSTFIX; };
     if (isMainnet(chainName2)) { postfix = S2M_POSTFIX; };

@@ -46,8 +46,16 @@ export function getDefaultToken(availableTokens: interfaces.TokenDataTypesMap): 
     if (availableTokens === undefined) return;
     const availableTokenNumers = getAvailableTokenNumers(availableTokens);
     if (eqArrays(availableTokenNumers, [1, 0, 0, 0, 0])) return availableTokens.eth.eth;
-    if (eqArrays(availableTokenNumers, [0, 1, 0, 0, 0])) return Object.values(availableTokens.erc20)[0];
-    if (eqArrays(availableTokenNumers, [0, 0, 1, 0, 0])) return Object.values(availableTokens.erc721)[0];
-    if (eqArrays(availableTokenNumers, [0, 0, 0, 1, 0])) return Object.values(availableTokens.erc721meta)[0];
-    if (eqArrays(availableTokenNumers, [0, 0, 0, 0, 1])) return Object.values(availableTokens.erc1155)[0];
+    if (eqArrays(availableTokenNumers, [0, 1, 0, 0, 0])) {
+        return Object.values(availableTokens.erc20)[0];
+    }
+    if (eqArrays(availableTokenNumers, [0, 0, 1, 0, 0])) {
+        return Object.values(availableTokens.erc721)[0];
+    }
+    if (eqArrays(availableTokenNumers, [0, 0, 0, 1, 0])) {
+        return Object.values(availableTokens.erc721meta)[0];
+    }
+    if (eqArrays(availableTokenNumers, [0, 0, 0, 0, 1])) {
+        return Object.values(availableTokens.erc1155)[0];
+    }
 }

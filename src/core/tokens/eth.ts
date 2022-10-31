@@ -40,7 +40,8 @@ const log = debug('metaport:tokens:eth');
 
 
 function ethInConfig(configTokens: interfaces.TokensMap): boolean {
-    return configTokens[MAINNET_CHAIN_NAME] !== undefined && configTokens[MAINNET_CHAIN_NAME].eth !== undefined;
+    return configTokens[MAINNET_CHAIN_NAME] !== undefined &&
+        configTokens[MAINNET_CHAIN_NAME].eth !== undefined;
 }
 
 
@@ -68,7 +69,8 @@ export async function getEthBalance(
     chainName: string,
     address: string
 ) {
-    const ethBalance = isMainnet(chainName) ? await mainnet.ethBalance(address) : await sChain.ethBalance(address);
+    const ethBalance = isMainnet(chainName) ? await mainnet.ethBalance(address) :
+        await sChain.ethBalance(address);
     log('ETH balance for ' + address + ': ' + ethBalance + ' wei');
     externalEvents.balance('eth', chainName, ethBalance);
     return mainnet ? mainnet.web3.utils.fromWei(ethBalance) : sChain.web3.utils.fromWei(ethBalance);
