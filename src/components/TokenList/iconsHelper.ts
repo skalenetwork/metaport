@@ -17,27 +17,34 @@
  */
 
 /**
- * @file Tokens.ts
+ * @file iconsHelper.ts
  * @copyright SKALE Labs 2022-Present
  */
 
+import TokenData from '../../core/dataclasses/TokenData';
 
-export interface Token {
-    symbol: string,
-    address: string,
-    name?: string,
-    iconUrl?: string,
-    decimals?: string,
-    wraps?: WrapsData
+
+function importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
 }
 
-interface WrapsData {
-    symbol: string,
-    address: string,
-    iconUrl?: string
+const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
+
+
+export function iconPath(name) {
+    if (!name) return;
+    const key = name.toLowerCase() + '.svg';
+    if (icons[key]) {
+        return icons[key];
+    } else {
+        return icons['eth.svg'];
+    }
 }
 
 
-export interface ChainTokensMap { [tokenSymbol: string]: Token; }
-export interface TokenTypeMap { [tokenType: string]: ChainTokensMap; }
-export interface TokensMap { [chainName: string]: TokenTypeMap; }
+export function getIconSrc(token: TokenData): string {
+    if (token.unwrappedIconUrl) return token.unwrappedIconUrl;
+    return token.iconUrl ? token.iconUrl : iconPath(token.symbol);
+}

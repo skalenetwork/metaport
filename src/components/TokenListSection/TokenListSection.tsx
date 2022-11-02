@@ -11,25 +11,7 @@ import TokenBalance from '../TokenList/TokenBalance';
 
 import styles from "../WidgetUI/WidgetUI.scss";
 import localStyles from "./TokenListSection.scss";
-
-function importAll(r) {
-  let images = {};
-  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-  return images;
-}
-
-const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
-
-
-function iconPath(name) {
-  if (!name) return;
-  const key = name.toLowerCase() + '.svg';
-  if (icons[key]) {
-    return icons[key];
-  } else {
-    return icons['eth.svg'];
-  }
-}
+import { getIconSrc } from "../TokenList/iconsHelper";
 
 
 export default function TokenListSection(props) {
@@ -58,7 +40,7 @@ export default function TokenListSection(props) {
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                 <img
                   className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                  src={props.tokens[key].iconUrl ? props.tokens[key].iconUrl : iconPath(props.tokens[key].symbol)}
+                  src={getIconSrc(props.tokens[key])}
                 />
               </div>
               <p className={clsNames(
@@ -67,7 +49,7 @@ export default function TokenListSection(props) {
                 styles.mp__flexGrow,
                 styles.mp__margRi10
               )}>
-                {props.tokens[key].name}
+                {props.tokens[key].unwrappedSymbol ? props.tokens[key].unwrappedSymbol : props.tokens[key].name}
               </p>
               <TokenBalance token={props.tokens[key]} />
             </div>

@@ -1,6 +1,11 @@
 import React from "react";
 import { WidgetUI } from "./WidgetUI";
-import { commonProps, defaultTokenData, generateTokenData } from './StoriesHelper';
+import {
+  commonProps,
+  defaultTokenData,
+  generateTokenData,
+  getWrapActionSteps
+} from './StoriesHelper';
 
 import PublicOffIcon from '@mui/icons-material/PublicOff';
 
@@ -179,3 +184,11 @@ export const TransferComplete = () => (
   />
 );
 
+
+export const WrapUI = () => (
+  <WidgetUI
+    {...commonProps}
+    {...generateTokenData('usdc', 'USDC', true)}
+    actionSteps={getWrapActionSteps()}
+  />
+);

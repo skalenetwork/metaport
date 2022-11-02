@@ -118,9 +118,11 @@ async function addTokenData(
     }
     let unwrappedSymbol;
     let unwrappedAddress;
+    let unwrappedIconUrl;
     if (configToken.wraps) {
         unwrappedSymbol = configToken.wraps.symbol;
         unwrappedAddress = configToken.wraps.address;
+        unwrappedIconUrl = configToken.wraps.iconUrl;
     }
 
     const tokenKeyname = getTokenKeyname(configToken.symbol, configToken.address);
@@ -134,7 +136,8 @@ async function addTokenData(
         configToken.decimals,
         tokenType,
         unwrappedSymbol,
-        unwrappedAddress
+        unwrappedAddress,
+        unwrappedIconUrl
     );
     addToken(sChain1, availableTokens[tokenType][tokenKeyname], true);
     addToken(sChain2, availableTokens[tokenType][tokenKeyname], false);

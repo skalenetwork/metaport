@@ -43,6 +43,7 @@ export default class TokenData {
 
     unwrappedSymbol: string
     unwrappedAddress: string
+    unwrappedIconUrl: string
     unwrappedBalance: string
 
     constructor(
@@ -56,6 +57,7 @@ export default class TokenData {
         type: TokenType,
         unwrappedSymbol: string,
         unwrappedAddress: string,
+        unwrappedIconUrl: string
     ) {
         this.cloneAddress = cloneAddress;
         this.originAddress = originAddress;
@@ -70,6 +72,7 @@ export default class TokenData {
 
         this.unwrappedSymbol = unwrappedSymbol;
         this.unwrappedAddress = unwrappedAddress;
+        this.unwrappedIconUrl = unwrappedIconUrl;
     }
 }
 

@@ -133,6 +133,7 @@ async function addM2STokensAutomatic(
             decimals,
             tokenType as TokenType,
             null,
+            null,
             null
         );
         availableTokens[tokenType][key] = overrideTokenDataFromConfig(
@@ -193,6 +194,7 @@ async function getM2STokensManual(
                 tokenInfo.iconUrl,
                 tokenInfo.decimals,
                 tokenType as TokenType,
+                null,
                 null,
                 null
             );

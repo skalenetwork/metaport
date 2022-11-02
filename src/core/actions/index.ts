@@ -93,6 +93,7 @@ export const ACTIONS = {
     erc20_m2s: [ApproveERC20M, TransferERC20M2S],
     erc20_s2m: [ApproveERC20S, TransferERC20S2M],
     erc20_s2s: [ApproveERC20S, TransferERC20S2S],
+    erc20_unwrap: unwrapActions,
 
     erc721_m2s: [ApproveERC721M, TransferERC721M2S],
     erc721_s2m: [ApproveERC721S, TransferERC721S2M],

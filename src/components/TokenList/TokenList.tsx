@@ -8,8 +8,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { getAvailableTokensTotal } from '../../core/tokens/helper';
 
-import TokenData from '../../core/dataclasses/TokenData';
-
 import { clsNames } from '../../core/helper';
 
 import ErrorMessage, { NoTokenPairsMessage } from '../ErrorMessage';
@@ -19,27 +17,7 @@ import TokenBalance from './TokenBalance';
 
 import styles from "../WidgetUI/WidgetUI.scss";
 import localStyles from "./TokenList.scss";
-
-
-function importAll(r) {
-  let images = {};
-  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-  return images;
-}
-
-const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
-
-
-function iconPath(name) {
-  if (!name) return;
-  const key = name.toLowerCase() + '.svg';
-  if (icons[key]) {
-    return icons[key];
-  } else {
-    return icons['eth.svg'];
-  }
-}
-
+import { getIconSrc, iconPath } from "./iconsHelper";
 
 
 export default function TokenList(props) {
@@ -76,7 +54,7 @@ export default function TokenList(props) {
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
                 <img
                   className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                  src={props.token.iconUrl ? props.token.iconUrl : iconPath(props.token.symbol)}
+                  src={getIconSrc(props.token)}
                 />
               </div>
               <p className={clsNames(
@@ -85,7 +63,7 @@ export default function TokenList(props) {
                 styles.mp__flexGrow,
                 styles.mp__margRi10
               )}>
-                {props.token.name}
+                {props.token.unwrappedSymbol ? props.token.unwrappedSymbol : props.token.name}
               </p>
               <TokenBalance token={props.token} />
             </div>

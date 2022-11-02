@@ -44,6 +44,25 @@ export const commonProps = {
     null,
     TokenType.erc20,
     null,
+    null,
+    null
+  ))
+}
+
+
+
+export function getWrapActionSteps() {
+  return getActionSteps('erc20_s2s', new TokenData(
+    '',
+    null,
+    '',
+    'test',
+    null,
+    null,
+    null,
+    TokenType.erc20,
+    'ETHC',
+    '0x0',
     null
   ))
 }
@@ -65,7 +84,8 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped = false) {
     '18',
     TokenType.erc20,
     undefined,
-    undefined
+    undefined,
+    "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png"
   );
   if (wrapped) {
     data.availableTokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(
@@ -96,6 +116,7 @@ export function generateERC721TokenData(tokenSymbol, tokenName) {
     undefined,
     TokenType.erc721,
     undefined,
+    undefined,
     undefined
   );
   data.token = data.availableTokens.erc721[tokenSymbol];
@@ -120,6 +141,7 @@ export function generateERC1155TokenData(tokenSymbol, tokenName) {
     undefined,
     '18',
     TokenType.erc1155,
+    undefined,
     undefined,
     undefined
   );

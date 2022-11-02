@@ -167,19 +167,6 @@ export class ApproveWrapERC20S extends Action {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        const wrappedTokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-
-        const checkResBalance = await checkERC20Balance(
-            this.address,
-            this.amount,
-            this.tokenData,
-            wrappedTokenContract
-        );
-        if (checkResBalance.res) {
-            this.setActiveStep(1);
-            return
-        }
-
         const checkResAllowance = await checkERC20Allowance(
             this.address,
             this.tokenData.originAddress,
@@ -208,19 +195,6 @@ export class WrapERC20S extends Action {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        const wrappedTokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-
-        const checkResBalanceWr = await checkERC20Balance(
-            this.address,
-            this.amount,
-            this.tokenData,
-            wrappedTokenContract
-        );
-        if (checkResBalanceWr.res) {
-            this.setActiveStep(2);
-            return
-        }
-
         const checkResAllowance = await checkERC20Allowance(
             this.address,
             this.tokenData.originAddress,
