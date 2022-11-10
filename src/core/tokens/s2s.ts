@@ -131,6 +131,7 @@ async function addTokenData(
         configToken.address,
         configToken.name,
         configToken.symbol,
+        configToken.cloneSymbol,
         isClone,
         configToken.iconUrl,
         configToken.decimals,

@@ -78,6 +78,10 @@
   margin-top: 10px !important;
 }
 
+.mp__margTop20 {
+  margin-top: 20px !important;
+}
+
 .mp__margLeft10 {
   margin-left: 10px !important;
 }
@@ -173,6 +177,13 @@
 
 .mp__btnAction {
   width: 100%;
+  text-transform: uppercase;
+  font-size: 0.7525rem;
+  line-height: 1.6;
+  letter-spacing: 0.02857em;
+  font-weight: 600 !important;
+  padding-top: 0.8em !important;
+  padding-bottom: 0.8em !important;
 }
 
 
@@ -229,8 +240,9 @@
   }
 
   .mp__p,
-  .mp__infoIcon {
-    color: rgb(255 255 255 / 65%);
+  .mp__infoIcon,
+  .mp__backIcon {
+    color: rgb(255 255 255 / 65%) !important;
   }
 
   .mp__textGray,
@@ -269,8 +281,9 @@
   }
 
   .mp__p,
-  .mp__infoIcon {
-    color: rgb(0 0 0 / 65%);
+  .mp__infoIcon,
+  .mp__backIcon {
+    color: rgb(0 0 0 / 65%) !important;
   }
 
   .MuiInput-root {
@@ -432,4 +445,10 @@
   :global(p) {
     font-size: 0.5525rem !important
   }
+}
+
+.mp__backIcon {
+  width: 8pt;
+  height: 8pt;
+  margin-left: 2pt;
 }

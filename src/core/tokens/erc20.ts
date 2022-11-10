@@ -25,8 +25,12 @@ import debug from 'debug';
 
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
+import { initContract } from '../core';
+import { getEmptyTokenDataMap } from './helper';
 import { externalEvents } from '../events';
 import { MAINNET_CHAIN_NAME } from '../constants';
+import TokenData, { getTokenKeyname } from '../dataclasses/TokenData';
+import { TokenType } from '../dataclasses/TokenType';
 import * as interfaces from '../interfaces/index';
 import { fromWei } from '../convertation';
 
@@ -89,4 +93,54 @@ export async function getTokenBalance(
     const balance = await chain.getERC20Balance(tokenContract, address);
     externalEvents.balance(tokenSymbol, chainName, balance);
     return fromWei(balance, decimals);
+}
+
+
+export async function getWrappedTokens(
+    sChain: SChain,
+    chainName: string,
+    configTokens: interfaces.TokensMap,
+    address: string
+): Promise<interfaces.TokenDataTypesMap> {
+    log('Checking wrapped tokens...');
+    const wrappedTokens: interfaces.TokenDataTypesMap = getEmptyTokenDataMap();
+    if (configTokens && configTokens[chainName] && configTokens[chainName].erc20) {
+        for (const [symbol, configToken] of Object.entries(configTokens[chainName].erc20)) {
+            if (!configToken.wraps) continue;
+            const tokenKeyname = getTokenKeyname(configToken.symbol, configToken.address);
+            const tokenContract = initContract('erc20wrap', configToken.address, sChain.web3);
+            sChain.erc20.addToken(
+                tokenKeyname,
+                tokenContract
+            );
+            const balance = await sChain.getERC20Balance(
+                tokenContract,
+                address
+            );
+            log(`token ${tokenKeyname}, address: ${address}, balance: ${balance}`);
+            if (balance !== '0') {
+                wrappedTokens.erc20[tokenKeyname] = new TokenData(
+                    null,
+                    configToken.address,
+                    configToken.name,
+                    configToken.symbol,
+                    configToken.cloneSymbol,
+                    false,
+                    configToken.iconUrl,
+                    configToken.decimals,
+                    TokenType.erc20,
+                    configToken.wraps.symbol,
+                    configToken.wraps.address,
+                    configToken.wraps.iconUrl
+                );
+                wrappedTokens.erc20[tokenKeyname].balance = fromWei(
+                    balance,
+                    wrappedTokens.erc20[tokenKeyname].decimals
+                );
+            }
+        }
+    }
+    log('wrappedTokens');
+    log(wrappedTokens);
+    return wrappedTokens;
 }

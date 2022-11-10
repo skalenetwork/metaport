@@ -17,28 +17,12 @@
  */
 
 /**
- * @file Tokens.ts
+ * @file OperationType.ts
  * @copyright SKALE Labs 2022-Present
  */
 
 
-export interface Token {
-    symbol: string,
-    cloneSymbol?: string,
-    address: string,
-    name?: string,
-    iconUrl?: string,
-    decimals?: string,
-    wraps?: WrapsData
+export enum OperationType {
+    transfer = 'transfer',
+    unwrap = 'unwrap'
 }
-
-interface WrapsData {
-    symbol: string,
-    address: string,
-    iconUrl?: string
-}
-
-
-export interface ChainTokensMap { [tokenSymbol: string]: Token; }
-export interface TokenTypeMap { [tokenType: string]: ChainTokensMap; }
-export interface TokensMap { [chainName: string]: TokenTypeMap; }

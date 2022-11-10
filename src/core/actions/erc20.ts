@@ -220,12 +220,10 @@ export class WrapERC20S extends Action {
     }
 }
 
-
-export class UnWrapERC20S extends Action {
+export class UnWrapERC20S2S extends Action {
     static label = 'Unwrap'
     static buttonText = 'Unwrap'
     static loadingText = 'Unwrapping'
-
     async execute() {
         await this.switchMetamaskChain();
         const amountWei = toWei(this.amount, this.tokenData.decimals);
@@ -235,6 +233,38 @@ export class UnWrapERC20S extends Action {
             { address: this.address }
         );
         externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
+    }
+}
+
+
+export class UnWrapERC20S extends Action {
+    static label = 'Unwrap stuck tokens'
+    static buttonText = 'Unwrap All'
+    static loadingText = 'Unwrapping'
+
+    async execute() {
+        log('execute: UnWrapERC20S');
+        const amountWei = toWei(this.amount, this.tokenData.decimals);
+        const tx = await this.sChain1.erc20.unwrap(
+            this.tokenData.keyname,
+            amountWei,
+            { address: this.address }
+        );
+        externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
+    }
+    async preAction() {
+        log('preAction: UnWrapERC20S');
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
+        const checkResBalance = await checkERC20Balance(
+            this.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+        if (!checkResBalance.res) {
+            this.setAmountErrorMessage(checkResBalance.msg);
+            return
+        }
     }
 }
 

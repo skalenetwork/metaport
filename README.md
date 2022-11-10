@@ -100,6 +100,8 @@ const metaport = new Metaport({
                 'symbol1': { // token symbol
                     'name': 'TOKEN_NAME1', // token display name
                     'address': '0x0357', // token origin address
+                    'symbol': 'TST' // token symbol
+                    'cloneSymbol': 'CTST' // optional, symbol of the clone token
                     'iconUrl': 'https://example.com/my_token_icon.png', // optional
                     'decimals': '6' // optional (default = '18')
                 }               
@@ -277,9 +279,11 @@ const TRANSFER_PARAMS = {
                 'wreth': { // wrapper token
                     'address': '0x0123', // wrapper token address
                     'name': 'wreth', // wrapper token display name
+                    'symbol': 'TST',
                     'wraps': { // token that needs to be wrapped
                         'address': '0xD2Aaa00700000000000000000000000000000000', // unwrapped token address
-                        'symbol': 'ethc' // unwrapped token symbol
+                        'symbol': 'ethc', // unwrapped token symbol
+                        'iconUrl': '' // optional, icon URL for the origin token
                     }
                 }
             }

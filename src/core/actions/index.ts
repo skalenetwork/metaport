@@ -33,6 +33,7 @@ import {
     ApproveWrapERC20S,
     WrapERC20S,
     UnWrapERC20S,
+    UnWrapERC20S2S,
     ApproveERC20M,
     TransferERC20M2S,
     TransferERC20S2M
@@ -60,6 +61,8 @@ import {
     S2M_POSTFIX,
 } from '../constants';
 
+import { OperationType } from '../../core/dataclasses/OperationType';
+
 
 debug.enable('*');
 const log = debug('metaport:actions');
@@ -68,8 +71,10 @@ const log = debug('metaport:actions');
 export function getActionName(
     chainName1: string,
     chainName2: string,
-    tokenData: TokenData
+    tokenData: TokenData,
+    operationType: OperationType
 ): string {
+    if (chainName1 && operationType === OperationType.unwrap) return 'erc20_unwrap';
     if (!chainName1 || !chainName2 || !tokenData) return;
     log(`Getting action name: ${chainName1} ${chainName2} ${tokenData.symbol} ${tokenData.type}`);
     let postfix = S2S_POSTFIX;
@@ -82,7 +87,7 @@ export function getActionName(
 
 
 const wrapActions = [ApproveWrapERC20S, WrapERC20S];
-const unwrapActions = [UnWrapERC20S];
+const unwrapActions = [UnWrapERC20S2S];
 
 
 export const ACTIONS = {
@@ -93,7 +98,7 @@ export const ACTIONS = {
     erc20_m2s: [ApproveERC20M, TransferERC20M2S],
     erc20_s2m: [ApproveERC20S, TransferERC20S2M],
     erc20_s2s: [ApproveERC20S, TransferERC20S2S],
-    erc20_unwrap: unwrapActions,
+    erc20_unwrap: [UnWrapERC20S],
 
     erc721_m2s: [ApproveERC721M, TransferERC721M2S],
     erc721_s2m: [ApproveERC721S, TransferERC721S2M],
@@ -115,12 +120,14 @@ export function getActionSteps(
 ) {
     log(`Getting action steps ${actionName}, ${tokenData.keyname}`);
     const actionsList = [];
-    if (tokenData.unwrappedSymbol && !tokenData.clone) {
+    if (tokenData.unwrappedSymbol && !tokenData.clone && actionName !== 'erc20_unwrap') { // TODO: tmp fix
         actionsList.push(...wrapActions);
     }
     actionsList.push(...ACTIONS[actionName]);
     if (tokenData.unwrappedSymbol && tokenData.clone) {
         actionsList.push(...unwrapActions);
     }
+    log('actionsList');
+    log(actionsList);
     return actionsList;
 }

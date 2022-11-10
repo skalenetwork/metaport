@@ -4,10 +4,11 @@ import {
   commonProps,
   defaultTokenData,
   generateTokenData,
-  getWrapActionSteps
+  getWrapActionSteps,
+  getUnwrapActionSteps,
+  generateWrappedTokens
 } from './StoriesHelper';
-
-import PublicOffIcon from '@mui/icons-material/PublicOff';
+import { OperationType } from '../../core/dataclasses/OperationType';
 
 
 export default {
@@ -188,7 +189,63 @@ export const TransferComplete = () => (
 export const WrapUI = () => (
   <WidgetUI
     {...commonProps}
-    {...generateTokenData('usdc', 'USDC', true)}
+    {...generateWrappedTokens()}
     actionSteps={getWrapActionSteps()}
+  />
+);
+
+
+export const UnwrapWarning = () => (
+  <WidgetUI
+    {...commonProps}
+    {...generateWrappedTokens()}
+    token={null}
+    chain2={null}
+    setOperationType={(operationType) => { commonProps.operationType = operationType; }}
+  />
+);
+
+
+export const UnwrapWarningLight = () => (
+  <WidgetUI
+    {...commonProps}
+    {...generateWrappedTokens()}
+    token={null}
+    chain2={null}
+    theme={{ mode: 'light' }}
+  />
+);
+
+
+export const UnwrapUINoTokens = () => (
+  <WidgetUI
+    {...commonProps}
+    wrappedTokens={{ 'erc20': {} }}
+    availableTokens={{ 'erc20': {} }}
+    token={null}
+    chain2={null}
+    operationType={OperationType.unwrap}
+  />
+);
+
+
+export const UnwrapUILoading = () => (
+  <WidgetUI
+    {...commonProps}
+    {...generateWrappedTokens()}
+    chain2={null}
+    operationType={OperationType.unwrap}
+    actionSteps={getUnwrapActionSteps()}
+    actionBtnDisabled={true}
+  />
+);
+
+export const UnwrapUI = () => (
+  <WidgetUI
+    {...commonProps}
+    {...generateWrappedTokens()}
+    chain2={null}
+    operationType={OperationType.unwrap}
+    actionSteps={getUnwrapActionSteps()}
   />
 );

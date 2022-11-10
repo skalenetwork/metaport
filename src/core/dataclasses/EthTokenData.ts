@@ -33,10 +33,12 @@ export default class EthTokenData extends TokenData {
             null,
             TokenType.eth,
             TokenType.eth,
+            TokenType.eth,
             clone,
             null,
             null,
             TokenType.eth,
+            null,
             null,
             null
         );

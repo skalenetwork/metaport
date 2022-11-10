@@ -3,7 +3,6 @@ import { StyledEngineProvider } from '@mui/material/styles';
 
 import Fab from '@mui/material/Fab';
 import CloseIcon from '@mui/icons-material/Close';
-import Popper from '@mui/material/Popper';
 import Paper from '@mui/material/Paper';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -80,56 +79,9 @@ export function WidgetUI(props) {
                 <div className={styles.mp__popup}>
                   {props.walletConnected ? (
                     <WidgetBody
-                      schains={props.schains}
-                      setChain1={props.setChain1}
-                      setChain2={props.setChain2}
-                      chain1={props.chain1}
-                      chain2={props.chain2}
-
-                      chainsMetadata={props.chainsMetadata}
-
-                      setToken={props.setToken}
-                      token={props.token}
-                      availableTokens={props.availableTokens}
-
-                      balance={props.balance}
-                      allowance={props.allowance}
-
+                      {...props}
                       disabledChains={disabledChains}
-
-                      amount={props.amount}
-                      setAmount={props.setAmount}
-
-                      tokenId={props.tokenId}
-                      setTokenId={props.setTokenId}
-
-                      loading={props.loading}
-                      setLoading={props.setLoading}
-
-                      actionBtnDisabled={props.actionBtnDisabled}
-
-                      loadingTokens={props.loadingTokens}
-
-                      activeStep={props.activeStep}
-                      setActiveStep={props.setActiveStep}
-
-                      setAmountLocked={props.setAmountLocked}
-                      amountLocked={props.amountLocked}
-
-                      actionSteps={props.actionSteps}
-                      handleNextStep={props.handleNextStep}
-
-                      sFuelData1={props.sFuelData1}
-                      sFuelData2={props.sFuelData2}
-
                       theme={widgetTheme}
-
-                      errorMessage={props.errorMessage}
-                      amountErrorMessage={props.amountErrorMessage}
-                      setAmountErrorMessage={props.setAmountErrorMessage}
-
-                      cleanData={props.cleanData}
-                      transferRequest={props.transferRequest}
                     />
                   ) : (
                     <Connector

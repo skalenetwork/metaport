@@ -22,3 +22,4 @@
  */
 
 export * from "./TokenType";
+export * from "./OperationType";

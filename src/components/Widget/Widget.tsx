@@ -16,6 +16,7 @@ import {
 
 
 import { getAvailableTokens, getTokenBalances } from '../../core/tokens/index';
+import { getWrappedTokens } from '../../core/tokens/erc20';
 import { getEmptyTokenDataMap, getDefaultToken } from '../../core/tokens/helper';
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
@@ -28,6 +29,7 @@ import { getSFuelData } from '../../core/sfuel';
 
 import * as interfaces from '../../core/interfaces/index';
 import TokenData from '../../core/dataclasses/TokenData';
+import { OperationType } from '../../core/dataclasses/OperationType';
 
 
 debug.enable('*');
@@ -37,7 +39,12 @@ const log = debug('metaport:Widget');
 export function Widget(props) {
 
   const [configTokens, setConfigTokens] = React.useState<interfaces.TokensMap>(undefined);
-  const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>(getEmptyTokenDataMap());
+  const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>(
+    getEmptyTokenDataMap()
+  );
+  const [wrappedTokens, setWrappedTokens] = React.useState<interfaces.TokenDataTypesMap>(
+    getEmptyTokenDataMap()
+  );
   const [token, setToken] = React.useState<TokenData>(undefined);
 
   const [firstOpen, setFirstOpen] = React.useState(props.open);
@@ -70,7 +77,10 @@ export function Widget(props) {
   const [amountLocked, setAmountLocked] = React.useState(false);
   const [actionBtnDisabled, setActionBtnDisabled] = React.useState<boolean>(false);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [actionName, setActionName] = React.useState<string>(undefined);
   const [actionSteps, setActionSteps] = React.useState(undefined);
+
+  const [operationType, setOperationType] = React.useState<OperationType>(OperationType.transfer);
 
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
@@ -144,6 +154,7 @@ export function Widget(props) {
     setAmountLocked(false);
     setActiveStep(0);
     setActionSteps(undefined);
+    setActionName(undefined)
     setAmountErrorMessage(undefined);
     setActionBtnDisabled(false);
     log('resetWidget event processed');
@@ -223,6 +234,7 @@ export function Widget(props) {
       address
     );
     setAvailableTokens(tokens);
+    checkWrappedTokens();
   }
 
   async function emitBalanceEvent(schainName, tokenSymbol) {
@@ -315,6 +327,7 @@ export function Widget(props) {
   }, [chainName2, address]);
 
   useEffect(() => {
+    if (sChain1 && configTokens) checkWrappedTokens();
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && configTokens) {
       externalEvents.connected();
       initSFuelData();
@@ -327,20 +340,13 @@ export function Widget(props) {
 
   useEffect(() => {
     setActiveStep(0);
-    if (token) {
-      if (transferRequest) {
-        // setTransferRequest(undefined);
-      } else {
-        // setAmountLocked(false);
-      }
-    }
   }, [token]);
 
   useEffect(() => {
     setAmountErrorMessage(undefined);
     if (token === undefined) return;
-    let actionName = getActionName(chainName1, chainName2, token);
-    setActionSteps(getActionSteps(actionName, token));
+    let actionName = getActionName(chainName1, chainName2, token, operationType);
+    setActionName(actionName);
   }, [chainName1, chainName2, token, availableTokens]);
 
   useEffect(() => {
@@ -349,6 +355,19 @@ export function Widget(props) {
     const defaultToken = getDefaultToken(availableTokens);
     if (defaultToken) setToken(defaultToken);
   }, [availableTokens]);
+
+  useEffect(() => {
+    setDefaultWrappedToken();
+  }, [wrappedTokens]);
+
+  useEffect(() => {
+    setToken(undefined);
+    setAmount('');
+    setActiveStep(0);
+    setActionSteps(undefined);
+    setLoading(false);
+    setDefaultWrappedToken();
+  }, [operationType]);
 
   useEffect(() => {
     setAmountErrorMessage(undefined);
@@ -368,6 +387,15 @@ export function Widget(props) {
     if (transferRequest) transfer(transferRequest);
   }, [transferRequest]);
 
+  useEffect(() => {
+    if (!actionName || !token) return;
+    setActionSteps(getActionSteps(actionName, token));
+    if (actionName === 'erc20_unwrap') { // TODO: tmp fix to unwrap
+      log('Setting max amount for unwrap: ' + token.balance);
+      setAmount(token.balance);
+    }
+  }, [actionName, token]);
+
   function cleanData() {
     setAmountErrorMessage(undefined);
     setActionBtnDisabled(false);
@@ -377,17 +405,30 @@ export function Widget(props) {
     setActiveStep(0);
   }
 
+  async function checkWrappedTokens() {
+    log('Running checkWrappedTokens');
+    const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
+    if (Object.entries(wrappedTokens).length === 0 && operationType !== OperationType.transfer) {
+      setOperationType(OperationType.transfer);
+    }
+    setWrappedTokens(wrappedTokens);
+  }
+
+  function setDefaultWrappedToken() {
+    const defaultToken = getDefaultToken(wrappedTokens);
+    if (defaultToken && operationType === OperationType.unwrap) {
+      log(`Setting defaultToken: ${defaultToken.keyname} from wrappedTokens`)
+      setToken(defaultToken);
+    }
+  }
+
   function finishTransferRequest() {
     log('Running finishTransferRequest');
     log(transferRequest);
     const tokenData = availableTokens[transferRequest.tokenType][transferRequest.tokenKeyname];
     if (!tokenData) {
-      log(`No token data!`);
+      log(`No token data: ${transferRequest.tokenKeyname}`);
       log(availableTokens);
-      log(transferRequest.tokenKeyname);
-      // setErrorMessage(new CustomErrorMessage(
-      //   `Token not found: ${transferRequest.tokenType}, ${transferRequest.tokenKeyname}`
-      // ));
       return
     }
     setErrorMessage(undefined);
@@ -398,7 +439,7 @@ export function Widget(props) {
   }
 
   async function runPreAction() {
-    if (actionSteps && actionSteps[activeStep]) {
+    if (actionSteps && actionSteps[activeStep] && token) {
       log('Running preAction');
       setActionBtnDisabled(true);
       const ActionClass: ActionType = actionSteps[activeStep];
@@ -518,7 +559,6 @@ export function Widget(props) {
 
   return (<WidgetUI
     schains={schains}
-    availableTokens={availableTokens}
     chainsMetadata={props.chainsMetadata}
 
     amount={amount}
@@ -535,8 +575,11 @@ export function Widget(props) {
     setChain1={setChainName1}
     setChain2={setChainName2}
 
+    availableTokens={availableTokens}
     token={token}
     setToken={setToken}
+
+    wrappedTokens={wrappedTokens}
 
     walletConnected={walletConnected}
     connectMetamask={connectMetamask}
@@ -569,5 +612,8 @@ export function Widget(props) {
 
     cleanData={cleanData}
     transferRequest={transferRequest}
+
+    operationType={operationType}
+    setOperationType={setOperationType}
   />)
 }

@@ -2,6 +2,8 @@ import { getActionSteps } from '../../core/actions';
 import TokenData from '../../core/dataclasses/TokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
+import { OperationType } from '../../core/dataclasses/OperationType';
+
 function setMock() { return };
 
 
@@ -13,6 +15,7 @@ function getRandomInt(min, max) {
 
 
 export const commonProps = {
+  operationType: OperationType.transfer,
   schains: ['aaa-chain', 'bbb-chain'],
   chainsMetadata: {
     'aaa-chain': {
@@ -42,6 +45,7 @@ export const commonProps = {
     null,
     null,
     null,
+    null,
     TokenType.erc20,
     null,
     null,
@@ -60,6 +64,25 @@ export function getWrapActionSteps() {
     null,
     null,
     null,
+    null,
+    TokenType.erc20,
+    'ETHC',
+    '0x0',
+    null
+  ))
+}
+
+
+export function getUnwrapActionSteps() {
+  return getActionSteps('erc20_unwrap', new TokenData(
+    '',
+    null,
+    '',
+    'test',
+    null,
+    null,
+    null,
+    null,
     TokenType.erc20,
     'ETHC',
     '0x0',
@@ -72,20 +95,24 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped = false) {
   const data = {
     token: tokenSymbol,
     amount: getRandomInt(1000, 10000),
-    availableTokens: getEmptyTokenDataMap()
+    availableTokens: getEmptyTokenDataMap(),
+    wrappedTokens: getEmptyTokenDataMap(),
+    wrappedToken: undefined
   }
+  const unwrappedIconUrl = wrapped ? "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png" : null
   data.availableTokens.erc20[tokenSymbol] = new TokenData(
     '0x0',
     '0x0',
     tokenName,
     tokenSymbol,
+    undefined,
     false,
     undefined,
     '18',
     TokenType.erc20,
     undefined,
     undefined,
-    "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png"
+    unwrappedIconUrl
   );
   if (wrapped) {
     data.availableTokens.erc20[tokenSymbol].unwrappedBalance = getRandomInt(
@@ -110,6 +137,7 @@ export function generateERC721TokenData(tokenSymbol, tokenName) {
     '0x0',
     '0x0',
     tokenName,
+    tokenSymbol,
     tokenSymbol,
     false,
     undefined,
@@ -137,6 +165,7 @@ export function generateERC1155TokenData(tokenSymbol, tokenName) {
     '0x0',
     tokenName,
     tokenSymbol,
+    undefined,
     false,
     undefined,
     '18',
@@ -151,3 +180,12 @@ export function generateERC1155TokenData(tokenSymbol, tokenName) {
 }
 
 export const defaultERC1155TokenData = generateERC1155TokenData('XEM', 'SKALIENS');
+
+
+
+export function generateWrappedTokens() {
+  const data = generateTokenData('usdt', 'Tether');
+  data.wrappedTokens.erc20 = data.availableTokens.erc20;
+  data.token.balance = undefined;
+  return data;
+}

@@ -28,6 +28,7 @@ import { TokenType } from './TokenType';
 export default class TokenData {
     originAddress: string
     cloneAddress: string
+    cloneSymbol: string
 
     name: string
     symbol: string
@@ -51,6 +52,7 @@ export default class TokenData {
         originAddress: string,
         name: string,
         symbol: string,
+        cloneSymbol: string,
         clone: boolean,
         iconUrl: string,
         decimals: string,
@@ -60,6 +62,7 @@ export default class TokenData {
         unwrappedIconUrl: string
     ) {
         this.cloneAddress = cloneAddress;
+        this.cloneSymbol = cloneSymbol ? cloneSymbol : symbol;
         this.originAddress = originAddress;
         this.name = name;
         this.symbol = symbol;

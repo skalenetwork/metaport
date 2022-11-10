@@ -12,8 +12,15 @@ function roundDown(number, decimals) {
 
 export default function TokenBalance(props) {
     if ([TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)) return;
-    const balance = props.token.unwrappedSymbol ? props.token.unwrappedBalance : props.token.balance;
-    const symbol = props.token.unwrappedSymbol ? props.token.unwrappedSymbol : props.token.symbol;
+    let balance = props.token.unwrappedSymbol ? props.token.unwrappedBalance : props.token.balance;
+    let symbol = props.token.unwrappedSymbol ? props.token.unwrappedSymbol : props.token.symbol;
+
+    if (props.token.clone) {
+        balance = props.token.balance;
+        symbol = props.token.cloneSymbol ? props.token.cloneSymbol : symbol;
+    }
+
+    if (!balance) return;
     return (
         <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
             <p className={clsNames(
