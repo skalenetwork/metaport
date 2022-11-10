@@ -25,6 +25,7 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Usage with SSR](#usage-with-ssr)
       - [Token icons](#token-icons)
       - [Type definitions](#type-definitions)
+      - [Dataclasses](#dataclasses)
     - [Events](#events)
       - [Available Events](#available-events)
     - [Themes](#themes)
@@ -66,7 +67,7 @@ You can import Metaport into any modern web application (Vue/React/Angular/etc).
 ```Javascript
 import { Metaport } from '@skalenetwork/metaport';
 
-const widget = new Metaport(METAPORT_OPTIONS);
+const metaport = new Metaport(METAPORT_OPTIONS);
 ```
 
 ### Initialization options
@@ -74,7 +75,7 @@ const widget = new Metaport(METAPORT_OPTIONS);
 All currently available options are listed below:
 
 ```Javascript
-const widget = new Metaport({
+const metaport = new Metaport({
     openOnLoad: true, // Open Metaport on load (optional, default = false)
     openButton: false, // Show open/close action button (optional, default = true)
     autoLookup: false, // Automatic token lookup for M2S tokens (default = true)
@@ -99,6 +100,8 @@ const widget = new Metaport({
                 'symbol1': { // token symbol
                     'name': 'TOKEN_NAME1', // token display name
                     'address': '0x0357', // token origin address
+                    'symbol': 'TST' // token symbol
+                    'cloneSymbol': 'CTST' // optional, symbol of the clone token
                     'iconUrl': 'https://example.com/my_token_icon.png', // optional
                     'decimals': '6' // optional (default = '18')
                 }               
@@ -122,25 +125,21 @@ const widget = new Metaport({
 
 When sending a transfer request you can specify token and chains or keep ones that are already selected in the Metaport UI.
 
-```Javascript
+```Typescript
+import { interfaces, dataclasses } from '@skalenetwork/metaport';
 
-const TRANSFER_PARAMS = {
-    amount: '1000', // amount to transfer (in wei)
-    chains: ['chainName1', 'chainName2'], // 'from' and 'to' chains
-    tokens: { // optional, if token is already selected in the Metaport UI
-        'chainName1': {
-            'erc20': {
-                'tst': {
-                    'address': '0x0777',
-                    'name': 'TEST_TOKEN'
-                }
-            }
-        }
-    },
-    lockAmount: true // optional, boolean - lock the amount in the Metaport UI
-}
+// token keyname is composed from token symbol and origin token address
+const tokenKeyname = `_${tokenSymbol}_${tokenAddress}`;
 
-metaport.transfer(TRANSFER_PARAMS);
+const params: interfaces.TransferParams = {
+    tokenId: tokenId, // for erc721, erc721meta and erc1155 tokens
+    amount: amount, // amount to transfer (in wei) - for eth, erc20 and erc1155 tokens
+    chains: chains, // 'from' and 'to' chains (must be present in the list on chains)
+    tokenKeyname: tokenKeyname, // token that you want to transfer
+    tokenType: dataclasses.TokenType.erc1155, // available TokenTypes are eth, erc20, erc721, erc721meta and erc1155
+    lockValue: true // optional, boolean - lock the amount in the Metaport UI
+};
+props.metaport.transfer(params);
 ```
 
 Once transfer will be completed, you will receive `metaport_transferComplete` event (see Events section for more details).
@@ -183,7 +182,7 @@ const TOKENS_OVERRIDE = {
   }
 };
 
-const widget = new Metaport({
+const metaport = new Metaport({
     ...
     autoLookup: true,
     tokens: TOKENS_OVERRIDE
@@ -199,7 +198,7 @@ If you're passing multiple tokens to Metaport constructor or to `updateParams` f
 If you want to lock user on a specific token, pass a single entry to `tokens` param:
 
 ```Javascript
-const widget = new Metaport({
+const metaport = new Metaport({
     ...,
     tokens: {
         'chainName2': {
@@ -238,7 +237,7 @@ If you're passing more that 2 chains to Metaport constructor or to `updateParams
 If you want to perform/request transfer from one particular chain to another, pass exactly 2 chain names to `schain` param:
 
 ```Javascript
-const widget = new Metaport({
+const metaport = new Metaport({
     ...,
     chains: [
         'chainName1', // this one will be set as 'From' chain
@@ -254,7 +253,7 @@ You can use the same approach for `updateParams` and `transfer` functions.
 ETH clone is already pre-deployed on each chain, so to have it in the Metaport UI, you just need to specify token like that:
 
 ```Javascript
-const widget = new Metaport({
+const metaport = new Metaport({
     ...,
     chains: ['mainnet', 'chainName1']
     tokens: {
@@ -280,9 +279,11 @@ const TRANSFER_PARAMS = {
                 'wreth': { // wrapper token
                     'address': '0x0123', // wrapper token address
                     'name': 'wreth', // wrapper token display name
+                    'symbol': 'TST',
                     'wraps': { // token that needs to be wrapped
                         'address': '0xD2Aaa00700000000000000000000000000000000', // unwrapped token address
-                        'symbol': 'ethc' // unwrapped token symbol
+                        'symbol': 'ethc', // unwrapped token symbol
+                        'iconUrl': '' // optional, icon URL for the origin token
                     }
                 }
             }
@@ -368,6 +369,22 @@ const config: interfaces.MetaportConfig = {
 }
 ```
 
+#### Dataclasses
+
+You can import dataclasses types for the Metaport:
+
+```typescript
+import { dataclasses } from '@skalenetwork/metaport';
+
+const params: interfaces.TransferParams = {
+    amount: amount,
+    chains: chains,
+    tokenKeyname: tokenKeyname,
+    tokenType: dataclasses.TokenType.erc20,
+};
+```
+
+
 ### Events
 
 You can receive data from the Metaport widget using in-browser events.
@@ -400,7 +417,7 @@ You can easily modify Metaport color scheme by providing a theme:
 
 ```Javascript
 // option 1: during the init
-const widget = new Metaport({
+const metaport = new Metaport({
     ...
     theme: {
         primary: '#00d4ff', // primary accent color for action buttons

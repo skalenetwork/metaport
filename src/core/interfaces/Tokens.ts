@@ -23,10 +23,19 @@
 
 
 export interface Token {
+    symbol: string,
+    cloneSymbol?: string,
+    address: string,
     name?: string,
-    address?: string,
     iconUrl?: string,
     decimals?: string,
+    wraps?: WrapsData
+}
+
+interface WrapsData {
+    symbol: string,
+    address: string,
+    iconUrl?: string
 }
 
 

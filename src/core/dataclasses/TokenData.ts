@@ -21,52 +21,65 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { ETH_TOKEN_NAME, DEFAULT_ERC20_DECIMALS } from '../constants';
+import { DEFAULT_ERC20_DECIMALS } from '../constants';
+import { TokenType } from './TokenType';
 
 
 export default class TokenData {
     originAddress: string
     cloneAddress: string
+    cloneSymbol: string
 
     name: string
     symbol: string
+    keyname: string
 
     clone: boolean
-    type: string
-    balance: number
+    type: TokenType
+
+    balance: string
 
     iconUrl: string
+    decimals: string
 
     unwrappedSymbol: string
     unwrappedAddress: string
-    unwrappedBalance: number
-
-    decimals: string
+    unwrappedIconUrl: string
+    unwrappedBalance: string
 
     constructor(
         cloneAddress: string,
         originAddress: string,
         name: string,
         symbol: string,
+        cloneSymbol: string,
         clone: boolean,
         iconUrl: string,
+        decimals: string,
+        type: TokenType,
         unwrappedSymbol: string,
         unwrappedAddress: string,
-        decimals: string
+        unwrappedIconUrl: string
     ) {
         this.cloneAddress = cloneAddress;
+        this.cloneSymbol = cloneSymbol ? cloneSymbol : symbol;
         this.originAddress = originAddress;
-
-        this.unwrappedAddress = unwrappedAddress;
-        this.unwrappedSymbol = unwrappedSymbol;
-
         this.name = name;
         this.symbol = symbol;
         this.clone = clone;
         this.iconUrl = iconUrl;
-
         this.decimals = decimals ? decimals : DEFAULT_ERC20_DECIMALS;
-        this.type = (name === ETH_TOKEN_NAME) ? 'eth' : 'erc20'
+        this.type = type;
+
+        this.keyname = getTokenKeyname(symbol, originAddress);
+
+        this.unwrappedSymbol = unwrappedSymbol;
+        this.unwrappedAddress = unwrappedAddress;
+        this.unwrappedIconUrl = unwrappedIconUrl;
     }
 }
 
+
+export function getTokenKeyname(symbol: string, originAddress: string): string {
+    return `_${symbol}_${originAddress}`;
+}

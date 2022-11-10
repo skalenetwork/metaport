@@ -21,18 +21,18 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import Web3 from 'web3';
-import { Unit } from 'web3-utils';
+import { Unit, toWei as _toWei, fromWei as _fromWei, unitMap, toBN } from 'web3-utils';
 
 
-export function toWei(web3: Web3, value: string, decimals: string): string {
-    return web3.utils.toWei(value, decimalsToUnit(web3, decimals));
+export function toWei(value: string, decimals: string): string {
+    return _toWei(value, decimalsToUnit(decimals));
 }
 
-export function fromWei(web3: Web3, value: string, decimals: string): string {
-    return web3.utils.fromWei(value, decimalsToUnit(web3, decimals));
+export function fromWei(value: string, decimals: string): string {
+    return _fromWei(value, decimalsToUnit(decimals));
 }
 
-function decimalsToUnit(web3: Web3, decimals: string): Unit {
-    return Object.keys(web3.utils.unitMap).find(key => web3.utils.unitMap[key] === web3.utils.toBN(10).pow(web3.utils.toBN(decimals)).toString()) as Unit;
+function decimalsToUnit(decimals: string): Unit {
+    return Object.keys(unitMap).find(
+        key => unitMap[key] === toBN(10).pow(toBN(decimals)).toString()) as Unit;
 }

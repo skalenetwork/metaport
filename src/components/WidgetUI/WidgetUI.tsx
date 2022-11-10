@@ -3,7 +3,6 @@ import { StyledEngineProvider } from '@mui/material/styles';
 
 import Fab from '@mui/material/Fab';
 import CloseIcon from '@mui/icons-material/Close';
-import Popper from '@mui/material/Popper';
 import Paper from '@mui/material/Paper';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -62,16 +61,6 @@ export function WidgetUI(props) {
     }
   }, [props.schains]);
 
-  useEffect(() => {
-    if (props.tokens == undefined) return;
-    if (Object.keys(props.tokens['erc20']).length == 1) {
-      props.setToken(Object.keys(props.tokens['erc20'])[0]);
-    }
-    if (Object.keys(props.tokens['erc20']).length == 0 && props.tokens.eth) {
-      props.setToken('eth');
-    }
-  }, [props.tokens]);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     props.setOpen(props.open ? false : true);
   };
@@ -90,46 +79,9 @@ export function WidgetUI(props) {
                 <div className={styles.mp__popup}>
                   {props.walletConnected ? (
                     <WidgetBody
-                      schains={props.schains}
-                      setChain1={props.setChain1}
-                      setChain2={props.setChain2}
-                      chain1={props.chain1}
-                      chain2={props.chain2}
-
-                      chainsMetadata={props.chainsMetadata}
-
-                      setToken={props.setToken}
-                      token={props.token}
-                      tokens={props.tokens}
-
-                      balance={props.balance}
-                      allowance={props.allowance}
-
+                      {...props}
                       disabledChains={disabledChains}
-
-                      amount={props.amount}
-                      setAmount={props.setAmount}
-
-                      loading={props.loading}
-                      setLoading={props.setLoading}
-
-                      loadingTokens={props.loadingTokens}
-
-                      activeStep={props.activeStep}
-                      setActiveStep={props.setActiveStep}
-
-                      setAmountLocked={props.setAmountLocked}
-                      amountLocked={props.amountLocked}
-
-                      actionSteps={props.actionSteps}
-                      handleNextStep={props.handleNextStep}
-
-                      sFuelData1={props.sFuelData1}
-                      sFuelData2={props.sFuelData2}
-
                       theme={widgetTheme}
-
-                      errorMessage={props.errorMessage}
                     />
                   ) : (
                     <Connector

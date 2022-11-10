@@ -34,6 +34,8 @@ import defaultTokens from './metadata/tokens.json';
 import * as interfaces from './core/interfaces/index';
 export * as interfaces from './core/interfaces/index';
 
+export * as dataclasses from './core/dataclasses/index';
+
 
 export class Metaport {
   constructor(config: interfaces.MetaportConfig) {
@@ -68,7 +70,7 @@ export class Metaport {
     );
   }
 
-  transfer(params) { internalEvents.transfer(params) }
+  transfer(params: interfaces.TransferParams): void { internalEvents.transfer(params) }
   wrap(params) { internalEvents.wrap(params) }
   unwrap(params) { internalEvents.unwrap(params) }
   swap(params) { internalEvents.swap(params) }

@@ -1,7 +1,6 @@
 
 const defaultThemes = {
     'dark': {
-        // primary: '#8BFCD9',
         primary: 'rgb(217, 224, 33)',
         background: '#0e0e0e',
         mode: 'dark'
