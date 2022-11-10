@@ -25,7 +25,7 @@ import TokenData from '../../core/dataclasses/TokenData';
 
 
 function importAll(r) {
-    let images = {};
+    const images = {};
     r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
     return images;
 }

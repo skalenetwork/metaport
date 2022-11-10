@@ -120,7 +120,8 @@ export function getActionSteps(
 ) {
     log(`Getting action steps ${actionName}, ${tokenData.keyname}`);
     const actionsList = [];
-    if (tokenData.unwrappedSymbol && !tokenData.clone && actionName !== 'erc20_unwrap') { // TODO: tmp fix
+    // TODO: tmp fix
+    if (tokenData.unwrappedSymbol && !tokenData.clone && actionName !== 'erc20_unwrap') {
         actionsList.push(...wrapActions);
     }
     actionsList.push(...ACTIONS[actionName]);

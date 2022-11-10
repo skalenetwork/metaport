@@ -99,7 +99,8 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped = false) {
     wrappedTokens: getEmptyTokenDataMap(),
     wrappedToken: undefined
   }
-  const unwrappedIconUrl = wrapped ? "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png" : null
+  // tslint:disable-next-line
+  const unwrappedIconUrl = wrapped ? "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png" : null 
   data.availableTokens.erc20[tokenSymbol] = new TokenData(
     '0x0',
     '0x0',
