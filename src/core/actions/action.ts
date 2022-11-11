@@ -49,7 +49,7 @@ export class Action {
     tokenId: number
     tokenData: TokenData
 
-    switchMetamaskChain: () => void
+    switchMetamaskChain: (switchBack: boolean) => Promise<void>
     setActiveStep: React.Dispatch<React.SetStateAction<number>>
     activeStep: number
 
@@ -67,7 +67,7 @@ export class Action {
         amount: string,
         tokenId: number,
         tokenData: TokenData,
-        switchMetamaskChain: () => void,
+        switchMetamaskChain: (switchBack: boolean) => Promise<void>,
         setActiveStep: React.Dispatch<React.SetStateAction<number>>,
         activeStep: number,
         setAmountErrorMessage: React.Dispatch<React.SetStateAction<string>>,

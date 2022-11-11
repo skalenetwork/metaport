@@ -150,7 +150,6 @@ export class TransferERC20S2S extends TransferAction {
 }
 
 
-
 export class ApproveWrapERC20S extends Action {
     static label = 'Approve wrap'
     static buttonText = 'Approve all'
@@ -220,19 +219,40 @@ export class WrapERC20S extends Action {
     }
 }
 
+
 export class UnWrapERC20S2S extends Action {
     static label = 'Unwrap'
     static buttonText = 'Unwrap'
     static loadingText = 'Unwrapping'
     async execute() {
-        await this.switchMetamaskChain();
-        const amountWei = toWei(this.amount, this.tokenData.decimals);
-        const tx = await this.sChain2.erc20.unwrap(
-            this.tokenData.keyname,
-            amountWei,
-            { address: this.address }
+        log('execute: UnWrapERC20S2S');
+        await this.switchMetamaskChain(false);
+        try {
+            const amountWei = toWei(this.amount, this.tokenData.decimals);
+            const tx = await this.sChain2.erc20.unwrap(
+                this.tokenData.keyname,
+                amountWei,
+                { address: this.address }
+            );
+            externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
+        } finally {
+            await this.switchMetamaskChain(true);
+        }
+    }
+
+    async preAction() {
+        log('preAction: UnWrapERC20S2S');
+        const tokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
+        const checkResBalance = await checkERC20Balance(
+            this.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
         );
-        externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
+        if (!checkResBalance.res) {
+            this.setAmountErrorMessage(checkResBalance.msg);
+            return
+        }
     }
 }
 

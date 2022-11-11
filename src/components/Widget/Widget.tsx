@@ -280,15 +280,19 @@ export function Widget(props) {
     }
   }
 
-  async function switchMetamaskChain() {
-    if (chainName1 === MAINNET_CHAIN_NAME) { // TODO: FIX
-      return
-    };
-    if (chainName2 === MAINNET_CHAIN_NAME) {
-      return
-    };
-    updateWeb3SChain(sChain1, props.network, chainName1);
-    await updateWeb3SChainMetamask(sChain2, props.network, chainName2);
+  async function switchMetamaskChain(switchBack: boolean): Promise<void> {
+    // TODO: tmp fix
+    if (chainName2 === MAINNET_CHAIN_NAME || chainName1 === MAINNET_CHAIN_NAME) return;
+    updateWeb3SChain(
+      switchBack ? sChain2 : sChain1,
+      props.network,
+      switchBack ? chainName2 : chainName1
+    );
+    await updateWeb3SChainMetamask(
+      switchBack ? sChain1 : sChain2,
+      props.network,
+      switchBack ? chainName1 : chainName2
+    );
   }
 
   useEffect(() => {
@@ -375,13 +379,13 @@ export function Widget(props) {
   }, [actionSteps, activeStep, amount, tokenId]);
 
   useEffect(() => {
-    const isUwrapAction = token && token.unwrappedSymbol && token.clone; // TODO: tmp fix for unwrap
+    const isUwrapAction = token && token.unwrappedSymbol && token.clone && activeStep === 2; // TODO: tmp fix for unwrap
     if (extChainId && chainId && extChainId !== chainId && !isUwrapAction) {
       setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
     } else {
       setErrorMessage(undefined);
     }
-  }, [extChainId, chainId]);
+  }, [extChainId, chainId, token, activeStep]);
 
   useEffect(() => {
     if (transferRequest) transfer(transferRequest);
