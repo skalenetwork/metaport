@@ -68,9 +68,9 @@ export default function WidgetBody(props) {
       </Collapse>
       <Collapse in={
         props.operationType !== OperationType.unwrap &&
-        !props.expandedFrom &&
-        !props.expandedTo &&
-        !props.expandedTokens &&
+        !expandedFrom &&
+        !expandedTo &&
+        !expandedTokens &&
         !wrapTransferAction
       }>
         <WrappedTokensWarning
