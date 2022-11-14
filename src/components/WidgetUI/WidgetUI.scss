@@ -178,9 +178,9 @@
 .mp__btnAction {
   width: 100%;
   text-transform: uppercase;
-  font-size: 0.7525rem;
-  line-height: 1.6;
-  letter-spacing: 0.02857em;
+  font-size: 0.7525rem !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.02857em !important;
   font-weight: 600 !important;
   padding-top: 0.8em !important;
   padding-bottom: 0.8em !important;
@@ -448,7 +448,7 @@
 }
 
 .mp__backIcon {
-  width: 8pt;
-  height: 8pt;
-  margin-left: 2pt;
+  width: 8pt !important;
+  height: 8pt !important;
+  margin-left: 2pt !important;
 }
