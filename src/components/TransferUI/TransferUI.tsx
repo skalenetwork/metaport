@@ -61,7 +61,6 @@ export default function TransferUI(props) {
             <SFuelBadge from={false} data={props.sFuelData2} />
           </div>
         </div>
-
         <ChainsList
           schains={props.schains}
           setChain={props.setChain2}
@@ -154,6 +153,7 @@ export default function TransferUI(props) {
                 theme={props.theme}
 
                 cleanData={props.cleanData}
+                sFuelData={props.sFuelData1}
               />)}
             </div>
           )}

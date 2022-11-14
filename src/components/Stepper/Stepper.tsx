@@ -26,7 +26,9 @@ export default function ActionsStepper(props) {
   if (!props.token) return;
   const nextStepDisabledAmount = [TokenType.erc20, TokenType.erc1155].includes(props.token.type) && (props.amount === '' || Number(props.amount) === 0);
   const nextStepDisabledTokenId = [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type) && !props.tokenId;
-  const nextStepDisabled = nextStepDisabledAmount || nextStepDisabledTokenId || props.loading || props.actionBtnDisabled;
+  const noSFuel = props.sFuelData && Object.keys(props.sFuelData).length !== 0 && !props.sFuelData.ok;
+  const nextStepDisabled = nextStepDisabledAmount || nextStepDisabledTokenId || props.loading || props.actionBtnDisabled || noSFuel;
+
   return (
     <Box>
       <Stepper className={localStyles.mp__stepper} activeStep={props.activeStep} orientation="vertical">

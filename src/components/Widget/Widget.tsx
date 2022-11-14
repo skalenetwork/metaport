@@ -332,9 +332,9 @@ export function Widget(props) {
 
   useEffect(() => {
     if (sChain1 && configTokens) checkWrappedTokens();
+    initSFuelData();
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && configTokens) {
       externalEvents.connected();
-      initSFuelData();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
@@ -344,6 +344,8 @@ export function Widget(props) {
 
   useEffect(() => {
     setActiveStep(0);
+    setAmount('');
+    setTokenId(0);
   }, [token]);
 
   useEffect(() => {
@@ -413,6 +415,7 @@ export function Widget(props) {
     log('Running checkWrappedTokens');
     const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
     if (Object.entries(wrappedTokens).length === 0 && operationType !== OperationType.transfer) {
+      setAmount('');
       setOperationType(OperationType.transfer);
     }
     setWrappedTokens(wrappedTokens);
@@ -543,21 +546,27 @@ export function Widget(props) {
   }
 
   async function initSFuelData() {
-    if (sChain1) {
+    if (sChain1 && chainName1) {
+      log(`initSFuelData - chain1`);
       setSFuelData1(await getSFuelData(
         props.chainsMetadata,
         chainName1,
         sChain1.web3,
         address
       ));
+    } else {
+      setSFuelData1({});
     }
-    if (sChain2) {
+    if (sChain2 && chainName2) {
+      log(`initSFuelData - chain2`);
       setSFuelData2(await getSFuelData(
         props.chainsMetadata,
         chainName2,
         sChain2.web3,
         address
       ));
+    } else {
+      setSFuelData2({});
     }
   }
 

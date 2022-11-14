@@ -30,6 +30,7 @@ const BadgeStates = {
 
 export default function SFuelBadge(props) {
   if (!props.data || props.data.ok) return;
+  if (Object.keys(props.data).length === 0) return;
 
   let type = props.from ? 'error' : 'warning';
   let badgeInfo = BadgeStates[type];
@@ -38,7 +39,6 @@ export default function SFuelBadge(props) {
     <Tooltip title={badgeInfo.tooltip} placement="top">
       <div className={localStyles.mp__chip}>
         <Chip
-          className={localStyles.mp__chip}
           color={badgeInfo.color}
           onClick={props.data.faucetUrl ? (() => window.open(props.data.faucetUrl, '_blank')?.focus()) : null}
           icon={badgeInfo.icon}
