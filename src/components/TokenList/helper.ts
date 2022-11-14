@@ -17,11 +17,23 @@
  */
 
 /**
- * @file iconsHelper.ts
+ * @file helper.ts
  * @copyright SKALE Labs 2022-Present
  */
 
 import TokenData from '../../core/dataclasses/TokenData';
+
+
+export function getTokenSymbol(token: TokenData): string {
+    let symbol = token.unwrappedSymbol ? token.unwrappedSymbol : token.symbol;
+    if (token.clone) symbol = token.cloneSymbol ? token.cloneSymbol : symbol;
+    return symbol;
+}
+
+
+export function getTokenName(token: TokenData): string {
+    return token.name ? token.name : getTokenSymbol(token);
+}
 
 
 function importAll(r) {

@@ -17,7 +17,7 @@ import TokenBalance from './TokenBalance';
 
 import styles from "../WidgetUI/WidgetUI.scss";
 import localStyles from "./TokenList.scss";
-import { getIconSrc, iconPath } from "./iconsHelper";
+import { getIconSrc, iconPath, getTokenName } from "./helper";
 
 
 export default function TokenList(props) {
@@ -63,7 +63,7 @@ export default function TokenList(props) {
                 styles.mp__flexGrow,
                 styles.mp__margRi10
               )}>
-                {props.token.unwrappedSymbol ? props.token.unwrappedSymbol : props.token.name}
+                {getTokenName(props.token)}
               </p>
               <TokenBalance token={props.token} />
             </div>
