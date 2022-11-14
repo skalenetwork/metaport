@@ -17,7 +17,7 @@ export default function CurrentChain(props) {
   return (
     <Collapse in={!props.expandedTo && !props.expandedTokens}>
       <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margBott5)}>
-        {props.operationType === OperationType.unwrap ? (<div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
+        {props.operationType === OperationType.unwrap ? (<div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
           <IconButton
             size="small"
             color="primary"

@@ -280,15 +280,19 @@ export function Widget(props) {
     }
   }
 
-  async function switchMetamaskChain() {
-    if (chainName1 === MAINNET_CHAIN_NAME) { // TODO: FIX
-      return
-    };
-    if (chainName2 === MAINNET_CHAIN_NAME) {
-      return
-    };
-    updateWeb3SChain(sChain1, props.network, chainName1);
-    await updateWeb3SChainMetamask(sChain2, props.network, chainName2);
+  async function switchMetamaskChain(switchBack: boolean): Promise<void> {
+    // TODO: tmp fix
+    if (chainName2 === MAINNET_CHAIN_NAME || chainName1 === MAINNET_CHAIN_NAME) return;
+    updateWeb3SChain(
+      switchBack ? sChain2 : sChain1,
+      props.network,
+      switchBack ? chainName2 : chainName1
+    );
+    await updateWeb3SChainMetamask(
+      switchBack ? sChain1 : sChain2,
+      props.network,
+      switchBack ? chainName1 : chainName2
+    );
   }
 
   useEffect(() => {
@@ -328,9 +332,9 @@ export function Widget(props) {
 
   useEffect(() => {
     if (sChain1 && configTokens) checkWrappedTokens();
+    initSFuelData();
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && configTokens) {
       externalEvents.connected();
-      initSFuelData();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
@@ -340,6 +344,8 @@ export function Widget(props) {
 
   useEffect(() => {
     setActiveStep(0);
+    setAmount('');
+    setTokenId(0);
   }, [token]);
 
   useEffect(() => {
@@ -375,13 +381,13 @@ export function Widget(props) {
   }, [actionSteps, activeStep, amount, tokenId]);
 
   useEffect(() => {
-    const isUwrapAction = token && token.unwrappedSymbol && token.clone; // TODO: tmp fix for unwrap
+    const isUwrapAction = token && token.unwrappedSymbol && token.clone && activeStep === 2; // TODO: tmp fix for unwrap
     if (extChainId && chainId && extChainId !== chainId && !isUwrapAction) {
       setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
     } else {
       setErrorMessage(undefined);
     }
-  }, [extChainId, chainId]);
+  }, [extChainId, chainId, token, activeStep]);
 
   useEffect(() => {
     if (transferRequest) transfer(transferRequest);
@@ -409,6 +415,7 @@ export function Widget(props) {
     log('Running checkWrappedTokens');
     const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
     if (Object.entries(wrappedTokens).length === 0 && operationType !== OperationType.transfer) {
+      setAmount('');
       setOperationType(OperationType.transfer);
     }
     setWrappedTokens(wrappedTokens);
@@ -539,21 +546,27 @@ export function Widget(props) {
   }
 
   async function initSFuelData() {
-    if (sChain1) {
+    if (sChain1 && chainName1) {
+      log(`initSFuelData - chain1`);
       setSFuelData1(await getSFuelData(
         props.chainsMetadata,
         chainName1,
         sChain1.web3,
         address
       ));
+    } else {
+      setSFuelData1({});
     }
-    if (sChain2) {
+    if (sChain2 && chainName2) {
+      log(`initSFuelData - chain2`);
       setSFuelData2(await getSFuelData(
         props.chainsMetadata,
         chainName2,
         sChain2.web3,
         address
       ));
+    } else {
+      setSFuelData2({});
     }
   }
 

@@ -39,6 +39,7 @@ export default function WidgetBody(props) {
 
         operationType={props.operationType}
         setOperationType={props.setOperationType}
+        sFuelData={props.sFuelData1}
       />
       <Collapse in={props.errorMessage && !expandedFrom}>
         <ErrorMessage errorMessage={props.errorMessage} />

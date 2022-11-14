@@ -93,6 +93,7 @@ export default function UnwrapUI(props) {
                 theme={props.theme}
 
                 cleanData={props.cleanData}
+                sFuelData={props.sFuelData1}
               />)}
             </div>
           )}
