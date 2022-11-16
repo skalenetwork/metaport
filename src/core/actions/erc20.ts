@@ -225,7 +225,7 @@ export class UnWrapERC20S2S extends Action {
     static buttonText = 'Unwrap'
     static loadingText = 'Unwrapping'
     async execute() {
-        log('execute: UnWrapERC20S2S');
+        log('UnWrapERC20S2S: execute');
         await this.switchMetamaskChain(false);
         try {
             const amountWei = toWei(this.amount, this.tokenData.decimals);
@@ -236,7 +236,8 @@ export class UnWrapERC20S2S extends Action {
             );
             externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
         } finally {
-            await this.switchMetamaskChain(true);
+            log('UnWrapERC20S2S: switchMetamaskChain back');
+            this.switchMetamaskChain(true);
         }
     }
 

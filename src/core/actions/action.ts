@@ -24,7 +24,7 @@
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 import TokenData from '../dataclasses/TokenData';
 import { externalEvents } from '../events';
-import { toWei, fromWei } from '../convertation';
+import { toWei } from '../convertation';
 
 
 export type ActionType = typeof Action;

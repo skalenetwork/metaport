@@ -47,43 +47,50 @@ export async function getAvailableTokens(
     chainName1: string,
     chainName2: string,
     configTokens: interfaces.TokensMap,
-    force: boolean,
     autoLookup: boolean
 ): Promise<interfaces.TokenDataTypesMap> {
     log('Collecting available tokens for ' + chainName1 + ' → ' + chainName2);
     const availableTokens = getEmptyTokenDataMap();
-    log('Adding ETH to availableTokens');
-    await addETHToken(
-        chainName1,
-        chainName2,
-        configTokens,
-        availableTokens
-    );
-    if (isMainnet(chainName1) || isMainnet(chainName2)) {
-        log('Going to add M2S ERC20 tokens')
-        const sChain = isMainnet(chainName1) ? sChain2 : sChain1;
-        const schainName = isMainnet(chainName1) ? chainName2 : chainName1;
-        await addM2STokens(
-            mainnet,
-            sChain,
-            schainName,
-            configTokens,
-            availableTokens,
-            autoLookup
-        );
-    } else {
-        await addS2STokens(
-            sChain1,
-            sChain2,
+    try {
+        log('Adding ETH to availableTokens');
+        await addETHToken(
             chainName1,
             chainName2,
             configTokens,
-            availableTokens,
-            force
+            availableTokens
         );
+        if (isMainnet(chainName1) || isMainnet(chainName2)) {
+            log('Going to add M2S ERC20 tokens')
+            const sChain = isMainnet(chainName1) ? sChain2 : sChain1;
+            const schainName = isMainnet(chainName1) ? chainName2 : chainName1;
+            await addM2STokens(
+                mainnet,
+                sChain,
+                schainName,
+                configTokens,
+                availableTokens,
+                autoLookup
+            );
+        } else {
+            await addS2STokens(
+                sChain1,
+                sChain2,
+                chainName1,
+                chainName2,
+                configTokens,
+                availableTokens
+            );
+        }
+        log('availableTokens');
+        log(availableTokens);
+    } catch (e: unknown) {
+        log('ERROR: Something went wrong during getAvailableTokens procedure');
+        if (typeof e === "string") {
+            log(e.toUpperCase());
+        } else if (e instanceof Error) {
+            log(e.message);
+        }
     }
-    log('availableTokens');
-    log(availableTokens);
     return availableTokens;
 }
 

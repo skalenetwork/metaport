@@ -33,7 +33,7 @@ export function getEmptyTokenDataMap(): interfaces.TokenDataTypesMap {
 
 
 export function getAvailableTokenNumers(availableTokens): number[] {
-    return Object.entries(availableTokens).map(([key, value]) => Object.entries(value).length);
+    return Object.entries(availableTokens).map(([_key, value]) => Object.entries(value).length);
 }
 
 

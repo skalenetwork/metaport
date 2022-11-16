@@ -24,7 +24,7 @@
 
 import debug from 'debug';
 
-import { SChain, MainnetChain } from '@skalenetwork/ima-js';
+import { SChain } from '@skalenetwork/ima-js';
 
 import { initContract } from '../core';
 import * as interfaces from '../interfaces/index';
@@ -44,7 +44,6 @@ export async function addS2STokens(
     chainName2: string,
     configTokens: interfaces.TokensMap,
     availableTokens: interfaces.TokenDataTypesMap,
-    force: boolean
 ): Promise<void> {
     log('Add S2S Tokens');
     await collectS2STokens(
@@ -53,7 +52,6 @@ export async function addS2STokens(
         chainName1,
         configTokens,
         availableTokens,
-        force,
         false
     );
     await collectS2STokens(
@@ -62,7 +60,6 @@ export async function addS2STokens(
         chainName2,
         configTokens,
         availableTokens,
-        force,
         true
     );
 }
@@ -74,7 +71,6 @@ async function collectS2STokens(
     chainName: string,
     configTokens: interfaces.TokensMap,
     availableTokens: interfaces.TokenDataTypesMap,
-    force: boolean,
     isClone: boolean
 ): Promise<void> {
     if (!configTokens[chainName]) return;
@@ -88,7 +84,6 @@ async function collectS2STokens(
                 configTokens[chainName][tokenType][tokenKeyname],
                 availableTokens,
                 isClone,
-                force,
                 tokenType as TokenType
             );
         }
@@ -103,7 +98,6 @@ async function addTokenData(
     configToken: interfaces.Token,
     availableTokens: interfaces.TokenDataTypesMap,
     isClone: boolean,
-    force: boolean,
     tokenType: TokenType
 ): Promise<void> {
     const cloneAddress = await getCloneAddress(
@@ -152,12 +146,17 @@ async function getCloneAddress(
     tokenType: TokenType
 ): Promise<string> {
     log(`Getting clone address for ${originTokenAddress} on a chain`);
-    const tokenCloneAddress = await sChain[tokenType].getTokenCloneAddress(
-        originTokenAddress,
-        originChainName
-    );
-    if (tokenCloneAddress === ZERO_ADDRESS) return;
-    return tokenCloneAddress;
+    try {
+        const tokenCloneAddress = await sChain[tokenType].getTokenCloneAddress(
+            originTokenAddress,
+            originChainName
+        );
+        if (tokenCloneAddress === ZERO_ADDRESS) return;
+        return tokenCloneAddress;
+    } catch (e) {
+        log(`getCloneAddress for ${originTokenAddress} - ${originChainName} failed`);
+        log(e);
+    }
 }
 
 
