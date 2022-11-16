@@ -27,7 +27,7 @@ import debug from 'debug';
 import { externalEvents } from '../events';
 import { toWei } from '../convertation';
 import { TransferAction, Action } from './action';
-import { checkEthBalance, checkERC20Balance } from './checks';
+import { checkEthBalance } from './checks';
 
 
 debug.enable('*');

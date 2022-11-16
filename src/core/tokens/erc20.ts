@@ -105,7 +105,7 @@ export async function getWrappedTokens(
     log('Checking wrapped tokens...');
     const wrappedTokens: interfaces.TokenDataTypesMap = getEmptyTokenDataMap();
     if (configTokens && configTokens[chainName] && configTokens[chainName].erc20) {
-        for (const [symbol, configToken] of Object.entries(configTokens[chainName].erc20)) {
+        for (const [_symbol, configToken] of Object.entries(configTokens[chainName].erc20)) {
             if (!configToken.wraps) continue;
             const tokenKeyname = getTokenKeyname(configToken.symbol, configToken.address);
             const tokenContract = initContract('erc20wrap', configToken.address, sChain.web3);

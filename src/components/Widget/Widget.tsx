@@ -202,24 +202,29 @@ export function Widget(props) {
 
   async function tokenLookup() {
     setLoadingTokens(true);
-    let tokens = await getAvailableTokens(
-      mainnet,
-      sChain1,
-      sChain2,
-      chainName1,
-      chainName2,
-      configTokens,
-      false,
-      props.autoLookup
-    );
-    await getTokenBalances(
-      tokens,
-      chainName1,
-      mainnet,
-      sChain1,
-      address
-    );
-    setAvailableTokens(tokens);
+    try {
+      let tokens = await getAvailableTokens(
+        mainnet,
+        sChain1,
+        sChain2,
+        chainName1,
+        chainName2,
+        configTokens,
+        props.autoLookup
+      );
+      await getTokenBalances(
+        tokens,
+        chainName1,
+        mainnet,
+        sChain1,
+        address
+      );
+      setAvailableTokens(tokens);
+    } catch (err) {
+      log('_MP_ERROR: tokenLookup failed');
+      log(err);
+    }
+
     updateBalanceHandler();
     setLoadingTokens(false);
   }
@@ -249,7 +254,7 @@ export function Widget(props) {
       let balance = await sChain2.getERC20Balance(tokenContract, address);
       return externalEvents.balance(tokenSymbol, chainName2, balance);
     }
-    console.error('Error: can request balance only for active chains!'); // TODO: replace with error!
+    console.error('_MP_ERROR: can request balance only for active chains!'); // TODO: replace with error!
   }
 
   function requestBalanceHandler(e) {
@@ -381,8 +386,11 @@ export function Widget(props) {
   }, [actionSteps, activeStep, amount, tokenId]);
 
   useEffect(() => {
-    const isUwrapAction = token && token.unwrappedSymbol && token.clone && activeStep === 2; // TODO: tmp fix for unwrap
+    // TODO: tmp fix for unwrap
+    const isUnwrapActionSteps = activeStep === 2 || activeStep === 3;
+    const isUwrapAction = token && token.unwrappedSymbol && token.clone && isUnwrapActionSteps;
     if (extChainId && chainId && extChainId !== chainId && !isUwrapAction) {
+      log('_MP_INFO: setting WrongNetworkMessage');
       setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
     } else {
       setErrorMessage(undefined);
@@ -412,13 +420,18 @@ export function Widget(props) {
   }
 
   async function checkWrappedTokens() {
-    log('Running checkWrappedTokens');
-    const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
-    if (Object.entries(wrappedTokens).length === 0 && operationType !== OperationType.transfer) {
-      setAmount('');
-      setOperationType(OperationType.transfer);
+    log('_MP_INFO: Running checkWrappedTokens');
+    try {
+      const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
+      if (Object.entries(wrappedTokens).length === 0 && operationType !== OperationType.transfer) {
+        setAmount('');
+        setOperationType(OperationType.transfer);
+      }
+      setWrappedTokens(wrappedTokens);
+    } catch (err) {
+      log('_MP_ERROR: checkWrappedTokens failed!');
+      log(err);
     }
-    setWrappedTokens(wrappedTokens);
   }
 
   function setDefaultWrappedToken() {
@@ -547,24 +560,38 @@ export function Widget(props) {
 
   async function initSFuelData() {
     if (sChain1 && chainName1) {
-      log(`initSFuelData - chain1`);
-      setSFuelData1(await getSFuelData(
-        props.chainsMetadata,
-        chainName1,
-        sChain1.web3,
-        address
-      ));
+      log(`_MP_INFO: initSFuelData - ${chainName1}`);
+      try {
+        const sFuelData1 = await getSFuelData(
+          props.chainsMetadata,
+          chainName1,
+          sChain1.web3,
+          address
+        );
+        setSFuelData1(sFuelData1);
+      } catch (err) {
+        log(`_MP_ERROR: getSFuelData for ${chainName1} failed`);
+        log(err);
+        setSFuelData1({});
+      }
     } else {
       setSFuelData1({});
     }
     if (sChain2 && chainName2) {
-      log(`initSFuelData - chain2`);
-      setSFuelData2(await getSFuelData(
-        props.chainsMetadata,
-        chainName2,
-        sChain2.web3,
-        address
-      ));
+      log(`_MP_INFO: initSFuelData - ${chainName2}`);
+      try {
+        const sFuelData2 = await getSFuelData(
+          props.chainsMetadata,
+          chainName2,
+          sChain2.web3,
+          address
+        );
+        setSFuelData2(sFuelData2);
+      } catch (err) {
+        log(`_MP_ERROR: getSFuelData for ${chainName2} failed`);
+        log(err);
+        setSFuelData2({});
+      }
     } else {
       setSFuelData2({});
     }
