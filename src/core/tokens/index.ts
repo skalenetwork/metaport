@@ -47,8 +47,7 @@ export async function getAvailableTokens(
     chainName1: string,
     chainName2: string,
     configTokens: interfaces.TokensMap,
-    autoLookup: boolean,
-    chains: string[]
+    autoLookup: boolean
 ): Promise<interfaces.TokenDataTypesMap> {
     log('Collecting available tokens for ' + chainName1 + ' → ' + chainName2);
     const availableTokens = getEmptyTokenDataMap();
