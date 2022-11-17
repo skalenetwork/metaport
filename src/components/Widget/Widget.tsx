@@ -210,7 +210,8 @@ export function Widget(props) {
         chainName1,
         chainName2,
         configTokens,
-        props.autoLookup
+        props.autoLookup,
+        []
       );
       await getTokenBalances(
         tokens,
