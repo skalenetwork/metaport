@@ -33,6 +33,7 @@ import EthTokenData from '../dataclasses/EthTokenData';
 import { TokenType } from '../dataclasses/TokenType';
 import * as interfaces from '../interfaces/index';
 import { MAINNET_CHAIN_NAME } from '../constants';
+import { Token } from '../interfaces/index';
 
 
 debug.enable('*');
@@ -51,14 +52,27 @@ export async function addETHToken(
     configTokens: interfaces.TokensMap,
     availableTokens: interfaces.TokenDataTypesMap
 ): Promise<void> {
+
     log('Checking ETH in the configTokens');
     if (!ethInConfig(configTokens)) return;
     log('Adding ETH to token list');
-    if (chainName1 === MAINNET_CHAIN_NAME) {
-        availableTokens[TokenType.eth][TokenType.eth] = new EthTokenData(false);
+
+    let chains: string[] = [];
+
+    if (configTokens[MAINNET_CHAIN_NAME][TokenType.eth]) {
+        chains = (configTokens[MAINNET_CHAIN_NAME][TokenType.eth].chains as string[]);
     }
+
+    if (chainName1 === MAINNET_CHAIN_NAME) {
+        if (chains.includes(chainName2)) {
+            availableTokens[TokenType.eth][TokenType.eth] = new EthTokenData(false);
+        }
+    }
+
     if (chainName2 === MAINNET_CHAIN_NAME) {
-        availableTokens[TokenType.eth][TokenType.eth] = new EthTokenData(true);
+        if (chains.includes(chainName1)) {
+            availableTokens[TokenType.eth][TokenType.eth] = new EthTokenData(true);
+        }
     }
 }
 
