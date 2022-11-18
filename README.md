@@ -469,6 +469,10 @@ echo 'yarn lint' > .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
+## Security and Liability
+
+The Metaport UI and code is WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 ## License
 
 ![GitHub](https://img.shields.io/github/license/skalenetwork/skale.py.svg)
