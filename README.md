@@ -250,14 +250,18 @@ You can use the same approach for `updateParams` and `transfer` functions.
 
 #### Adding Mainnet & ETH
 
-ETH clone is already pre-deployed on each chain, so to have it in the Metaport UI, you just need to specify token like that:
+ETH clone is already pre-deployed on each chain. You can enable it for any chain by adding the following config:
 
 ```Javascript
 const metaport = new Metaport({
     ...,
     chains: ['mainnet', 'chainName1']
     tokens: {
-        'mainnet': { 'eth': {} }
+        "mainnet": {  "eth": {
+        "chains": [
+          "chainName1" // list of chains where ETH trasfer will be available
+        ]
+      }}
     }
 })
 ```
