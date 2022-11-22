@@ -175,6 +175,7 @@ async function getM2STokensManual(
     log('Starting manual lookup for M2S tokens...');
     if (!configTokens[MAINNET_CHAIN_NAME]) return;
     for (const tokenType in configTokens[MAINNET_CHAIN_NAME]) {
+        if (tokenType === TokenType.eth) continue;
         log(`Adding tokens for tokenType ${tokenType}`);
         for (const tokenSymbol in configTokens[MAINNET_CHAIN_NAME][tokenType]) {
             const tokenInfo = configTokens[MAINNET_CHAIN_NAME][tokenType][tokenSymbol];
