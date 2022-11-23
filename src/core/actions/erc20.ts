@@ -42,12 +42,15 @@ export class ApproveERC20S extends Action {
     static loadingText = 'Approving'
 
     async execute() {
-        await this.sChain1.erc20.approve(
+        log('ApproveERC20S:execute - starting');
+        const tx = await this.sChain1.erc20.approve(
             this.tokenData.keyname,
             MAX_APPROVE_AMOUNT,
             this.sChain1.erc20.address,
             { address: this.address }
         );
+        log('ApproveERC20S:execute - tx completed: %O', tx);
+
     }
 
     async preAction() {
@@ -84,6 +87,7 @@ export class ApproveERC20S extends Action {
 
 export class TransferERC20S2S extends TransferAction {
     async execute() {
+        log('TransferERC20S2S:execute - starting');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.sChain2.getERC20Balance(
@@ -97,14 +101,13 @@ export class TransferERC20S2S extends TransferAction {
             amountWei,
             { address: this.address }
         );
-        log('Transfer transaction done, waiting for tokens to be received');
-        log(tx);
+        log('TransferERC20S2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC20BalanceChange(
             destTokenContract,
             this.address,
             balanceOnDestination
         );
-        log('Tokens received to destination chain');
+        log('TransferERC20S2S:execute - tokens received to destination chain');
 
         const unwrap = !!this.tokenData.unwrappedSymbol && this.tokenData.clone;
         externalEvents.transferComplete(
@@ -156,12 +159,14 @@ export class ApproveWrapERC20S extends Action {
     static loadingText = 'Approving'
 
     async execute() {
-        await this.sChain1.erc20.approve(
+        log('ApproveWrapERC20S:execute - starting');
+        const tx = await this.sChain1.erc20.approve(
             this.tokenData.unwrappedSymbol,
             MAX_APPROVE_AMOUNT,
             this.tokenData.originAddress,
             { address: this.address }
         );
+        log('ApproveWrapERC20S:execute - tx completed %O', tx);
     }
 
     async preAction() {
@@ -184,12 +189,14 @@ export class WrapERC20S extends Action {
     static loadingText = 'Wrapping'
 
     async execute() {
+        log('WrapERC20S:execute - starting');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
-        await this.sChain1.erc20.wrap(
+        const tx = await this.sChain1.erc20.wrap(
             this.tokenData.keyname,
             amountWei,
             { address: this.address }
         );
+        log('WrapERC20S:execute - tx completed %O', tx);
     }
 
     async preAction() {
@@ -225,7 +232,7 @@ export class UnWrapERC20S2S extends Action {
     static buttonText = 'Unwrap'
     static loadingText = 'Unwrapping'
     async execute() {
-        log('UnWrapERC20S2S: execute');
+        log('UnWrapERC20S2S:execute - starting');
         await this.switchMetamaskChain(false);
         try {
             const amountWei = toWei(this.amount, this.tokenData.decimals);
@@ -234,9 +241,10 @@ export class UnWrapERC20S2S extends Action {
                 amountWei,
                 { address: this.address }
             );
+            log('UnWrapERC20S2S:execute - tx completed %O', tx);
             externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
         } finally {
-            log('UnWrapERC20S2S: switchMetamaskChain back');
+            log('UnWrapERC20S2S:execute - switchMetamaskChain back');
             this.switchMetamaskChain(true);
         }
     }
@@ -264,13 +272,14 @@ export class UnWrapERC20S extends Action {
     static loadingText = 'Unwrapping'
 
     async execute() {
-        log('execute: UnWrapERC20S');
+        log('UnWrapERC20S:execute - starting');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const tx = await this.sChain1.erc20.unwrap(
             this.tokenData.keyname,
             amountWei,
             { address: this.address }
         );
+        log('UnWrapERC20S:execute - tx completed %O', tx);
         externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
     }
     async preAction() {
@@ -296,11 +305,13 @@ export class ApproveERC20M extends Action {
     static loadingText = 'Approving'
 
     async execute() {
-        await this.mainnet.erc20.approve(
+        log('ApproveERC20M:execute - starting');
+        const tx = await this.mainnet.erc20.approve(
             this.tokenData.keyname,
             MAX_APPROVE_AMOUNT,
             { address: this.address }
         );
+        log('ApproveERC20M:execute - tx completed %O', tx);
     }
 
     async preAction() {
@@ -319,6 +330,7 @@ export class ApproveERC20M extends Action {
 
 export class TransferERC20M2S extends TransferAction {
     async execute() {
+        log('TransferERC20M2S:execute - starting');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.sChain2.getERC20Balance(
@@ -331,13 +343,10 @@ export class TransferERC20M2S extends TransferAction {
             amountWei,
             { address: this.address }
         );
-        log('Transfer transaction done, waiting for tokens to be received');
-        log(tx);
-
+        log('TransferERC20M2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC20BalanceChange(
             destTokenContract, this.address, balanceOnDestination);
-        log('Tokens received to destination chain');
-
+        log('TransferERC20M2S:execute - tokens received to destination chain');
         externalEvents.transferComplete(
             tx,
             this.chainName1,
@@ -376,6 +385,7 @@ export class TransferERC20M2S extends TransferAction {
 
 export class TransferERC20S2M extends TransferAction {
     async execute() {
+        log('TransferERC20S2M:execute - starting');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.mainnet.getERC20Balance(
@@ -386,10 +396,9 @@ export class TransferERC20S2M extends TransferAction {
             amountWei,
             { address: this.address }
         );
-        log('Transfer transaction done, waiting for tokens to be received');
-        log(tx);
+        log('TransferERC20S2M:execute - tx completed %O', tx);
         this.mainnet.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
-        log('Tokens received on destination chain');
+        log('TransferERC20S2M:execute - tokens received to destination chain');
         externalEvents.transferComplete(
             tx,
             this.chainName1,

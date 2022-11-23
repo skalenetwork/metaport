@@ -21,11 +21,18 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import debug from 'debug';
 import * as interfaces from './interfaces/index';
 
+
+debug.enable('*');
+const log = debug('metaport:core:events');
+
+
 function dispatchEvent(name: string, data = {}) {
+    log(`dispatchEvent - sending: ${name}`);
     window.dispatchEvent(new CustomEvent(name, { detail: data }));
-    // debug('event sent: ' + name);
+    log(`dispatchEvent - sent: ${name}`);
 }
 
 

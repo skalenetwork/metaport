@@ -17,7 +17,8 @@ export default function WidgetBody(props) {
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
 
   // TODO: tmp wrap tokens fix
-  const wrapTransferAction = props.actionSteps && props.actionSteps.length === 4;
+  const wrapTransferAction = props.actionSteps && props.actionSteps.length === 4 &&
+    (props.activeStep === 2 || props.activeStep === 3);
 
   return (
     <div>
