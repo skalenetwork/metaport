@@ -1,8 +1,7 @@
 name: Get linked issues
 on:
   pull_request:
-    types:
-      [ edited, synchronize, opened, reopened ]
+    types: [ edited, synchronize, opened, reopened ]
 
 jobs:
   check-linked-issues:
@@ -16,5 +15,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: PR has not linked issues
         if: join(steps.get-issues.outputs.issues) == ''
-        run:
+        run: 
           exit 1
