@@ -39,3 +39,5 @@ export const DEFAULT_MIN_SFUEL_WEI = '21000000000000';
 
 export const DEFAULT_ERC20_DECIMALS = '18';
 export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...';
+
+export const DEFAULT_MP_MARGIN = '20pt';

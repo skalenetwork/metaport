@@ -67,12 +67,50 @@ export function WidgetUI(props) {
 
   const themeCls = widgetTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
 
+  let fabTop: boolean = false;
+  let fabLeft: boolean = false;
+  if (props.theme) {
+    console.log('props.theme.position.top');
+    console.log(props.theme.position.top);
+    fabTop = props.theme.position.bottom === 'auto';
+    fabLeft = props.theme.position.right === 'auto';
+  }
+
+  const fabButton = (<div className={clsNames(styles.mp__flex)}>
+    <div className={(fabLeft ? null : clsNames(styles.mp__flexGrow))}></div>
+    <div className={styles.mp__flex}>
+      <Fab
+        color={props.open ? 'secondary' : 'primary'}
+        className={props.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
+        aria-label="add"
+        type="button"
+        onClick={handleClick}
+      >
+        {props.open ? (
+          <CloseIcon
+            style={{
+              color: widgetTheme.mode == 'dark' ? 'white' : 'black'
+            }}
+          />
+        ) : (<img
+          className={styles.skaleLogoSm}
+          src={skaleLogo}
+        />)
+        }
+      </Fab>
+    </div>
+  </div>);
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <div
           className={clsNames(styles.imaWidgetBody, themeCls)}
+          style={props.theme ? props.theme.position : null}
         >
+          <div className={(props.openButton ? styles.mp__margBott20 : null)}>
+            {fabTop ? fabButton : null}
+          </div>
           <div className={clsNames(styles.mp__popper, (props.open ? null : styles.noDisplay))}>
             <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
               <Paper elevation={3} className={styles.mp__paper}>
@@ -92,29 +130,8 @@ export function WidgetUI(props) {
               </Paper>
             </div>
           </div>
-          <div className={clsNames(styles.mp__flex)}>
-            <div className={clsNames(styles.mp__flexGrow)}></div>
-            <div className={styles.mp__flex}>
-              <Fab
-                color={props.open ? 'secondary' : 'primary'}
-                className={props.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
-                aria-label="add"
-                type="button"
-                onClick={handleClick}
-              >
-                {props.open ? (
-                  <CloseIcon
-                    style={{
-                      color: widgetTheme.mode == 'dark' ? 'white' : 'black'
-                    }}
-                  />
-                ) : (<img
-                  className={styles.skaleLogoSm}
-                  src={skaleLogo}
-                />)
-                }
-              </Fab>
-            </div>
+          <div className={(props.openButton ? styles.mp__margTop20 : null)}>
+            {fabTop ? null : fabButton}
           </div>
         </div>
       </ThemeProvider>

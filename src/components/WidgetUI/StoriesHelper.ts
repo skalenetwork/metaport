@@ -3,6 +3,7 @@ import TokenData from '../../core/dataclasses/TokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { Positions } from '../../core/dataclasses/Position';
 
 function setMock() { return };
 
@@ -50,7 +51,8 @@ export const commonProps = {
     null,
     null,
     null
-  ))
+  )),
+  theme: { mode: 'light', position: Positions.bottomRight }
 }
 
 
@@ -100,7 +102,7 @@ export function generateTokenData(tokenSymbol, tokenName, wrapped = false) {
     wrappedToken: undefined
   }
   // tslint:disable-next-line
-  const unwrappedIconUrl = wrapped ? "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png" : null 
+  const unwrappedIconUrl = wrapped ? "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20americas/3D/globe_showing_americas_3d.png" : null
   data.availableTokens.erc20[tokenSymbol] = new TokenData(
     '0x0',
     '0x0',

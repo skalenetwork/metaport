@@ -16,11 +16,11 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Transfer](#transfer)
       - [Wrap](#wrap)
       - [Unwrap](#unwrap)
-    - [Tips & tricks](#tips--tricks)
+    - [Tips \& tricks](#tips--tricks)
       - [Automatic M2S token lookup](#automatic-m2s-token-lookup)
       - [Locking a token](#locking-a-token)
       - [Locking chains](#locking-chains)
-      - [Adding Mainnet & ETH](#adding-mainnet--eth)
+      - [Adding Mainnet \& ETH](#adding-mainnet--eth)
       - [Autowrap for tokens](#autowrap-for-tokens)
       - [Usage with SSR](#usage-with-ssr)
       - [Token icons](#token-icons)
@@ -28,11 +28,15 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Dataclasses](#dataclasses)
     - [Events](#events)
       - [Available Events](#available-events)
-    - [Themes](#themes)
+    - [UI Customization](#ui-customization)
+      - [Themes](#themes)
+      - [Position](#position)
+      - [zIndex](#zindex)
   - [Development](#development)
     - [Storybook setup](#storybook-setup)
     - [Linter](#linter)
       - [Linter git hook](#linter-git-hook)
+  - [Security and Liability](#security-and-liability)
   - [License](#license)
 
 
@@ -415,7 +419,9 @@ function transferComplete(e) {
 - `metaport_connected`: `{}` - emited when widget is initialized on a page
 - `metaport_balance`: `{tokenSymbol, schainName, balance}` - emited when token balance is retrieved in Metaport widget (after init, after transfer and on request)
 
-### Themes
+### UI Customization
+
+#### Themes
 
 You can easily modify Metaport color scheme by providing a theme:
 
@@ -439,6 +445,37 @@ metaport.setTheme({
 ```
 
 By default, SKALE dark theme will be used. You can also set `{mode: 'light'}` witout any additional param to use default SKALE light theme.
+
+#### Position
+
+By default, Metaport widget is located in the bottom right corner of the screen, with `20pt` margin.
+You can customize widget position by providing `position` to the `theme` object:
+
+```typescript
+import { Metaport, interfaces, dataclasses } from '@skalenetwork/metaport';
+
+const theme: interfaces.MetaportTheme = {
+    mode: 'dark',
+    position: dataclasses.Positions.topLeft
+}
+```
+
+You can use of four predefined values: `topLeft`, `topRight`, `bottomRight`, `bottomLeft` or provide your custom values in the following format:
+
+```typescript
+import { dataclasses } from '@skalenetwork/metaport';
+const customPosition: dataclasses.Position = {
+    top: '50pt',
+    bottom: 'auto',
+    left: '70pt',
+    right: 'auto'
+}
+```
+
+#### zIndex
+
+By default, Metaport widget 
+
 
 ## Development
 

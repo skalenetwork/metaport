@@ -2,6 +2,7 @@ import React from "react";
 import { WidgetUI } from "./WidgetUI";
 import { commonProps, defaultTokenData, generateTokenData } from './StoriesHelper';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
+import { Positions } from '../../core/dataclasses/Position';
 
 
 export default {
@@ -35,6 +36,19 @@ export const ClosedLight = () => (
     open={false}
     theme={{
       mode: 'light'
+    }}
+  />
+);
+
+
+export const TopLeft = () => (
+  <WidgetUI
+    {...commonProps}
+    {...defaultTokenData}
+    walletConnected={false}
+    theme={{
+      mode: 'light',
+      position: Positions.topLeft
     }}
   />
 );

@@ -23,3 +23,4 @@
 
 export * from "./TokenType";
 export * from "./OperationType";
+export * from "./Position";

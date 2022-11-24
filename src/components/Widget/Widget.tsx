@@ -30,6 +30,8 @@ import { getSFuelData } from '../../core/sfuel';
 import * as interfaces from '../../core/interfaces/index';
 import TokenData from '../../core/dataclasses/TokenData';
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { Positions } from '../../core/dataclasses/Position';
+import { MetaportTheme } from '../../core/interfaces/Theme';
 
 
 debug.enable('*');
@@ -119,7 +121,9 @@ export function Widget(props) {
   }
 
   function handleSetTheme(e) {
-    setTheme(e.detail.theme);
+    const theme: MetaportTheme = e.detail.theme;
+    if (theme.position === undefined) theme.position = Positions.bottomRight;
+    setTheme(theme);
   }
 
   function updateBalanceHandler() { // todo: refactor
@@ -644,7 +648,6 @@ export function Widget(props) {
     sFuelData2={sFuelData2}
 
     theme={theme}
-    position={props.position}
 
     errorMessage={errorMessage}
     amountErrorMessage={amountErrorMessage}

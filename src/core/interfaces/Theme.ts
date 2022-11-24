@@ -22,8 +22,13 @@
  */
 
 
+import { Position } from '../dataclasses/Position';
+
+
 export interface MetaportTheme {
     primary?: string;
     background?: string;
     mode?: string;
+    position?: Position;
+    zIndex?: number;
 }
