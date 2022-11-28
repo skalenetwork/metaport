@@ -6,10 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import Paper from '@mui/material/Paper';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getMuiZIndex } from './Themes';
 
 import skaleLogo from './skale_logo_short.svg';
 
-import { getWidgetTheme } from './Themes'
 import WidgetBody from '../WidgetBody';
 import { Connector } from '../WalletConnector';
 
@@ -23,21 +23,18 @@ export function WidgetUI(props) {
 
   const [disabledChains, setDisabledChains] = React.useState(undefined);
 
-  let widgetTheme = getWidgetTheme(props.theme);
   let theme = createTheme({
-    zIndex: {
-      tooltip: 9998
-    },
+    zIndex: getMuiZIndex(props.theme),
     palette: {
-      mode: widgetTheme.mode,
+      mode: props.theme.mode,
       background: {
-        paper: widgetTheme.background
+        paper: props.theme.background
       },
       primary: {
-        main: widgetTheme.primary,
+        main: props.theme.primary,
       },
       secondary: {
-        main: widgetTheme.background
+        main: props.theme.background
       },
     },
   });
@@ -65,13 +62,11 @@ export function WidgetUI(props) {
     props.setOpen(props.open ? false : true);
   };
 
-  const themeCls = widgetTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
+  const themeCls = props.theme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
 
   let fabTop: boolean = false;
   let fabLeft: boolean = false;
   if (props.theme) {
-    console.log('props.theme.position.top');
-    console.log(props.theme.position.top);
     fabTop = props.theme.position.bottom === 'auto';
     fabLeft = props.theme.position.right === 'auto';
   }
@@ -89,7 +84,7 @@ export function WidgetUI(props) {
         {props.open ? (
           <CloseIcon
             style={{
-              color: widgetTheme.mode == 'dark' ? 'white' : 'black'
+              color: props.theme.mode == 'dark' ? 'white' : 'black'
             }}
           />
         ) : (<img
@@ -106,7 +101,7 @@ export function WidgetUI(props) {
       <ThemeProvider theme={theme}>
         <div
           className={clsNames(styles.imaWidgetBody, themeCls)}
-          style={props.theme ? props.theme.position : null}
+          style={props.theme ? { ...props.theme.position, zIndex: props.theme.zIndex } : null}
         >
           <div className={(props.openButton ? styles.mp__margBott20 : null)}>
             {fabTop ? fabButton : null}
@@ -119,7 +114,7 @@ export function WidgetUI(props) {
                     <WidgetBody
                       {...props}
                       disabledChains={disabledChains}
-                      theme={widgetTheme}
+                      theme={props.theme}
                     />
                   ) : (
                     <Connector

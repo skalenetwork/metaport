@@ -1,6 +1,5 @@
 .imaWidgetBody {
   position: fixed;
-  z-index: 9997 !important;
 }
 
 .skaleLogoSm {
@@ -212,8 +211,6 @@
 
   button {
     border: 10px #1a1a1a solid;
-    // background-color: #d9e021 !important;
-    z-index: 9997;
   }
 
   :global(svg) {
@@ -395,12 +392,10 @@
 }
 
 .skaleBtn {
-  z-index: 9997 !important;
   border: 1px #7f7f7f45 solid;
 }
 
-.mp__popper {
-  z-index: 9997 !important;
+.mp__popper { 
   min-width: 290pt;
 }
 

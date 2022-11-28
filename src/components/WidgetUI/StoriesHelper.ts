@@ -3,7 +3,8 @@ import TokenData from '../../core/dataclasses/TokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
 import { OperationType } from '../../core/dataclasses/OperationType';
-import { Positions } from '../../core/dataclasses/Position';
+import { getWidgetTheme } from '../WidgetUI/Themes';
+
 
 function setMock() { return };
 
@@ -52,7 +53,7 @@ export const commonProps = {
     null,
     null
   )),
-  theme: { mode: 'light', position: Positions.bottomRight }
+  theme: getWidgetTheme(null)
 }
 
 

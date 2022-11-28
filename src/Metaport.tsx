@@ -52,10 +52,6 @@ export class Metaport {
 
     if (config.openButton === undefined) config.openButton = true;
     if (config.autoLookup === undefined) config.autoLookup = true;
-    if (config.theme && config.theme.position === undefined) {
-      config.theme.position = Positions.bottomRight;
-    }
-
     root.render(
       <Widget
         tokens={tokens}

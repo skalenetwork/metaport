@@ -1,8 +1,9 @@
 import React from "react";
 import { WidgetUI } from "./WidgetUI";
-import { commonProps, defaultTokenData, generateTokenData } from './StoriesHelper';
+import { commonProps, defaultTokenData } from './StoriesHelper';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
 import { Positions } from '../../core/dataclasses/Position';
+import { getWidgetTheme } from '../WidgetUI/Themes';
 
 
 export default {
@@ -24,7 +25,7 @@ export const ConnectScreenLight = () => (
     {...commonProps}
     {...defaultTokenData}
     walletConnected={false}
-    theme={{ mode: 'light' }}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 
@@ -34,9 +35,7 @@ export const ClosedLight = () => (
     {...commonProps}
     {...defaultTokenData}
     open={false}
-    theme={{
-      mode: 'light'
-    }}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 
@@ -46,10 +45,7 @@ export const TopLeft = () => (
     {...commonProps}
     {...defaultTokenData}
     walletConnected={false}
-    theme={{
-      mode: 'light',
-      position: Positions.topLeft
-    }}
+    theme={getWidgetTheme({ mode: 'light', position: Positions.topLeft })}
   />
 );
 
@@ -59,9 +55,7 @@ export const ClosedDark = () => (
     {...commonProps}
     {...defaultTokenData}
     open={false}
-    theme={{
-      mode: 'dark'
-    }}
+    theme={getWidgetTheme({ mode: 'dark' })}
   />
 );
 
@@ -72,6 +66,7 @@ export const SelectChains = () => (
     availableTokens={getEmptyTokenDataMap()}
     walletConnected={true}
     open={true}
+    theme={getWidgetTheme({ mode: 'dark' })}
   />
 );
 
@@ -81,7 +76,7 @@ export const SelectChainsLight = () => (
     availableTokens={getEmptyTokenDataMap()}
     walletConnected={true}
     open={true}
-    theme={{ mode: 'light' }}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 
@@ -95,7 +90,7 @@ export const sFuelIcons = () => (
   <WidgetUI
     {...commonProps}
     {...defaultTokenData}
-    theme={{ 'mode': 'light' }}
+    theme={getWidgetTheme({ mode: 'dark' })}
 
     sFuelData1={{
       faucetUrl: 'https://example.com/',

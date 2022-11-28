@@ -470,12 +470,27 @@ const customPosition: dataclasses.Position = {
     left: '70pt',
     right: 'auto'
 }
+const theme: interfaces.MetaportTheme = {
+    mode: 'dark',
+    position: customPosition
+}
 ```
 
 #### zIndex
 
-By default, Metaport widget 
+By default, Metaport widget has base z-index equal to `99000`, though it can be configured in the Metaport theme:
 
+```typescript
+import { Metaport, interfaces } from '@skalenetwork/metaport';
+
+const theme: interfaces.MetaportTheme = {
+    mode: 'dark',
+    zIndex: 2007 // custom zIndex
+}
+```
+
+MUI components will be arranged using the following formula: `BASE_Z_INDEX + i * Z_INDEX_STEP`, where `Z_INDEX_STEP = 50`.
+See MUI zIndex reference [here](https://mui.com/material-ui/customization/default-theme/?expand-path=$.zIndex).
 
 ## Development
 

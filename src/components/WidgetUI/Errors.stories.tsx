@@ -1,9 +1,11 @@
 import React from "react";
+
+import PublicOffIcon from '@mui/icons-material/PublicOff';
+
 import { WidgetUI } from "./WidgetUI";
 import { commonProps, defaultTokenData, generateTokenData } from './StoriesHelper';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
-
-import PublicOffIcon from '@mui/icons-material/PublicOff';
+import { getWidgetTheme } from '../WidgetUI/Themes';
 
 
 export default {
@@ -15,7 +17,7 @@ export const NoTokenPairs = () => (<WidgetUI {...commonProps} availableTokens={g
 
 
 export const NoTokenPairsLight = () => (
-  <WidgetUI {...commonProps} availableTokens={getEmptyTokenDataMap()} theme={{ mode: 'light' }}  />
+  <WidgetUI {...commonProps} availableTokens={getEmptyTokenDataMap()} theme={getWidgetTheme({ mode: 'light' })} />
 );
 
 
@@ -39,7 +41,7 @@ export const WrongNetworkLight = () => (
   <WidgetUI
     {...commonProps}
     {...defaultTokenData}
-    theme={{ mode: 'light' }}
+    theme={getWidgetTheme({ mode: 'light' })}
     openButton={false}
     errorMessage={{
       icon: <PublicOffIcon />,

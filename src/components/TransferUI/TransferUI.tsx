@@ -23,7 +23,10 @@ import { TokenType } from '../../core/dataclasses/TokenType';
 export default function TransferUI(props) {
   return (
     <div>
-      <Collapse className={styles.mp__btnSwitch} in={!props.expandedFrom && !props.expandedTo && !props.expandedTokens}>
+      <Collapse
+        className={styles.mp__btnSwitch}
+        in={!props.expandedFrom && !props.expandedTo && !props.expandedTokens}
+      >
         <Tooltip title='Switch transfer direction'>
           <IconButton
             size="small"
@@ -31,6 +34,7 @@ export default function TransferUI(props) {
             style={{
               backgroundColor: props.theme.primary,
               borderColor: props.theme.background,
+              zIndex: props.theme.zIndex
             }}
 
             disabled={props.amountLocked}
