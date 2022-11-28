@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import debug from 'debug';
 
 import WidgetUI from '../WidgetUI';
+import { getWidgetTheme } from '../WidgetUI/Themes';
 import { WrongNetworkMessage, TransactionErrorMessage, CustomErrorMessage } from '../ErrorMessage';
 
 import {
@@ -30,6 +31,7 @@ import { getSFuelData } from '../../core/sfuel';
 import * as interfaces from '../../core/interfaces/index';
 import TokenData from '../../core/dataclasses/TokenData';
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { MetaportTheme } from '../../core/interfaces/Theme';
 
 
 debug.enable('*');
@@ -84,7 +86,7 @@ export function Widget(props) {
 
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
-  const [theme, setTheme] = React.useState(props.theme);
+  const [theme, setTheme] = React.useState<interfaces.MetaportTheme>(getWidgetTheme(props.theme));
 
   const [sFuelData1, setSFuelData1] = React.useState(undefined);
   const [sFuelData2, setSFuelData2] = React.useState(undefined);
@@ -119,7 +121,8 @@ export function Widget(props) {
   }
 
   function handleSetTheme(e) {
-    setTheme(e.detail.theme);
+    const theme: MetaportTheme = e.detail.theme;
+    setTheme(getWidgetTheme(theme));
   }
 
   function updateBalanceHandler() { // todo: refactor
@@ -141,6 +144,16 @@ export function Widget(props) {
   }
 
   function resetWidget(e) {
+    setSchains(props.chains);
+    setConfigTokens(props.tokens);
+
+    setAvailableTokens(getEmptyTokenDataMap());
+    setWrappedTokens(getEmptyTokenDataMap());
+    setToken(undefined);
+
+    setAmount('');
+    setTokenId(0);
+
     setChainName1(null);
     setChainName2(null);
 
@@ -148,9 +161,13 @@ export function Widget(props) {
     setSChain2(null);
     setMainnet(null);
 
-    setAmount('');
     setLoading(false);
-    setToken(undefined);
+
+    setOperationType(OperationType.transfer);
+
+    setSFuelData1({});
+    setSFuelData2({});
+
     setAmountLocked(false);
     setActiveStep(0);
     setActionSteps(undefined);
@@ -336,7 +353,7 @@ export function Widget(props) {
   }, [chainName2, address]);
 
   useEffect(() => {
-    if (sChain1 && configTokens) checkWrappedTokens();
+    if (configTokens) checkWrappedTokens();
     initSFuelData();
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && configTokens) {
       externalEvents.connected();
@@ -420,6 +437,11 @@ export function Widget(props) {
   }
 
   async function checkWrappedTokens() {
+    if (!sChain1 || !chainName1) {
+      log('No chainName1 or sChain1, skipping checkWrappedTokens');
+      setWrappedTokens(getEmptyTokenDataMap());
+      return;
+    }
     log('_MP_INFO: Running checkWrappedTokens');
     try {
       const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
@@ -644,7 +666,6 @@ export function Widget(props) {
     sFuelData2={sFuelData2}
 
     theme={theme}
-    position={props.position}
 
     errorMessage={errorMessage}
     amountErrorMessage={amountErrorMessage}

@@ -1,8 +1,7 @@
 import React from "react";
 import { WidgetUI } from "./WidgetUI";
-import { commonProps, defaultTokenData, generateTokenData } from './StoriesHelper';
-
-import PublicOffIcon from '@mui/icons-material/PublicOff';
+import { commonProps, generateTokenData } from './StoriesHelper';
+import { Positions } from '../../core/dataclasses/Position';
 
 
 export default {
@@ -17,7 +16,8 @@ export const CustomThemeRuby = () => (
     theme={{
       primary: '#b01571',
       background: '#f3f2ff',
-      mode: 'light'
+      mode: 'light',
+      position: Positions.bottomRight
     }}
   />
 );
@@ -30,7 +30,8 @@ export const CustomDarkBlue = () => (
     theme={{
       primary: '#00d4ff',
       background: '#0a2540',
-      mode: 'dark'
+      mode: 'dark',
+      position: Positions.bottomLeft
     }}
   />
 );
@@ -43,7 +44,8 @@ export const CustomLightOrange = () => (
     theme={{
       primary: '#f96300',
       background: '#ffffff',
-      mode: 'light'
+      mode: 'light',
+      position: Positions.topRight
     }}
   />
 );
@@ -56,7 +58,8 @@ export const CustomDarkGreen = () => (
     theme={{
       primary: '#2dcb74',
       background: '#111905',
-      mode: 'dark'
+      mode: 'dark',
+      position: Positions.topLeft
     }}
   />
 );
@@ -69,7 +72,22 @@ export const CustomLightViolet = () => (
     theme={{
       primary: '#9a66ff',
       background: '#fbf8ff',
-      mode: 'light'
+      mode: 'light',
+      position: Positions.bottomRight
+    }}
+  />
+);
+
+export const CustomZIndex = () => (
+  <WidgetUI
+    {...generateTokenData('skl', 'Skale')}
+    {...commonProps}
+    theme={{
+      primary: '#9a66ff',
+      background: '#fbf8ff',
+      mode: 'light',
+      position: Positions.bottomRight,
+      zIndex: 9991
     }}
   />
 );

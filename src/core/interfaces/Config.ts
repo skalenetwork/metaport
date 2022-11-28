@@ -24,7 +24,6 @@
 import { MetaportTheme } from './Theme';
 import { ChainsMetadataMap } from './ChainsMetadata';
 import { TokensMap } from './Tokens';
-import { Position } from '../dataclasses/Position';
 
 
 export interface MetaportConfig {
@@ -32,14 +31,12 @@ export interface MetaportConfig {
     openButton?: boolean;
     autoLookup?: boolean;
 
-    position?: Position;
-
     skaleNetwork?: string;
     mainnetEndpoint?: string;
     chains?: string[];
 
-    chainsMetadata?: ChainsMetadataMap,
-    tokens?: TokensMap,
+    chainsMetadata?: ChainsMetadataMap;
+    tokens?: TokensMap;
 
-    theme?: MetaportTheme,
+    theme?: MetaportTheme;
 }

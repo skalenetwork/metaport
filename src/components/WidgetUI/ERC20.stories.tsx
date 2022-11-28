@@ -9,6 +9,7 @@ import {
   generateWrappedTokens
 } from './StoriesHelper';
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { getWidgetTheme } from '../WidgetUI/Themes';
 
 
 export default {
@@ -20,7 +21,8 @@ export const TransferUIDark = () => (
 );
 
 export const TransferUILight = () => (
-  <WidgetUI {...commonProps} {...generateTokenData('usdc', 'usdc')} theme={{ mode: 'light' }} />
+  <WidgetUI {...commonProps} {...generateTokenData('usdc', 'usdc')}
+    theme={getWidgetTheme({ mode: 'light' })} />
 );
 
 
@@ -38,7 +40,7 @@ export const MainnetTransfer = () => (
 
     chain1='mainnet'
     chain2='bbb-chain'
-
+    theme={getWidgetTheme(null)}
   />
 );
 
@@ -56,7 +58,7 @@ export const MainnetTransferLight = () => (
 
     chain1='mainnet'
     chain2='bbb-chain'
-    theme={{ 'mode': 'light' }}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 
@@ -76,7 +78,7 @@ export const LoadingSteps = () => (
 
     chain1='aaa-chain'
     chain2='bbb-chain'
-    theme={{ 'mode': 'dark' }}
+    theme={getWidgetTheme(null)}
   />
 );
 
@@ -155,11 +157,11 @@ export const LoadingCustom = () => (
     activeStep={1}
     loading={true}
     amountLocked={true}
-    theme={{
+    theme={getWidgetTheme({
       primary: '#00d4ff',
       background: '#0a2540',
       mode: 'dark'
-    }}
+    })}
   />
 );
 
@@ -171,7 +173,7 @@ export const LoadingLight = () => (
     activeStep={1}
     loading={true}
     amountLocked={true}
-    theme={{ mode: 'light' }}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 
@@ -212,7 +214,7 @@ export const UnwrapWarningLight = () => (
     {...generateWrappedTokens()}
     token={null}
     chain2={null}
-    theme={{ mode: 'light' }}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 

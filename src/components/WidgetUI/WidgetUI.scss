@@ -1,9 +1,5 @@
 .imaWidgetBody {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  z-index: 9997 !important;
-  // margin: 0 20pt 20pt 0;
 }
 
 .skaleLogoSm {
@@ -12,7 +8,7 @@
 
 .mp__popupWrapper,
 .mp__fullsreenWrapper {
-  margin: 0 20pt 20pt 20pt;
+  // margin: 20pt;
 
   p {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
@@ -215,8 +211,6 @@
 
   button {
     border: 10px #1a1a1a solid;
-    // background-color: #d9e021 !important;
-    z-index: 9997;
   }
 
   :global(svg) {
@@ -398,14 +392,11 @@
 }
 
 .skaleBtn {
-  margin: -10pt 20pt 20pt 0;
-  z-index: 9997 !important;
   border: 1px #7f7f7f45 solid;
 }
 
-.mp__popper {
-  z-index: 9997 !important;
-  min-width: 305pt;
+.mp__popper { 
+  min-width: 290pt;
 }
 
 
