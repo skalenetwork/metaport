@@ -15,12 +15,30 @@ import {
 
 
 import erc20Abi from '../metadata/erc20_abi.json';
+import erc721Abi from '../metadata/erc721_abi.json';
+import erc721MetaAbi from '../metadata/erc721meta_abi.json';
+import erc1155Abi from '../metadata/erc1155_abi.json';
 import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json';
 
 import mainnetAddresses from '../metadata/addresses/mainnet.json';
 import stagingAddresses from '../metadata/addresses/staging.json';
+import staging3Addresses from '../metadata/addresses/staging3.json';
 
 import { MAINNET_CHAIN_NAME } from './constants';
+
+
+const ERC_ABIS = {
+  'erc20': erc20Abi,
+  'erc20wrap': erc20WrapperAbi,
+  'erc721': erc721Abi,
+  'erc721meta': erc721MetaAbi,
+  'erc1155': erc1155Abi
+}
+
+
+export function initContract(tokenType: string, tokenAddress: string, web3: Web3) {
+  return new web3.eth.Contract(ERC_ABIS[tokenType].abi as AbiItem[], tokenAddress);
+}
 
 
 export function initERC20(tokenAddress: string, web3: Web3) {
@@ -74,7 +92,11 @@ export function updateWeb3SChain(schain: SChain, network: string, schainName: st
   schain.updateWeb3(sChainWeb3);
 }
 
-export async function updateWeb3SChainMetamask(schain: SChain, network: string, schainName: string) {
+export async function updateWeb3SChainMetamask(
+  schain: SChain,
+  network: string,
+  schainName: string
+): Promise<void> {
   const endpoint = getSChainEndpoint(network, schainName);
   const chainId = calcChainId(schainName);
   const networkParams = schainNetworkParams(schainName, endpoint, chainId);
@@ -88,6 +110,9 @@ function getMainnetAbi(network: string) {
   if (network === 'staging') {
     return { ...mainnetAbi, ...stagingAddresses }
   }
+  if (network === 'staging3') {
+    return { ...mainnetAbi, ...staging3Addresses }
+  }
   return { ...mainnetAbi, ...mainnetAddresses }
 }
 
@@ -98,7 +123,10 @@ export function initMainnet(network: string, mainnetEndpoint: string): MainnetCh
 }
 
 
-export async function initMainnetMetamask(network: string, mainnetEndpoint: string): Promise<MainnetChain> {
+export async function initMainnetMetamask(
+  network: string,
+  mainnetEndpoint: string
+): Promise<MainnetChain> {
   const networkParams = mainnetNetworkParams(network, mainnetEndpoint);
   await changeMetamaskNetwork(networkParams);
   const web3 = new Web3(window.ethereum);

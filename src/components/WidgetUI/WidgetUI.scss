@@ -1,9 +1,5 @@
 .imaWidgetBody {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  z-index: 9997 !important;
-  // margin: 0 20pt 20pt 0;
 }
 
 .skaleLogoSm {
@@ -12,7 +8,7 @@
 
 .mp__popupWrapper,
 .mp__fullsreenWrapper {
-  margin: 0 20pt 20pt 20pt;
+  // margin: 20pt;
 
   p {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
@@ -78,15 +74,19 @@
   margin-top: 10px !important;
 }
 
-.marg-left-10 {
+.mp__margTop20 {
+  margin-top: 20px !important;
+}
+
+.mp__margLeft10 {
   margin-left: 10px !important;
 }
 
-.marg-left-20 {
+.mp__margLeft20 {
   margin-left: 20px !important;
 }
 
-.marg-ri-20 {
+.mp__margRi20 {
   margin-right: 20px !important;
 }
 
@@ -137,12 +137,16 @@
 }
 
 
-.mp__noMarg-bott {
+.mp__noMargBott {
   margin-bottom: 0 !important;
 }
 
 .mp__noMarg {
   margin: 0 !important;
+}
+
+.mp__paddTop10 {
+  padding-top: 10px !important;
 }
 
 .mp__chainName {
@@ -169,6 +173,13 @@
 
 .mp__btnAction {
   width: 100%;
+  text-transform: uppercase;
+  font-size: 0.7525rem !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.02857em !important;
+  font-weight: 600 !important;
+  padding-top: 0.8em !important;
+  padding-bottom: 0.8em !important;
 }
 
 
@@ -200,8 +211,6 @@
 
   button {
     border: 10px #1a1a1a solid;
-    // background-color: #d9e021 !important;
-    z-index: 9997;
   }
 
   :global(svg) {
@@ -225,8 +234,9 @@
   }
 
   .mp__p,
-  .mp__infoIcon {
-    color: rgb(255 255 255 / 65%);
+  .mp__infoIcon,
+  .mp__backIcon {
+    color: rgb(255 255 255 / 65%) !important;
   }
 
   .mp__textGray,
@@ -265,8 +275,9 @@
   }
 
   .mp__p,
-  .mp__infoIcon {
-    color: rgb(0 0 0 / 65%);
+  .mp__infoIcon,
+  .mp__backIcon {
+    color: rgb(0 0 0 / 65%) !important;
   }
 
   .MuiInput-root {
@@ -326,6 +337,10 @@
   letter-spacing: 0.03857em !important;
 }
 
+.mp__errorMessage {
+  color: #ff3737 !important;
+}
+
 .mp__btnConnect {
   width: 100%;
   margin-top: 10pt;
@@ -377,14 +392,11 @@
 }
 
 .skaleBtn {
-  margin: -10pt 20pt 20pt 0;
-  z-index: 9997 !important;
   border: 1px #7f7f7f45 solid;
 }
 
-.mp__popper {
-  z-index: 9997 !important;
-  min-width: 305pt;
+.mp__popper { 
+  min-width: 290pt;
 }
 
 
@@ -406,4 +418,28 @@
 
 .mp__minContent {
   width: min-content;
+}
+
+.tokenIdIcon {
+  padding: 0 0 0 16px;
+
+  :global(svg) {
+    //width: 20px;
+  }
+}
+
+
+.mp__amountErrorMessage {
+  height: 15px !important;
+  margin-bottom: -5px !important;
+
+  :global(p) {
+    font-size: 0.5525rem !important
+  }
+}
+
+.mp__backIcon {
+  width: 8pt !important;
+  height: 8pt !important;
+  margin-left: 2pt !important;
 }

@@ -26,6 +26,8 @@ import React from 'react';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import PublicOffIcon from '@mui/icons-material/PublicOff';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import ErrorIcon from '@mui/icons-material/Error';
+
 
 export class BaseErrorMessage {
 
@@ -65,5 +67,14 @@ export class TransactionErrorMessage extends BaseErrorMessage {
         this.icon = <SentimentVeryDissatisfiedIcon />;
         this.text = text;
         this.btnText = 'Start over';
+    }
+}
+
+
+export class CustomErrorMessage extends BaseErrorMessage {
+    constructor(text: string) {
+        super(undefined);
+        this.icon = <ErrorIcon />;
+        this.text = text;
     }
 }

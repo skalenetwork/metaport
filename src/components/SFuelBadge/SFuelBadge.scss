@@ -2,10 +2,18 @@
     opacity: 0.9;
     // color: #3fb354 !important;
 
-    height: 20px !important;
+    height: 10px;
+    margin-top: -12px;
+
+
+    :global(.MuiChip-root) {
+        height: 15px !important;
+    }
 
     :global(.MuiChip-label) {
-        font-size: 0.6125rem;
+        font-size: 0.6525rem;
+        font-weight: 600;
+        letter-spacing: 0.1rem;
         // opacity: 0.8;
     }
 
@@ -14,7 +22,7 @@
     }
 
     :global(svg) {
-        width: 10pt;
-        height: 10pt;
+        width: 9pt;
+        height: 9pt;
     }
 }

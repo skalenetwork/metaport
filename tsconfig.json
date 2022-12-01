@@ -14,7 +14,9 @@
     "esModuleInterop": true,
     "baseUrl": "src",
     "types": ["node", "webpack-env", "mocha"],
-    "typeRoots": ["./src/types"]
+    "typeRoots": ["./src/types"],
+    "noUnusedLocals": false,                /* Report errors on unused locals. */
+    "noUnusedParameters": false             /* Report errors on unused parameters. */
   },
   "include": ["src/**/*", "index.ts", "src/types/custom.d.ts"],
   "exclude": [

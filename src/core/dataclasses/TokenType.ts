@@ -23,9 +23,9 @@
 
 
 export enum TokenType {
-    eth,
-    erc20,
-    erc721,
-    erc721meta,
-    erc1155
+    eth = 'eth',
+    erc20 = 'erc20',
+    erc721 = 'erc721',
+    erc721meta = 'erc721meta',
+    erc1155 = 'erc1155'
 }
