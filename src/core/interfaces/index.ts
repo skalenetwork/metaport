@@ -26,3 +26,5 @@ export * from "./ChainsMetadata";
 export * from "./Theme";
 export * from "./Tokens";
 export * from "./TokenDataMap";
+export * from "./TransferParams";
+export * from "./CheckRes";

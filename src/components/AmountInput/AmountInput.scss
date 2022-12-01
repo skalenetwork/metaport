@@ -23,7 +23,8 @@
     border-radius: 10px;
 
     :global .MuiButton-root {
-        border-radius: 0 10px 10px 0 !important;
+        border-radius: 0 !important;
+        margin-right: 10px;
     }
 
     input::-webkit-outer-spin-button,

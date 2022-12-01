@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SKALE Metaport
@@ -22,7 +23,12 @@
  */
 
 import Web3 from 'web3';
+import debug from 'debug';
 import { DEFAULT_MIN_SFUEL_WEI } from './constants';
+
+
+debug.enable('*');
+const log = debug('metaport:Widget');
 
 
 function getFaucetUrl(chainsMetadata: object, chainName: string): string {
@@ -49,13 +55,19 @@ export async function getSFuelData(
     chainName: string,
     web3: Web3,
     address: string
-): Promise<object>{
-    const minSfuelWei = getMinSfuelWei(chainsMetadata, chainName);
-    const balance = await getSfuelBalance(web3, address);
-    return {
-        faucetUrl: getFaucetUrl(chainsMetadata, chainName),
-        minSfuelWei,
-        balance,
-        ok: Number(balance) >= Number(minSfuelWei)
+): Promise<object> {
+    try {
+        const minSfuelWei = getMinSfuelWei(chainsMetadata, chainName);
+        const balance = await getSfuelBalance(web3, address);
+        return {
+            faucetUrl: getFaucetUrl(chainsMetadata, chainName),
+            minSfuelWei,
+            balance,
+            ok: Number(balance) >= Number(minSfuelWei)
+        }
+    } catch (e) {
+        log(`ERROR: getSFuelData for ${chainName} failed!`);
+        log(e);
+        return {};
     }
 }

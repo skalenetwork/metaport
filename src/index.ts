@@ -1,1 +1,1 @@
-export { Metaport, interfaces } from "./Metaport";
+export { Metaport, interfaces, dataclasses } from "./Metaport";

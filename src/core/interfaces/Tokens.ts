@@ -21,15 +21,27 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+export interface EthToken {
+    chains: string[];
+}
 
 export interface Token {
+    symbol: string,
+    cloneSymbol?: string,
+    address: string,
     name?: string,
-    address?: string,
     iconUrl?: string,
     decimals?: string,
+    wraps?: WrapsData,
+}
+
+interface WrapsData {
+    symbol: string,
+    address: string,
+    iconUrl?: string
 }
 
 
 export interface ChainTokensMap { [tokenSymbol: string]: Token; }
-export interface TokenTypeMap { [tokenType: string]: ChainTokensMap; }
+export interface TokenTypeMap { [tokenType: string]: EthToken | ChainTokensMap; }
 export interface TokensMap { [chainName: string]: TokenTypeMap; }
