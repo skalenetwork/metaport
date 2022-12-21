@@ -18,15 +18,15 @@ function getRandomInt(min, max) {
 
 export const commonProps = {
   operationType: OperationType.transfer,
-  schains: ['aaa-chain', 'bbb-chain'],
+  schains: ['Europa Chain', 'Calypso'],
   chainsMetadata: {
     'aaa-chain': {
-      alias: 'Europa SKALE Chain', // optional
+      alias: 'Europa Hub', // optional
       minSfuelWei: '27000000000000', // optional
       faucetUrl: 'https://github.com/skalenetwork/skale-network' // optional
     },
     'bbb-chain': {
-      alias: 'Block Brawlers'
+      alias: 'Calypso Hub'
     }
   },
   open: true,

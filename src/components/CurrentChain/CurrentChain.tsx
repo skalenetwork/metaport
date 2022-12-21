@@ -30,7 +30,7 @@ export default function CurrentChain(props) {
           </p>
         </div>) :
           (<p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow)}>
-            Current chain
+            From
           </p>)}
         <div className={styles.mp__flex}>
           <SFuelBadge from={true} data={props.sFuelData} />

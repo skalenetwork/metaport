@@ -9,9 +9,19 @@ import ErrorMessage from '../ErrorMessage';
 import UnwrapUI from '../UnwrapUI';
 import TransferUI from '../TransferUI';
 import WrappedTokensWarning from '../WrappedTokensWarning';
+import WidgetBodyV2 from '../WidgetBodyV2';
 
 
 export default function WidgetBody(props) {
+
+  if (props.v2) {
+    return <WidgetBodyV2
+      disabledChains={props.disabledChains}
+      theme={props.theme}
+      {...props}
+    />
+  }
+
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);

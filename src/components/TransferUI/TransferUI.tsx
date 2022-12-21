@@ -59,7 +59,7 @@ export default function TransferUI(props) {
             styles.mp__flexGrow,
             (props.expandedTo ? styles.mp__transferToFix : null)
           )}>
-            Transfer to
+            to
           </p>
           <div className={styles.mp__flex}>
             <SFuelBadge from={false} data={props.sFuelData2} />
