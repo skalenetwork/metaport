@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
-import { iconPath } from '../TokenList/helper';
+import { chainIconPath } from '../TokenList/helper';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
 
@@ -28,8 +28,9 @@ export function getChainName(chainsMetadata, chainName: string) {
 
 
 export function getChainIcon(chainName: string, dark: boolean) {
-    if (chainName == MAINNET_CHAIN_NAME) {
-        return <img src={iconPath('eth')} className='eth-logo' height='20px' width='20px' />;
+    const iconPath = chainIconPath(chainName);
+    if (iconPath !== undefined) {
+        return <img src={iconPath} className='eth-logo' height='20px' width='20px' />;
     }
     return (<OfflineBoltIcon sx={{ color: stringToColor(chainName, dark) }} width='20px' />);
 }

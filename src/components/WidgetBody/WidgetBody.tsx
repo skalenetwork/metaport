@@ -3,23 +3,28 @@ import React from 'react';
 import Collapse from '@mui/material/Collapse';
 
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
 
 import CurrentChain from '../CurrentChain';
 import ErrorMessage from '../ErrorMessage';
 import UnwrapUI from '../UnwrapUI';
 import TransferUI from '../TransferUI';
 import WrappedTokensWarning from '../WrappedTokensWarning';
-import WidgetBodyV2 from '../WidgetBodyV2';
+import TransferRequest from '../TransferRequest';
 
 
 export default function WidgetBody(props) {
 
-  if (props.v2) {
-    return <WidgetBodyV2
+  if (props.view === View.TRANSFER_REQUEST) {
+    return <TransferRequest
       disabledChains={props.disabledChains}
       theme={props.theme}
       {...props}
     />
+  }
+
+  if (props.view === View.UNWRAP) {
+    return <p>UNWRAP!!!!</p>
   }
 
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);

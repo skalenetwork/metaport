@@ -21,6 +21,7 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import { MAINNET_CHAIN_NAME } from '../../core/constants';
 import TokenData from '../../core/dataclasses/TokenData';
 
 
@@ -43,6 +44,7 @@ function importAll(r) {
 }
 
 const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
+const chainIcons = importAll(require.context('../../meta/icons', false, /\.(png|jpe?g|svg)$/));
 
 
 export function iconPath(name) {
@@ -52,6 +54,18 @@ export function iconPath(name) {
         return icons[key];
     } else {
         return icons['eth.svg'];
+    }
+}
+
+
+export function chainIconPath(name) {
+    if (!name) return;
+    const key = name.toLowerCase() + '.svg';
+    if (name === MAINNET_CHAIN_NAME) {
+        return icons['eth.svg'];
+    }
+    if (chainIcons[key]) {
+        return chainIcons[key];
     }
 }
 

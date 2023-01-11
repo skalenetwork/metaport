@@ -20,32 +20,21 @@ import MoveDownIcon from '@mui/icons-material/MoveDown';
 
 import { getChainName, getChainIcon } from '../ChainsList/helper';
 
-import calypso from '../../iconsTmp/calypso.svg';
-import ruby from '../../iconsTmp/ruby.png';
+import TransferETA from '../TransferETA';
+import TransferETF from '../TransferETF';
 
 
 export default function TransferSummary(props) {
-
   return (
     <Box>
       <div className={clsNames(styles.mp__margTop20, styles.mp__flex)}>
-        <div>
-          <p className={clsNames(styles.mp_p_desc, styles.mp__p)}>
-            ETA
-          </p>
-          <h4 className={clsNames(styles.mp__noMarg)}>10-15 min</h4>
-        </div>
+        <TransferETA transferRequest={props.transferRequest} />
         <div className={clsNames(styles.mp__margLeft20)}>
-          <p className={clsNames(styles.mp_p_desc, styles.mp__p)}>
-            Estimated Transaction Fee
-          </p>
-          <h4 className={clsNames(styles.mp__noMarg)}>~$5.06 USD</h4>
+          <TransferETF transferRequest={props.transferRequest} />
         </div>
       </div>
 
-
-
-      {props.amountLocked ? null : <div className={styles.mp__margTop20}>
+      {props.transferRequest.lockValue ? null : <div className={styles.mp__margTop20}>
         <p className={clsNames(styles.mp_p_desc, styles.mp__p)}>
           Amount
         </p>
@@ -60,11 +49,16 @@ export default function TransferSummary(props) {
       </div>
       }
 
-
-      <p className={clsNames(styles.mp__flex, styles.mp_p_desc, styles.mp__p, styles.mp__flexGrow, styles.mp__margTop20)}>
-        Your assets will be routed though Europa Hub - all transactions on Europa and Calypso are free.
-      </p>
-
+      {props.transferRequest && props.transferRequest.text ? (
+        <p className={clsNames(
+          styles.mp__flex,
+          styles.mp_p_desc,
+          styles.mp__p,
+          styles.mp__flexGrow,
+          styles.mp__margTop20
+        )}>
+          {props.transferRequest.text}
+        </p>) : (<div className={clsNames(styles.mp__margTop10)}></div>)}
       <Button
         variant="contained" color="primary" size="medium"
         className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}

@@ -20,10 +20,6 @@ import AmountInput from "../AmountInput";
 import MoveDownIcon from '@mui/icons-material/MoveDown';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-
-import calypso from '../../iconsTmp/calypso.svg';
-import ruby from '../../iconsTmp/ruby.png';
-
 import { getChainName, getChainIcon } from '../ChainsList/helper';
 
 export default function StepperV2(props) {
@@ -40,8 +36,7 @@ export default function StepperV2(props) {
               <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
                 <h4 className={clsNames(styles.mp__noMarg, styles.mp__flex)}>Transfer to</h4>
                 <div className={clsNames(styles.mp__margLeft5, styles.mp__margRi5, styles.mp__chainIcon, styles.mp__flex)}>
-                  {/* {getChainIcon(props.chain1, props.theme.dark)} */}
-                  <img src={ruby} className='eth-logo' height='20px' width='20px' />
+                  {getChainIcon(props.chain1, props.theme.dark)}
                 </div>
                 <h4 className={clsNames(styles.mp__noMarg, styles.mp__flex)}>{getChainName(props.chainsMetadata, props.chain1)}</h4>
               </div>
@@ -50,7 +45,7 @@ export default function StepperV2(props) {
           <StepContent className={styles.mp__margTop}>
             <Box sx={{ mb: 2 }} >
               <p className={clsNames(styles.mp__flex, styles.mp_p_desc, styles.mp__p, styles.mp__flexGrow)}>
-                Transfer USDT from Mainnet to Europa Hub
+                Transfer USDT from Mainnet to Europa Hub.
               </p>
               {props.amountLocked ? null : <div className={styles.mp__margTop10}> <AmountInput
                 amount={props.amount}
@@ -93,8 +88,7 @@ export default function StepperV2(props) {
                 <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
                   <h4 className={clsNames(styles.mp__noMarg, styles.mp__flex)}>Wrap on</h4>
                   <div className={clsNames(styles.mp__margLeft5, styles.mp__margRi5, styles.mp__chainIcon, styles.mp__flex)}>
-                    {/* {getChainIcon(props.chain1, props.theme.dark)} */}
-                    <img src={ruby} className='eth-logo' height='20px' width='20px' />
+                    {getChainIcon(props.chain1, props.theme.dark)}
                   </div>
                   <h4 className={clsNames(styles.mp__noMarg, styles.mp__flex)}>{getChainName(props.chainsMetadata, props.chain1)}</h4>
                 </div>
@@ -133,8 +127,7 @@ export default function StepperV2(props) {
                 <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
                   <h4 className={clsNames(styles.mp__noMarg, styles.mp__flex)}>Transfer to</h4>
                   <div className={clsNames(styles.mp__margLeft5, styles.mp__margRi5, styles.mp__chainIcon, styles.mp__flex)}>
-                    {/* {getChainIcon(props.chain2, props.theme.dark)} */}
-                    <img src={calypso} className='eth-logo' height='20px' width='20px' />
+                    {getChainIcon(props.chain2, props.theme.dark)}
                   </div>
                   <h4 className={clsNames(styles.mp__noMarg, styles.mp__flex)}>{getChainName(props.chainsMetadata, props.chain2)}</h4>
                 </div>

@@ -32,6 +32,12 @@
   :global(.MuiPaper-root) {
     background-image: none;
   }
+
+
+  :global(.MuiSvgIcon-fontSizeSmall){
+    width: 10pt;
+    height: 10pt;
+  }
 }
 
 .mp__popup {
@@ -352,7 +358,7 @@
   margin: 0;
   font-weight: 500 !important;
   text-transform: none !important;
-  font-size: 0.7525rem !important;
+  font-size: 0.8025rem !important;
   line-height: 1.6 !important;
   letter-spacing: 0.03857em !important;
 }

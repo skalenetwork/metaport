@@ -17,21 +17,12 @@
  */
 
 /**
- * @file TransferParams.ts
+ * @file RouteParams.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
-import { RouteParams } from './RouteParams';
 
-
-export interface TransferParams {
+export interface RouteParams {
+    hub: string;
     tokenKeyname: string;
-    tokenType: TokenType;
-    amount?: string;
-    tokenId?: number;
-    chains?: string[];
-    lockValue?: boolean;
-    route?: RouteParams;
-    text?: string;
 }

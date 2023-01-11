@@ -31,6 +31,7 @@ import { getSFuelData } from '../../core/sfuel';
 import * as interfaces from '../../core/interfaces/index';
 import TokenData from '../../core/dataclasses/TokenData';
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
 import { MetaportTheme } from '../../core/interfaces/Theme';
 
 
@@ -78,11 +79,14 @@ export function Widget(props) {
   const [loading, setLoading] = React.useState(false);
   const [amountLocked, setAmountLocked] = React.useState(false);
   const [actionBtnDisabled, setActionBtnDisabled] = React.useState<boolean>(false);
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [actionName, setActionName] = React.useState<string>(undefined);
   const [actionSteps, setActionSteps] = React.useState(undefined);
 
-  const [operationType, setOperationType] = React.useState<OperationType>(OperationType.transfer);
+  // todo: remove operation type!
+  // const [operationType, setOperationType] = React.useState<OperationType>(OperationType.transfer);
+  const [view, setView] = React.useState<View>(View.SANDBOX);
 
   const [loadingTokens, setLoadingTokens] = React.useState(false);
 
@@ -91,7 +95,8 @@ export function Widget(props) {
   const [sFuelData1, setSFuelData1] = React.useState(undefined);
   const [sFuelData2, setSFuelData2] = React.useState(undefined);
 
-  const [transferRequest, setTransferRequest] = React.useState<interfaces.TransferParams>(undefined);
+  const [transferRequest, setTransferRequest] = React.useState<interfaces.TransferParams>(
+    undefined);
 
   useEffect(() => {
     setWalletConnected(false);
@@ -163,7 +168,7 @@ export function Widget(props) {
 
     setLoading(false);
 
-    setOperationType(OperationType.transfer);
+    setView(View.SANDBOX);
 
     setSFuelData1({});
     setSFuelData2({});
@@ -178,8 +183,9 @@ export function Widget(props) {
   }
 
   function transferHandler(e) {
-    const params: interfaces.TransferParams = e.detail;
+    const params: interfaces.TransferParams = e.detail.params;
     setTransferRequest(params);
+    setOpen(true);
   }
 
   function transfer(params: interfaces.TransferParams): void {
@@ -373,6 +379,7 @@ export function Widget(props) {
   useEffect(() => {
     setAmountErrorMessage(undefined);
     if (token === undefined) return;
+    const operationType = view === View.UNWRAP ? OperationType.unwrap : OperationType.transfer;
     let actionName = getActionName(chainName1, chainName2, token, operationType);
     setActionName(actionName);
   }, [chainName1, chainName2, token, availableTokens]);
@@ -388,14 +395,15 @@ export function Widget(props) {
     setDefaultWrappedToken();
   }, [wrappedTokens]);
 
-  useEffect(() => {
-    setToken(undefined);
-    setAmount('');
-    setActiveStep(0);
-    setActionSteps(undefined);
-    setLoading(false);
-    setDefaultWrappedToken();
-  }, [operationType]);
+  // TODO: try
+  // useEffect(() => {
+  //   setToken(undefined);
+  //   setAmount('');
+  //   setActiveStep(0);
+  //   setActionSteps(undefined);
+  //   setLoading(false);
+  //   setDefaultWrappedToken();
+  // }, [operationType]);
 
   useEffect(() => {
     setAmountErrorMessage(undefined);
@@ -414,9 +422,14 @@ export function Widget(props) {
     }
   }, [extChainId, chainId, token, activeStep]);
 
+  // useEffect(() => {
+  //   if (transferRequest) transfer(transferRequest);
+  // }, [transferRequest]);
+
   useEffect(() => {
-    if (transferRequest) transfer(transferRequest);
+    if (transferRequest) setView(View.TRANSFER_REQUEST);
   }, [transferRequest]);
+
 
   useEffect(() => {
     if (!actionName || !token) return;
@@ -445,9 +458,9 @@ export function Widget(props) {
     log('_MP_INFO: Running checkWrappedTokens');
     try {
       const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
-      if (Object.entries(wrappedTokens).length === 0 && operationType !== OperationType.transfer) {
+      if (Object.entries(wrappedTokens).length === 0 && view !== View.SANDBOX) {
         setAmount('');
-        setOperationType(OperationType.transfer);
+        setView(View.SANDBOX);
       }
       setWrappedTokens(wrappedTokens);
     } catch (err) {
@@ -458,7 +471,7 @@ export function Widget(props) {
 
   function setDefaultWrappedToken() {
     const defaultToken = getDefaultToken(wrappedTokens);
-    if (defaultToken && operationType === OperationType.unwrap) {
+    if (defaultToken && view === View.UNWRAP) {
       log(`Setting defaultToken: ${defaultToken.keyname} from wrappedTokens`)
       setToken(defaultToken);
     }
@@ -638,6 +651,7 @@ export function Widget(props) {
     setChain2={setChainName2}
 
     availableTokens={availableTokens}
+    configTokens={configTokens}
     token={token}
     setToken={setToken}
 
@@ -674,7 +688,7 @@ export function Widget(props) {
     cleanData={cleanData}
     transferRequest={transferRequest}
 
-    operationType={operationType}
-    setOperationType={setOperationType}
+    view={view}
+    setView={setView}
   />)
 }

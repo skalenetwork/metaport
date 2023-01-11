@@ -108,7 +108,7 @@ export function WidgetUI(props) {
           </div>
           <div className={clsNames(styles.mp__popper, (props.open ? null : styles.noDisplay))}>
             <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
-              <Paper elevation={3} className={styles.mp__paper}>
+              <Paper elevation={4} className={styles.mp__paper}>
                 <div className={styles.mp__popup}>
                   {props.walletConnected ? (
                     <WidgetBody

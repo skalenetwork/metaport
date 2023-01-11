@@ -17,21 +17,16 @@
  */
 
 /**
- * @file TransferParams.ts
+ * @file gas_station.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
-import { RouteParams } from './RouteParams';
+import { GAS_STATION_API_ENDPOINT } from './constants';
 
 
-export interface TransferParams {
-    tokenKeyname: string;
-    tokenType: TokenType;
-    amount?: string;
-    tokenId?: number;
-    chains?: string[];
-    lockValue?: boolean;
-    route?: RouteParams;
-    text?: string;
+export async function getAvgWaitTime() {
+    const response = await fetch(GAS_STATION_API_ENDPOINT);
+    if (!response.ok) return 0;
+    const data = await response.json();
+    return data.avgWait;
 }

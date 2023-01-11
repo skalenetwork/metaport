@@ -50,3 +50,6 @@ data/
 
 .env-sdk
 test.mjs
+
+
+src/meta/

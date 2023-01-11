@@ -17,21 +17,14 @@
  */
 
 /**
- * @file TransferParams.ts
+ * @file View.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
-import { RouteParams } from './RouteParams';
 
-
-export interface TransferParams {
-    tokenKeyname: string;
-    tokenType: TokenType;
-    amount?: string;
-    tokenId?: number;
-    chains?: string[];
-    lockValue?: boolean;
-    route?: RouteParams;
-    text?: string;
+export enum View {
+    SANDBOX = 'SANDBOX',
+    UNWRAP = 'UNWRAP',
+    TRANSFER_REQUEST = 'TRANSFER_REQUEST',
+    ERROR = 'ERROR'
 }
