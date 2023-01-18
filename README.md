@@ -17,6 +17,7 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Wrap](#wrap)
       - [Unwrap](#unwrap)
     - [Tips \& tricks](#tips--tricks)
+      - [SKALE Network Options](#skale-network-options)
       - [Automatic M2S token lookup](#automatic-m2s-token-lookup)
       - [Locking a token](#locking-a-token)
       - [Locking chains](#locking-chains)
@@ -84,7 +85,7 @@ const metaport = new Metaport({
     openButton: false, // Show open/close action button (optional, default = true)
     autoLookup: false, // Automatic token lookup for M2S tokens (default = true)
     mainnetEndpoint: MAINNET_ENDPOINT, // Ethereum Mainnet endpoint, required only for M2S or S2M transfers (optional, default = null)
-    skaleNetwork: 'staging', // SKALE network that will be used - mainnet or staging (optional, defualt = mainnet)
+    skaleNetwork: 'staging3', // SKALE network that will be used - mainnet, staging, or staging3 (optional, defualt = mainnet)
     chains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])
         'chainName1',
         'chainName2',
@@ -121,7 +122,6 @@ const metaport = new Metaport({
 ```
 
 > You can skip almost all initialization options and set available tokens, chains and theme after Metaport initialization.
-
 
 ### Functions
 
@@ -165,6 +165,27 @@ metaport.unwrap(UNWRAP_PARAMS);
 ```
 
 ### Tips & tricks
+
+#### SKALE Network Options
+
+> Default is Mainnet
+
+By default, Metaport is linked to the Ethereum Mainnet, however, Metaport can also be configured to
+work with the Ethereum Goerli Testnet (SKALE Staging). The valid options for skaleNetwork are:
+
+| Network Name | Config Value |   Active   | Default |
+| ------------ | ------------ | ---------- | ------- |
+| Ethereum     | **mainnet**  | **Yes**    | **Yes** |
+| Goerli       | staging3     | Yes        | No      |
+| Rinkeby      | staging      | No         | No      |
+
+```javascript
+const metaport = new Metaport({
+  ...
+  skaleNetwork: "staging3" // or "mainnet"
+  ...
+})
+```
 
 #### Automatic M2S token lookup
 
