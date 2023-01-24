@@ -10,7 +10,6 @@
   "author": "SKALE Labs",
   "license": "LGPL-3.0-only",
   "main": "build/index.js",
-  "module": "build/index.esm.js",
   "files": [
     "build"
   ],
