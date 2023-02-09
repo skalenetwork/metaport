@@ -1,30 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Chip from '@mui/material/Chip';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { TokenType } from '../../core/dataclasses/TokenType';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
-import localStyles from './TransferSummary.scss';
-import { getIconSrc, getTokenName } from "../TokenList/helper";
 import AmountInput from "../AmountInput";
-import MoveDownIcon from '@mui/icons-material/MoveDown';
-
-import { getChainName, getChainIcon } from '../ChainsList/helper';
 
 import TransferETA from '../TransferETA';
 import TransferETF from '../TransferETF';
 
 
 export default function TransferSummary(props) {
+  const text = props.transferRequest && props.transferRequest.text ? props.transferRequest.text : props.explanationText;
   return (
     <Box>
       <div className={clsNames(styles.mp__margTop20, styles.mp__flex)}>
@@ -49,7 +36,6 @@ export default function TransferSummary(props) {
       </div>
       }
 
-      {props.transferRequest && props.transferRequest.text ? (
         <p className={clsNames(
           styles.mp__flex,
           styles.mp_p_desc,
@@ -57,13 +43,14 @@ export default function TransferSummary(props) {
           styles.mp__flexGrow,
           styles.mp__margTop20
         )}>
-          {props.transferRequest.text}
-        </p>) : (<div className={clsNames(styles.mp__margTop10)}></div>)}
+          {text}
+        </p>
       <Button
         variant="contained" color="primary" size="medium"
         className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+        onClick={() => {props.confirmSummary()}}
       >
-        Continue
+        Confirm
       </Button>
     </Box>
   );

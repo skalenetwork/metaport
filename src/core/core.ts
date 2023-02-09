@@ -106,6 +106,24 @@ export async function updateWeb3SChainMetamask(
 }
 
 
+export function updateWeb3Mainnet(mainnet: MainnetChain, mainnetEndpoint: string) {
+  const web3 = new Web3(mainnetEndpoint);
+  mainnet.updateWeb3(web3);
+}
+
+
+export async function updateWeb3MainnetMetamask(
+  mainnet: MainnetChain,
+  network: string,
+  mainnetEndpoint: string
+): Promise<void> {
+  const networkParams = mainnetNetworkParams(network, mainnetEndpoint);
+  await changeMetamaskNetwork(networkParams);
+  const web3 = new Web3(window.ethereum);  
+  mainnet.updateWeb3(web3);
+}
+
+
 function getMainnetAbi(network: string) {
   if (network === 'staging') {
     return { ...mainnetAbi, ...stagingAddresses }

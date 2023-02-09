@@ -58,14 +58,17 @@ export function iconPath(name) {
 }
 
 
-export function chainIconPath(name) {
+export function chainIconPath(name: string, app?: string) {
     if (!name) return;
-    const key = name.toLowerCase() + '.svg';
+    let filename = name.toLowerCase();
+    if (app)
+        filename += `-${app}`;
+    filename += '.svg';
     if (name === MAINNET_CHAIN_NAME) {
         return icons['eth.svg'];
     }
-    if (chainIcons[key]) {
-        return chainIcons[key];
+    if (chainIcons[filename]) {
+        return chainIcons[filename];
     }
 }
 

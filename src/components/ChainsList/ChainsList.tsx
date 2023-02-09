@@ -34,7 +34,7 @@ export default function ChainsList(props) {
 
   const schainNames = [];
 
-  for (let chain of props.schains) {
+  for (let chain of props.config.chains) {
     if (chain != props.disabledChain && chain != props.chain) {
       schainNames.push(chain);
     }
@@ -47,10 +47,10 @@ export default function ChainsList(props) {
 
   function getChainName(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return 'Mainnet';
+      return 'Ethereum';
     }
-    if (props.chainsMetadata && props.chainsMetadata[chainName]) {
-      return props.chainsMetadata[chainName].alias;
+    if (props.config.chainsMetadata && props.config.chainsMetadata[chainName]) {
+      return props.config.chainsMetadata[chainName].alias;
     } else {
       return chainName;
     }

@@ -17,15 +17,24 @@
  */
 
 /**
- * @file RouteParams.ts
- * @copyright SKALE Labs 2022-Present
+ * @file views.ts
+ * @copyright SKALE Labs 2023-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
+
+import { View } from './dataclasses/View';
 
 
-export interface RouteParams {
-    hub: string;
-    tokenKeyname: string;
-    tokenType: TokenType;
+export function isTransferRequestView(view: View) {
+    return view === View.TRANSFER_REQUEST_SUMMARY || view === View.TRANSFER_REQUEST_STEPS;
+}
+
+
+export function isTransferRequestSummary(view: View) {
+    return view === View.TRANSFER_REQUEST_SUMMARY
+}
+
+
+export function isTransferRequestSteps(view: View) {
+    return view === View.TRANSFER_REQUEST_STEPS
 }

@@ -61,6 +61,10 @@ export namespace externalEvents {
         });
     }
 
+    export function transferRequestCompleted(transferRequest: interfaces.TransferParams) {
+        dispatchEvent('metaport_transferRequestCompleted', { 'transferRequest': transferRequest });
+    }
+
     export function unwrapComplete(
         tx: string,
         chainName1: string,

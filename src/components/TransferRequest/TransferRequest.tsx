@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Chip from '@mui/material/Chip';
+import Collapse from '@mui/material/Collapse';
 
 import { OperationType } from '../../core/dataclasses/OperationType';
 
@@ -14,7 +14,7 @@ import TransferUI from '../TransferUI';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import StepperV2 from '../StepperV2';
 import TransferSummary from '../TransferSummary';
-import TransferRoute from '../TransferRoute';
+import Route from '../Route';
 import Typography from '@mui/material/Typography';
 import { getIconSrc, getTokenName } from "../TokenList/helper";
 
@@ -25,6 +25,7 @@ import TokenData from '../../core/dataclasses/TokenData';
 import EthTokenData from '../../core/dataclasses/EthTokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import * as interfaces from '../../core/interfaces/index';
+import { isTransferRequestSteps, isTransferRequestSummary } from '../../core/views';
 
 import { getChainName, getChainIcon } from '../ChainsList/helper';
 import SkeletonLoader from '../SkeletonLoader';
@@ -56,6 +57,16 @@ function getTokenDataFromConfig(configTokens: interfaces.TokensMap, transferRequ
     isClone = true;
   }
   if (!configToken) return;
+
+  let unwrappedSymbol;
+  let unwrappedAddress;
+  let unwrappedIconUrl;
+  if (configToken.wraps) {
+    unwrappedSymbol = configToken.wraps.symbol;
+    unwrappedAddress = configToken.wraps.address;
+    unwrappedIconUrl = configToken.wraps.iconUrl;
+  }
+
   return new TokenData(
     null,
     configToken.address,
@@ -66,20 +77,33 @@ function getTokenDataFromConfig(configTokens: interfaces.TokensMap, transferRequ
     configToken.iconUrl,
     configToken.decimals,
     transferRequest.tokenType,
-    null,
-    null,
-    null
+    unwrappedSymbol,
+    unwrappedAddress,
+    unwrappedIconUrl
   );
 }
 
 
 export default function TransferRequest(props) {
   if (!props.transferRequest) {
-    return (<SkeletonLoader />)
+    return (<SkeletonLoader header={true} />)
   }
 
-  const transferRequest: interfaces.TransferParams = props.transferRequest;
-  const token = getTokenDataFromConfig(props.configTokens, transferRequest);
+  const trReq: interfaces.TransferParams = props.transferRequest;
+  const token = getTokenDataFromConfig(props.config.tokens, trReq);
+
+  const fromChainName = getChainName(props.config.chainsMetadata, trReq.chains[0], trReq.fromApp);
+  const toChainName = getChainName(props.config.chainsMetadata, trReq.chains[1], trReq.toApp);
+
+  let explanationText = 'Transfer assets from ' + fromChainName + ' to ' + toChainName + '.';
+  if (trReq.route) {
+    const hubChainName = getChainName(props.config.chainsMetadata, trReq.route.hub);
+    if (token.clone) {
+      explanationText += ' Tokens will be unwrapped on ' + hubChainName + '.';
+    } else {
+      explanationText += ' Tokens will be wrapped on ' + hubChainName + '.';
+    }
+  };
 
   return (
     <div>
@@ -89,13 +113,24 @@ export default function TransferRequest(props) {
           className={clsNames(styles.mp__amountIcon, styles.mp__margLeft10, styles.mp__margRi5)}
           src={getIconSrc(token)}
         />
-        <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount)}>{transferRequest.lockValue ? props.transferRequest.amount + ' ' + token.symbol : token.symbol}</h2>
+        <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount)}>{trReq.lockValue ? trReq.amount + ' ' + token.symbol : token.symbol}</h2>
       </div>
-      <div>
-       
-        <TransferRoute {...props} token={token} />
-      </div>
-      {props.summaryConfirmed ? <StepperV2 {...props} /> : <TransferSummary {...props} />}
+      <Route
+        config={props.config}
+        transferRequest={props.transferRequest}
+        theme={props.theme}
+        explanationText={explanationText}
+        size={isTransferRequestSteps(props.view) ? 'small' : 'medium'}
+      />
+      <Collapse in={props.errorMessage}>
+        <ErrorMessage errorMessage={props.errorMessage} />
+      </Collapse>
+      <Collapse in={!props.errorMessage}>
+        {isTransferRequestSteps(props.view) ?
+          <StepperV2 {...props} token={token} /> :
+          <TransferSummary {...props} explanationText={explanationText} />
+        }
+      </Collapse>
     </div>
   )
 }

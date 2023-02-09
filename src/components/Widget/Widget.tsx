@@ -3,7 +3,7 @@ import debug from 'debug';
 
 import WidgetUI from '../WidgetUI';
 import { getWidgetTheme } from '../WidgetUI/Themes';
-import { WrongNetworkMessage, TransactionErrorMessage, CustomErrorMessage } from '../ErrorMessage';
+import { WrongNetworkMessage, TransactionErrorMessage } from '../ErrorMessage';
 
 import {
   initSChain,
@@ -12,6 +12,8 @@ import {
   initMainnetMetamask,
   updateWeb3SChain,
   updateWeb3SChainMetamask,
+  updateWeb3Mainnet,
+  updateWeb3MainnetMetamask,
   getChainId
 } from '../../core';
 
@@ -27,307 +29,100 @@ import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
 import { ActionType } from '../../core/actions/action';
 import { getSFuelData } from '../../core/sfuel';
+import { isTransferRequestActive } from '../../core/helper';
+import { getTransferSteps } from '../../core/transferSteps';
 
 import * as interfaces from '../../core/interfaces/index';
 import TokenData from '../../core/dataclasses/TokenData';
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { TransferRequestStatus } from '../../core/dataclasses/TransferRequestStatus';
 import { View } from '../../core/dataclasses/View';
 import { MetaportTheme } from '../../core/interfaces/Theme';
 
 
 debug.enable('*');
-const log = debug('metaport:Widget');
+const log = debug('metaport:WidgetV2');
 
 
 export function Widget(props) {
 
-  const [configTokens, setConfigTokens] = React.useState<interfaces.TokensMap>(undefined);
+  // STATE
+
+  const [walletConnected, setWalletConnected] = React.useState(undefined);
+
   const [availableTokens, setAvailableTokens] = React.useState<interfaces.TokenDataTypesMap>(
     getEmptyTokenDataMap()
   );
   const [wrappedTokens, setWrappedTokens] = React.useState<interfaces.TokenDataTypesMap>(
     getEmptyTokenDataMap()
   );
-  const [token, setToken] = React.useState<TokenData>(undefined);
 
-  const [firstOpen, setFirstOpen] = React.useState(props.open);
-  const [open, setOpen] = React.useState(props.open);
+  const [chainId, setChainId] = React.useState(undefined);
+  const [extChainId, setExtChainId] = React.useState<string>(undefined);
 
-  const [schains, setSchains] = React.useState([]);
+  const [amountLocked, setAmountLocked] = React.useState(false);
 
-  const [address, setAddress] = React.useState(undefined);
+  const [address, setAddress] = React.useState<string>(undefined);
+
   const [amount, setAmount] = React.useState<string>('');
-  const [tokenId, setTokenId] = React.useState<number | null>(undefined);
+  const [tokenId, setTokenId] = React.useState<number>();
 
-  const [walletConnected, setWalletConnected] = React.useState(undefined);
+  const [sFuelData1, setSFuelData1] = React.useState(undefined);
+  const [sFuelData2, setSFuelData2] = React.useState(undefined);
 
   const [chainName1, setChainName1] = React.useState(undefined);
   const [chainName2, setChainName2] = React.useState(undefined);
 
-  const [chainId, setChainId] = React.useState(undefined);
-  const [extChainId, setExtChainId] = React.useState(undefined);
-
-  const [errorMessage, setErrorMessage] = React.useState(undefined);
-  const [amountErrorMessage, setAmountErrorMessage] = React.useState<string>(undefined);
-
   const [sChain1, setSChain1] = React.useState<SChain>(undefined);
   const [sChain2, setSChain2] = React.useState<SChain>(undefined);
-
-  const [mainnetEndpoint, setMainnetEndpoint] = React.useState<string>(undefined);
   const [mainnet, setMainnet] = React.useState<MainnetChain>(undefined);
 
-  const [loading, setLoading] = React.useState(false);
-  const [amountLocked, setAmountLocked] = React.useState(false);
-  const [actionBtnDisabled, setActionBtnDisabled] = React.useState<boolean>(false);
+  const [token, setToken] = React.useState<TokenData>(undefined);
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [actionName, setActionName] = React.useState<string>(undefined);
   const [actionSteps, setActionSteps] = React.useState(undefined);
 
-  // todo: remove operation type!
-  // const [operationType, setOperationType] = React.useState<OperationType>(OperationType.transfer);
+  const [loading, setLoading] = React.useState(false);
+  const [loadingTokens, setLoadingTokens] = React.useState(false);
+  const [actionBtnDisabled, setActionBtnDisabled] = React.useState<boolean>(false);
+
+  const [open, setOpen] = React.useState(props.open);
+  const [firstOpen, setFirstOpen] = React.useState(props.open);
+
   const [view, setView] = React.useState<View>(View.SANDBOX);
 
-  const [loadingTokens, setLoadingTokens] = React.useState(false);
-
-  const [theme, setTheme] = React.useState<interfaces.MetaportTheme>(getWidgetTheme(props.theme));
-
-  const [sFuelData1, setSFuelData1] = React.useState(undefined);
-  const [sFuelData2, setSFuelData2] = React.useState(undefined);
+  const [theme, setTheme] = React.useState<interfaces.MetaportTheme>(getWidgetTheme(props.config.theme));
 
   const [transferRequest, setTransferRequest] = React.useState<interfaces.TransferParams>(
     undefined);
+  const [transferRequestStatus, setTransferRequestStatus] = React.useState<TransferRequestStatus>(
+    TransferRequestStatus.NO_REQEST);
+  const [transferRequestStep, setTransferRequestStep] = React.useState<number>(0);
+  const [transferRequestSteps, setTransferRequestSteps] = React.useState<Array<any>>();
+  const [transferRequestLoading, setTransferRequestLoading] = React.useState<boolean>(true);
+
+  const [errorMessage, setErrorMessage] = React.useState(undefined);
+  const [amountErrorMessage, setAmountErrorMessage] = React.useState<string>(undefined);
+
+
+  // EFFECTS
 
   useEffect(() => {
     setWalletConnected(false);
-    setSchains(props.chains);
-    setMainnetEndpoint(props.mainnetEndpoint);
-    setConfigTokens(props.tokens);
     addAccountChangedListener(accountsChangedFallback);
     addChainChangedListener(chainChangedFallback);
     addinternalEventsListeners();
   }, []);
 
-  function addinternalEventsListeners() {
-    window.addEventListener("_metaport_transfer", transferHandler, false);
-    window.addEventListener("_metaport_unwrap", unwrap, false);
-
-    window.addEventListener("_metaport_updateParams", updateParamsHandler, false);
-    window.addEventListener("_metaport_close", closeWidget, false);
-    window.addEventListener("_metaport_open", openWidget, false);
-    window.addEventListener("_metaport_reset", resetWidget, false);
-    window.addEventListener("_metaport_setTheme", handleSetTheme, false);
-  }
-
-  function unwrap(e) {
-    // todo
-    e.detail.amount
-    e.detail.token
-  }
-
-  function handleSetTheme(e) {
-    const theme: MetaportTheme = e.detail.theme;
-    setTheme(getWidgetTheme(theme));
-  }
-
-  function updateBalanceHandler() { // todo: refactor
-    window.addEventListener("metaport_requestBalance", requestBalanceHandler, false);
-    log("updateBalanceHandler done");
-  }
-
-  function closeWidget(e) {
-    setOpen(false);
-    setActiveStep(0);
-    setAmountLocked(false);
-    log('closeWidget event processed');
-  }
-
-  function openWidget(e) {
-    setOpen(true);
-    setAmountLocked(false);
-    log('openWidget event processed');
-  }
-
-  function resetWidget(e) {
-    setSchains(props.chains);
-    setConfigTokens(props.tokens);
-
-    setAvailableTokens(getEmptyTokenDataMap());
-    setWrappedTokens(getEmptyTokenDataMap());
-    setToken(undefined);
-
-    setAmount('');
-    setTokenId(0);
-
-    setChainName1(null);
-    setChainName2(null);
-
-    setSChain1(null);
-    setSChain2(null);
-    setMainnet(null);
-
-    setLoading(false);
-
-    setView(View.SANDBOX);
-
-    setSFuelData1({});
-    setSFuelData2({});
-
-    setAmountLocked(false);
-    setActiveStep(0);
-    setActionSteps(undefined);
-    setActionName(undefined)
-    setAmountErrorMessage(undefined);
-    setActionBtnDisabled(false);
-    log('resetWidget event processed');
-  }
-
-  function transferHandler(e) {
-    const params: interfaces.TransferParams = e.detail.params;
-    setTransferRequest(params);
-    setOpen(true);
-  }
-
-  function transfer(params: interfaces.TransferParams): void {
-    log('Transfer request');
-    log(params);
-    setOpen(true);
-    setAmountLocked(!!params.lockValue);
-    if (params.chains) {
-      if (params.chains.length != 2) {
-        log(`Incorrect number of chains: ${params.chains.length} (must be 2)`);
-        setErrorMessage(new CustomErrorMessage('Incorrect number of chains'));
-        return
-      }
-      if (!schains.includes(params.chains[0]) || !schains.includes(params.chains[1])) {
-        setErrorMessage(new CustomErrorMessage(`Reqested chains are not found in the list: ${params.chains}`));
-        return
-      }
-      if (chainName1 == params.chains[0] && chainName2 == params.chains[1]) {
-        finishTransferRequest();
-      } else {
-        setChainName1(params.chains[0]);
-        setChainName2(params.chains[1]);
-      }
-    }
-  }
-
-  function updateParamsHandler(e) {
-    if (e.detail.chains) {
-      setSchains(e.detail.chains);
-    }
-    if (e.detail.tokens) {
-      setConfigTokens(e.detail.tokens);
-    }
-    log('params updated');
-    log(e.detail.chains);
-  }
-
-  async function tokenLookup() {
-    setLoadingTokens(true);
-    try {
-      let tokens = await getAvailableTokens(
-        mainnet,
-        sChain1,
-        sChain2,
-        chainName1,
-        chainName2,
-        configTokens,
-        props.autoLookup
-      );
-      await getTokenBalances(
-        tokens,
-        chainName1,
-        mainnet,
-        sChain1,
-        address
-      );
-      setAvailableTokens(tokens);
-    } catch (err) {
-      log('_MP_ERROR: tokenLookup failed');
-      log(err);
-    }
-
-    updateBalanceHandler();
-    setLoadingTokens(false);
-  }
-
-  async function updateTokenBalances() {
-    let tokens = availableTokens;
-    await getTokenBalances(
-      tokens,
-      chainName1,
-      mainnet,
-      sChain1,
-      address
-    );
-    setAvailableTokens(tokens);
-    checkWrappedTokens();
-  }
-
-  async function emitBalanceEvent(schainName, tokenSymbol) {
-    if (schainName === chainName1) {
-      let tokenContract = sChain1.erc20.tokens[tokenSymbol];
-      let balance = await sChain1.getERC20Balance(tokenContract, address);
-      return externalEvents.balance(tokenSymbol, chainName1, balance);
-    }
-
-    if (schainName === chainName2) {
-      let tokenContract = sChain2.erc20.tokens[tokenSymbol]; // TODO: check token exist!
-      let balance = await sChain2.getERC20Balance(tokenContract, address);
-      return externalEvents.balance(tokenSymbol, chainName2, balance);
-    }
-    console.error('_MP_ERROR: can request balance only for active chains!'); // TODO: replace with error!
-  }
-
-  function requestBalanceHandler(e) {
-    if (!sChain1 || !sChain2) {
-      console.error('chains are not inited yet'); // TODO: replace with error
-      return
-    }
-    emitBalanceEvent(e.detail.schainName, e.detail.tokenSymbol);
-  }
-
-  async function initSchain1() {
-    log('Running initSchain1...');
-    setSChain1(await initSChainMetamask(
-      props.network,
-      chainName1
-    ))
-  }
-
-  async function initMainnet1() {
-    setMainnet(await initMainnetMetamask(props.network, mainnetEndpoint))
-  }
-
-  async function enforceMetamaskNetwork() {
-    if (chainName1 === MAINNET_CHAIN_NAME) {
-      await initMainnet1();
-    } else {
-      await initSchain1();
-    }
-  }
-
-  async function switchMetamaskChain(switchBack: boolean): Promise<void> {
-    // TODO: tmp fix
-    if (chainName2 === MAINNET_CHAIN_NAME || chainName1 === MAINNET_CHAIN_NAME) return;
-    updateWeb3SChain(
-      switchBack ? sChain2 : sChain1,
-      props.network,
-      switchBack ? chainName2 : chainName1
-    );
-    await updateWeb3SChainMetamask(
-      switchBack ? sChain1 : sChain2,
-      props.network,
-      switchBack ? chainName1 : chainName2
-    );
-  }
+  useEffect(() => {
+    if (open && !firstOpen) setFirstOpen(true);
+  }, [open]);
 
   useEffect(() => {
     if (!open && !firstOpen) return;
-    cleanData();
     if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
-    if (chainName1) setChainId(getChainId(props.network, chainName1));
+    if (chainName1) setChainId(getChainId(props.config.skaleNetwork, chainName1));
     if (address && chainName1) {
       if (chainName1 == MAINNET_CHAIN_NAME) {
         initMainnet1();
@@ -338,19 +133,14 @@ export function Widget(props) {
   }, [chainName1, address]);
 
   useEffect(() => {
-    if (open && !firstOpen) setFirstOpen(true);
-  }, [open]);
-
-  useEffect(() => {
-    cleanData();
     if (chainName1 !== MAINNET_CHAIN_NAME && chainName2 !== MAINNET_CHAIN_NAME) setMainnet(null);
     if (address && chainName2) {
       if (chainName2 == MAINNET_CHAIN_NAME) {
-        setMainnet(initMainnet(props.network, mainnetEndpoint))
+        setMainnet(initMainnet(props.config.skaleNetwork, props.config.mainnetEndpoint))
       } else {
-        log('Running initSchain2...');
+        log(`Running initSchain2: ${chainName2}`);
         setSChain2(initSChain(
-          props.network,
+          props.config.skaleNetwork,
           chainName2
         ));
       }
@@ -359,77 +149,49 @@ export function Widget(props) {
   }, [chainName2, address]);
 
   useEffect(() => {
-    if (configTokens) checkWrappedTokens();
+    if (props.config.tokens) checkWrappedTokens();
     initSFuelData();
-    if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2)) && configTokens) {
+    if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2))) {
       externalEvents.connected();
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
       tokenLookup();
     }
-  }, [sChain1, sChain2, mainnet, configTokens]);
+  }, [sChain1, sChain2, mainnet]);
 
   useEffect(() => {
-    setActiveStep(0);
-    setAmount('');
-    setTokenId(0);
-  }, [token]);
-
-  useEffect(() => {
-    setAmountErrorMessage(undefined);
-    if (token === undefined) return;
-    const operationType = view === View.UNWRAP ? OperationType.unwrap : OperationType.transfer;
-    let actionName = getActionName(chainName1, chainName2, token, operationType);
-    setActionName(actionName);
-  }, [chainName1, chainName2, token, availableTokens]);
-
-  useEffect(() => {
-    if (transferRequest) return finishTransferRequest();
-    // setAmountLocked(false);
-    const defaultToken = getDefaultToken(availableTokens);
-    if (defaultToken) setToken(defaultToken);
+    if (isTransferRequestActive(transferRequestStatus)) {
+      const tokenKeyname = (transferRequest.route && transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB) ? transferRequest.route.tokenKeyname : transferRequest.tokenKeyname;
+      const tokenType = (transferRequest.route && transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB) ? transferRequest.route.tokenType : transferRequest.tokenType;
+      log(`Loading transfer request - ${tokenKeyname}, ${transferRequest.amount}, ${transferRequest.tokenId}`);
+      const tokenData = availableTokens[tokenType][tokenKeyname];
+      if (!tokenData) {
+        setTransferRequestStatus(TransferRequestStatus.ERROR);
+        log(`No token data: ${tokenKeyname}`);
+        log(availableTokens);
+        return
+      }
+      setToken(tokenData);
+      setAmount(transferRequest.amount);
+      setTokenId(transferRequest.tokenId);
+      // setTransferRequestStatus(TransferRequestStatus.IN_PROGRESS);
+      setTransferRequestLoading(false);
+      log(`Loading transfer request - DONE`);
+    }
   }, [availableTokens]);
 
   useEffect(() => {
     setDefaultWrappedToken();
   }, [wrappedTokens]);
 
-  // TODO: try
-  // useEffect(() => {
-  //   setToken(undefined);
-  //   setAmount('');
-  //   setActiveStep(0);
-  //   setActionSteps(undefined);
-  //   setLoading(false);
-  //   setDefaultWrappedToken();
-  // }, [operationType]);
-
   useEffect(() => {
     setAmountErrorMessage(undefined);
-    runPreAction();
-  }, [actionSteps, activeStep, amount, tokenId]);
-
-  useEffect(() => {
-    // TODO: tmp fix for unwrap
-    const isUnwrapActionSteps = activeStep === 2 || activeStep === 3;
-    const isUwrapAction = token && token.unwrappedSymbol && token.clone && isUnwrapActionSteps;
-    if (extChainId && chainId && extChainId !== chainId && !isUwrapAction) {
-      log('_MP_INFO: setting WrongNetworkMessage');
-      setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
-    } else {
-      setErrorMessage(undefined);
-    }
-  }, [extChainId, chainId, token, activeStep]);
-
-  // useEffect(() => {
-  //   if (transferRequest) transfer(transferRequest);
-  // }, [transferRequest]);
-
-  useEffect(() => {
-    if (transferRequest) setView(View.TRANSFER_REQUEST);
-  }, [transferRequest]);
-
+    if (token === undefined) return;
+    const operationType = view === View.UNWRAP ? OperationType.unwrap : OperationType.transfer;
+    let actionName = getActionName(chainName1, chainName2, token.type, operationType);
+    setActionName(actionName);
+  }, [chainName1, chainName2, token, availableTokens]);
 
   useEffect(() => {
     if (!actionName || !token) return;
@@ -440,13 +202,179 @@ export function Widget(props) {
     }
   }, [actionName, token]);
 
-  function cleanData() {
+  useEffect(() => {
     setAmountErrorMessage(undefined);
-    setActionBtnDisabled(false);
-    setTokenId(undefined);
-    setAmount('');
+    runPreAction();
+  }, [actionSteps, activeStep, amount, tokenId]);
+
+  useEffect(() => {
+    if (transferRequestStatus === TransferRequestStatus.DONE) {
+      log('Transfer request completed');
+      externalEvents.transferRequestCompleted(transferRequest);
+      setTransferRequestStep(0);
+    }
+  }, [transferRequestStatus]);
+
+  useEffect(() => {
+    if (token && transferRequest) {
+      if (transferRequestStatus === TransferRequestStatus.IN_PROGRESS) {
+        setTransferRequestSteps(getTransferSteps(transferRequest, props.config, theme, token));
+      }
+    }
+  }, [token, transferRequest]);
+
+  // FALLBACKS & HANDLERS
+
+  function addinternalEventsListeners() {
+    window.addEventListener("_metaport_transfer", transferHandler, false);
+    window.addEventListener("_metaport_close", closeHandler, false);
+    window.addEventListener("_metaport_open", openHandler, false);
+    window.addEventListener("_metaport_reset", resetHandler, false);
+    window.addEventListener("_metaport_setTheme", themeHandler, false);
+  }
+
+  function chainChangedFallback(_extChainId: string): void {
+    setExtChainId(_extChainId);
+  }
+
+  function accountsChangedFallback(accounts) {
+    if (accounts.length === 0) {
+      // MetaMask is locked or the user has not connected any accounts
+      console.log('Please connect to MetaMask!');
+    } else {
+      setAddress(accounts[0]);
+      setWalletConnected(true);
+    }
+  }
+
+  function networkConnectFallback(accounts) {
+    if (accounts.length === 0) {
+      // MetaMask is locked or the user has not connected any accounts
+      console.log('Please connect to MetaMask!');
+    }
+    // todo: handle accounts in Metamask module
+
+    setAddress(accounts[0]);
+    setWalletConnected(true);
+    externalEvents.connected();
+  }
+
+  function transferHandler(e) {
+    resetWidgetState();
+    const params: interfaces.TransferParams = e.detail.params;
+    setTransferRequestStatus(TransferRequestStatus.RECEIVED);
+    setTransferRequest(params);
+    setView(View.TRANSFER_REQUEST_SUMMARY);
+    setOpen(true);
+  }
+
+  function closeHandler(e) {
+    setOpen(false);
+    log('closeWidget event processed');
+  }
+
+  function openHandler(e) {
+    setOpen(true);
+    log('openWidget event processed');
+  }
+
+  function resetHandler(e) {
+    resetWidgetState();
+    log('resetWidget event processed');
+  }
+
+  function themeHandler(e) {
+    const theme: MetaportTheme = e.detail.theme;
+    setTheme(getWidgetTheme(theme));
+    log('setTheme event processed');
+  }
+
+  function connectMetamask() {
+    console.log('connectMetamask...');
+    connect(networkConnectFallback);
+    externalEvents.connected();
+    console.log('Done: connectMetamask...');
+  }
+
+  const handleNextStep = async () => {
+    setLoading(true);
+    const ActionClass: ActionType = actionSteps[activeStep];
+    try {
+      await new ActionClass(
+        mainnet,
+        sChain1,
+        sChain2,
+        chainName1,
+        chainName2,
+        address,
+        amount,
+        tokenId,
+        token,
+        switchMetamaskChain,
+        setActiveStep,
+        activeStep,
+        setAmountErrorMessage
+      ).execute();
+    } catch (err) {
+      console.error(err);
+      const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
+      setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
+      return;
+    }
+    await updateTokenBalances();
     setLoading(false);
-    setActiveStep(0);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setTransferRequestStep((prevTrReqStep) => prevTrReqStep + 1);
+    if (transferRequestStatus === TransferRequestStatus.IN_PROGRESS && transferRequest.route) {
+      // TODO: tmp fix for unwrap
+      if (actionSteps.length !== 2 || (actionSteps.length === 2 && transferRequestStep === 1)) {
+        moveToHub();
+      }
+    }
+    if (transferRequestSteps.length !== 0 && transferRequestStep === transferRequestSteps.length - 1) {
+      setTransferRequestStatus(TransferRequestStatus.DONE);
+    }
+  };
+
+  function errorMessageClosedFallback() {
+    setLoading(false);
+    setAmountLocked(false);
+    setErrorMessage(undefined);
+  }
+
+  // CORE FUNCTIONS
+
+  function confirmSummary() {
+    setView(View.TRANSFER_REQUEST_STEPS);
+    setTransferRequestStatus(TransferRequestStatus.IN_PROGRESS);
+    const fromChain = transferRequest.chains[0];
+    const toChain = transferRequest.route ? transferRequest.route.hub : transferRequest.chains[1];
+    log(`confirmSummary - fromChain: ${fromChain}, toChain: ${toChain}`);
+    setChainName1(fromChain);
+    setChainName2(toChain);
+  }
+
+  function moveToHub() {
+    setTransferRequestLoading(true);
+    setTransferRequestStatus(TransferRequestStatus.IN_PROGRESS_HUB);
+    const fromChain = transferRequest.route.hub;
+    const toChain = transferRequest.chains[1];
+    log(`moveToHub - fromChain: ${fromChain}, toChain: ${toChain}`);
+    setChainName1(fromChain);
+    setChainName2(toChain);
+  }
+
+  async function initSchain1() {
+    log('Running initSchain1...');
+    setSChain1(await initSChainMetamask(
+      props.config.skaleNetwork,
+      chainName1
+    ))
+  }
+
+  async function initMainnet1() {
+    log(`Running initSchain1: ${chainName1}`);
+    setMainnet(await initMainnetMetamask(props.config.skaleNetwork, props.config.mainnetEndpoint))
   }
 
   async function checkWrappedTokens() {
@@ -457,7 +385,7 @@ export function Widget(props) {
     }
     log('_MP_INFO: Running checkWrappedTokens');
     try {
-      const wrappedTokens = await getWrappedTokens(sChain1, chainName1, configTokens, address);
+      const wrappedTokens = await getWrappedTokens(sChain1, chainName1, props.config.tokens, address);
       if (Object.entries(wrappedTokens).length === 0 && view !== View.SANDBOX) {
         setAmount('');
         setView(View.SANDBOX);
@@ -477,20 +405,117 @@ export function Widget(props) {
     }
   }
 
-  function finishTransferRequest() {
-    log('Running finishTransferRequest');
-    log(transferRequest);
-    const tokenData = availableTokens[transferRequest.tokenType][transferRequest.tokenKeyname];
-    if (!tokenData) {
-      log(`No token data: ${transferRequest.tokenKeyname}`);
-      log(availableTokens);
-      return
+  async function initSFuelData() {
+    if (sChain1 && chainName1) {
+      log(`_MP_INFO: initSFuelData - ${chainName1}`);
+      try {
+        const sFuelData1 = await getSFuelData(
+          props.config.chainsMetadata,
+          chainName1,
+          sChain1.web3,
+          address
+        );
+        setSFuelData1(sFuelData1);
+      } catch (err) {
+        log(`_MP_ERROR: getSFuelData for ${chainName1} failed`);
+        log(err);
+        setSFuelData1({});
+      }
+    } else {
+      setSFuelData1({});
     }
-    setErrorMessage(undefined);
-    setAmount(transferRequest.amount);
-    setTokenId(transferRequest.tokenId);
-    setToken(tokenData);
-    setTransferRequest(undefined);
+    if (sChain2 && chainName2) {
+      log(`_MP_INFO: initSFuelData - ${chainName2}`);
+      try {
+        const sFuelData2 = await getSFuelData(
+          props.config.chainsMetadata,
+          chainName2,
+          sChain2.web3,
+          address
+        );
+        setSFuelData2(sFuelData2);
+      } catch (err) {
+        log(`_MP_ERROR: getSFuelData for ${chainName2} failed`);
+        log(err);
+        setSFuelData2({});
+      }
+    } else {
+      setSFuelData2({});
+    }
+  }
+
+  async function tokenLookup() {
+    setLoadingTokens(true);
+    try {
+      let tokens = await getAvailableTokens(
+        mainnet,
+        sChain1,
+        sChain2,
+        chainName1,
+        chainName2,
+        props.config.tokens,
+        props.autoLookup
+      );
+      await getTokenBalances(
+        tokens,
+        chainName1,
+        mainnet,
+        sChain1,
+        address
+      );
+      setAvailableTokens(tokens);
+    } catch (err) {
+      log('_MP_ERROR: tokenLookup failed');
+      log(err);
+    }
+    setLoadingTokens(false);
+  }
+
+  async function updateTokenBalances() {
+    let tokens = availableTokens;
+    await getTokenBalances(
+      tokens,
+      chainName1,
+      mainnet,
+      sChain1,
+      address
+    );
+    setAvailableTokens(tokens);
+    checkWrappedTokens();
+  }
+
+  function resetWidgetState() {
+    setAvailableTokens(getEmptyTokenDataMap());
+    setWrappedTokens(getEmptyTokenDataMap());
+    setToken(undefined);
+
+    setAmount('');
+    setTokenId(0);
+
+    setChainName1(null);
+    setChainName2(null);
+
+    setTransferRequestStep(0);
+
+    setSChain1(null);
+    setSChain2(null);
+    setMainnet(null);
+
+    setLoading(false);
+
+    setView(View.SANDBOX);
+
+    setSFuelData1({});
+    setSFuelData2({});
+
+    setAmountLocked(false);
+    setActiveStep(0);
+    setActionSteps(undefined);
+    setActionName(undefined)
+    setAmountErrorMessage(undefined);
+    setActionBtnDisabled(false);
+    setTransferRequestLoading(true);
+    setTransferRequestStatus(TransferRequestStatus.NO_REQEST);
   }
 
   async function runPreAction() {
@@ -523,118 +548,46 @@ export function Widget(props) {
     }
   }
 
-  function chainChangedFallback(_extChainId: string): void {
-    setExtChainId(_extChainId);
-  }
-
-  function accountsChangedFallback(accounts) {
-    if (accounts.length === 0) {
-      // MetaMask is locked or the user has not connected any accounts
-      console.log('Please connect to MetaMask!');
-    } else {
-      setAddress(accounts[0]);
-      setWalletConnected(true);
-    }
-  }
-
-  function errorMessageClosedFallback() {
-    setLoading(false);
-    setAmountLocked(false);
-    setErrorMessage(undefined);
-  }
-
-  const handleNextStep = async () => {
-    setLoading(true);
-    const ActionClass: ActionType = actionSteps[activeStep];
-
-    try {
-      await new ActionClass(
-        mainnet,
+  async function switchMetamaskChain(switchBack?: boolean): Promise<void> {
+    // if (chainName1 === MAINNET_CHAIN_NAME) {
+    //   updateWeb3SChain(
+    //     switchBack ? sChain2 : sChain1,
+    //     props.network,
+    //     switchBack ? chainName2 : chainName1
+    //   );
+    //   await updateWeb3SChainMetamask(
+    //     switchBack ? sChain1 : sChain2,
+    //     props.network,
+    //     switchBack ? chainName1 : chainName2
+    //   );  
+    // }
+    if (chainName2 === MAINNET_CHAIN_NAME) {
+      updateWeb3SChain(
         sChain1,
-        sChain2,
-        chainName1,
-        chainName2,
-        address,
-        amount,
-        tokenId,
-        token,
-        switchMetamaskChain,
-        setActiveStep,
-        activeStep,
-        setAmountErrorMessage
-      ).execute();
-    } catch (err) {
-      console.error(err);
-      const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
-      setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
+        props.config.skaleNetwork,
+        chainName1
+      )
+      await updateWeb3MainnetMetamask(
+        mainnet,
+        props.config.skaleNetwork,
+        props.config.mainnetEndpoint
+      )
       return;
     }
-    await updateTokenBalances();
-    setLoading(false);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  function networkConnectFallback(accounts) {
-    if (accounts.length === 0) {
-      // MetaMask is locked or the user has not connected any accounts
-      console.log('Please connect to MetaMask!');
-    }
-    // todo: handle accounts in Metamask module
-
-    setAddress(accounts[0]);
-    setWalletConnected(true);
-    externalEvents.connected();
-  }
-
-  function connectMetamask() {
-    console.log('connectMetamask...');
-    connect(networkConnectFallback);
-    externalEvents.connected();
-    console.log('Done: connectMetamask...');
-  }
-
-  async function initSFuelData() {
-    if (sChain1 && chainName1) {
-      log(`_MP_INFO: initSFuelData - ${chainName1}`);
-      try {
-        const sFuelData1 = await getSFuelData(
-          props.chainsMetadata,
-          chainName1,
-          sChain1.web3,
-          address
-        );
-        setSFuelData1(sFuelData1);
-      } catch (err) {
-        log(`_MP_ERROR: getSFuelData for ${chainName1} failed`);
-        log(err);
-        setSFuelData1({});
-      }
-    } else {
-      setSFuelData1({});
-    }
-    if (sChain2 && chainName2) {
-      log(`_MP_INFO: initSFuelData - ${chainName2}`);
-      try {
-        const sFuelData2 = await getSFuelData(
-          props.chainsMetadata,
-          chainName2,
-          sChain2.web3,
-          address
-        );
-        setSFuelData2(sFuelData2);
-      } catch (err) {
-        log(`_MP_ERROR: getSFuelData for ${chainName2} failed`);
-        log(err);
-        setSFuelData2({});
-      }
-    } else {
-      setSFuelData2({});
-    }
+    updateWeb3SChain(
+      switchBack ? sChain2 : sChain1,
+      props.config.skaleNetwork,
+      switchBack ? chainName2 : chainName1
+    );
+    await updateWeb3SChainMetamask(
+      switchBack ? sChain1 : sChain2,
+      props.config.skaleNetwork,
+      switchBack ? chainName1 : chainName2
+    );
   }
 
   return (<WidgetUI
-    schains={schains}
-    chainsMetadata={props.chainsMetadata}
+    config={props.config}
 
     amount={amount}
     setAmount={setAmount}
@@ -642,8 +595,10 @@ export function Widget(props) {
     setTokenId={setTokenId}
 
     open={open}
-    openButton={props.openButton}
     setOpen={setOpen}
+
+    walletConnected={walletConnected}
+    connectMetamask={connectMetamask}
 
     chain1={chainName1}
     chain2={chainName2}
@@ -651,14 +606,9 @@ export function Widget(props) {
     setChain2={setChainName2}
 
     availableTokens={availableTokens}
-    configTokens={configTokens}
+    wrappedTokens={wrappedTokens}
     token={token}
     setToken={setToken}
-
-    wrappedTokens={wrappedTokens}
-
-    walletConnected={walletConnected}
-    connectMetamask={connectMetamask}
 
     loading={loading}
     setLoading={setLoading}
@@ -669,7 +619,6 @@ export function Widget(props) {
 
     activeStep={activeStep}
     setActiveStep={setActiveStep}
-
     actionSteps={actionSteps}
     handleNextStep={handleNextStep}
 
@@ -679,16 +628,24 @@ export function Widget(props) {
     sFuelData1={sFuelData1}
     sFuelData2={sFuelData2}
 
-    theme={theme}
+    actionName={actionName}
 
     errorMessage={errorMessage}
     amountErrorMessage={amountErrorMessage}
     setAmountErrorMessage={setAmountErrorMessage}
 
-    cleanData={cleanData}
-    transferRequest={transferRequest}
+    // cleanData={cleanData}
 
+    theme={theme}
     view={view}
     setView={setView}
+
+    transferRequest={transferRequest}
+    transferRequestStatus={transferRequestStatus}
+    transferRequestStep={transferRequestStep}
+    transferRequestSteps={transferRequestSteps}
+    transferRequestLoading={transferRequestLoading}
+
+    confirmSummary={confirmSummary}
   />)
 }

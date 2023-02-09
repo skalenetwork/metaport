@@ -15,11 +15,14 @@ function stringToColor(str, dark) {
 }
 
 
-export function getChainName(chainsMetadata, chainName: string) {
+export function getChainName(chainsMetadata: any, chainName: string, app?: string): string {
     if (chainName == MAINNET_CHAIN_NAME) {
-        return 'Mainnet';
+        return 'Ethereum';
     }
     if (chainsMetadata && chainsMetadata[chainName]) {
+        if (app && chainsMetadata[chainName]['apps'][app]) {
+            return chainsMetadata[chainName]['apps'][app].alias;
+        }
         return chainsMetadata[chainName].alias;
     } else {
         return chainName;
@@ -27,9 +30,12 @@ export function getChainName(chainsMetadata, chainName: string) {
 }
 
 
-export function getChainIcon(chainName: string, dark: boolean) {
-    const iconPath = chainIconPath(chainName);
+export function getChainIcon(chainName: string, dark: boolean, app?: string) {
+    const iconPath = chainIconPath(chainName, app);
     if (iconPath !== undefined) {
+        if (iconPath.default) {
+            return <img src={'./' + iconPath.default} className='eth-logo' height='20px' width='20px' />;    
+        }
         return <img src={iconPath} className='eth-logo' height='20px' width='20px' />;
     }
     return (<OfflineBoltIcon sx={{ color: stringToColor(chainName, dark) }} width='20px' />);

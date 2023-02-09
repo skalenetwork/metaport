@@ -88,6 +88,30 @@ export class ApproveERC20S extends Action {
 export class TransferERC20S2S extends TransferAction {
     async execute() {
         log('TransferERC20S2S:execute - starting');
+
+        // check approve + approve
+
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
+        const checkResAllowance = await checkERC20Allowance(
+            this.address,
+            this.sChain1.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+
+        if (!checkResAllowance.res) {
+            const approveTx = await this.sChain1.erc20.approve(
+                this.tokenData.keyname,
+                MAX_APPROVE_AMOUNT,
+                this.sChain1.erc20.address,
+                { address: this.address }
+            );
+            log('ApproveERC20S:execute - tx completed: %O', approveTx);
+        }
+
+        // main transfer
+
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.sChain2.getERC20Balance(
@@ -120,20 +144,7 @@ export class TransferERC20S2S extends TransferAction {
     }
 
     async preAction() {
-        const previousStep = this.wrap ? 2 : 0;
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-
-        const checkResAllowance = await checkERC20Allowance(
-            this.address,
-            this.sChain1.erc20.address,
-            this.amount,
-            this.tokenData,
-            tokenContract
-        );
-        if (!checkResAllowance.res) {
-            this.setActiveStep(previousStep);
-            return;
-        }
 
         const checkResBalance = await checkERC20Balance(
             this.address,
@@ -143,10 +154,6 @@ export class TransferERC20S2S extends TransferAction {
         );
 
         if (!checkResBalance.res) {
-            if (this.wrap) {
-                this.setActiveStep(previousStep);
-                return;
-            }
             this.setAmountErrorMessage(checkResBalance.msg);
         }
     }
@@ -170,15 +177,6 @@ export class ApproveWrapERC20S extends Action {
     }
 
     async preAction() {
-        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        const checkResAllowance = await checkERC20Allowance(
-            this.address,
-            this.tokenData.originAddress,
-            this.amount,
-            this.tokenData,
-            tokenContract
-        );
-        if (checkResAllowance.res) this.setActiveStep(1);
     }
 }
 
@@ -190,6 +188,27 @@ export class WrapERC20S extends Action {
 
     async execute() {
         log('WrapERC20S:execute - starting');
+
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
+        const checkResAllowance = await checkERC20Allowance(
+            this.address,
+            this.tokenData.originAddress,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+
+        if (!checkResAllowance.res) {
+            log('ApproveWrapERC20S:execute - starting');
+            const approveTx = await this.sChain1.erc20.approve(
+                this.tokenData.unwrappedSymbol,
+                MAX_APPROVE_AMOUNT,
+                this.tokenData.originAddress,
+                { address: this.address }
+            );
+            log('ApproveWrapERC20S:execute - tx completed %O', approveTx);
+        }
+
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const tx = await this.sChain1.erc20.wrap(
             this.tokenData.keyname,
@@ -201,18 +220,6 @@ export class WrapERC20S extends Action {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.unwrappedSymbol];
-        const checkResAllowance = await checkERC20Allowance(
-            this.address,
-            this.tokenData.originAddress,
-            this.amount,
-            this.tokenData,
-            tokenContract
-        );
-        if (!checkResAllowance.res) {
-            this.setActiveStep(0);
-            return;
-        }
-
         const checkResBalance = await checkERC20Balance(
             this.address,
             this.amount,
@@ -244,8 +251,8 @@ export class UnWrapERC20S2S extends Action {
             log('UnWrapERC20S2S:execute - tx completed %O', tx);
             externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
         } finally {
-            log('UnWrapERC20S2S:execute - switchMetamaskChain back');
-            this.switchMetamaskChain(true);
+            // log('UnWrapERC20S2S:execute - switchMetamaskChain back');
+            // this.switchMetamaskChain(true);
         }
     }
 
@@ -331,6 +338,29 @@ export class ApproveERC20M extends Action {
 export class TransferERC20M2S extends TransferAction {
     async execute() {
         log('TransferERC20M2S:execute - starting');
+
+        // check approve + approve
+
+        const tokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
+        const checkResAllowance = await checkERC20Allowance(
+            this.address,
+            this.mainnet.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+
+        if (!checkResAllowance.res) {
+            const approveTx = await this.mainnet.erc20.approve(
+                this.tokenData.keyname,
+                MAX_APPROVE_AMOUNT,
+                { address: this.address }
+            );
+            log('ApproveERC20S:execute - tx completed: %O', approveTx);
+        }
+
+        // main transfer function
+
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.sChain2.getERC20Balance(
@@ -358,17 +388,6 @@ export class TransferERC20M2S extends TransferAction {
 
     async preAction() {
         const tokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
-        const checkResAllowance = await checkERC20Allowance(
-            this.address,
-            this.mainnet.erc20.address,
-            this.amount,
-            this.tokenData,
-            tokenContract
-        );
-        if (!checkResAllowance.res) {
-            this.setActiveStep(0);
-            return
-        }
         const checkResBalance = await checkERC20Balance(
             this.address,
             this.amount,
@@ -386,6 +405,30 @@ export class TransferERC20M2S extends TransferAction {
 export class TransferERC20S2M extends TransferAction {
     async execute() {
         log('TransferERC20S2M:execute - starting');
+
+        // check approve + approve
+
+        const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
+        const checkResAllowance = await checkERC20Allowance(
+            this.address,
+            this.sChain1.erc20.address,
+            this.amount,
+            this.tokenData,
+            tokenContract
+        );
+
+        if (!checkResAllowance.res) {
+            const approveTx = await this.sChain1.erc20.approve(
+                this.tokenData.keyname,
+                MAX_APPROVE_AMOUNT,
+                this.sChain1.erc20.address,
+                { address: this.address }
+            );
+            log('ApproveERC20S:execute - tx completed: %O', approveTx);
+        }
+
+        // main transfer function
+
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.mainnet.erc20.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.mainnet.getERC20Balance(
@@ -410,17 +453,6 @@ export class TransferERC20S2M extends TransferAction {
 
     async preAction() {
         const tokenContract = this.sChain1.erc20.tokens[this.tokenData.keyname];
-        const checkResAllowance = await checkERC20Allowance(
-            this.address,
-            this.sChain1.erc20.address,
-            this.amount,
-            this.tokenData,
-            tokenContract
-        );
-        if (!checkResAllowance.res) {
-            this.setActiveStep(0);
-            return
-        }
         const checkResBalance = await checkERC20Balance(
             this.address,
             this.amount,

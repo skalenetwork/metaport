@@ -34,4 +34,6 @@ export interface TransferParams {
     lockValue?: boolean;
     route?: RouteParams;
     text?: string;
+    fromApp?: string;
+    toApp?: string;
 }

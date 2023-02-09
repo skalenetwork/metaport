@@ -24,10 +24,24 @@ export const commonProps = {
     'staging-perfect-parallel-gacrux': {
       alias: 'Europa Hub', // optional
       minSfuelWei: '27000000000000', // optional
-      faucetUrl: 'https://github.com/skalenetwork/skale-network' // optional
+      faucetUrl: 'https://github.com/skalenetwork/skale-network',
+      "apps": {
+        "ruby": {
+          "alias": "Ruby Exchange",
+          "background": "#02001f",
+          "url": "https://ruby.exchange/"
+        }
+      }
     },
     'staging-severe-violet-wezen': {
-      alias: 'Calypso Hub'
+      alias: 'Calypso Hub',
+      "apps": {
+        "nftrade": {
+          "alias": "NFTrade",
+          "background": "#ffffff",
+          "url": "https://nftrade.com/"
+        }
+      }
     }
   },
   open: true,
@@ -38,6 +52,7 @@ export const commonProps = {
   setChain2: setMock,
   setToken: setMock,
   setLoading: setMock,
+  setView: setMock,
   setActiveStep: () => { return },
   walletConnected: true,
   actionSteps: getActionSteps('erc20_s2s', new TokenData(
@@ -54,7 +69,8 @@ export const commonProps = {
     null,
     null
   )),
-  theme: getWidgetTheme(null)
+  theme: getWidgetTheme(null),
+  transferRequestLoading: true
 }
 
 
@@ -195,8 +211,8 @@ export function generateWrappedTokens() {
   return data;
 }
 
-export function generateTransferRequest() {
-  return {
+export function generateTransferRequest(apps?: boolean) {
+  const trReq = {
     amount: getRandomInt(100, 1000),
     chains: ['mainnet', 'staging-severe-violet-wezen'],
     tokenKeyname: 'eth',
@@ -208,6 +224,10 @@ export function generateTransferRequest() {
     },
     text: 'Your assets will be routed though Europa Hub - all transactions on Europa and Calypso are free.'
   };
+  if (apps) {
+    trReq['toApp'] = 'nftrade';
+  }
+  return trReq;
 }
 
 export function generateTransferRequestUnwrap() {
@@ -226,14 +246,19 @@ export function generateTransferRequestUnwrap() {
 }
 
 
-export function generateTransferRequestSimple() {
-  return {
+export function generateTransferRequestSimple(apps?: boolean) {
+  const trReq = {
     amount: getRandomInt(100, 1000),
     chains: ['staging-perfect-parallel-gacrux', 'staging-severe-violet-wezen'],
     tokenKeyname: 'eth',
     tokenType: TokenType.eth,
     lockValue: true
   };
+  if (apps) {
+    trReq['fromApp'] = 'ruby';
+    trReq['toApp'] = 'nftrade';
+  }
+  return trReq;
 }
 
 

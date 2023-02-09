@@ -17,15 +17,16 @@
  */
 
 /**
- * @file RouteParams.ts
- * @copyright SKALE Labs 2022-Present
+ * @file TransferRequestStatus.ts
+ * @copyright SKALE Labs 2023-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
 
-
-export interface RouteParams {
-    hub: string;
-    tokenKeyname: string;
-    tokenType: TokenType;
+export enum TransferRequestStatus {
+    NO_REQEST = 0,
+    RECEIVED = 1,    
+    IN_PROGRESS = 2,
+    IN_PROGRESS_HUB = 3,
+    DONE = 4,
+    ERROR = 5
 }

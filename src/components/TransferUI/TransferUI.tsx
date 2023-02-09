@@ -66,13 +66,13 @@ export default function TransferUI(props) {
           </div>
         </div>
         <ChainsList
-          schains={props.schains}
+          schains={props.config.chains}
           setChain={props.setChain2}
           chain={props.chain2}
           disabledChain={props.chain1}
           expanded={props.expandedTo}
           setExpanded={props.setExpandedTo}
-          chainsMetadata={props.chainsMetadata}
+          config={props.config}
           disabled={props.disabledChains}
           dark={props.theme.mode === 'dark'}
         />

@@ -2,7 +2,6 @@ import React from 'react';
 
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
@@ -37,7 +36,7 @@ export default function CurrentChain(props) {
         </div>
       </div>
       <ChainsList
-        schains={props.schains}
+        schains={props.config.chains}
         setChain={props.setChain}
         chain={props.chain}
         disabledChain={props.disabledChain}
@@ -45,7 +44,7 @@ export default function CurrentChain(props) {
         expanded={props.expanded}
         setExpanded={props.setExpanded}
         fromChain={true}
-        chainsMetadata={props.chainsMetadata}
+        config={props.config}
         dark={props.theme.mode === 'dark'}
       />
     </Collapse >
