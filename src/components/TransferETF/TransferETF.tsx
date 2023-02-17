@@ -22,9 +22,8 @@ export default function TransferETF(props) {
   async function calcETF() {
     setIsLoaded(false);
     const fromMainnet = isMainnet(props.transferRequest.chains[0]);
-    const toMainnet = isMainnet(props.transferRequest.chains[1]);
     let baseETF = 0;
-    if (fromMainnet || toMainnet) baseETF = await getTransactionFee(props.transferRequest);
+    if (fromMainnet) baseETF = await getTransactionFee(props.transferRequest);
     setEtf(baseETF)
     setIsLoaded(true);
   }
