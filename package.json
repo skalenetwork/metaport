@@ -1,6 +1,6 @@
 {
   "name": "@skalenetwork/metaport",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SKALE Metaport Widget",
   "keywords": [
     "skale",
@@ -10,7 +10,6 @@
   "author": "SKALE Labs",
   "license": "LGPL-3.0-only",
   "main": "build/index.js",
-  "module": "build/index.esm.js",
   "files": [
     "build"
   ],
