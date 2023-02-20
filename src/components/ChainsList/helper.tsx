@@ -30,11 +30,11 @@ export function getChainName(chainsMetadata: any, chainName: string, app?: strin
 }
 
 
-export function getChainIcon(chainName: string, dark: boolean, app?: string) {
-    const iconPath = chainIconPath(chainName, app);
+export function getChainIcon(skaleNetwork: string, chainName: string, dark: boolean, app?: string) {
+    const iconPath = chainIconPath(skaleNetwork, chainName, app);
     if (iconPath !== undefined) {
         if (iconPath.default) {
-            return <img src={'./' + iconPath.default} className='eth-logo' height='20px' width='20px' />;    
+            return <img src={'./' + iconPath.default} className='eth-logo' height='20px' width='20px' />;
         }
         return <img src={iconPath} className='eth-logo' height='20px' width='20px' />;
     }

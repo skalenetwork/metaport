@@ -27,8 +27,8 @@ export default function Route(props: {
   const fromChainName = getChainName(props.config.chainsMetadata, trReq.chains[0], trReq.fromApp);
   const toChainName = getChainName(props.config.chainsMetadata, trReq.chains[1], trReq.toApp);
 
-  const fromChainIcon = getChainIcon(trReq.chains[0], props.theme.dark, trReq.fromApp);
-  const toChainIcon = getChainIcon(trReq.chains[1], props.theme.dark, trReq.toApp);
+  const fromChainIcon = getChainIcon(props.config.skaleNetwork, trReq.chains[0], props.theme.dark, trReq.fromApp);
+  const toChainIcon = getChainIcon(props.config.skaleNetwork, trReq.chains[1], props.theme.dark, trReq.toApp);
 
   return (
     <Tooltip arrow title={props.explanationText} placement="top">
@@ -57,7 +57,7 @@ export default function Route(props: {
             </div>
             {!isSmall ? (
               <div className={clsNames(styles.mp__margRi5, styles.mp__chainIcon, styles.mp__flex)}>
-                {getChainIcon(trReq.route.hub, props.theme.dark)}
+                {getChainIcon(props.config.skaleNetwork, trReq.route.hub, props.theme.dark)}
               </div>) : null}
             <div className={clsNames(styles.mp__flex, isSmall ? styles.mp__routeIcon : null)}>
               <MoveDownIcon style={{ 'width': '14pt' }} />

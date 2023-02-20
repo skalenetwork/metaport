@@ -24,7 +24,7 @@
 
 export enum TransferRequestStatus {
     NO_REQEST = 0,
-    RECEIVED = 1,    
+    RECEIVED = 1,
     IN_PROGRESS = 2,
     IN_PROGRESS_HUB = 3,
     DONE = 4,
