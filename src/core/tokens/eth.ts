@@ -83,6 +83,7 @@ export async function getEthBalance(
     chainName: string,
     address: string
 ) {
+    log(`Getting ETH balance for ${address} on ${chainName}`);
     const ethBalance = isMainnet(chainName) ? await mainnet.ethBalance(address) :
         await sChain.ethBalance(address);
     log('ETH balance for ' + address + ': ' + ethBalance + ' wei');

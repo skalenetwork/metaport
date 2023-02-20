@@ -61,6 +61,10 @@ export namespace externalEvents {
         });
     }
 
+    export function transferRequestCompleted(transferRequest: interfaces.TransferParams) {
+        dispatchEvent('metaport_transferRequestCompleted', { 'transferRequest': transferRequest });
+    }
+
     export function unwrapComplete(
         tx: string,
         chainName1: string,
@@ -92,14 +96,9 @@ export namespace internalEvents {
         });
     }
 
-    export function transfer(transferParams: interfaces.TransferParams): void {
+    export function transfer(params: interfaces.TransferParams): void {
         dispatchEvent('_metaport_transfer', {
-            'amount': transferParams.amount,
-            'tokenId': transferParams.tokenId,
-            'chains': transferParams.chains,
-            'tokenKeyname': transferParams.tokenKeyname,
-            'tokenType': transferParams.tokenType,
-            'lockValue': transferParams.lockValue
+            'params': params
         });
     }
 

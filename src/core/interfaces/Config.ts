@@ -30,6 +30,7 @@ export interface MetaportConfig {
     openOnLoad?: boolean;
     openButton?: boolean;
     autoLookup?: boolean;
+    debug?: boolean;
 
     skaleNetwork?: string;
     mainnetEndpoint?: string;

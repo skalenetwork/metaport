@@ -96,6 +96,7 @@ export class UnlockEthM extends Action {
 
     async execute() {
         log('UnlockEthM: started');
+        await this.switchMetamaskChain(false);
         const tx = await this.mainnet.eth.getMyEth(
             { address: this.address }
         );

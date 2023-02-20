@@ -21,59 +21,40 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { Widget } from './components/Widget';
 import { internalEvents } from './core/events';
-import { Positions } from './core/dataclasses/Position';
-
-import defaultTokens from './metadata/tokens.json';
 
 import * as interfaces from './core/interfaces/index';
-export * as interfaces from './core/interfaces/index';
-
 export * as dataclasses from './core/dataclasses/index';
+export * as interfaces from './core/interfaces/index';
 
 
 export class Metaport {
   constructor(config: interfaces.MetaportConfig) {
     const widgetEl: HTMLElement = document.getElementById('metaport');
     const root = createRoot(widgetEl);
-    // params validation + transformation here
-
-    let tokens = config.tokens ? config.tokens : defaultTokens[config.skaleNetwork];
-    let network = config.skaleNetwork ? config.skaleNetwork : 'mainnet';
-
-    if (!config.chains) {
-      // todo: ALL network chains (request from proxy!)
-    }
-
+    // TODO: config validation + transformation here
     if (config.openButton === undefined) config.openButton = true;
     if (config.autoLookup === undefined) config.autoLookup = true;
+    if (config.skaleNetwork === undefined) config.skaleNetwork = 'mainnet';
+    if (config.debug === undefined) config.debug = false;
     root.render(
-      <Widget
-        tokens={tokens}
-        chains={config.chains}
-        chainsMetadata={config.chainsMetadata}
-        open={config.openOnLoad}
-        openButton={config.openButton}
-        autoLookup={config.autoLookup}
-        network={network}
-        theme={config.theme}
-        mainnetEndpoint={config.mainnetEndpoint}
-      />
+      <Widget config={config} />
     );
   }
 
-  transfer(params: interfaces.TransferParams): void { internalEvents.transfer(params) }
-  wrap(params) { internalEvents.wrap(params) }
-  unwrap(params) { internalEvents.unwrap(params) }
-  swap(params) { internalEvents.swap(params) }
+  transfer(params: interfaces.TransferParams): void {
+    internalEvents.transfer(params)
+  }
+  // wrap(params) { internalEvents.wrap(params) }
+  // unwrap(params) { internalEvents.unwrap(params) }
+  // swap(params) { internalEvents.swap(params) }
 
-  updateParams(params) { internalEvents.updateParams(params) }
-  requestBalance(params) { internalEvents.requestBalance(params) }
+  // updateParams(params) { internalEvents.updateParams(params) }
+  // requestBalance(params) { internalEvents.requestBalance(params) }
   setTheme(theme) { internalEvents.setTheme(theme) }
   close() { internalEvents.close() }
   open() { internalEvents.open() }

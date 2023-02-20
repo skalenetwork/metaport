@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
-import ethLogo from '../../icons/eth_white.svg';
+import { iconPath } from '../TokenList/helper';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
 import { clsNames } from '../../core/helper';
@@ -34,7 +34,7 @@ export default function ChainsList(props) {
 
   const schainNames = [];
 
-  for (let chain of props.schains) {
+  for (let chain of props.config.chains) {
     if (chain != props.disabledChain && chain != props.chain) {
       schainNames.push(chain);
     }
@@ -47,10 +47,10 @@ export default function ChainsList(props) {
 
   function getChainName(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return 'Ethereum Mainnet';
+      return 'Ethereum';
     }
-    if (props.chainsMetadata && props.chainsMetadata[chainName]) {
-      return props.chainsMetadata[chainName].alias;
+    if (props.config.chainsMetadata && props.config.chainsMetadata[chainName]) {
+      return props.config.chainsMetadata[chainName].alias;
     } else {
       return chainName;
     }
@@ -58,7 +58,7 @@ export default function ChainsList(props) {
 
   function getChainIcon(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return <img src={ethLogo} className='eth-logo' height='20px' width='20px' />;
+      return <img src={iconPath('eth')} className='eth-logo' height='20px' width='20px' />;
     }
     return (<OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} width='20px' />);
   }

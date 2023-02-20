@@ -3,15 +3,31 @@ import React from 'react';
 import Collapse from '@mui/material/Collapse';
 
 import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
+import { isTransferRequestView } from '../../core/views';
 
 import CurrentChain from '../CurrentChain';
 import ErrorMessage from '../ErrorMessage';
 import UnwrapUI from '../UnwrapUI';
 import TransferUI from '../TransferUI';
 import WrappedTokensWarning from '../WrappedTokensWarning';
+import TransferRequest from '../TransferRequest';
 
 
 export default function WidgetBody(props) {
+
+  if (isTransferRequestView(props.view)) {
+    return <TransferRequest
+      disabledChains={props.disabledChains}
+      theme={props.theme}
+      {...props}
+    />
+  }
+
+  if (props.view === View.UNWRAP) {
+    return <p>UNWRAP VIEW</p>
+  }
+
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
@@ -23,12 +39,12 @@ export default function WidgetBody(props) {
   return (
     <div>
       <CurrentChain
-        schains={props.schains}
+        schains={props.config.chains}
         setChain={props.setChain1}
         chain={props.chain1}
         disabledChain={props.chain2}
         fromChain={true}
-        chainsMetadata={props.chainsMetadata}
+        config={props.config}
         disabled={props.disabledChains}
 
         theme={props.theme}

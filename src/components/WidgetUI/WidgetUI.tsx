@@ -12,6 +12,7 @@ import skaleLogo from './skale_logo_short.svg';
 
 import WidgetBody from '../WidgetBody';
 import { Connector } from '../WalletConnector';
+import Debug from '../Debug';
 
 import { clsNames } from '../../core/helper';
 import styles from "./WidgetUI.scss";
@@ -47,17 +48,6 @@ export function WidgetUI(props) {
     }
   }, [props.open]);
 
-
-  useEffect(() => {
-    if (props.schains.length == 2) {
-      props.setChain1(props.schains[0]);
-      props.setChain2(props.schains[1]);
-      setDisabledChains(true);
-    } else {
-      setDisabledChains(false);
-    }
-  }, [props.schains]);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     props.setOpen(props.open ? false : true);
   };
@@ -76,7 +66,7 @@ export function WidgetUI(props) {
     <div className={styles.mp__flex}>
       <Fab
         color={props.open ? 'secondary' : 'primary'}
-        className={props.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
+        className={props.config.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
         aria-label="add"
         type="button"
         onClick={handleClick}
@@ -103,13 +93,14 @@ export function WidgetUI(props) {
           className={clsNames(styles.imaWidgetBody, themeCls)}
           style={props.theme ? { ...props.theme.position, zIndex: props.theme.zIndex } : null}
         >
-          <div className={(props.openButton ? styles.mp__margBott20 : null)}>
+          <div className={(props.config.openButton ? styles.mp__margBott20 : null)}>
             {fabTop ? fabButton : null}
           </div>
           <div className={clsNames(styles.mp__popper, (props.open ? null : styles.noDisplay))}>
             <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
-              <Paper elevation={3} className={styles.mp__paper}>
+              <Paper elevation={4} className={styles.mp__paper}>
                 <div className={styles.mp__popup}>
+                  <Debug {...props}/>
                   {props.walletConnected ? (
                     <WidgetBody
                       {...props}
@@ -125,7 +116,7 @@ export function WidgetUI(props) {
               </Paper>
             </div>
           </div>
-          <div className={(props.openButton ? styles.mp__margTop20 : null)}>
+          <div className={(props.config.openButton ? styles.mp__margTop20 : null)}>
             {fabTop ? null : fabButton}
           </div>
         </div>

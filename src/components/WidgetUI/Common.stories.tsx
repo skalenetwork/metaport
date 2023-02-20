@@ -62,7 +62,7 @@ export const ClosedDark = () => (
 
 export const SelectChains = () => (
   <WidgetUI
-    schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain', 'eee-chain']}
+    schains={['staging-perfect-parallel-gacrux', 'staging-severe-violet-wezen', 'ccc-chain', 'ddd-chain', 'eee-chain']}
     availableTokens={getEmptyTokenDataMap()}
     walletConnected={true}
     open={true}
@@ -72,7 +72,7 @@ export const SelectChains = () => (
 
 export const SelectChainsLight = () => (
   <WidgetUI
-    schains={['aaa-chain', 'bbb-chain', 'ccc-chain', 'ddd-chain', 'eee-chain']}
+    schains={['staging-perfect-parallel-gacrux', 'staging-severe-violet-wezen', 'ccc-chain', 'ddd-chain', 'eee-chain']}
     availableTokens={getEmptyTokenDataMap()}
     walletConnected={true}
     open={true}

@@ -50,7 +50,6 @@ export const connect = (connectFallback) => {
 }
 
 
-
 export const addAccountChangedListener = (accountsChangedFallback) => {
   window.ethereum.on('accountsChanged', accountsChangedFallback); // todo: do only once!!!!
   window.ethereum
