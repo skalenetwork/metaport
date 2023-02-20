@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [14]
+        node: [18]
     env:
       TEST: true
     steps:
@@ -20,6 +20,9 @@ jobs:
     - name: Update submodules
       run: |
         git submodule update --remote
+    - name: Prepare metadata
+      run: |
+        bash prepare_meta.sh
     - name: Install dependencies
       run: |
         yarn install --production=false
