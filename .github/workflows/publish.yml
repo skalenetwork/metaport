@@ -18,8 +18,11 @@ jobs:
           submodules: true
       - uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Prepare metadata
+        run: |
+          bash prepare_meta.sh
       - name: Install dependencies
         run: |
           yarn install

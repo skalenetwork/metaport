@@ -213,6 +213,7 @@ export function generateWrappedTokens() {
 
 export function generateTransferRequest(apps?: boolean) {
   const trReq = {
+    toApp: undefined,
     amount: getRandomInt(100, 1000),
     chains: ['mainnet', 'staging-severe-violet-wezen'],
     tokenKeyname: 'eth',
@@ -222,10 +223,11 @@ export function generateTransferRequest(apps?: boolean) {
       hub: 'staging-perfect-parallel-gacrux',
       tokenKeyname: '_wrETH_0xBA3f8192e28224790978794102C0D7aaa65B7d70'
     },
-    text: 'Your assets will be routed though Europa Hub - all transactions on Europa and Calypso are free.'
+    text: 'Your assets will be routed though Europa Hub - all transactions on Europa and\
+      Calypso are free.'
   };
   if (apps) {
-    trReq['toApp'] = 'nftrade';
+    trReq.toApp = 'nftrade';
   }
   return trReq;
 }
@@ -241,13 +243,16 @@ export function generateTransferRequestUnwrap() {
       hub: 'staging-perfect-parallel-gacrux',
       tokenKeyname: '_wrETH_0xBA3f8192e28224790978794102C0D7aaa65B7d70'
     },
-    text: 'Your assets will be routed though Europa Hub - all transactions on Europa and Calypso are free.'
+    text: 'Your assets will be routed though Europa Hub - all transactions on Europa and Calypso \
+      are free.'
   };
 }
 
 
 export function generateTransferRequestSimple(apps?: boolean) {
   const trReq = {
+    fromApp: undefined,
+    toApp: undefined,
     amount: getRandomInt(100, 1000),
     chains: ['staging-perfect-parallel-gacrux', 'staging-severe-violet-wezen'],
     tokenKeyname: 'eth',
@@ -255,8 +260,8 @@ export function generateTransferRequestSimple(apps?: boolean) {
     lockValue: true
   };
   if (apps) {
-    trReq['fromApp'] = 'ruby';
-    trReq['toApp'] = 'nftrade';
+    trReq.fromApp = 'ruby';
+    trReq.toApp = 'nftrade';
   }
   return trReq;
 }

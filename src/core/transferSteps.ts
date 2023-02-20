@@ -14,7 +14,12 @@ debug.enable('*');
 const log = debug('metaport:core:transferSteps');
 
 
-export function getTransferSteps(trReq: interfaces.TransferParams, config: MetaportConfig, theme: any, token: TokenData) {
+export function getTransferSteps(
+    trReq: interfaces.TransferParams,
+    config: MetaportConfig,
+    theme: any,
+    token: TokenData
+) {
 
     // TODO: refactor this function
 
@@ -92,7 +97,9 @@ export function getTransferSteps(trReq: interfaces.TransferParams, config: Metap
             }
         }
     };
-    if (trReq.chains[1] === MAINNET_CHAIN_NAME && (trReq.tokenKeyname === 'eth' || (trReq.route && trReq.route.tokenKeyname === 'eth'))) {
+    if (trReq.chains[1] === MAINNET_CHAIN_NAME &&
+        (trReq.tokenKeyname === 'eth' || (trReq.route && trReq.route.tokenKeyname === 'eth'))
+    ) {
         log('adding unlock step');
         steps.push(getUnlockStep(
             trReq.chains[1],
@@ -112,10 +119,10 @@ function getWrapStep(
     theme: any
 ) {
     const chainName = getChainName(config.chainsMetadata, chain, app);
-    const chainIcon = getChainIcon(chain, theme.dark, app);
+    const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
     return {
-        chainName: chainName,
-        chainIcon: chainIcon,
+        chainName,
+        chainIcon,
         headline: 'Wrap on',
         text: `Wrap on ${chainName}. You may need to approve first.`,
         btnText: 'Wrap',
@@ -131,10 +138,10 @@ function getUnwrapStep(
     theme: any
 ) {
     const chainName = getChainName(config.chainsMetadata, chain, app);
-    const chainIcon = getChainIcon(chain, theme.dark, app);
+    const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
     return {
-        chainName: chainName,
-        chainIcon: chainIcon,
+        chainName,
+        chainIcon,
         headline: 'Unwrap on',
         text: `Unwrap on ${chainName}.`,
         btnText: 'Unwrap',
@@ -150,10 +157,10 @@ function getUnlockStep(
     theme: any
 ) {
     const chainName = getChainName(config.chainsMetadata, chain, app);
-    const chainIcon = getChainIcon(chain, theme.dark, app);
+    const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
     return {
-        chainName: chainName,
-        chainIcon: chainIcon,
+        chainName,
+        chainIcon,
         headline: 'Unlock on',
         text: `You have to unlock your assets to be able to use it on ${chainName}.`,
         btnText: 'Unlock',
@@ -173,7 +180,7 @@ function getTransferStep(
 ) {
     const fromChainName = getChainName(config.chainsMetadata, fromChain, fromApp);
     const toChainName = getChainName(config.chainsMetadata, toChain, toApp);
-    const toChainIcon = getChainIcon(toChain, theme.dark, toApp);
+    const toChainIcon = getChainIcon(config.skaleNetwork, toChain, theme.dark, toApp);
     return {
         chainName: toChainName,
         chainIcon: toChainIcon,
