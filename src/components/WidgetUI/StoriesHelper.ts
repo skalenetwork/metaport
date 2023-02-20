@@ -45,7 +45,9 @@ export const commonProps = {
     }
   },
   open: true,
-  openButton: true,
+  config: {
+    openButton: true,
+  },
   chain1: 'staging-perfect-parallel-gacrux',
   chain2: 'staging-severe-violet-wezen',
   setChain1: setMock,

@@ -6,7 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { getAvailableTokensTotal } from '../../core/tokens/helper';
+import { getAvailableTokensTotal, getDefaultToken } from '../../core/tokens/helper';
 
 import { clsNames } from '../../core/helper';
 
@@ -34,6 +34,11 @@ export default function TokenList(props) {
     return (<ErrorMessage
       errorMessage={new NoTokenPairsMessage()}
     />)
+  }
+
+  const defaultToken = getDefaultToken(props.availableTokens);
+  if (defaultToken) {
+    props.setToken(defaultToken);
   }
 
   return (
