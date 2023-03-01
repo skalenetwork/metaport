@@ -2,9 +2,9 @@ import { getActionSteps } from '../../core/actions';
 import TokenData from '../../core/dataclasses/TokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
-import { OperationType } from '../../core/dataclasses/OperationType';
 import { getWidgetTheme } from '../WidgetUI/Themes';
 export * as dataclasses from '../../core/dataclasses/index';
+import { View } from '../../core/dataclasses/View';
 
 
 function setMock() { return };
@@ -18,8 +18,7 @@ function getRandomInt(min, max) {
 
 
 export const commonProps = {
-  operationType: OperationType.transfer,
-  schains: ['Europa Chain', 'Calypso'],
+  view: View.SANDBOX,
   chainsMetadata: {
     'staging-perfect-parallel-gacrux': {
       alias: 'Europa Hub', // optional
@@ -47,6 +46,9 @@ export const commonProps = {
   open: true,
   config: {
     openButton: true,
+    openOnLoad: true,
+    tokens: generateConfigTokens(),
+    chains: ['Europa Chain', 'Calypso']
   },
   chain1: 'staging-perfect-parallel-gacrux',
   chain2: 'staging-severe-violet-wezen',

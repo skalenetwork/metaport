@@ -1,6 +1,8 @@
 import Web3 from 'web3';
 import { soliditySha3, AbiItem } from 'web3-utils';
 
+import debug from 'debug';
+
 import { SChain, MainnetChain } from '@skalenetwork/ima-js';
 
 import sChainAbi from '../metadata/schainAbi.json';
@@ -25,6 +27,7 @@ import stagingAddresses from '../metadata/addresses/staging.json';
 import staging3Addresses from '../metadata/addresses/staging3.json';
 
 import { MAINNET_CHAIN_NAME } from './constants';
+import { MetaportConfig } from './interfaces';
 
 
 const ERC_ABIS = {
@@ -34,6 +37,10 @@ const ERC_ABIS = {
   'erc721meta': erc721MetaAbi,
   'erc1155': erc1155Abi
 }
+
+
+debug.enable('*');
+const log = debug('metaport:core:core');
 
 
 export function initContract(tokenType: string, tokenAddress: string, web3: Web3) {
@@ -177,4 +184,27 @@ function calcChainId(sChainName) {
 export function remove0x(s: any) {
   if (!s.startsWith('0x')) return s;
   return s.slice(2);
+}
+
+
+//
+
+export function initChainWeb3(config: MetaportConfig, chainName: string): Web3 {
+  log(`Initializing web3 instance for ${chainName}`);
+  const endpoint = getChainEndpoint(config, chainName);
+  return initWeb3(endpoint);
+}
+
+
+function initWeb3(endpoint: string) {
+  const provider = new Web3.providers.HttpProvider(endpoint);
+  return new Web3(provider);
+}
+
+
+function getChainEndpoint(config: MetaportConfig, chainName: string): string {
+  if (chainName === MAINNET_CHAIN_NAME) {
+    return config.mainnetEndpoint;
+  }
+  return getProxyEndpoint(config.skaleNetwork) + '/v1/' + chainName;
 }

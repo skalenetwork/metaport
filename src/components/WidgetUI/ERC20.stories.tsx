@@ -8,8 +8,9 @@ import {
   getUnwrapActionSteps,
   generateWrappedTokens
 } from './StoriesHelper';
-import { OperationType } from '../../core/dataclasses/OperationType';
 import { getWidgetTheme } from '../WidgetUI/Themes';
+
+import { View } from '../../core/dataclasses/View';
 
 
 export default {
@@ -203,7 +204,6 @@ export const UnwrapWarning = () => (
     {...generateWrappedTokens()}
     token={null}
     chain2={null}
-    setOperationType={(operationType) => { commonProps.operationType = operationType; }}
   />
 );
 
@@ -226,7 +226,7 @@ export const UnwrapUINoTokens = () => (
     availableTokens={{ 'erc20': {} }}
     token={null}
     chain2={null}
-    operationType={OperationType.unwrap}
+    view={View.UNWRAP}
   />
 );
 
@@ -236,7 +236,7 @@ export const UnwrapUILoading = () => (
     {...commonProps}
     {...generateWrappedTokens()}
     chain2={null}
-    operationType={OperationType.unwrap}
+    view={View.UNWRAP}
     actionSteps={getUnwrapActionSteps()}
     actionBtnDisabled={true}
   />
@@ -247,7 +247,7 @@ export const UnwrapUI = () => (
     {...commonProps}
     {...generateWrappedTokens()}
     chain2={null}
-    operationType={OperationType.unwrap}
+    view={View.UNWRAP}
     actionSteps={getUnwrapActionSteps()}
   />
 );

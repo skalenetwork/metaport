@@ -28,13 +28,10 @@ import {
     UnlockEthM
 } from './eth';
 import {
-    ApproveERC20S,
     TransferERC20S2S,
-    ApproveWrapERC20S,
     WrapERC20S,
     UnWrapERC20S,
     UnWrapERC20S2S,
-    ApproveERC20M,
     TransferERC20M2S,
     TransferERC20S2M
 } from './erc20';
@@ -61,7 +58,7 @@ import {
     S2M_POSTFIX,
 } from '../constants';
 
-import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
 import { TokenType } from 'core/dataclasses';
 
 
@@ -73,9 +70,9 @@ export function getActionName(
     chainName1: string,
     chainName2: string,
     tokenType: TokenType,
-    operationType: OperationType
+    view: View
 ): string {
-    if (chainName1 && operationType === OperationType.unwrap) return 'erc20_unwrap';
+    if (chainName1 && view === View.UNWRAP) return 'erc20_unwrap';
     if (!chainName1 || !chainName2 || !tokenType) return;
     log(`Getting action name: ${chainName1} ${chainName2} ${tokenType}`);
     let postfix = S2S_POSTFIX;

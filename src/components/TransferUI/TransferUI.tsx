@@ -61,9 +61,9 @@ export default function TransferUI(props) {
           )}>
             to
           </p>
-          <div className={styles.mp__flex}>
+          {/* <div className={styles.mp__flex}>
             <SFuelBadge from={false} data={props.sFuelData2} />
-          </div>
+          </div> */}
         </div>
         <ChainsList
           schains={props.config.chains}
@@ -125,7 +125,7 @@ export default function TransferUI(props) {
           actionBtnDisabled={props.actionBtnDisabled}
         />
       </Collapse>
-      <Collapse in={!props.expandedFrom && !props.expandedTo && !props.expandedTokens && props.token}>
+      <Collapse in={!props.expandedFrom && !props.expandedTo && !props.expandedTokens && props.token && props.sFuelOk}>
         <div className={styles.mp__margTop10}>
           {!props.token ? (
             <div></div>

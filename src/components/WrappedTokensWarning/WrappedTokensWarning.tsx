@@ -17,15 +17,14 @@
  */
 
 /**
- * @file ErrorMessages.ts
+ * @file WrappedTokensWarning.ts
  * @copyright SKALE Labs 2022-Present
  */
 
-import React from 'react';
 import Button from '@mui/material/Button';
 import MoveUpIcon from '@mui/icons-material/MoveUp';
 
-import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
 
 import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
@@ -36,11 +35,14 @@ export default function WrappedTokensWarning(props) {
     const wrappedTokens = Object.entries(props.wrappedTokens.erc20);
     if (wrappedTokens.length === 0) return;
     return (<div>
+        <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margTop20)}>
+            ❗ You have wrapped tokens in your wallet. Please unwrap them before proceeding with your transfer.
+        </p>
         <Button
             variant="contained" color="warning" size="medium"
             className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
-            onClick={() => { props.setOperationType(OperationType.unwrap) }}
-            startIcon={<MoveUpIcon />}
+            onClick={() => { props.setView(View.UNWRAP) }}
+        //   startIcon={<MoveUpIcon />}
         >
             Click to unwrap stuck tokens
         </Button>

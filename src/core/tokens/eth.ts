@@ -33,7 +33,6 @@ import EthTokenData from '../dataclasses/EthTokenData';
 import { TokenType } from '../dataclasses/TokenType';
 import * as interfaces from '../interfaces/index';
 import { MAINNET_CHAIN_NAME } from '../constants';
-import { Token } from '../interfaces/index';
 
 
 debug.enable('*');

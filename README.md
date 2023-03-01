@@ -1,6 +1,10 @@
 # SKALE Metaport Widget
 
 [![Discord](https://img.shields.io/discord/534485763354787851.svg)](https://discord.gg/vvUtWJB)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/skalenetwork/metaport/publish.yml)
+![npm](https://img.shields.io/npm/dm/@skalenetwork/metaport)
+![NPM](https://img.shields.io/npm/l/@skalenetwork/metaport)
+![GitHub top language](https://img.shields.io/github/languages/top/skalenetwork/metaport)
 
 Metaport is a Typescript/Javascript widget that could be embeded into a web application to add IMA functionality to any SKALE dApp.
 
@@ -14,8 +18,6 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
     - [Initialization options](#initialization-options)
     - [Functions](#functions)
       - [Transfer](#transfer)
-      - [Wrap](#wrap)
-      - [Unwrap](#unwrap)
     - [Tips \& tricks](#tips--tricks)
       - [SKALE Network Options](#skale-network-options)
       - [Automatic M2S token lookup](#automatic-m2s-token-lookup)
@@ -34,6 +36,7 @@ Metaport is a Typescript/Javascript widget that could be embeded into a web appl
       - [Position](#position)
       - [zIndex](#zindex)
   - [Development](#development)
+    - [Debug mode](#debug-mode)
     - [Storybook setup](#storybook-setup)
     - [Linter](#linter)
       - [Linter git hook](#linter-git-hook)
@@ -86,6 +89,7 @@ const metaport = new Metaport({
     autoLookup: false, // Automatic token lookup for M2S tokens (default = true)
     mainnetEndpoint: MAINNET_ENDPOINT, // Ethereum Mainnet endpoint, required only for M2S or S2M transfers (optional, default = null)
     skaleNetwork: 'staging3', // SKALE network that will be used - mainnet, staging, or staging3 (optional, defualt = mainnet)
+    debug: false, // Enable debug mode (optional, default = false)
     chains: [ // List of SKALE Chains that will be available in the Metaport UI (default = [])
         'chainName1',
         'chainName2',
@@ -102,10 +106,10 @@ const metaport = new Metaport({
     tokens: { // List of tokens that will be available in the Metaport UI (default = {})
         'chainName2': { // chain name where token origin deployed (mainnet or SKALE Chain name)
             'erc20': { // token type (erc20 and eth are supported)
-                'symbol1': { // token symbol
+                '_[TOKEN_SYMBOL]_[TOKEN_ORIGIN_ADDRESS]': { // token keyname (composed from token symbol and origin token address)
                     'name': 'TOKEN_NAME1', // token display name
                     'address': '0x0357', // token origin address
-                    'symbol': 'TST' // token symbol
+                    'symbol': '[TOKEN_SYMBOL]' // token symbol
                     'cloneSymbol': 'CTST' // optional, symbol of the clone token
                     'iconUrl': 'https://example.com/my_token_icon.png', // optional
                     'decimals': '6' // optional (default = '18')
@@ -122,6 +126,8 @@ const metaport = new Metaport({
 ```
 
 > You can skip almost all initialization options and set available tokens, chains and theme after Metaport initialization.
+
+Reference Metaport config can be found [here](https://github.com/skalenetwork/bridge-ui/blob/main/env/mainnet/metaportConfig.json).
 
 ### Functions
 
@@ -141,28 +147,22 @@ const params: interfaces.TransferParams = {
     chains: chains, // 'from' and 'to' chains (must be present in the list on chains)
     tokenKeyname: tokenKeyname, // token that you want to transfer
     tokenType: dataclasses.TokenType.erc1155, // available TokenTypes are eth, erc20, erc721, erc721meta and erc1155
-    lockValue: true // optional, boolean - lock the amount in the Metaport UI
+    lockValue: true, // optional, boolean - lock the amount in the Metaport UI
+    text: 'Transfer text', // optional, string - text that will be displayed in the Metaport UI
+    route: { // optional, interfaces.RouteParams - only for transfers with routing
+        hub: 'hub', // string - name of the hub chain
+        tokenKeyname: tokenKeyname, // token keyname on the hub chain
+        tokenType: dataclasses.TokenType.erc1155 // token type on the hub chain
+    },
+    fromApp: 'ruby', // optional, string - name of the application on the source chain
+    toApp: 'nftrade', // optional, string - name of the application on the destination chain
 };
 props.metaport.transfer(params);
 ```
 
-Once transfer will be completed, you will receive `metaport_transferComplete` event (see Events section for more details).
+Once transfer request will be fully processed, you will receive `metaport_transferRequestCompleted` event (see Events section for more details).
 
-#### Wrap
-
-Wrap is not available as a separate action yet, please use wrap autodetection feature.
-
-```Javascript
-metaport.wrap(WRAP_PARAMS);
-```
-
-#### Unwrap
-
-Will be available soon.
-
-```Javascript
-metaport.unwrap(UNWRAP_PARAMS);
-```
+On each transfer completion will be completed, you will receive `metaport_transferComplete` event (see Events section for more details).
 
 ### Tips & tricks
 
@@ -173,11 +173,11 @@ metaport.unwrap(UNWRAP_PARAMS);
 By default, Metaport is linked to the Ethereum Mainnet, however, Metaport can also be configured to
 work with the Ethereum Goerli Testnet (SKALE Staging). The valid options for skaleNetwork are:
 
-| Network Name | Config Value |   Active   | Default |
-| ------------ | ------------ | ---------- | ------- |
-| Ethereum     | **mainnet**  | **Yes**    | **Yes** |
-| Goerli       | staging3     | Yes        | No      |
-| Rinkeby      | staging      | No         | No      |
+| Network Name | Config Value | Active  | Default |
+| ------------ | ------------ | ------- | ------- |
+| Ethereum     | **mainnet**  | **Yes** | **Yes** |
+| Goerli       | staging3     | Yes     | No      |
+| Rinkeby      | staging      | No      | No      |
 
 ```javascript
 const metaport = new Metaport({
@@ -305,10 +305,10 @@ const TRANSFER_PARAMS = {
     tokens: {
         'chainName1': {
             'erc20': {
-                'wreth': { // wrapper token
+                '_WRETH_0x123': { // wrapper token
                     'address': '0x0123', // wrapper token address
                     'name': 'wreth', // wrapper token display name
-                    'symbol': 'TST',
+                    'symbol': 'WRETH', // wrapper token symbol
                     'wraps': { // token that needs to be wrapped
                         'address': '0xD2Aaa00700000000000000000000000000000000', // unwrapped token address
                         'symbol': 'ethc', // unwrapped token symbol
@@ -434,7 +434,8 @@ function transferComplete(e) {
 
 #### Available Events
 
-- `metaport_transferComplete`: `{tokenSymbol, from, to, tx}` - emited when the transfer completed and funds are minted on destination chain
+- `metaport_transferComplete`: `{tokenSymbol, from, to, tx}` - emited when a single transfer is completed and funds are minted on destination chain
+- `metaport_transferRequestCompleted`: `{interfaces.transferRequest}` - emited when the transfer request is completed and funds are minted on destination chain
 - `metaport_unwrapComplete`: `{tokenSymbol, chain, tx}` - emited when unwrap transaction is mined
 - `metaport_ethUnlocked`: `{tx}` - emited when ETH unlock transaction is mined (on Mainnet and only for ETH)
 - `metaport_connected`: `{}` - emited when widget is initialized on a page
@@ -514,6 +515,20 @@ MUI components will be arranged using the following formula: `BASE_Z_INDEX + i *
 See MUI zIndex reference [here](https://mui.com/material-ui/customization/default-theme/?expand-path=$.zIndex).
 
 ## Development
+
+### Debug mode
+
+To enable debug mode, set `debug` environment variable to `true`:
+
+```Javascript
+const metaport = new Metaport({
+    ...
+    debug: false // Enable debug mode (optional, default = false)
+    ...
+});
+```
+
+Additionally, you can enable debug logs in developer console by enabling `Verbose` level of logs.
 
 ### Storybook setup
 

@@ -47,7 +47,7 @@ export default function ChainsList(props) {
 
   function getChainName(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return 'Ethereum';
+      return 'Mainnet';
     }
     if (props.config.chainsMetadata && props.config.chainsMetadata[chainName]) {
       return props.config.chainsMetadata[chainName].alias;

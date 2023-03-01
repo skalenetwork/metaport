@@ -12,7 +12,7 @@ import Stepper from '../Stepper';
 import TokenList from '../TokenList';
 import AmountErrorMessage from '../AmountErrorMessage';
 
-import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
 
 
 export default function UnwrapUI(props) {
@@ -39,7 +39,7 @@ export default function UnwrapUI(props) {
       <Button
         variant="contained" color="primary" size="medium"
         className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
-        onClick={() => { props.setOperationType(OperationType.transfer) }}
+        onClick={() => { props.setView(null) }}
       >
         Go back
       </Button>
