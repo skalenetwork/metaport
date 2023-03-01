@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Skeleton from '@mui/material/Skeleton';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -11,8 +9,6 @@ import styles from '../WidgetUI/WidgetUI.scss';
 import Stepper from '../Stepper';
 import TokenList from '../TokenList';
 import AmountErrorMessage from '../AmountErrorMessage';
-
-import { View } from '../../core/dataclasses/View';
 
 
 export default function UnwrapUI(props) {

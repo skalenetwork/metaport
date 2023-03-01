@@ -12,7 +12,6 @@ import {
   initMainnetMetamask,
   updateWeb3SChain,
   updateWeb3SChainMetamask,
-  updateWeb3Mainnet,
   updateWeb3MainnetMetamask,
   getChainId
 } from '../../core';

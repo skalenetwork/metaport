@@ -28,7 +28,6 @@ import debug from 'debug';
 import Web3 from 'web3';
 
 import Button from '@mui/material/Button';
-import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 
 import { initChainWeb3 } from '../../core/core';
 import { Collapse } from '@mui/material';
@@ -42,7 +41,7 @@ import { View } from '../../core/dataclasses/View';
 
 
 debug.enable('*');
-const log = debug('bridge:components:SFuel');
+const log = debug('metaport:components:SFuel');
 
 
 export default function SFuelWarning(props: {

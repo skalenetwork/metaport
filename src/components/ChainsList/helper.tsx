@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
 import { chainIconPath } from '../TokenList/helper';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
 
-function stringToColor(str, dark) {
+function stringToColor(_, dark) {
     if (dark) {
         // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
         return 'hsl(120deg 2% 88%)';

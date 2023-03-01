@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Collapse from '@mui/material/Collapse';
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
@@ -14,7 +12,6 @@ import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
 import TokenIdInput from '../TokenIdInput';
 import Stepper from '../Stepper';
-import SFuelBadge from '../SFuelBadge';
 import AmountErrorMessage from '../AmountErrorMessage';
 
 import { TokenType } from '../../core/dataclasses/TokenType';

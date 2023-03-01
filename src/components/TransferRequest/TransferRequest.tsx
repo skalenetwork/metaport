@@ -1,6 +1,4 @@
 import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 import styles from "../WidgetUI/WidgetUI.scss";
 import { clsNames } from '../../core/helper';
@@ -21,7 +19,6 @@ import { getChainName } from '../ChainsList/helper';
 import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
-import { View } from '../../core/dataclasses/View';
 
 
 function getTokenDataFromConfig(

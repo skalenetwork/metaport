@@ -22,7 +22,6 @@
  */
 
 import Button from '@mui/material/Button';
-import MoveUpIcon from '@mui/icons-material/MoveUp';
 
 import { View } from '../../core/dataclasses/View';
 

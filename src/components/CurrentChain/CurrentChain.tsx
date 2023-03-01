@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -9,7 +7,6 @@ import { View } from '../../core/dataclasses/View';
 import styles from '../WidgetUI/WidgetUI.scss';
 
 import ChainsList from '../ChainsList';
-import SFuelBadge from '../SFuelBadge';
 
 
 export default function CurrentChain(props) {

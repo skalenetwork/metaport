@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
@@ -28,7 +25,7 @@ export default function TokenListSection(props) {
       <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margBott5)}>
         {props.type}
       </p>
-      {Object.keys(props.tokens).map((key, i) => (
+      {Object.keys(props.tokens).map((key, _) => (
         <Typography key={key}>
           <Button
             color="secondary"

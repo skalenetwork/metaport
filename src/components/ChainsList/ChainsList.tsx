@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -16,7 +16,7 @@ import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 
 
-function stringToColor(str, dark) {
+function stringToColor(_, dark) {
   if (dark) {
     // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
     return 'hsl(120deg 2% 88%)';
@@ -28,7 +28,7 @@ function stringToColor(str, dark) {
 
 export default function ChainsList(props) {
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       props.setExpanded(isExpanded ? panel : false);
     };
 
