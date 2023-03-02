@@ -57,6 +57,8 @@ export default function WidgetBody(props) {
 
         view={props.view}
         setView={props.setView}
+
+        resetWidgetState={props.resetWidgetState}
       />
       <UnwrapUI
         {...props}

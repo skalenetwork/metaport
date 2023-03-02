@@ -168,6 +168,7 @@ export function Widget(props) {
     setActiveStep(0);
     setActionSteps(undefined);
     setActionName(undefined);
+    setTransferRequestStep(0);
 
     if (view !== null) return;
     if (transferRequest) {
@@ -297,8 +298,12 @@ export function Widget(props) {
   }
 
   function transferHandler(e) {
-    resetWidgetState();
+    resetWidgetState(false);
     const params: interfaces.TransferParams = e.detail.params;
+    // TODO: tmp fix for 1.1.0
+    // if (params.lockValue === undefined || params.lockValue === null) {
+    params.lockValue = true;
+    // }
     setTransferRequestStatus(TransferRequestStatus.RECEIVED);
     setTransferRequest(params);
     setView(View.TRANSFER_REQUEST_SUMMARY);
@@ -316,7 +321,7 @@ export function Widget(props) {
   }
 
   function resetHandler(_) {
-    resetWidgetState();
+    resetWidgetState(false);
     log('resetWidget event processed');
   }
 
@@ -533,7 +538,7 @@ export function Widget(props) {
     checkWrappedTokens();
   }
 
-  function resetWidgetState() {
+  function resetWidgetState(keepTransferRequest: boolean) {
     setAvailableTokens(getEmptyTokenDataMap());
     setWrappedTokens(getEmptyTokenDataMap());
     setToken(undefined);
@@ -565,6 +570,14 @@ export function Widget(props) {
     setActionBtnDisabled(false);
     setTransferRequestLoading(true);
     setTransferRequestStatus(TransferRequestStatus.NO_REQEST);
+
+    if (transferRequest && keepTransferRequest) {
+      setTransferRequestStatus(TransferRequestStatus.RECEIVED);
+      setView(View.TRANSFER_REQUEST_SUMMARY);
+    }
+    if (!keepTransferRequest) {
+      setTransferRequest(undefined);
+    }
   }
 
   async function runPreAction() {
@@ -715,5 +728,7 @@ export function Widget(props) {
 
     chainId={chainId}
     extChainId={extChainId}
+
+    resetWidgetState={resetWidgetState}
   />)
 }
