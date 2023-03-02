@@ -17,7 +17,7 @@ export default function CurrentChain(props) {
           <IconButton
             size="small"
             color="primary"
-            onClick={() => { props.setView(null) }}
+            onClick={() => { props.resetWidgetState(true); }}
           >
             <ArrowBackIosIcon className={styles.mp__backIcon} />
           </IconButton>

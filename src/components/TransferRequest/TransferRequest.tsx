@@ -1,4 +1,5 @@
 import Collapse from '@mui/material/Collapse';
+import Button from '@mui/material/Button';
 
 import styles from "../WidgetUI/WidgetUI.scss";
 import { clsNames } from '../../core/helper';
@@ -19,6 +20,7 @@ import { getChainName } from '../ChainsList/helper';
 import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
+import { TransferRequestStatus } from '../../core/dataclasses';
 
 
 function getTokenDataFromConfig(
@@ -128,12 +130,31 @@ export default function TransferRequest(props) {
       <Collapse in={props.errorMessage}>
         <ErrorMessage errorMessage={props.errorMessage} />
       </Collapse>
-      <Collapse in={!props.errorMessage}>
+
+      <Collapse in={!props.errorMessage && props.transferRequestStatus !== TransferRequestStatus.DONE}>
         {isTransferRequestSteps(props.view) ?
           <StepperV2 {...props} token={token} /> :
           <TransferSummary {...props} explanationText={explanationText} />
         }
       </Collapse>
+
+      <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE}>
+        <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
+          💫 You've successfully transferred {trReq.amount} {token.symbol ? token.symbol.toUpperCase() : ''} from {fromChainName} to {toChainName}.
+        </p>
+        <Button
+          onClick={() => {
+            props.setTransferRequest
+            props.resetWidgetState();
+          }}
+          color="primary"
+          size="medium"
+          className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
+        >
+          Go to Sandbox
+        </Button>
+      </Collapse>
+
       {props.transferRequestStep === 0 ? (<WrappedTokensWarning
         wrappedTokens={props.wrappedTokens}
         setView={props.setView}

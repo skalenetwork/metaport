@@ -160,13 +160,15 @@ export default function SFuelWarning(props: {
         <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margTop20)}>
             ⛽ {noEth ? SFUEL_TEXT['gas'][sFuelStatus] : SFUEL_TEXT['sfuel'][sFuelStatus]}
         </p>
-        <Button
-            variant="contained" color="primary" size="medium"
-            className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
-            target="_blank"
-            href='https://sfuel.skale.network/'
-        >
-            Get sFUEL
-        </Button>
+        {
+            !noEth ? (<Button
+                variant="contained" color="primary" size="medium"
+                className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+                target="_blank"
+                href='https://sfuel.skale.network/'
+            >
+                Get sFUEL
+            </Button>) : null
+        }
     </Collapse>)
 }

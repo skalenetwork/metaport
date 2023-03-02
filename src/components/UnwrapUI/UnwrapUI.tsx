@@ -35,7 +35,7 @@ export default function UnwrapUI(props) {
       <Button
         variant="contained" color="primary" size="medium"
         className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
-        onClick={() => { props.setView(null) }}
+        onClick={() => { props.resetWidgetState(true); }}
       >
         Go back
       </Button>
