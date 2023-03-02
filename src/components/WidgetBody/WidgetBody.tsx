@@ -23,7 +23,7 @@ export default function WidgetBody(props) {
   // TODO: tmp wrap tokens fix
   const wrapTransferAction = props.actionSteps && props.actionSteps.length === 2 && props.activeStep > 0;
 
-  if (props.errorMessage) {
+  if (props.errorMessage && !props.transferRequestLoading) {
     return (<ErrorMessage errorMessage={props.errorMessage} />)
   }
 
