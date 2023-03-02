@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Collapse from '@mui/material/Collapse';
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
@@ -14,7 +12,6 @@ import TokenList from '../TokenList';
 import AmountInput from '../AmountInput';
 import TokenIdInput from '../TokenIdInput';
 import Stepper from '../Stepper';
-import SFuelBadge from '../SFuelBadge';
 import AmountErrorMessage from '../AmountErrorMessage';
 
 import { TokenType } from '../../core/dataclasses/TokenType';
@@ -61,9 +58,9 @@ export default function TransferUI(props) {
           )}>
             to
           </p>
-          <div className={styles.mp__flex}>
+          {/* <div className={styles.mp__flex}>
             <SFuelBadge from={false} data={props.sFuelData2} />
-          </div>
+          </div> */}
         </div>
         <ChainsList
           schains={props.config.chains}
@@ -125,7 +122,7 @@ export default function TransferUI(props) {
           actionBtnDisabled={props.actionBtnDisabled}
         />
       </Collapse>
-      <Collapse in={!props.expandedFrom && !props.expandedTo && !props.expandedTokens && props.token}>
+      <Collapse in={!props.expandedFrom && !props.expandedTo && !props.expandedTokens && props.token && props.sFuelOk}>
         <div className={styles.mp__margTop10}>
           {!props.token ? (
             <div></div>

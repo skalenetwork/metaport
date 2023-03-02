@@ -21,6 +21,7 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+// @ts-ignore
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 

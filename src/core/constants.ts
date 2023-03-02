@@ -55,3 +55,19 @@ export const IMA_HUB_WAIT = 5;
 // ETF constants
 
 export const COINGECKO_API_ENDPOINT = '';
+
+export const DEFAULT_FAUCET_URL = 'https://sfuel.skale.network/';
+export const SFUEL_CHEKCS_INTERVAL = 8;
+
+export const SFUEL_TEXT = {
+    'sfuel': {
+        'action': '',
+        'warning': 'You may need sFUEL on the destination chain',
+        'error': 'You need sFUEL to perform a transfer'
+    },
+    'gas': {
+        'action': '',
+        'warning': 'You may need ETH on the destination chain',
+        'error': 'You need ETH to perform a transfer'
+    }
+};

@@ -1,38 +1,30 @@
-import React from 'react';
-
 import Collapse from '@mui/material/Collapse';
-
-import { OperationType } from '../../core/dataclasses/OperationType';
 
 import styles from "../WidgetUI/WidgetUI.scss";
 import { clsNames } from '../../core/helper';
 
-import CurrentChain from '../CurrentChain';
 import ErrorMessage from '../ErrorMessage';
-import UnwrapUI from '../UnwrapUI';
-import TransferUI from '../TransferUI';
-import WrappedTokensWarning from '../WrappedTokensWarning';
 import StepperV2 from '../StepperV2';
 import TransferSummary from '../TransferSummary';
 import Route from '../Route';
-import Typography from '@mui/material/Typography';
-import { getIconSrc, getTokenName } from "../TokenList/helper";
-
-import MoveDownIcon from '@mui/icons-material/MoveDown';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { getIconSrc } from "../TokenList/helper";
 
 import TokenData from '../../core/dataclasses/TokenData';
 import EthTokenData from '../../core/dataclasses/EthTokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import * as interfaces from '../../core/interfaces/index';
-import { isTransferRequestSteps, isTransferRequestSummary } from '../../core/views';
+import { isTransferRequestSteps } from '../../core/views';
 
-import { getChainName, getChainIcon } from '../ChainsList/helper';
+import { getChainName } from '../ChainsList/helper';
 import SkeletonLoader from '../SkeletonLoader';
+import WrappedTokensWarning from '../WrappedTokensWarning';
+import SFuelWarning from '../SFuelWarning';
 
 
-
-function getTokenDataFromConfig(configTokens: interfaces.TokensMap, transferRequest: interfaces.TransferParams): TokenData {
+function getTokenDataFromConfig(
+  configTokens: interfaces.TokensMap,
+  transferRequest: interfaces.TransferParams
+): TokenData {
   // TODO: refactor!
 
   if (transferRequest.tokenType === TokenType.eth) {
@@ -113,7 +105,18 @@ export default function TransferRequest(props) {
           className={clsNames(styles.mp__amountIcon, styles.mp__margLeft10, styles.mp__margRi5)}
           src={getIconSrc(token)}
         />
-        <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount)}>{trReq.lockValue ? trReq.amount + ' ' + token.symbol : token.symbol}</h2>
+        <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount, styles.mp__flexGrow)}>
+          {trReq.lockValue ? trReq.amount + ' ' + token.symbol : token.symbol}
+        </h2>
+        {/* <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
+          <IconButton
+            size="small"
+            color="primary"
+            onClick={() => { props.setView(View.SANDBOX) }}
+          >
+            <CloseIcon className={styles.mp__backIcon} />
+          </IconButton>
+        </div> */}
       </div>
       <Route
         config={props.config}
@@ -131,6 +134,19 @@ export default function TransferRequest(props) {
           <TransferSummary {...props} explanationText={explanationText} />
         }
       </Collapse>
+      {props.transferRequestStep === 0 ? (<WrappedTokensWarning
+        wrappedTokens={props.wrappedTokens}
+        setView={props.setView}
+      />) : null}
+      <SFuelWarning
+        chain1={props.chain1}
+        chain2={props.chain2}
+        transferRequest={props.transferRequest}
+        config={props.config}
+        address={props.address}
+        setSFuelOk={props.setSFuelOk}
+        view={props.view}
+      />
     </div>
   )
 }

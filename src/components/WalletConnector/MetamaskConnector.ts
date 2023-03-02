@@ -55,7 +55,7 @@ export const addAccountChangedListener = (accountsChangedFallback) => {
   window.ethereum
   .request({ method: 'eth_accounts' })
   .then(accountsChangedFallback)
-  .catch((err) => {
+  .catch((_) => {
     // Some unexpected error.
     // For backwards compatibility reasons, if no accounts are available,
     // eth_accounts will return an empty array.

@@ -1,10 +1,7 @@
-import React from 'react';
 import Paper from '@mui/material/Paper';
-import Tooltip from '@mui/material/Tooltip';
 import ButtonBase from '@mui/material/ButtonBase/ButtonBase';
 
 import metamaskLogo from './metamask.svg';
-import walletconnectLogo from './walletconnect.svg';
 
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';

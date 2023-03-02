@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Skeleton from '@mui/material/Skeleton';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -11,8 +9,6 @@ import styles from '../WidgetUI/WidgetUI.scss';
 import Stepper from '../Stepper';
 import TokenList from '../TokenList';
 import AmountErrorMessage from '../AmountErrorMessage';
-
-import { OperationType } from '../../core/dataclasses/OperationType';
 
 
 export default function UnwrapUI(props) {
@@ -39,7 +35,7 @@ export default function UnwrapUI(props) {
       <Button
         variant="contained" color="primary" size="medium"
         className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
-        onClick={() => { props.setOperationType(OperationType.transfer) }}
+        onClick={() => { props.setView(null) }}
       >
         Go back
       </Button>

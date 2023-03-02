@@ -12,10 +12,7 @@ import {
   generateTransferRequestUnwrap,
   generateConfigTokens
 } from './StoriesHelper';
-import { OperationType } from '../../core/dataclasses/OperationType';
 import { View } from '../../core/dataclasses/View';
-
-import { getWidgetTheme } from './Themes';
 
 
 export default {

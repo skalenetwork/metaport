@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyledEngineProvider } from '@mui/material/styles';
 
 import Fab from '@mui/material/Fab';
@@ -19,11 +19,6 @@ import styles from "./WidgetUI.scss";
 
 
 export function WidgetUI(props) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const divRef = React.useRef();
-
-  const [disabledChains, setDisabledChains] = React.useState(undefined);
-
   let theme = createTheme({
     zIndex: getMuiZIndex(props.theme),
     palette: {
@@ -40,15 +35,7 @@ export function WidgetUI(props) {
     },
   });
 
-  useEffect(() => {
-    if (props.open) {
-      setAnchorEl(divRef.current);
-    } else {
-      setAnchorEl(null);
-    }
-  }, [props.open]);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (_: React.MouseEvent<HTMLElement>) => {
     props.setOpen(props.open ? false : true);
   };
 
@@ -104,7 +91,6 @@ export function WidgetUI(props) {
                   {props.walletConnected ? (
                     <WidgetBody
                       {...props}
-                      disabledChains={disabledChains}
                       theme={props.theme}
                     />
                   ) : (

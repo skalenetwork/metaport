@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -32,7 +30,7 @@ export default function ActionsStepper(props) {
   return (
     <Box>
       <Stepper className={localStyles.mp__stepper} activeStep={props.activeStep} orientation="vertical">
-        {props.actionSteps.map((step, index) => (
+        {props.actionSteps.map((step, _) => (
           <Step key={step.label}>
             <StepLabel className={localStyles.mp__labelStep}>
               {step}

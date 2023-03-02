@@ -12,7 +12,6 @@ import {
   initMainnetMetamask,
   updateWeb3SChain,
   updateWeb3SChainMetamask,
-  updateWeb3Mainnet,
   updateWeb3MainnetMetamask,
   getChainId
 } from '../../core';
@@ -34,7 +33,6 @@ import { getTransferSteps } from '../../core/transferSteps';
 
 import * as interfaces from '../../core/interfaces/index';
 import TokenData from '../../core/dataclasses/TokenData';
-import { OperationType } from '../../core/dataclasses/OperationType';
 import { TransferRequestStatus } from '../../core/dataclasses/TransferRequestStatus';
 import { View } from '../../core/dataclasses/View';
 import { MetaportTheme } from '../../core/interfaces/Theme';
@@ -87,8 +85,10 @@ export function Widget(props) {
   const [loadingTokens, setLoadingTokens] = React.useState(false);
   const [actionBtnDisabled, setActionBtnDisabled] = React.useState<boolean>(false);
 
-  const [open, setOpen] = React.useState(props.open);
-  const [firstOpen, setFirstOpen] = React.useState(props.open);
+  const [open, setOpen] = React.useState(props.config.openOnLoad);
+  const [firstOpen, setFirstOpen] = React.useState(props.config.openOnLoad);
+
+  const [sFuelOk, setSFuelOk] = React.useState<boolean>(false);
 
   const [view, setView] = React.useState<View>(View.SANDBOX);
 
@@ -161,6 +161,27 @@ export function Widget(props) {
   }, [sChain1, sChain2, mainnet]);
 
   useEffect(() => {
+    log(`view changed: ${view}`);
+
+    setToken(undefined);
+    setAmountLocked(false);
+    setActiveStep(0);
+    setActionSteps(undefined);
+    setActionName(undefined);
+
+    if (view !== null) return;
+    if (transferRequest) {
+      if (transferRequestStatus === TransferRequestStatus.RECEIVED) {
+        setView(View.TRANSFER_REQUEST_SUMMARY);
+      } else {
+        setView(View.TRANSFER_REQUEST_STEPS);
+      }
+    } else {
+      setView(View.SANDBOX);
+    }
+  }, [view]);
+
+  useEffect(() => {
     if (isTransferRequestActive(transferRequestStatus)) {
       const tokenKeyname = (transferRequest.route && transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB) ? transferRequest.route.tokenKeyname : transferRequest.tokenKeyname;
       const tokenType = (transferRequest.route && transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB) ? transferRequest.route.tokenType : transferRequest.tokenType;
@@ -187,11 +208,13 @@ export function Widget(props) {
 
   useEffect(() => {
     setAmountErrorMessage(undefined);
+    setActiveStep(0);
+    setActionSteps(undefined);
+    setActionName(undefined);
     if (token === undefined) return;
-    const operationType = view === View.UNWRAP ? OperationType.unwrap : OperationType.transfer;
-    let actionName = getActionName(chainName1, chainName2, token.type, operationType);
+    let actionName = getActionName(chainName1, chainName2, token.type, view);
     setActionName(actionName);
-  }, [chainName1, chainName2, token, availableTokens]);
+  }, [chainName1, chainName2, token, availableTokens, view]);
 
   useEffect(() => {
     if (!actionName || !token) return;
@@ -222,6 +245,20 @@ export function Widget(props) {
       }
     }
   }, [token, transferRequest]);
+
+  useEffect(() => {
+    // TODO: tmp fix for unwrap
+    const isUnwrapActionSteps = activeStep === 1 || activeStep === 2;
+    const isUwrapAction = token && token.unwrappedSymbol && token.clone && isUnwrapActionSteps;
+    const isUnlockAction = actionName === 'eth_s2m' && isUnwrapActionSteps;
+    if (extChainId && chainId && extChainId !== chainId && !isUwrapAction && !isUnlockAction) {
+      log('_MP_INFO: setting WrongNetworkMessage');
+      setTransferRequestLoading(true);
+      setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
+    } else {
+      setErrorMessage(undefined);
+    }
+  }, [extChainId, chainId, token, activeStep, transferRequest, view]);
 
   // FALLBACKS & HANDLERS
 
@@ -268,17 +305,17 @@ export function Widget(props) {
     setOpen(true);
   }
 
-  function closeHandler(e) {
+  function closeHandler(_) {
     setOpen(false);
     log('closeWidget event processed');
   }
 
-  function openHandler(e) {
+  function openHandler(_) {
     setOpen(true);
     log('openWidget event processed');
   }
 
-  function resetHandler(e) {
+  function resetHandler(_) {
     resetWidgetState();
     log('resetWidget event processed');
   }
@@ -343,6 +380,18 @@ export function Widget(props) {
   }
 
   // CORE FUNCTIONS
+
+  async function enforceMetamaskNetwork() {
+    if (!chainName1) {
+      setErrorMessage(undefined);
+      return;
+    }
+    if (chainName1 === MAINNET_CHAIN_NAME) {
+      await initMainnet1();
+    } else {
+      await initSchain1();
+    }
+  }
 
   function confirmSummary() {
     setView(View.TRANSFER_REQUEST_STEPS);
@@ -511,7 +560,7 @@ export function Widget(props) {
     setAmountLocked(false);
     setActiveStep(0);
     setActionSteps(undefined);
-    setActionName(undefined)
+    setActionName(undefined);
     setAmountErrorMessage(undefined);
     setActionBtnDisabled(false);
     setTransferRequestLoading(true);
@@ -586,6 +635,17 @@ export function Widget(props) {
     );
   }
 
+  function cleanData() {
+    setAmountErrorMessage(undefined);
+    setActionBtnDisabled(false);
+    setTokenId(undefined);
+    setAmount('');
+    setLoading(false);
+    setActiveStep(0);
+    setTransferRequestLoading(false);
+    setTransferRequestStatus(TransferRequestStatus.NO_REQEST);
+  }
+
   return (<WidgetUI
     config={props.config}
 
@@ -634,7 +694,12 @@ export function Widget(props) {
     amountErrorMessage={amountErrorMessage}
     setAmountErrorMessage={setAmountErrorMessage}
 
-    // cleanData={cleanData}
+    cleanData={cleanData}
+
+    address={address}
+
+    setSFuelOk={setSFuelOk}
+    sFuelOk={sFuelOk}
 
     theme={theme}
     view={view}
@@ -647,5 +712,8 @@ export function Widget(props) {
     transferRequestLoading={transferRequestLoading}
 
     confirmSummary={confirmSummary}
+
+    chainId={chainId}
+    extChainId={extChainId}
   />)
 }

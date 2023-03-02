@@ -39,7 +39,7 @@ export function getTokenName(token: TokenData): string {
 
 function importAll(r) {
     const images = {};
-    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    r.keys().map((item, _) => { images[item.replace('./', '')] = r(item); });
     return images;
 }
 

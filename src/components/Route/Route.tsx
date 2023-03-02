@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styles from "../WidgetUI/WidgetUI.scss";
 import localStyles from './Route.scss';
 import { clsNames } from '../../core/helper';

@@ -4,7 +4,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import Skeleton from '@mui/material/Skeleton';
 
 import { isMainnet, clsNames } from '../../core/helper';
-import { IMA_M2S_WAIT, IMA_S2S_WAIT, IMA_HUB_WAIT } from '../../core/constants';
 import { getTransactionFee } from '../../core/fee_calculator';
 import styles from '../WidgetUI/WidgetUI.scss';
 

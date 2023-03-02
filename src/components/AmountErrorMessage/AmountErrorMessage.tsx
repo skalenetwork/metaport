@@ -1,4 +1,3 @@
-import React from "react";
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { clsNames } from '../../core/helper';

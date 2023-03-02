@@ -34,7 +34,7 @@
   }
 
 
-  :global(.MuiSvgIcon-fontSizeSmall){
+  :global(.MuiSvgIcon-fontSizeSmall) {
     width: 10pt;
     height: 10pt;
   }
@@ -47,7 +47,7 @@
   :global(.MuiButton-root) {
     font-weight: 600 !important;
     box-shadow: none !important;
-    border-radius: 8px !important;
+    border-radius: 15px !important;
   }
 }
 
@@ -358,6 +358,15 @@
   font-size: 0.75rem;
 }
 
+.mp__codeWrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 20px;
+  padding: 20px;
+  background-color: black;
+}
+
 .mp_p_desc {
   margin: 0;
   font-weight: 500 !important;
@@ -374,7 +383,7 @@
 .mp__btnConnect {
   width: 100%;
   margin-top: 10pt;
-  border-radius: 8px !important;
+  border-radius: 15px !important;
 
   text-align: left;
 
@@ -386,7 +395,7 @@
     background-color: rgba(161, 161, 161, 0.2) !important;
     width: 100%;
     padding: 10pt 15pt;
-    border-radius: 8px !important;
+    border-radius: 15px !important;
   }
 
   .mp__iconGray {
@@ -470,7 +479,7 @@
 .mp__backIcon {
   width: 8pt !important;
   height: 8pt !important;
-  margin-left: 2pt !important;
+  // margin-left: 2pt !important;
 }
 
 .mp__amountChip {
