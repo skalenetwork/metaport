@@ -2,3 +2,6 @@
 	path = helper-scripts
 	url = https://github.com/skalenetwork/helper-scripts.git
 	branch = develop
+[submodule "skale-network"]
+	path = skale-network
+	url = https://github.com/skalenetwork/skale-network.git

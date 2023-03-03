@@ -22,6 +22,7 @@
  */
 
 import { TokenType } from '../dataclasses/TokenType';
+import { RouteParams } from './RouteParams';
 
 
 export interface TransferParams {
@@ -31,4 +32,8 @@ export interface TransferParams {
     tokenId?: number;
     chains?: string[];
     lockValue?: boolean;
+    route?: RouteParams;
+    text?: string;
+    fromApp?: string;
+    toApp?: string;
 }

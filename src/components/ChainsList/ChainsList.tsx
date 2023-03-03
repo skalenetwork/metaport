@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,14 +9,14 @@ import Button from '@mui/material/Button';
 
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
-import ethLogo from '../../icons/eth_white.svg';
+import { iconPath } from '../TokenList/helper';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
 import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 
 
-function stringToColor(str, dark) {
+function stringToColor(_, dark) {
   if (dark) {
     // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
     return 'hsl(120deg 2% 88%)';
@@ -28,13 +28,13 @@ function stringToColor(str, dark) {
 
 export default function ChainsList(props) {
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       props.setExpanded(isExpanded ? panel : false);
     };
 
   const schainNames = [];
 
-  for (let chain of props.schains) {
+  for (let chain of props.config.chains) {
     if (chain != props.disabledChain && chain != props.chain) {
       schainNames.push(chain);
     }
@@ -47,10 +47,10 @@ export default function ChainsList(props) {
 
   function getChainName(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return 'Ethereum Mainnet';
+      return 'Mainnet';
     }
-    if (props.chainsMetadata && props.chainsMetadata[chainName]) {
-      return props.chainsMetadata[chainName].alias;
+    if (props.config.chainsMetadata && props.config.chainsMetadata[chainName]) {
+      return props.config.chainsMetadata[chainName].alias;
     } else {
       return chainName;
     }
@@ -58,7 +58,7 @@ export default function ChainsList(props) {
 
   function getChainIcon(chainName: string) {
     if (chainName == MAINNET_CHAIN_NAME) {
-      return <img src={ethLogo} className='eth-logo' height='20px' width='20px' />;
+      return <img src={iconPath('eth')} className='eth-logo' height='20px' width='20px' />;
     }
     return (<OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} width='20px' />);
   }

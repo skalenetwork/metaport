@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TokenType } from '../../core/dataclasses/TokenType';
 import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";

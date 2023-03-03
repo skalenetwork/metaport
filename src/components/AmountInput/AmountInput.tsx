@@ -1,5 +1,6 @@
 import React from "react";
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
@@ -29,7 +30,7 @@ export default function AmountInput(props) {
           disabled={props.loading || props.amountLocked}
         />
       </div>
-      {/* <div className={styles.mp__flex}>
+      <div className={styles.mp__flex}>
         <Button
           color="primary"
           size="small"
@@ -39,12 +40,12 @@ export default function AmountInput(props) {
         >
           MAX
         </Button>
-      </div> */}
-      <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margRi20)}>
+      </div>
+      {/* <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margRi20)}>
         <p className={clsNames(styles.mp__p3, styles.mp__p)}>
           Amount
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

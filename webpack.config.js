@@ -40,20 +40,20 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.png$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              limit: 10000,
-              outputPath: 'icons',
-              name: '[name].[ext]',
-            },
-          },
-        ],
-      },
-
+      // {
+      //   test: /\.png$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         limit: 10000,
+      //         outputPath: 'icons',
+      //         publicPath: 'icons',
+      //         name: '[name].[ext]',
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /\.s[ac]ss$/i,
         use: [

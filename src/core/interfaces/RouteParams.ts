@@ -17,12 +17,15 @@
  */
 
 /**
- * @file OperationType.ts
+ * @file RouteParams.ts
  * @copyright SKALE Labs 2022-Present
  */
 
+import { TokenType } from '../dataclasses/TokenType';
 
-export enum OperationType {
-    transfer = 'transfer',
-    unwrap = 'unwrap'
+
+export interface RouteParams {
+    hub: string;
+    tokenKeyname: string;
+    tokenType: TokenType;
 }

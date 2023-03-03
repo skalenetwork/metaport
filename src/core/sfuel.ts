@@ -24,7 +24,7 @@
 
 import Web3 from 'web3';
 import debug from 'debug';
-import { DEFAULT_MIN_SFUEL_WEI } from './constants';
+import { DEFAULT_MIN_SFUEL_WEI, DEFAULT_FAUCET_URL } from './constants';
 
 
 debug.enable('*');
@@ -33,6 +33,7 @@ const log = debug('metaport:Widget');
 
 function getFaucetUrl(chainsMetadata: object, chainName: string): string {
     if (chainsMetadata && chainsMetadata[chainName]) return chainsMetadata[chainName].faucetUrl;
+    return DEFAULT_FAUCET_URL;
 }
 
 

@@ -28,13 +28,10 @@ import {
     UnlockEthM
 } from './eth';
 import {
-    ApproveERC20S,
     TransferERC20S2S,
-    ApproveWrapERC20S,
     WrapERC20S,
     UnWrapERC20S,
     UnWrapERC20S2S,
-    ApproveERC20M,
     TransferERC20M2S,
     TransferERC20S2M
 } from './erc20';
@@ -61,7 +58,8 @@ import {
     S2M_POSTFIX,
 } from '../constants';
 
-import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
+import { TokenType } from 'core/dataclasses';
 
 
 debug.enable('*');
@@ -71,22 +69,23 @@ const log = debug('metaport:actions');
 export function getActionName(
     chainName1: string,
     chainName2: string,
-    tokenData: TokenData,
-    operationType: OperationType
+    tokenType: TokenType,
+    view: View
 ): string {
-    if (chainName1 && operationType === OperationType.unwrap) return 'erc20_unwrap';
-    if (!chainName1 || !chainName2 || !tokenData) return;
-    log(`Getting action name: ${chainName1} ${chainName2} ${tokenData.symbol} ${tokenData.type}`);
+    if (chainName1 && view === View.UNWRAP) return 'erc20_unwrap';
+    if (!chainName1 || !chainName2 || !tokenType) return;
+    log(`Getting action name: ${chainName1} ${chainName2} ${tokenType}`);
     let postfix = S2S_POSTFIX;
     if (isMainnet(chainName1)) { postfix = M2S_POSTFIX; };
     if (isMainnet(chainName2)) { postfix = S2M_POSTFIX; };
-    const actionName = tokenData.type + '_' + postfix;
+    const actionName = tokenType + '_' + postfix;
     log('Action name: ' + actionName);
     return actionName;
 }
 
 
-const wrapActions = [ApproveWrapERC20S, WrapERC20S];
+// const wrapActions = [ApproveWrapERC20S, WrapERC20S];
+const wrapActions = [WrapERC20S];
 const unwrapActions = [UnWrapERC20S2S];
 
 
@@ -95,9 +94,10 @@ export const ACTIONS = {
     eth_s2m: [TransferEthS2M, UnlockEthM],
     eth_s2s: [],
 
-    erc20_m2s: [ApproveERC20M, TransferERC20M2S],
-    erc20_s2m: [ApproveERC20S, TransferERC20S2M],
-    erc20_s2s: [ApproveERC20S, TransferERC20S2S],
+    erc20_m2s: [TransferERC20M2S],
+    erc20_s2m: [TransferERC20S2M],
+    erc20_s2s: [TransferERC20S2S],
+
     erc20_unwrap: [UnWrapERC20S],
 
     erc721_m2s: [ApproveERC721M, TransferERC721M2S],

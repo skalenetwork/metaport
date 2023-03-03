@@ -8,8 +8,9 @@ import {
   getUnwrapActionSteps,
   generateWrappedTokens
 } from './StoriesHelper';
-import { OperationType } from '../../core/dataclasses/OperationType';
 import { getWidgetTheme } from '../WidgetUI/Themes';
+
+import { View } from '../../core/dataclasses/View';
 
 
 export default {
@@ -29,7 +30,7 @@ export const TransferUILight = () => (
 export const MainnetTransfer = () => (
   <WidgetUI
     {...generateTokenData('usdt', 'Tether', true)}
-    schains={['mainnet', 'bbb-chain']}
+    schains={['mainnet', 'staging-severe-violet-wezen']}
     walletConnected={true}
     open={true}
 
@@ -39,7 +40,7 @@ export const MainnetTransfer = () => (
     setActiveStep={() => { }}
 
     chain1='mainnet'
-    chain2='bbb-chain'
+    chain2='staging-severe-violet-wezen'
     theme={getWidgetTheme(null)}
   />
 );
@@ -47,7 +48,7 @@ export const MainnetTransfer = () => (
 export const MainnetTransferLight = () => (
   <WidgetUI
     {...generateTokenData('usdc', 'USDC', true)}
-    schains={['mainnet', 'bbb-chain']}
+    schains={['mainnet', 'staging-severe-violet-wezen']}
     walletConnected={true}
     open={true}
 
@@ -57,7 +58,7 @@ export const MainnetTransferLight = () => (
     setActiveStep={() => { }}
 
     chain1='mainnet'
-    chain2='bbb-chain'
+    chain2='staging-severe-violet-wezen'
     theme={getWidgetTheme({ mode: 'light' })}
   />
 );
@@ -65,7 +66,7 @@ export const MainnetTransferLight = () => (
 export const LoadingSteps = () => (
   <WidgetUI
     {...generateTokenData('usdc', 'USDC', true)}
-    schains={['aaa-chain', 'bbb-chain']}
+    schains={['staging-perfect-parallel-gacrux', 'staging-severe-violet-wezen']}
     walletConnected={true}
     open={true}
 
@@ -76,8 +77,8 @@ export const LoadingSteps = () => (
 
     loading={true}
 
-    chain1='aaa-chain'
-    chain2='bbb-chain'
+    chain1='staging-perfect-parallel-gacrux'
+    chain2='staging-severe-violet-wezen'
     theme={getWidgetTheme(null)}
   />
 );
@@ -203,7 +204,6 @@ export const UnwrapWarning = () => (
     {...generateWrappedTokens()}
     token={null}
     chain2={null}
-    setOperationType={(operationType) => { commonProps.operationType = operationType; }}
   />
 );
 
@@ -226,7 +226,7 @@ export const UnwrapUINoTokens = () => (
     availableTokens={{ 'erc20': {} }}
     token={null}
     chain2={null}
-    operationType={OperationType.unwrap}
+    view={View.UNWRAP}
   />
 );
 
@@ -236,7 +236,7 @@ export const UnwrapUILoading = () => (
     {...commonProps}
     {...generateWrappedTokens()}
     chain2={null}
-    operationType={OperationType.unwrap}
+    view={View.UNWRAP}
     actionSteps={getUnwrapActionSteps()}
     actionBtnDisabled={true}
   />
@@ -247,7 +247,7 @@ export const UnwrapUI = () => (
     {...commonProps}
     {...generateWrappedTokens()}
     chain2={null}
-    operationType={OperationType.unwrap}
+    view={View.UNWRAP}
     actionSteps={getUnwrapActionSteps()}
   />
 );

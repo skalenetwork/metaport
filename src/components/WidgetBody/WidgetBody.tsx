@@ -2,33 +2,48 @@ import React from 'react';
 
 import Collapse from '@mui/material/Collapse';
 
-import { OperationType } from '../../core/dataclasses/OperationType';
+import { View } from '../../core/dataclasses/View';
+import { isTransferRequestView } from '../../core/views';
 
 import CurrentChain from '../CurrentChain';
 import ErrorMessage from '../ErrorMessage';
 import UnwrapUI from '../UnwrapUI';
 import TransferUI from '../TransferUI';
 import WrappedTokensWarning from '../WrappedTokensWarning';
+import TransferRequest from '../TransferRequest';
+import SFuelWarning from '../SFuelWarning';
 
 
 export default function WidgetBody(props) {
+
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
 
   // TODO: tmp wrap tokens fix
-  const wrapTransferAction = props.actionSteps && props.actionSteps.length === 4 &&
-    (props.activeStep === 2 || props.activeStep === 3);
+  const wrapTransferAction = props.actionSteps && props.actionSteps.length === 2 && props.activeStep > 0;
 
-  return (
-    <div>
+  if (props.errorMessage && !props.transferRequestLoading) {
+    return (<ErrorMessage errorMessage={props.errorMessage} />)
+  }
+
+  if (isTransferRequestView(props.view)) {
+    return <TransferRequest
+      disabledChains={props.disabledChains}
+      theme={props.theme}
+      {...props}
+    />
+  }
+
+  if (props.view === View.UNWRAP) {
+    return <div>
       <CurrentChain
-        schains={props.schains}
+        schains={props.config.chains}
         setChain={props.setChain1}
         chain={props.chain1}
         disabledChain={props.chain2}
         fromChain={true}
-        chainsMetadata={props.chainsMetadata}
+        config={props.config}
         disabled={props.disabledChains}
 
         theme={props.theme}
@@ -38,37 +53,64 @@ export default function WidgetBody(props) {
         expandedTo={expandedTo}
         expandedTokens={expandedTokens}
 
-        operationType={props.operationType}
-        setOperationType={props.setOperationType}
+        sFuelData={props.sFuelData1}
+
+        view={props.view}
+        setView={props.setView}
+
+        resetWidgetState={props.resetWidgetState}
+      />
+      <UnwrapUI
+        {...props}
+        expandedFrom={expandedFrom}
+        expandedTo={expandedTo}
+        expandedTokens={expandedTokens}
+        setExpandedFrom={setExpandedFrom}
+        setExpandedTo={setExpandedTo}
+        setExpandedTokens={setExpandedTokens}
+      />
+    </div>
+  }
+
+  return (
+    <div>
+      <CurrentChain
+        schains={props.config.chains}
+        setChain={props.setChain1}
+        chain={props.chain1}
+        disabledChain={props.chain2}
+        fromChain={true}
+        config={props.config}
+        disabled={props.disabledChains}
+
+        theme={props.theme}
+        expanded={expandedFrom}
+        setExpanded={setExpandedFrom}
+
+        expandedTo={expandedTo}
+        expandedTokens={expandedTokens}
+
         sFuelData={props.sFuelData1}
       />
-      <Collapse in={props.errorMessage && !expandedFrom}>
-        <ErrorMessage errorMessage={props.errorMessage} />
-      </Collapse>
-      <Collapse in={!props.errorMessage && props.operationType === OperationType.unwrap && !props.expandedFrom}>
-        <UnwrapUI
-          {...props}
-          expandedFrom={expandedFrom}
-          expandedTo={expandedTo}
-          expandedTokens={expandedTokens}
-          setExpandedFrom={setExpandedFrom}
-          setExpandedTo={setExpandedTo}
-          setExpandedTokens={setExpandedTokens}
-        />
-      </Collapse>
-      <Collapse in={!props.errorMessage && props.operationType !== OperationType.unwrap}>
-        <TransferUI
-          {...props}
-          expandedFrom={expandedFrom}
-          expandedTo={expandedTo}
-          expandedTokens={expandedTokens}
-          setExpandedFrom={setExpandedFrom}
-          setExpandedTo={setExpandedTo}
-          setExpandedTokens={setExpandedTokens}
-        />
-      </Collapse>
+      <TransferUI
+        {...props}
+        expandedFrom={expandedFrom}
+        expandedTo={expandedTo}
+        expandedTokens={expandedTokens}
+        setExpandedFrom={setExpandedFrom}
+        setExpandedTo={setExpandedTo}
+        setExpandedTokens={setExpandedTokens}
+      />
+      <SFuelWarning
+        chain1={props.chain1}
+        chain2={props.chain2}
+        transferRequest={props.transferRequest}
+        config={props.config}
+        address={props.address}
+        setSFuelOk={props.setSFuelOk}
+        view={props.view}
+      />
       <Collapse in={
-        props.operationType !== OperationType.unwrap &&
         !expandedFrom &&
         !expandedTo &&
         !expandedTokens &&
@@ -76,7 +118,7 @@ export default function WidgetBody(props) {
       }>
         <WrappedTokensWarning
           wrappedTokens={props.wrappedTokens}
-          setOperationType={props.setOperationType}
+          setView={props.setView}
         />
       </Collapse>
     </div >
