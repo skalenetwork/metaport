@@ -15,6 +15,7 @@
   ],
   "types": "build/index.d.ts",
   "scripts": {
+    "docs:watch": "npx skl-reload --node-runner yarn --path docs --ui-repo https://github.com/skalenetwork/doc-ui.git --ui-path doc-ui --ui-only --docs-playbook local-playbook-ui.yml --docs-stacktrace --watch-paths docs/**/*.yml,docs/**/*.adoc --watch-event change --server-open --server-dir build/site",
     "storybook": "start-storybook -p 6006",
     "storybook:export": "build-storybook",
     "prepublish": "npm run build",
@@ -24,6 +25,9 @@
     "test-ts": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*Test.ts",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "version": "node -e \"console.log(require('./package.json').version);\""
+  },
+  "dependencies": {
+    "@skalenetwork/doc-utils": "https://github.com/skalenetwork/doc-utils.git"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

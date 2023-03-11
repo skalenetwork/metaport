@@ -1,0 +1,42 @@
+== Events
+
+You can receive data from the Metaport widget using in-browser events.
+
+Here is an example that demonstrates how you can subscribe to events in your dApp:
+
+[source, javascript]
+----
+window.addEventListener(
+    "metaport_transferComplete",
+    transferComplete,
+    false
+);
+
+function transferComplete(e) {
+    console.log('received transfer complete event, transaction hash: ' + e.details.tx);
+}
+----
+
+=== transferComplete
+
+`metaport_transferComplete: {tokenSymbol, from, to, tx}` - emitted when a single transfer is completed and funds are minted on destination chain
+
+=== transferRequestCompleted
+
+`metaport_transferRequestCompleted: {interfaces.transferRequest}` - emitted when the transfer request is completed and funds are minted on destination chain
+
+=== unwrapComplete
+
+`metaport_unwrapComplete: {tokenSymbol, chain, tx}` - emitted when unwrap transaction is mined
+
+=== ethUnlocked
+
+`metaport_ethUnlocked: {tx}` - emitted when ETH unlock transaction is mined (on Mainnet and only for ETH)
+
+=== connected
+
+`metaport_connected: {}` - emitted when widget is initialized on a page
+
+=== balance
+
+`metaport_balance: {tokenSymbol, schainName, balance}` - emitted when token balance is retrieved in Metaport widget (after init, after transfer and on request)

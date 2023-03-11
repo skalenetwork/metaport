@@ -1,0 +1,21 @@
+= Token Icons
+
+Metaport has built-in support for https://github.com/skalenetwork/metaport/tree/develop/src/icons[471 well-known tokens]. If a token icon is not available for your
+token, a default Ethereum icon will be used instead.  
+
+Also, it's possible to set a custom token icon by adding `iconUrl` option to the token definition:
+
+[source, javascript]
+----
+const TOKENS = {
+  'SCHAIN_NAME': {
+    'erc20': {
+      'mytkn': {
+        'name': 'MYTKN',
+        'address': '0x123456',
+        'iconUrl': 'https://example.com/my_token_icon.png'
+      },
+    }
+  }
+};
+----

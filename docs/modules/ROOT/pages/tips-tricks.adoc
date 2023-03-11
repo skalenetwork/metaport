@@ -1,0 +1,210 @@
+== Tips & tricks
+
+=== SKALE Network Options
+
+[NOTE]
+Default is Mainnet.
+
+By default, Metaport is linked to the Ethereum Mainnet, however, Metaport can also be configured to
+work with the Ethereum Goerli Testnet (SKALE Staging). The valid options for skaleNetwork are:
+
+[frame=none,%autowidth]
+|===
+|Network Name | Config Value | Active  | Default
+
+|Ethereum |**mainnet** |**Yes** |**Yes**
+
+| Goerli | staging3 | Yes | No
+
+| Rinkeby | staging | No | No
+|===
+
+[source, javascript]
+----
+const metaport = new Metaport({
+  ...
+  skaleNetwork: "staging3" // or "mainnet"
+  ...
+})
+----
+
+=== Automatic M2S token lookup
+
+[CAUTION]
+Only for tokens with origin on Mainnet
+
+By default, automatic token lookup is enabled for Mainnet to SKALE Chain transfers. You can disable
+it by setting `autoLookup` value to `false`. Also, you can override info retrieved by the automatic 
+lookup by adding token to the tokens list in the following way: `\_[TOKEN_SYMBOL]_[TOKEN_ADDRESS]`:
+
+[source, javascript]
+----
+const TOKENS_OVERRIDE = {
+  'mainnet': {
+    'erc20': {
+      "_TST_0x123456": {
+        "name": "MY TEST TOKEN",
+        "iconUrl": "https://example.com/test.png",
+        "decimals": "6"
+      }
+    }
+  }
+};
+
+const metaport = new Metaport({
+    ...
+    autoLookup: true,
+    tokens: TOKENS_OVERRIDE
+    ...
+})
+----
+
+
+=== Locking a token
+
+If you are passing multiple tokens to Metaport constructor or to `updateParams` function they will be available in the dropdown menu and no token will be selected by default. 
+
+If you want to lock user on a specific token, pass a single entry to `tokens` param:
+
+[source, javascript]
+----
+const metaport = new Metaport({
+    ...,
+    tokens: {
+        'chainName2': {
+            'erc20': { 
+                '_TST_0x123456': { 
+                    'name': 'TEST_TOKEN',
+                    'address': '0x0357'
+                }
+            }
+        }
+    }
+})
+----
+
+Same works for `updateParams` function:
+
+[source, javascript]
+----
+metaport.updateParams({tokens: {
+    'chainName2': {
+        'erc20': { 
+            '_TST_0x123456': { 
+                'name': 'TEST_TOKEN',
+                'address': '0x0357'
+            }               
+        }
+    }}});
+----
+
+Now token `tst` will be pre-selected and locked in the Metaport UI.
+
+
+=== Locking chains
+
+If you are passing more that 2 chains to Metaport constructor or to `updateParams` function they will be available in the dropdown menu and no chain will be selected by default. 
+
+If you want to perform/request transfer from one particular chain to another, pass exactly 2 chain names to `schain` param:
+
+[source, javascript]
+----
+const metaport = new Metaport({
+    ...,
+    chains: [
+        'chainName1', // this one will be set as 'From' chain
+        'chainName2' // this one will be set as 'To' chain
+    ],
+})
+----
+
+You can use the same approach for `updateParams` and `transfer` functions.
+
+=== Adding Mainnet & ETH
+
+ETH clone is already pre-deployed on each chain. You can enable it for any chain by adding the following config:
+
+[source, javascript]
+----
+const metaport = new Metaport({
+    ...,
+    chains: ['mainnet', 'chainName1']
+    tokens: {
+        "mainnet": {  "eth": {
+        "chains": [
+          "chainName1" // list of chains where ETH transfer will be available
+        ]
+      }}
+    }
+})
+----
+
+With this setup you will have `ETH` as a pre-selected asset, `Mainnet` as `From` network and `chainName1` as `To` network. To switch transfer direction just reorder chains: `['chainName1', 'mainnet']`.
+
+
+=== Autowrap for tokens
+
+To wrap tokens before transfer (for example to wrap ETHC before transfer to other chain) you need to specify token wrapped token info (address):
+[source, javascript]
+----
+const TRANSFER_PARAMS = {
+    amount: '1000',
+    chains: ['chainName1', 'chainName2'],
+    tokens: {
+        'chainName1': {
+            'erc20': {
+                '_WRETH_0x123': { // wrapper token
+                    'address': '0x0123', // wrapper token address
+                    'name': 'wreth', // wrapper token display name
+                    'symbol': 'WRETH', // wrapper token symbol
+                    'wraps': { // token that needs to be wrapped
+                        'address': '0xD2Aaa00700000000000000000000000000000000', // unwrapped token address
+                        'symbol': 'ethc', // unwrapped token symbol
+                        'iconUrl': '' // optional, icon URL for the origin token
+                    }
+                }
+            }
+        }
+    }
+}
+metaport.transfer(TRANSFER_PARAMS);
+----
+
+You can use the same approach for `updateParams` and or during Metaport init.
+
+
+=== Type definitions
+
+You can import interface definitions for the Metaport config and other data structures:
+
+[source, typescript]
+----
+import { interfaces } from '@skalenetwork/metaport';
+
+const theme: interfaces.MetaportTheme = {
+    primary: '#00d4ff',
+    background: '#0a2540',
+    mode: 'dark'
+}
+
+const config: interfaces.MetaportConfig = {
+    skaleNetwork: 'staging',
+    theme: theme
+}
+----
+
+=== Dataclasses
+
+You can import dataclasses types for the Metaport:
+
+[source, typescript]
+----
+import { dataclasses } from '@skalenetwork/metaport';
+
+const params: interfaces.TransferParams = {
+    amount: amount,
+    chains: chains,
+    tokenKeyname: tokenKeyname,
+    tokenType: dataclasses.TokenType.erc20,
+};
+----

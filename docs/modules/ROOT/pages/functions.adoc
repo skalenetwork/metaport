@@ -1,0 +1,47 @@
+== Functions
+
+=== Transfer
+
+When sending a transfer request you can specify token and chains or keep ones that are already selected in the Metaport UI.
+
+[source, typescript]
+----
+import { interfaces, dataclasses } from '@skalenetwork/metaport';
+
+// token keyname is composed from token symbol and origin token address
+const tokenKeyname = `_${tokenSymbol}_${tokenAddress}`;
+
+const params: interfaces.TransferParams = {
+    tokenId: tokenId, // for erc721, erc721meta and erc1155 tokens
+    amount: amount, // amount to transfer (in wei) - for eth, erc20 and erc1155 tokens
+    chains: chains, // 'from' and 'to' chains (must be present in the list on chains)
+    tokenKeyname: tokenKeyname, // token that you want to transfer
+    tokenType: dataclasses.TokenType.erc1155, // available TokenTypes are eth, erc20, erc721, erc721meta and erc1155
+    lockValue: true, // optional, boolean - lock the amount in the Metaport UI
+    text: 'Transfer text', // optional, string - text that will be displayed in the Metaport UI
+    route: { // optional, interfaces.RouteParams - only for transfers with routing
+        hub: 'hub', // string - name of the hub chain
+        tokenKeyname: tokenKeyname, // token keyname on the hub chain
+        tokenType: dataclasses.TokenType.erc1155 // token type on the hub chain
+    },
+    fromApp: 'ruby', // optional, string - name of the application on the source chain
+    toApp: 'nftrade', // optional, string - name of the application on the destination chain
+};
+props.metaport.transfer(params);
+----
+
+Once transfer request will be fully processed, you will receive `metaport_transferRequestCompleted` event (see Events section for more details).
+
+On each transfer completion will be completed, you will receive `metaport_transferComplete` event (see Events section for more details).
+
+[TIP]
+When using `transfer` back to back, the UI might hang. You can use `reset` to clear Metaport. This should be ideally be done at the start of every transfer.
+
+
+=== Reset
+
+You can reset and clear Metaport.
+
+```javascript
+metaport.reset()
+```
