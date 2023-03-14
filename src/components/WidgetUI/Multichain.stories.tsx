@@ -10,8 +10,11 @@ import {
   generateTransferRequest,
   generateTransferRequestSimple,
   generateTransferRequestUnwrap,
-  generateConfigTokens
+  generateConfigTokens,
+  generateTransferRequestSteps
 } from './StoriesHelper';
+import { getWidgetTheme } from '../WidgetUI/Themes';
+
 import { View } from '../../core/dataclasses/View';
 
 
@@ -41,6 +44,18 @@ export const TransferSummary = () => (
   />
 );
 
+export const TransferSummaryLight = () => (
+  <WidgetUI
+    {...commonProps}
+    actionSteps={getWrapActionSteps()}
+    view={View.TRANSFER_REQUEST_SUMMARY}
+    amountLocked={true}
+    transferRequest={generateTransferRequest()}
+    configTokens={generateConfigTokens()}
+    theme={getWidgetTheme({ mode: 'light' })}
+  />
+);
+
 export const TransferSummarySimple = () => (
   <WidgetUI
     {...commonProps}
@@ -63,15 +78,16 @@ export const TransferSummaryUnwrap = () => (
   />
 );
 
-
-export const TransferSummaryUnlocked = () => (
+export const TransferSummaryApps = () => (
   <WidgetUI
     {...commonProps}
     {...generateWrappedTokens()}
     actionSteps={getWrapActionSteps()}
     view={View.TRANSFER_REQUEST_SUMMARY}
-    amountLocked={false}
-    transferRequest={generateTransferRequest()}
+    amountLocked={true}
+    transferRequest={generateTransferRequest(true)}
+    transferRequestLoading={false}
+    transferRequestSteps={generateTransferRequestSteps(true)}
   />
 );
 
@@ -85,6 +101,21 @@ export const TransferRequestSteps = () => (
     amountLocked={true}
     transferRequest={generateTransferRequest()}
     transferRequestLoading={false}
+    transferRequestSteps={generateTransferRequestSteps()}
+  />
+);
+
+export const TransferRequestStepsLight = () => (
+  <WidgetUI
+    {...commonProps}
+    {...generateWrappedTokens()}
+    actionSteps={getWrapActionSteps()}
+    view={View.TRANSFER_REQUEST_STEPS}
+    amountLocked={true}
+    transferRequest={generateTransferRequest()}
+    transferRequestLoading={false}
+    transferRequestSteps={generateTransferRequestSteps()}
+    theme={getWidgetTheme({ mode: 'light' })}
   />
 );
 
@@ -97,6 +128,7 @@ export const TransferRequestStepsLoading = () => (
     view={View.TRANSFER_REQUEST_STEPS}
     amountLocked={true}
     transferRequest={generateTransferRequest(true)}
+    transferRequestLoading={true}
   />
 );
 
@@ -112,20 +144,6 @@ export const TransferRequestStepsApps = () => (
     amountLocked={true}
     transferRequest={generateTransferRequest(true)}
     transferRequestLoading={false}
-    receiveTransferRequest={() => {}}
-  />
-);
-
-
-export const TransferRequestSimple = () => (
-  <WidgetUI
-    {...commonProps}
-    {...generateWrappedTokens()}
-    actionSteps={getWrapActionSteps()}
-    view={View.TRANSFER_REQUEST_STEPS}
-    amountLocked={true}
-    transferRequest={generateTransferRequestSimple(true)}
-    receiveTransferRequest={() => {}}
-    transferRequestLoading={false}
+    transferRequestSteps={generateTransferRequestSteps(true)}
   />
 );

@@ -1,5 +1,4 @@
 import styles from "../WidgetUI/WidgetUI.scss";
-import localStyles from './Route.scss';
 import { clsNames } from '../../core/helper';
 
 import MoveDownIcon from '@mui/icons-material/MoveDown';
@@ -30,7 +29,7 @@ export default function Route(props: {
 
   return (
     <Tooltip arrow title={props.explanationText} placement="top">
-      <div className={clsNames(styles.mp__route, isSmall ? localStyles.mp__routeSmall : localStyles.mp__routeMedium)}>
+      <div className={clsNames(styles.mp__route, isSmall ? styles.mp__routeSmall : styles.mp__routeMedium)}>
         {!isSmall ? (<div className={clsNames(
           styles.mp__flex,
           styles.mp__flexCenteredVert,
