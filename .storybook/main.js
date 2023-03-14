@@ -25,7 +25,8 @@ module.exports = {
       options: {
         presets: [["react-app", {
           flow: false,
-          typescript: true
+          typescript: true,
+          runtime: 'automatic'
         }]]
       }
     });

@@ -52,19 +52,14 @@
     }
 
     :global(.MuiStepLabel-labelContainer) {
-        span, svg {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
         img {
-            filter: saturate(0);
+            filter: saturate(0) opacity(0.7);
         }
 
     }
 
 
     :global(.MuiStepLabel-label.Mui-active) {
-        color: #fff; // todo: light theme support
         span, svg {
             color: inherit;
         }
@@ -73,7 +68,4 @@
             filter:  inherit;
         }
     }
-
-
-    // color: rgba(255, 255, 255, 0.7) !important;
 }
