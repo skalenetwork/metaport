@@ -1,6 +1,6 @@
 import React from "react";
 import { WidgetUI } from "./WidgetUI";
-import { commonProps, defaultTokenData } from './StoriesHelper';
+import { commonProps, defaultTokenData, commonConfig } from './StoriesHelper';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
 import { Positions } from '../../core/dataclasses/Position';
 import { getWidgetTheme } from '../WidgetUI/Themes';
@@ -67,6 +67,7 @@ export const SelectChains = () => (
     walletConnected={true}
     open={true}
     theme={getWidgetTheme({ mode: 'dark' })}
+    config={commonConfig}
   />
 );
 
@@ -77,6 +78,7 @@ export const SelectChainsLight = () => (
     walletConnected={true}
     open={true}
     theme={getWidgetTheme({ mode: 'light' })}
+    config={commonConfig}
   />
 );
 
@@ -86,42 +88,13 @@ export const LoadingTokens = () => (
 );
 
 
-export const sFuelIcons = () => (
-  <WidgetUI
-    {...commonProps}
-    {...defaultTokenData}
-    theme={getWidgetTheme({ mode: 'dark' })}
-
-    sFuelData1={{
-      faucetUrl: 'https://example.com/',
-      minSfuelWei: '200000000000000000',
-      balance: '0',
-      ok: false
-    }}
-
-    sFuelData2={{
-      faucetUrl: 'https://example.com/',
-      minSfuelWei: '200000000000000000',
-      balance: '0',
-      ok: false
-    }}
-  />
-);
-
 export const NoButton = () => (
   <WidgetUI
     {...commonProps}
     {...defaultTokenData}
-    openButton={false}
+    config={{
+      ...commonConfig,
+      openButton: false
+    }}
   />
 );
-
-
-export const LoadingError = () => (
-  <WidgetUI
-    {...commonProps}
-    {...defaultTokenData}
-    actionBtnDisabled={true}
-  />
-);
-

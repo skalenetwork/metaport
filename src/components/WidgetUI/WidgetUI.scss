@@ -283,6 +283,19 @@
       background-color: rgba(161, 161, 161, 0.2) !important;
     }
   }
+
+  .mp__routeIcon {
+    svg {
+      width: 14pt;
+      color: rgba(255, 255, 255, 0.65) !important;
+    }
+  }
+
+  .mp__routeSmall {
+    h4 {
+      color: rgba(255, 255, 255, 0.65) !important;
+    }
+  }
 }
 
 
@@ -333,6 +346,29 @@
     svg {
       color: rgba(0, 0, 0, 0.26);
     }
+  }
+
+  .mp__routeIcon {
+    svg {
+      width: 14pt;
+      color: rgba(0, 0, 0, 0.65) !important;
+    }
+  }
+
+  .mp__routeSmall {
+    h4 {
+      color: rgba(0, 0, 0, 0.65) !important;
+    }
+  }
+}
+
+.mp__routeSmall {
+  h4 {
+    font-weight: 500 !important;
+    text-transform: none !important;
+    font-size: 0.8525rem !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0.03857em !important;
   }
 }
 
@@ -530,12 +566,5 @@
   span {
     font-size: 1.3em;
     font-weight: 600;
-  }
-}
-
-.mp__routeIcon {
-  svg {
-    width: 14pt;
-    color: rgba(255, 255, 255, 0.65) !important;
   }
 }

@@ -4,8 +4,9 @@ import { TokenType } from '../../core/dataclasses/TokenType';
 import { getEmptyTokenDataMap } from '../../core/tokens/helper';
 import { getWidgetTheme } from '../WidgetUI/Themes';
 export * as dataclasses from '../../core/dataclasses/index';
+import * as interfaces from '../../core/interfaces/index';
 import { View } from '../../core/dataclasses/View';
-
+import { getTransferSteps } from '../../core/transferSteps';
 
 function setMock() { return };
 
@@ -17,14 +18,18 @@ function getRandomInt(min, max) {
 }
 
 
-export const commonProps = {
-  view: View.SANDBOX,
+export const commonConfig: interfaces.MetaportConfig = {
+  skaleNetwork: 'staging3',
+  openButton: true,
+  openOnLoad: true,
+  tokens: generateConfigTokens(),
+  chains: ['Europa Chain', 'Calypso'],
   chainsMetadata: {
     'staging-perfect-parallel-gacrux': {
       alias: 'Europa Hub', // optional
       minSfuelWei: '27000000000000', // optional
       faucetUrl: 'https://github.com/skalenetwork/skale-network',
-      "apps": {
+      apps: {
         "ruby": {
           "alias": "Ruby Exchange",
           "background": "#02001f",
@@ -34,7 +39,7 @@ export const commonProps = {
     },
     'staging-severe-violet-wezen': {
       alias: 'Calypso Hub',
-      "apps": {
+      apps: {
         "nftrade": {
           "alias": "NFTrade",
           "background": "#ffffff",
@@ -42,14 +47,15 @@ export const commonProps = {
         }
       }
     }
-  },
+  }
+}
+
+
+export const commonProps = {
+  sFuelOk: true,
+  view: View.SANDBOX,
   open: true,
-  config: {
-    openButton: true,
-    openOnLoad: true,
-    tokens: generateConfigTokens(),
-    chains: ['Europa Chain', 'Calypso']
-  },
+  config: commonConfig,
   chain1: 'staging-perfect-parallel-gacrux',
   chain2: 'staging-severe-violet-wezen',
   setChain1: setMock,
@@ -218,7 +224,7 @@ export function generateWrappedTokens() {
 export function generateTransferRequest(apps?: boolean) {
   const trReq = {
     toApp: undefined,
-    amount: getRandomInt(100, 1000),
+    amount: getRandomInt(100, 1000).toString(),
     chains: ['mainnet', 'staging-severe-violet-wezen'],
     tokenKeyname: 'eth',
     tokenType: TokenType.eth,
@@ -271,7 +277,7 @@ export function generateTransferRequestSimple(apps?: boolean) {
 }
 
 
-export function generateConfigTokens() {
+export function generateConfigTokens(): interfaces.TokensMap {
   return {
     mainnet: {
       eth: {
@@ -289,8 +295,7 @@ export function generateConfigTokens() {
           "cloneSymbol": "ETH",
           "wraps": {
             "address": "0xD2Aaa00700000000000000000000000000000000",
-            "symbol": "ETH",
-            "name": "aaaa"
+            "symbol": "ETH"
           }
         },
         "usdc": {
@@ -300,9 +305,26 @@ export function generateConfigTokens() {
           "cloneSymbol": "usdc"
         }
       }
-    },
-    'staging-severe-violet-wezen': {
-      alias: 'Calypso Hub'
     }
   }
+}
+
+
+export function generateTransferRequestSteps(apps?: boolean) {
+  return getTransferSteps(
+    generateTransferRequest(apps) as interfaces.TransferParams,
+    commonConfig as interfaces.MetaportConfig, getWidgetTheme(null), new TokenData(
+      '',
+      null,
+      '',
+      'test',
+      null,
+      null,
+      null,
+      null,
+      TokenType.erc20,
+      'ETHC',
+      '0x0',
+      null
+    ))
 }
