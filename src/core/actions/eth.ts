@@ -46,9 +46,11 @@ export class TransferEthM2S extends TransferAction {
                 value: amountWei
             }
         );
+        const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'deposit');
         await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore);
         externalEvents.transferComplete(
-            tx,this.chainName1, this.chainName2, this.tokenData.keyname);
+            tx, this.chainName1, this.chainName2, this.tokenData.keyname);
     }
 
     async preAction() {
@@ -72,6 +74,8 @@ export class TransferEthS2M extends TransferAction {
             amountWei,
             { address: this.address }
         );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'withdraw');
         await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount);
         externalEvents.transferComplete(
             tx, this.chainName1, this.chainName2, this.tokenData.keyname);
@@ -100,6 +104,8 @@ export class UnlockEthM extends Action {
         const tx = await this.mainnet.eth.getMyEth(
             { address: this.address }
         );
+        const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, 'mainnet', 'getMyEth');
         externalEvents.ethUnlocked(tx);
     }
 }

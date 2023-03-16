@@ -59,12 +59,12 @@ export default function SFuelWarning(props: {
     let hubChain;
 
     if (props.transferRequest && props.view !== View.SANDBOX) {
-        log('Getting chains from transferRequest');
+        // log('Getting chains from transferRequest');
         fromChain = props.transferRequest.chains[0];
         toChain = props.transferRequest.chains[1];
         hubChain = props.transferRequest.route ? props.transferRequest.route.hub : undefined;
     } else {
-        log('Getting chains from props');
+        // log('Getting chains from props');
         fromChain = props.chain1;
         toChain = props.chain2;
     }
@@ -136,21 +136,21 @@ export default function SFuelWarning(props: {
     async function getFromChainBalance() {
         if (!fromChainWeb3) return;
         const balance = await fromChainWeb3.eth.getBalance(props.address);
-        log('fromChain sFUEL balance:', balance);
+        // log('fromChain sFUEL balance:', balance);
         setFromChainSFuel(balance);
     }
 
     async function getToChainBalance() {
         if (!toChainWeb3) return;
         const balance = await toChainWeb3.eth.getBalance(props.address);
-        log('toChain sFUEL balance:', balance);
+        // log('toChain sFUEL balance:', balance);
         setToChainSFuel(balance);
     }
 
     async function getHubChainBalance() {
         if (!hubChainWeb3) return;
         const balance = await hubChainWeb3.eth.getBalance(props.address);
-        log('hubChain sFUEL balance:', balance);
+        // log('hubChain sFUEL balance:', balance);
         setHubChainSFuel(balance);
     }
 

@@ -49,6 +49,8 @@ export class ApproveERC20S extends Action {
             this.sChain1.erc20.address,
             { address: this.address }
         );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'approve');
         log('ApproveERC20S:execute - tx completed: %O', tx);
 
     }
@@ -107,6 +109,9 @@ export class TransferERC20S2S extends TransferAction {
                 this.sChain1.erc20.address,
                 { address: this.address }
             );
+            const block = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            externalEvents.transactionCompleted(
+                approveTx, block.timestamp, this.chainName1, 'approve');
             log('ApproveERC20S:execute - tx completed: %O', approveTx);
         }
 
@@ -125,6 +130,9 @@ export class TransferERC20S2S extends TransferAction {
             amountWei,
             { address: this.address }
         );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(
+            tx, block.timestamp, this.chainName1, 'transferToSchain');
         log('TransferERC20S2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC20BalanceChange(
             destTokenContract,
@@ -173,6 +181,8 @@ export class ApproveWrapERC20S extends Action {
             this.tokenData.originAddress,
             { address: this.address }
         );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'approveWrap');
         log('ApproveWrapERC20S:execute - tx completed %O', tx);
     }
 
@@ -207,6 +217,9 @@ export class WrapERC20S extends Action {
                 this.tokenData.originAddress,
                 { address: this.address }
             );
+            const block = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            externalEvents.transactionCompleted(
+                approveTx, block.timestamp, this.chainName1, 'approveWrap');
             log('ApproveWrapERC20S:execute - tx completed %O', approveTx);
         }
 
@@ -216,6 +229,8 @@ export class WrapERC20S extends Action {
             amountWei,
             { address: this.address }
         );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'wrap');
         log('WrapERC20S:execute - tx completed %O', tx);
     }
 
@@ -249,8 +264,10 @@ export class UnWrapERC20S2S extends Action {
                 amountWei,
                 { address: this.address }
             );
-            log('UnWrapERC20S2S:execute - tx completed %O', tx);
+            const block = await this.sChain2.web3.eth.getBlock(tx.blockNumber);
+            externalEvents.transactionCompleted(tx, block.timestamp, this.chainName2, 'unwrap');
             externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
+            log('UnWrapERC20S2S:execute - tx completed %O', tx);
         } finally {
             // log('UnWrapERC20S2S:execute - switchMetamaskChain back');
             // this.switchMetamaskChain(true);
@@ -288,6 +305,8 @@ export class UnWrapERC20S extends Action {
             { address: this.address }
         );
         log('UnWrapERC20S:execute - tx completed %O', tx);
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'unwrap');
         externalEvents.unwrapComplete(tx, this.chainName2, this.tokenData.keyname);
     }
     async preAction() {
@@ -319,6 +338,8 @@ export class ApproveERC20M extends Action {
             MAX_APPROVE_AMOUNT,
             { address: this.address }
         );
+        const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'approve');
         log('ApproveERC20M:execute - tx completed %O', tx);
     }
 
@@ -357,6 +378,9 @@ export class TransferERC20M2S extends TransferAction {
                 MAX_APPROVE_AMOUNT,
                 { address: this.address }
             );
+            const block = await this.mainnet.web3.eth.getBlock(approveTx.blockNumber);
+            externalEvents.transactionCompleted(
+                approveTx, block.timestamp, this.chainName1, 'approve');
             log('ApproveERC20S:execute - tx completed: %O', approveTx);
         }
 
@@ -374,6 +398,8 @@ export class TransferERC20M2S extends TransferAction {
             amountWei,
             { address: this.address }
         );
+        const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'deposit');
         log('TransferERC20M2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC20BalanceChange(
             destTokenContract, this.address, balanceOnDestination);
@@ -425,6 +451,9 @@ export class TransferERC20S2M extends TransferAction {
                 this.sChain1.erc20.address,
                 { address: this.address }
             );
+            const block = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            externalEvents.transactionCompleted(
+                approveTx, block.timestamp, this.chainName1, 'approve');
             log('ApproveERC20S:execute - tx completed: %O', approveTx);
         }
 
@@ -440,6 +469,8 @@ export class TransferERC20S2M extends TransferAction {
             amountWei,
             { address: this.address }
         );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'withdraw');
         log('TransferERC20S2M:execute - tx completed %O', tx);
         this.mainnet.waitERC20BalanceChange(destTokenContract, this.address, balanceOnDestination);
         log('TransferERC20S2M:execute - tokens received to destination chain');
