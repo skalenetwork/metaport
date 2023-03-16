@@ -78,9 +78,9 @@ export namespace externalEvents {
                     gasUsed: txData.gasUsed,
                     transactionHash: txData.transactionHash
                 },
-                timestamp: timestamp, 
-                chainName: chainName,
-                txName: txName
+                timestamp,
+                chainName,
+                txName
             }
         );
     }

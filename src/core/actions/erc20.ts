@@ -109,9 +109,9 @@ export class TransferERC20S2S extends TransferAction {
                 this.sChain1.erc20.address,
                 { address: this.address }
             );
-            const block = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            const txBlock = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
             externalEvents.transactionCompleted(
-                approveTx, block.timestamp, this.chainName1, 'approve');
+                approveTx, txBlock.timestamp, this.chainName1, 'approve');
             log('ApproveERC20S:execute - tx completed: %O', approveTx);
         }
 
@@ -217,9 +217,9 @@ export class WrapERC20S extends Action {
                 this.tokenData.originAddress,
                 { address: this.address }
             );
-            const block = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            const txBlock = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
             externalEvents.transactionCompleted(
-                approveTx, block.timestamp, this.chainName1, 'approveWrap');
+                approveTx, txBlock.timestamp, this.chainName1, 'approveWrap');
             log('ApproveWrapERC20S:execute - tx completed %O', approveTx);
         }
 
@@ -378,9 +378,9 @@ export class TransferERC20M2S extends TransferAction {
                 MAX_APPROVE_AMOUNT,
                 { address: this.address }
             );
-            const block = await this.mainnet.web3.eth.getBlock(approveTx.blockNumber);
+            const txBlock = await this.mainnet.web3.eth.getBlock(approveTx.blockNumber);
             externalEvents.transactionCompleted(
-                approveTx, block.timestamp, this.chainName1, 'approve');
+                approveTx, txBlock.timestamp, this.chainName1, 'approve');
             log('ApproveERC20S:execute - tx completed: %O', approveTx);
         }
 
@@ -451,9 +451,9 @@ export class TransferERC20S2M extends TransferAction {
                 this.sChain1.erc20.address,
                 { address: this.address }
             );
-            const block = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            const txBlock = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
             externalEvents.transactionCompleted(
-                approveTx, block.timestamp, this.chainName1, 'approve');
+                approveTx, txBlock.timestamp, this.chainName1, 'approve');
             log('ApproveERC20S:execute - tx completed: %O', approveTx);
         }
 
