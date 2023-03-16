@@ -1,6 +1,6 @@
 name: metaport
 title: Using Metaport
-version: 1.1.x-beta
+version: 1.2.x
 prelease: true
 nav:
   - modules/ROOT/nav.adoc
