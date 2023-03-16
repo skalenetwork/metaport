@@ -65,6 +65,26 @@ export namespace externalEvents {
         dispatchEvent('metaport_transferRequestCompleted', { 'transferRequest': transferRequest });
     }
 
+    export function transactionCompleted(
+        txData: any,
+        timestamp: string | number,
+        chainName: string,
+        txName: string
+    ): void {
+        dispatchEvent(
+            'metaport_transactionCompleted',
+            {
+                tx: {
+                    gasUsed: txData.gasUsed,
+                    transactionHash: txData.transactionHash
+                },
+                timestamp,
+                chainName,
+                txName
+            }
+        );
+    }
+
     export function unwrapComplete(
         tx: string,
         chainName1: string,
