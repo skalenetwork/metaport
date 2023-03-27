@@ -42,3 +42,32 @@ export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...';
 
 export const DEFAULT_MP_MARGIN = '20pt';
 export const DEFAULT_MP_Z_INDEX = 99000;
+
+
+// ETA constants
+
+export const GAS_STATION_API_ENDPOINT = 'https://ethgasstation.info/api/ethgasAPI.json?';
+
+export const IMA_M2S_WAIT = 5;
+export const IMA_S2S_WAIT = 2;
+export const IMA_HUB_WAIT = 5;
+
+// ETF constants
+
+export const COINGECKO_API_ENDPOINT = '';
+
+export const DEFAULT_FAUCET_URL = 'https://sfuel.skale.network/';
+export const SFUEL_CHEKCS_INTERVAL = 8;
+
+export const SFUEL_TEXT = {
+    'sfuel': {
+        'action': '',
+        'warning': 'You may need sFUEL on the destination chain',
+        'error': 'You need sFUEL to perform a transfer'
+    },
+    'gas': {
+        'action': '',
+        'warning': 'You may need ETH on the destination chain',
+        'error': 'You need ETH to perform a transfer'
+    }
+};

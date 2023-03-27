@@ -33,7 +33,6 @@ import EthTokenData from '../dataclasses/EthTokenData';
 import { TokenType } from '../dataclasses/TokenType';
 import * as interfaces from '../interfaces/index';
 import { MAINNET_CHAIN_NAME } from '../constants';
-import { Token } from '../interfaces/index';
 
 
 debug.enable('*');
@@ -83,6 +82,7 @@ export async function getEthBalance(
     chainName: string,
     address: string
 ) {
+    log(`Getting ETH balance for ${address} on ${chainName}`);
     const ethBalance = isMainnet(chainName) ? await mainnet.ethBalance(address) :
         await sChain.ethBalance(address);
     log('ETH balance for ' + address + ': ' + ethBalance + ' wei');

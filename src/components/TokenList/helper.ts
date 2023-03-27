@@ -21,6 +21,7 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import { MAINNET_CHAIN_NAME } from '../../core/constants';
 import TokenData from '../../core/dataclasses/TokenData';
 
 
@@ -38,11 +39,15 @@ export function getTokenName(token: TokenData): string {
 
 function importAll(r) {
     const images = {};
-    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    r.keys().map((item, _) => { images[item.replace('./', '')] = r(item); });
     return images;
 }
 
 const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
+const CHAIN_ICONS = {
+    'mainnet': importAll(require.context('../../meta/mainnet/icons', false, /\.(png|jpe?g|svg)$/)),
+    'staging3': importAll(require.context('../../meta/staging/icons', false, /\.(png|jpe?g|svg)$/))
+}
 
 
 export function iconPath(name) {
@@ -52,6 +57,21 @@ export function iconPath(name) {
         return icons[key];
     } else {
         return icons['eth.svg'];
+    }
+}
+
+
+export function chainIconPath(skaleNetwork: string, name: string, app?: string) {
+    if (!name) return;
+    let filename = name.toLowerCase();
+    if (app)
+        filename += `-${app}`;
+    filename += '.svg';
+    if (name === MAINNET_CHAIN_NAME) {
+        return icons['eth.svg'];
+    }
+    if (CHAIN_ICONS[skaleNetwork][filename]) {
+        return CHAIN_ICONS[skaleNetwork][filename];
     }
 }
 

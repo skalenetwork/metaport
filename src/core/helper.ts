@@ -24,6 +24,7 @@
 
 import { MAINNET_CHAIN_NAME } from './constants';
 import utils from 'web3-utils';
+import { TransferRequestStatus } from './dataclasses';
 
 
 export function clsNames(...args) {
@@ -43,4 +44,10 @@ export function isMainnet(chainName: string): boolean {
 
 export function addressesEqual(address1: string, address2: string): boolean {
     return utils.toChecksumAddress(address1) === utils.toChecksumAddress(address2);
+}
+
+
+export function isTransferRequestActive(transferRequestStatus: TransferRequestStatus) {
+    return transferRequestStatus === TransferRequestStatus.IN_PROGRESS ||
+        transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB;
 }

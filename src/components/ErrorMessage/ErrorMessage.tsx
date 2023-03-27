@@ -1,5 +1,3 @@
-import React from "react";
-
 import Button from '@mui/material/Button';
 
 import { clsNames } from '../../core/helper';

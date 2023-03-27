@@ -1,20 +1,10 @@
 import React from "react";
 import TextField from '@mui/material/TextField';
-import DiamondIcon from '@mui/icons-material/Diamond';
+
 import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
 import localStyles from './TokenIdInput.scss';
 
-
-
-function stringToColor(str, dark) {
-  if (dark) {
-    // return `hsl(${hashCode(str) % 360}, 100%, 80%)`;
-    return 'hsl(120deg 2% 88%)';
-  }
-  return 'hsl(0deg 0% 15%)';
-  // return `hsl(${hashCode(str) % 360}, 55%, 40%)`;
-}
 
 export default function TokenIdInput(props) {
 
