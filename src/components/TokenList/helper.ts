@@ -46,7 +46,8 @@ function importAll(r) {
 const icons = importAll(require.context('../../icons', false, /\.(png|jpe?g|svg)$/));
 const CHAIN_ICONS = {
     'mainnet': importAll(require.context('../../meta/mainnet/icons', false, /\.(png|jpe?g|svg)$/)),
-    'staging3': importAll(require.context('../../meta/staging/icons', false, /\.(png|jpe?g|svg)$/))
+    'staging3': importAll(require.context('../../meta/staging/icons', false, /\.(png|jpe?g|svg)$/)),
+    'legacy': importAll(require.context('../../meta/legacy/icons', false, /\.(png|jpe?g|svg)$/))
 }
 
 
