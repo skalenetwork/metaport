@@ -1,7 +1,7 @@
 import React from "react";
 import { Widget } from "./Widget";
 
-const METAPORT_CONFIG = require('./metaportConfig.json');
+const METAPORT_CONFIG = require('../../configs/metaportConfigMainnet.json');
 
 
 export default {
