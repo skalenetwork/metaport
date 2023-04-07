@@ -29,7 +29,7 @@ import { toWei } from '../convertation';
 import { MAX_APPROVE_AMOUNT } from '../constants';
 
 import { TransferAction, Action } from './action';
-import { checkERC20Balance, checkERC20Allowance } from './checks';
+import { checkERC20Balance, checkERC20Allowance, checkSFuelBalance } from './checks';
 
 
 debug.enable('*');
@@ -119,10 +119,17 @@ export class TransferERC20S2S extends TransferAction {
 
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const destTokenContract = this.sChain2.erc20.tokens[this.tokenData.keyname];
-        const balanceOnDestination = await this.sChain2.getERC20Balance(
-            destTokenContract,
-            this.address
-        );
+
+        let balanceOnDestination;
+
+        if (this.tokenData.wrapsSFuel && this.tokenData.clone) {
+            balanceOnDestination = await this.sChain2.web3.eth.getBalance(this.address);
+        } else {
+            balanceOnDestination = await this.sChain2.getERC20Balance(
+                destTokenContract,
+                this.address
+            );
+        }
 
         const tx = await this.sChain1.erc20.transferToSchain(
             this.chainName2,
@@ -134,11 +141,20 @@ export class TransferERC20S2S extends TransferAction {
         externalEvents.transactionCompleted(
             tx, block.timestamp, this.chainName1, 'transferToSchain');
         log('TransferERC20S2S:execute - tx completed %O', tx);
-        await this.sChain2.waitERC20BalanceChange(
-            destTokenContract,
-            this.address,
-            balanceOnDestination
-        );
+
+        if (this.tokenData.wrapsSFuel && this.tokenData.clone) {        
+            await this.sChain2.waitETHBalanceChange(
+                this.address,
+                balanceOnDestination
+            );
+        } else {
+            await this.sChain2.waitERC20BalanceChange(
+                destTokenContract,
+                this.address,
+                balanceOnDestination
+            );
+        }
+
         log('TransferERC20S2S:execute - tokens received to destination chain');
 
         const unwrap = !!this.tokenData.unwrappedSymbol && this.tokenData.clone;
@@ -188,6 +204,40 @@ export class ApproveWrapERC20S extends Action {
 
     async preAction() {
         log('ApproveWrapERC20S:preAction');
+    }
+}
+
+
+export class WrapSFuelERC20S extends Action {
+    static label = 'Wrap native token'
+    static buttonText = 'Wrap native token'
+    static loadingText = 'Wrapping native token'
+
+    async execute() {
+        log('WrapSFuelERC20S:execute - starting');
+        const tx = await this.sChain1.erc20.fundExit(
+            this.tokenData.keyname,
+            {
+                address: this.address,
+                value: this.amountWei
+            }
+        );
+        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'wrapsfuel');
+        log('WrapSFuelERC20S:execute - tx completed %O', tx);
+    }
+
+    async preAction() {
+        log('WrapSFuelERC20S:preAction - starting');
+        const checkResBalance = await checkSFuelBalance(
+            this.address,
+            this.amount,
+            this.sChain1
+        );
+        if (!checkResBalance.res) {
+            this.setAmountErrorMessage(checkResBalance.msg);
+            return
+        }
     }
 }
 

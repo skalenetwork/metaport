@@ -33,7 +33,6 @@ export default function ActionsStepper(props) {
         {props.actionSteps.map((step, _) => (
           <Step key={step.label}>
             <StepLabel className={localStyles.mp__labelStep}>
-              {step}
               {step.label}
             </StepLabel>
             <StepContent>
@@ -53,7 +52,7 @@ export default function ActionsStepper(props) {
                       variant="contained" color="primary" size="medium"
                       className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                       onClick={props.handleNextStep}
-                      disabled={nextStepDisabled || props.amountErrorMessage}
+                      disabled={nextStepDisabled || !!props.amountErrorMessage}
                     >
                       {step.buttonText}
                     </Button>

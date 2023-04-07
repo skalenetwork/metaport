@@ -21,6 +21,7 @@ import erc721Abi from '../metadata/erc721_abi.json';
 import erc721MetaAbi from '../metadata/erc721meta_abi.json';
 import erc1155Abi from '../metadata/erc1155_abi.json';
 import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json';
+import sFuelWrapperAbi from '../metadata/sfuel_wrapper_abi.json';
 
 import mainnetAddresses from '../metadata/addresses/mainnet.json';
 import stagingAddresses from '../metadata/addresses/staging.json';
@@ -34,6 +35,7 @@ import { MetaportConfig } from './interfaces';
 const ERC_ABIS = {
   'erc20': erc20Abi,
   'erc20wrap': erc20WrapperAbi,
+  'sfuelwrap': sFuelWrapperAbi,
   'erc721': erc721Abi,
   'erc721meta': erc721MetaAbi,
   'erc1155': erc1155Abi

@@ -30,6 +30,7 @@ import { fromWei } from '../convertation';
 import TokenData from '../dataclasses/TokenData';
 import * as interfaces from '../interfaces';
 import { addressesEqual } from '../helper';
+import { DEFAULT_ERC20_DECIMALS } from '../constants';
 
 
 debug.enable('*');
@@ -74,6 +75,30 @@ export async function checkERC20Balance(
         const balance = await tokenContract.methods.balanceOf(address).call();
         log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
         const balanceEther = fromWei(balance, tokenData.decimals);
+        if (Number(amount) > Number(balanceEther)) {
+            checkRes.msg = `Current balance: ${balanceEther}`;
+        } else {
+            checkRes.res = true;
+        }
+        return checkRes;
+    } catch (err) {
+        log(err);
+        checkRes.msg = 'Something went wrong, check developer console';
+        return checkRes;
+    }
+}
+
+export async function checkSFuelBalance(
+    address: string,
+    amount: string,
+    sChain: SChain
+): Promise<interfaces.CheckRes> {
+    const checkRes: interfaces.CheckRes = { res: false };
+    if (!amount || Number(amount) === 0) return checkRes;
+    try {
+        const balance = await sChain.web3.eth.getBalance(address);
+        log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
+        const balanceEther = fromWei(balance, DEFAULT_ERC20_DECIMALS);
         if (Number(amount) > Number(balanceEther)) {
             checkRes.msg = `Current balance: ${balanceEther}`;
         } else {

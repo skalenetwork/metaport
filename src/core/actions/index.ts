@@ -33,7 +33,8 @@ import {
     UnWrapERC20S,
     UnWrapERC20S2S,
     TransferERC20M2S,
-    TransferERC20S2M
+    TransferERC20S2M,
+    WrapSFuelERC20S
 } from './erc20';
 import {
     ApproveERC721M,
@@ -87,6 +88,7 @@ export function getActionName(
 // const wrapActions = [ApproveWrapERC20S, WrapERC20S];
 const wrapActions = [WrapERC20S];
 const unwrapActions = [UnWrapERC20S2S];
+const sFuelWrapActions = [WrapSFuelERC20S];
 
 
 export const ACTIONS = {
@@ -123,6 +125,9 @@ export function getActionSteps(
     // TODO: tmp fix
     if (tokenData.unwrappedSymbol && !tokenData.clone && actionName !== 'erc20_unwrap') {
         actionsList.push(...wrapActions);
+    }
+    if (tokenData.wrapsSFuel && !tokenData.clone) {
+        actionsList.push(...sFuelWrapActions);
     }
     actionsList.push(...ACTIONS[actionName]);
     if (tokenData.unwrappedSymbol && tokenData.clone) {

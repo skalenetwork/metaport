@@ -373,7 +373,8 @@ export function Widget(props) {
         moveToHub();
       }
     }
-    if (transferRequestSteps.length !== 0 && transferRequestStep === transferRequestSteps.length - 1) {
+    if (transferRequestSteps && transferRequestSteps.length !== 0 &&
+      transferRequestStep === transferRequestSteps.length - 1) {
       setTransferRequestStatus(TransferRequestStatus.DONE);
     }
   };

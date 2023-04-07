@@ -58,7 +58,12 @@ export async function updateERC20TokenBalances(
             );
             availableTokens.erc20[symbol].balance = balance;
         } else {
-            const balance = await getTokenBalance(
+            const balance = tokenData.wrapsSFuel && !tokenData.clone ? await getSFuelBalance(
+                chainName,
+                sChain1,
+                tokenData.decimals,
+                address
+            ) : await getTokenBalance(
                 chainName,
                 sChain1,
                 symbol,
@@ -96,6 +101,17 @@ export async function getTokenBalance(
 }
 
 
+export async function getSFuelBalance(
+    chainName: string,
+    chain: any,
+    decimals: string,
+    address: string
+): Promise<string> {
+    const balance = await chain.web3.eth.getBalance(address);
+    externalEvents.balance('sfuel', chainName, balance);
+    return fromWei(balance, decimals);
+}
+
 export async function getWrappedTokens(
     sChain: SChain,
     chainName: string,
@@ -107,6 +123,7 @@ export async function getWrappedTokens(
     if (configTokens && configTokens[chainName] && configTokens[chainName].erc20) {
         for (const [_symbol, configToken] of Object.entries(configTokens[chainName].erc20)) {
             if (!configToken.wraps) continue;
+            log(`getting wrapped token info configToken: ${JSON.stringify(configToken)}`)
             const tokenKeyname = getTokenKeyname(configToken.symbol, configToken.address);
             const tokenContract = initContract('erc20wrap', configToken.address, sChain.web3);
             sChain.erc20.addToken(

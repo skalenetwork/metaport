@@ -35,16 +35,11 @@ export * as interfaces from './core/interfaces/index';
 
 export class Metaport {
   constructor(config: interfaces.MetaportConfig) {
-    const widgetEl: HTMLElement = document.getElementById('metaport');
-    const root = createRoot(widgetEl);
-    // TODO: config validation + transformation here
     if (config.openButton === undefined) config.openButton = true;
     if (config.autoLookup === undefined) config.autoLookup = true;
     if (config.skaleNetwork === undefined) config.skaleNetwork = 'mainnet';
     if (config.debug === undefined) config.debug = false;
-    root.render(
-      <Widget config={config} />
-    );
+    createRoot(document.getElementById('metaport')).render(<Widget config={config} />);
   }
 
   transfer(params: interfaces.TransferParams): void {
