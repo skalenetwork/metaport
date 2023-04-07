@@ -16,7 +16,8 @@
   "types": "build/index.d.ts",
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "storybook:export": "storybook build",
+    "build-storybook": "storybook build",
+    "serve-storybook": "serve storybook-static",
     "prepublish": "npm run build",
     "build": "NODE_ENV=production webpack --mode=production",
     "build-stats": " webpack --json > stats.json",
