@@ -1,7 +1,8 @@
 const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+import type { StorybookConfig } from "@storybook/react-webpack5";
 
-const config = {
+const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   core: {
     builder: {
@@ -29,6 +30,8 @@ const config = {
 
     if (config.resolve && config.resolve.alias) {
       const { global, ...alias } = config.resolve.alias
+      // config.resolve.alias['global'] = undefined;
+      // const { ...alias } = config.resolve.alias
       config.resolve.alias = alias
     }
 
@@ -38,10 +41,10 @@ const config = {
         use: ["style-loader", {
           loader: 'css-loader',
           options: {
-            modules: true
-            // sourceMap: true,
-            // importLoaders: 2,
-            // esModule: false
+            modules: true,
+            sourceMap: true,
+            importLoaders: 2,
+            esModule: false
           }
         }, "sass-loader"],
         include: path.resolve(__dirname, "../")
@@ -69,7 +72,9 @@ const config = {
         ],
       });
     }
-    config.plugins.push(new NodePolyfillPlugin());
+    if (config.plugins) {
+      config.plugins.push(new NodePolyfillPlugin());
+    }
     if (config.resolve && config.resolve.extensions) {
       config.resolve.extensions.push(".ts", ".tsx");
     }
