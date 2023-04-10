@@ -142,7 +142,7 @@ export class TransferERC20S2S extends TransferAction {
             tx, block.timestamp, this.chainName1, 'transferToSchain');
         log('TransferERC20S2S:execute - tx completed %O', tx);
 
-        if (this.tokenData.wrapsSFuel && this.tokenData.clone) {        
+        if (this.tokenData.wrapsSFuel && this.tokenData.clone) {
             await this.sChain2.waitETHBalanceChange(
                 this.address,
                 balanceOnDestination
