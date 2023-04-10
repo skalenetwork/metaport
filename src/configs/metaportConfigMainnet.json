@@ -2,6 +2,7 @@
   "skaleNetwork": "mainnet",
   "autoLookup": true,
   "openButton": true,
+  "openOnLoad": true,
   "chains": [
     "mainnet",
     "elated-tan-skat",
