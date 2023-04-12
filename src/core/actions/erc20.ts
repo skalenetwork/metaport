@@ -350,7 +350,10 @@ export class UnWrapERC20S extends Action {
         log('UnWrapERC20S:execute - starting');
         let tx;
         if (this.tokenData.wrapsSFuel) {
-            tx = await this.sChain1.erc20.undoExit(this.tokenData.keyname, { address: this.address });
+            tx = await this.sChain1.erc20.undoExit(
+                this.tokenData.keyname,
+                { address: this.address }
+            );
         } else {
             const amountWei = toWei(this.amount, this.tokenData.decimals);
             tx = await this.sChain1.erc20.unwrap(
