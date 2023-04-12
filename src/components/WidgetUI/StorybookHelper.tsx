@@ -6,6 +6,14 @@ import Button from "@mui/material/Button";
 import { internalEvents } from "../../core/events";
 
 
+const btnStyles = {
+    fontSize: '0.7525rem',
+    lineHeight: '2.6',
+    letterSpacing: '0.02857em',
+    fontWeight: '600',
+    borderRadius: '15px'
+};
+
 const styles = {
     transform: 'scale(1)',
     height: '85vh',
@@ -14,6 +22,37 @@ const styles = {
     boxShadow: 'rgba(0, 0, 0, 0.10) 0 1px 3px 0',
     border: '1px solid hsla(203, 50%, 30%, 0.15)'
 };
+
+
+const ERC20_TR_REQ_SAMPLE = {
+    "amount": "100",
+    "chains": ["mainnet", "staging-perfect-parallel-gacrux"],
+    "tokenKeyname": "_skl_0x2868716b3B4AEa43E8387922AFE71a77D101854e",
+    "tokenType": "erc20",
+    "lockValue": true,
+    "toApp": "ruby"
+};
+
+
+const ERC721_TR_REQ_SAMPLE = {
+    "tokenId": "1",
+    "chains": ["mainnet", "staging-perfect-parallel-gacrux"],
+    "tokenKeyname": "_TST_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6",
+    "tokenType": "erc721meta",
+    "lockValue": true,
+    "toApp": "ruby"
+}
+
+const ERC1155_TR_REQ_SAMPLE = {
+    "tokenId": "1",
+    "amount": "5",
+    "chains": ["mainnet", "staging-perfect-parallel-gacrux"],
+    "tokenKeyname": "_SKALIENS_0x6cb73D413970ae9379560aA45c769b417Fbf33D6",
+    "tokenType": "erc1155",
+    "lockValue": true,
+    "toApp": "ruby"
+}
+
 
 export const storyDecorator = storyFn => <div style={styles}>
     <div style={{ borderBottom: '1px solid hsla(203, 50%, 30%, 0.15)', marginTop: '10px', }}>
@@ -31,17 +70,7 @@ export const storyDecorator = storyFn => <div style={styles}>
 
 
 export const TransferRequestEditor = () => {
-
-    const defaultTrReq = JSON.stringify({
-        "amount": "100",
-        "chains": ["mainnet", "staging-perfect-parallel-gacrux"],
-        "tokenKeyname": "_skl_0x2868716b3B4AEa43E8387922AFE71a77D101854e",
-        "tokenType": "erc20",
-        "lockValue": true,
-        "toApp": "ruby"
-    });
-
-    const [inputValue, setInputValue] = useState(defaultTrReq);
+    const [inputValue, setInputValue] = useState(JSON.stringify(ERC20_TR_REQ_SAMPLE));
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -68,7 +97,7 @@ export const TransferRequestEditor = () => {
             />
             <Button
                 variant="contained"
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
                 onClick={handleButtonClick}
             >
                 Send transfer request
@@ -77,12 +106,38 @@ export const TransferRequestEditor = () => {
             <Button
                 variant="contained"
                 color="warning"
-                style={{ marginTop: "20px", marginLeft: "20px" }}
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
                 onClick={() => internalEvents.reset()}
             >
                 Reset widget
             </Button>
 
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ERC20_TR_REQ_SAMPLE)) }}
+            >
+                Load ERC20 TR REQ
+            </Button>
+
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ERC721_TR_REQ_SAMPLE)) }}
+            >
+                Load ERC721 TR REQ
+            </Button>
+
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ERC1155_TR_REQ_SAMPLE)) }}
+            >
+                Load ERC1155 TR REQ
+            </Button>
 
         </div>
     );

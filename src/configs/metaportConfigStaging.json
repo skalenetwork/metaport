@@ -71,12 +71,12 @@
         "_TST_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6": {
           "address": "0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6",
           "name": "SKALE Space",
-          "symbol": "sps",
+          "symbol": "SPACE",
           "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png"
         }
       },
       "erc1155": {
-        "skaliens": {
+        "_SKALIENS_0x6cb73D413970ae9379560aA45c769b417Fbf33D6": {
           "address": "0x6cb73D413970ae9379560aA45c769b417Fbf33D6",
           "name": "SKALIENS Collection",
           "symbol": "SKALIENS",
