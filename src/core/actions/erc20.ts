@@ -209,9 +209,9 @@ export class ApproveWrapERC20S extends Action {
 
 
 export class WrapSFuelERC20S extends Action {
-    static label = 'Wrap native token'
-    static buttonText = 'Wrap native token'
-    static loadingText = 'Wrapping native token'
+    static label = 'Wrap token'
+    static buttonText = 'Wrap token'
+    static loadingText = 'Wrapping token'
 
     async execute() {
         log('WrapSFuelERC20S:execute - starting');
@@ -348,12 +348,17 @@ export class UnWrapERC20S extends Action {
 
     async execute() {
         log('UnWrapERC20S:execute - starting');
-        const amountWei = toWei(this.amount, this.tokenData.decimals);
-        const tx = await this.sChain1.erc20.unwrap(
-            this.tokenData.keyname,
-            amountWei,
-            { address: this.address }
-        );
+        let tx;
+        if (this.tokenData.wrapsSFuel) {
+            tx = await this.sChain1.erc20.undoExit(this.tokenData.keyname, { address: this.address });
+        } else {
+            const amountWei = toWei(this.amount, this.tokenData.decimals);
+            tx = await this.sChain1.erc20.unwrap(
+                this.tokenData.keyname,
+                amountWei,
+                { address: this.address }
+            );
+        }
         log('UnWrapERC20S:execute - tx completed %O', tx);
         const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
         externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'unwrap');

@@ -1,3 +1,10 @@
+import { useState } from "react";
+
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
+import { internalEvents } from "../../core/events";
+
 
 const styles = {
     transform: 'scale(1)',
@@ -21,3 +28,62 @@ export const storyDecorator = storyFn => <div style={styles}>
     </div>
     {storyFn()}
 </div>;
+
+
+export const TransferRequestEditor = () => {
+
+    const defaultTrReq = JSON.stringify({
+        "amount": "100",
+        "chains": ["mainnet", "staging-perfect-parallel-gacrux"],
+        "tokenKeyname": "_skl_0x2868716b3B4AEa43E8387922AFE71a77D101854e",
+        "tokenType": "erc20",
+        "lockValue": true,
+        "toApp": "ruby"
+    });
+
+    const [inputValue, setInputValue] = useState(defaultTrReq);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    };
+
+    const handleButtonClick = () => {
+        try {
+            const parsedJSON = JSON.parse(inputValue);
+            internalEvents.transfer(parsedJSON);
+        } catch (error) {
+            console.error('Invalid JSON object');
+        }
+    };
+
+    return (
+        <div>
+            <TextField
+                label="Transfer request"
+                multiline
+                rows={8}
+                value={inputValue}
+                onChange={handleInputChange}
+                style={{ width: "100%" }}
+            />
+            <Button
+                variant="contained"
+                style={{ marginTop: "20px" }}
+                onClick={handleButtonClick}
+            >
+                Send transfer request
+            </Button>
+
+            <Button
+                variant="contained"
+                color="warning"
+                style={{ marginTop: "20px", marginLeft: "20px" }}
+                onClick={() => internalEvents.reset()}
+            >
+                Reset widget
+            </Button>
+
+
+        </div>
+    );
+}

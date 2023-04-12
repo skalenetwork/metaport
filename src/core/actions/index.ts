@@ -126,7 +126,7 @@ export function getActionSteps(
     if (tokenData.unwrappedSymbol && !tokenData.clone && actionName !== 'erc20_unwrap') {
         actionsList.push(...wrapActions);
     }
-    if (tokenData.wrapsSFuel && !tokenData.clone) {
+    if (tokenData.wrapsSFuel && !tokenData.clone && actionName !== 'erc20_unwrap') {
         actionsList.push(...sFuelWrapActions);
     }
     actionsList.push(...ACTIONS[actionName]);

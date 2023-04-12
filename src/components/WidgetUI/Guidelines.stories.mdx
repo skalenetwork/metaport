@@ -2,12 +2,19 @@ import {
   Meta,
   ColorPalette,
   ColorItem,
-  Title
+  Title,
+  Subtitle,
 } from "@storybook/blocks";
+import Button from "@mui/material/Button";
 
-<Meta title="SKALE Brand colors" />
+import { clsNames } from "../../core/helper";
+import styles from "../WidgetUI/WidgetUI.scss";
 
-<Title>SKALE Brand colors</Title>
+<Meta title="SKALE Design Guidelines" />
+
+# SKALE Design Guidelines
+
+## SKALE Brand colors
 
 <ColorPalette>
   <ColorItem
@@ -27,3 +34,17 @@ import {
     }}
   />
 </ColorPalette>
+
+## SKALE Components
+
+### Buttons
+
+{/* <div className={clsNames(styles.mp__popup)}>
+  <Button
+    variant="contained"
+    color="primary"
+    size="medium"
+  >
+    Button example
+  </Button>
+</div> */}
