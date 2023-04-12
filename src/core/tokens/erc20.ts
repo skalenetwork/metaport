@@ -122,10 +122,11 @@ export async function getWrappedTokens(
     const wrappedTokens: interfaces.TokenDataTypesMap = getEmptyTokenDataMap();
     if (configTokens && configTokens[chainName] && configTokens[chainName].erc20) {
         for (const [_symbol, configToken] of Object.entries(configTokens[chainName].erc20)) {
-            if (!configToken.wraps) continue;
+            if (!configToken.wraps && !configToken.wrapsSFuel) continue;
             log(`getting wrapped token info configToken: ${JSON.stringify(configToken)}`)
             const tokenKeyname = getTokenKeyname(configToken.symbol, configToken.address);
-            const tokenContract = initContract('erc20wrap', configToken.address, sChain.web3);
+            const tokenAbiType = configToken.wrapsSFuel ? 'sfuelwrap' : 'erc20wrap';
+            const tokenContract = initContract(tokenAbiType, configToken.address, sChain.web3);
             sChain.erc20.addToken(
                 tokenKeyname,
                 tokenContract
@@ -136,6 +137,14 @@ export async function getWrappedTokens(
             );
             log(`token ${tokenKeyname}, address: ${address}, balance: ${balance}`);
             if (balance !== '0') {
+                let wrapsSymbol;
+                let wrapsAddress;
+                let wrapsIconUrl;
+                if (configToken.wraps) {
+                    wrapsSymbol = configToken.wraps.symbol;
+                    wrapsAddress = configToken.wraps.address;
+                    wrapsIconUrl = configToken.wraps.iconUrl;
+                }
                 wrappedTokens.erc20[tokenKeyname] = new TokenData(
                     null,
                     configToken.address,
@@ -146,9 +155,10 @@ export async function getWrappedTokens(
                     configToken.iconUrl,
                     configToken.decimals,
                     TokenType.erc20,
-                    configToken.wraps.symbol,
-                    configToken.wraps.address,
-                    configToken.wraps.iconUrl
+                    wrapsSymbol,
+                    wrapsAddress,
+                    wrapsIconUrl,
+                    configToken.wrapsSFuel
                 );
                 wrappedTokens.erc20[tokenKeyname].balance = fromWei(
                     balance,
