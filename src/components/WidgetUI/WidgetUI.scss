@@ -421,9 +421,6 @@
   letter-spacing: 0.03857em !important;
 }
 
-.mp__errorMessage {
-  color: #ff3737 !important;
-}
 
 .mp__btnConnect {
   width: 100%;
@@ -508,16 +505,6 @@
 
   :global(svg) {
     //width: 20px;
-  }
-}
-
-
-.mp__amountErrorMessage {
-  height: 15px !important;
-  margin-bottom: -5px !important;
-
-  :global(p) {
-    font-size: 0.5525rem !important
   }
 }
 

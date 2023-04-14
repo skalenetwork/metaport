@@ -136,14 +136,14 @@ export default function SFuelWarning(props: {
     async function getFromChainBalance() {
         if (!fromChainWeb3) return;
         const balance = await fromChainWeb3.eth.getBalance(props.address);
-        // log('fromChain sFUEL balance:', balance);
+        // log('> fromChain sFUEL balance:', balance);
         setFromChainSFuel(balance);
     }
 
     async function getToChainBalance() {
         if (!toChainWeb3) return;
         const balance = await toChainWeb3.eth.getBalance(props.address);
-        // log('toChain sFUEL balance:', balance);
+        // log('> toChain sFUEL balance:', balance);
         setToChainSFuel(balance);
     }
 

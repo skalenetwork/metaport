@@ -21,6 +21,7 @@ import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
 import { TransferRequestStatus } from '../../core/dataclasses';
+import AmountErrorMessage from '../AmountErrorMessage';
 
 
 function getTokenDataFromConfig(
@@ -154,6 +155,11 @@ export default function TransferRequest(props) {
         wrappedTokens={props.wrappedTokens}
         setView={props.setView}
       />) : null}
+
+      <AmountErrorMessage
+        amountErrorMessage={props.amountErrorMessage}
+        actionBtnDisabled={props.actionBtnDisabled}
+      />
       <SFuelWarning
         chain1={props.chain1}
         chain2={props.chain2}

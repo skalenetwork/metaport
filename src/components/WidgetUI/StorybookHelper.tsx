@@ -37,7 +37,7 @@ const ERC20_TR_REQ_SAMPLE = {
 const ERC721_TR_REQ_SAMPLE = {
     "tokenId": "1",
     "chains": ["mainnet", "staging-perfect-parallel-gacrux"],
-    "tokenKeyname": "_TST_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6",
+    "tokenKeyname": "_SPACE_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6",
     "tokenType": "erc721meta",
     "lockValue": true,
     "toApp": "ruby"

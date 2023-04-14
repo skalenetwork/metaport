@@ -68,7 +68,7 @@
         }
       },
       "erc721meta": {
-        "_TST_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6": {
+        "_SPACE_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6": {
           "address": "0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6",
           "name": "SKALE Space",
           "symbol": "SPACE",
@@ -122,10 +122,10 @@
         }
       },
       "erc721": {
-        "skaliens": {
+        "_SPS_0x30216880A73B67133F37de35e769b8e1A943D35c": {
           "address": "0x30216880A73B67133F37de35e769b8e1A943D35c",
           "name": "SKALE Space S2S",
-          "symbol": "skl",
+          "symbol": "SPS",
           "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Glowing%20star/3D/glowing_star_3d.png"
         }
       },
@@ -142,10 +142,10 @@
           "symbol": "MEDALS2S",
           "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/1st%20place%20medal/3D/1st_place_medal_3d.png"
         },
-        "animals": {
+        "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
           "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
           "name": "Funny Animals",
-          "symbol": "ANIMALS2S",
+          "symbol": "ANIMALS",
           "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Frog/3D/frog_3d.png"
         }
       }
