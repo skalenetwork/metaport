@@ -98,9 +98,9 @@
       "erc721": {
         "_TANK_0x4aaa1bb85d9339811b65566fa1aae11a8a9db28d": {
           "name": "TANK",
-          "address": "0xd29a08E708319bA387b5Ab6446483D55E2Ba5b6c",
+          "address": "0x4aaa1bb85d9339811b65566fa1aae11a8a9db28d",
           "symbol": "TANK",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Alien/3D/alien_3d.png"
+          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Bomb/3D/bomb_3d.png"
         }
       }
     },
