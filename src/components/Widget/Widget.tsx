@@ -36,6 +36,7 @@ import TokenData from '../../core/dataclasses/TokenData';
 import { TransferRequestStatus } from '../../core/dataclasses/TransferRequestStatus';
 import { View } from '../../core/dataclasses/View';
 import { MetaportTheme } from '../../core/interfaces/Theme';
+import { TokenType } from '../../core/dataclasses';
 
 
 debug.enable('*');
@@ -300,10 +301,42 @@ export function Widget(props) {
   function transferHandler(e) {
     resetWidgetState(false);
     const params: interfaces.TransferParams = e.detail.params;
-    // TODO: tmp fix for 1.1.0
-    // if (params.lockValue === undefined || params.lockValue === null) {
-    params.lockValue = true;
-    // }
+
+    const {
+      tokenType,
+      tokenId,
+      amount,
+    } = params;
+
+    if (tokenType === TokenType.erc20 || tokenType === TokenType.erc1155) {
+      if (!amount) {
+        log('! ERROR: amount is required for this token type');
+        return;
+      }
+      if (tokenType === TokenType.erc20 && tokenId) {
+        log('! WARNING: tokenId will be ignored for this token type');
+        params.tokenId = undefined;
+      }
+    }
+
+    if (
+      tokenType === TokenType.erc721 ||
+      tokenType === TokenType.erc721meta ||
+      tokenType === TokenType.erc1155
+    ) {
+      if (!tokenId) {
+        log('! ERROR: tokenId is required for this token type');
+      }
+      if (
+        (tokenType === TokenType.erc721 || tokenType === TokenType.erc721meta) &&
+        amount
+      ) {
+        log('! WARNING: amount will be ignored for this token type');
+        params.amount = undefined;
+      }
+    }
+
+    params.lockValue = true; // todo: tmp fix
     setTransferRequestStatus(TransferRequestStatus.RECEIVED);
     setTransferRequest(params);
     setView(View.TRANSFER_REQUEST_SUMMARY);
