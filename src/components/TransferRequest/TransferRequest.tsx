@@ -21,6 +21,7 @@ import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
 import { TransferRequestStatus } from '../../core/dataclasses';
+import AmountErrorMessage from '../AmountErrorMessage';
 
 
 function getTokenDataFromConfig(
@@ -99,6 +100,10 @@ export default function TransferRequest(props) {
     }
   };
 
+  const showAmount = trReq.lockValue && trReq.amount;
+  let amountText = showAmount ? `${trReq.amount} ${token.symbol}` : token.symbol;
+  amountText += trReq.tokenId ? ` (#${trReq.tokenId})` : '';
+
   return (
     <div>
       <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
@@ -108,17 +113,8 @@ export default function TransferRequest(props) {
           src={getIconSrc(token)}
         />
         <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount, styles.mp__flexGrow)}>
-          {trReq.lockValue ? trReq.amount + ' ' + token.symbol : token.symbol}
+          {amountText}
         </h2>
-        {/* <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
-          <IconButton
-            size="small"
-            color="primary"
-            onClick={() => { props.setView(View.SANDBOX) }}
-          >
-            <CloseIcon className={styles.mp__backIcon} />
-          </IconButton>
-        </div> */}
       </div>
       <Route
         config={props.config}
@@ -140,7 +136,7 @@ export default function TransferRequest(props) {
 
       <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE}>
         <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
-          💫 You've successfully transferred {trReq.amount} {token.symbol ? token.symbol.toUpperCase() : ''} from {fromChainName} to {toChainName}.
+          💫 You've successfully transferred {amountText} from {fromChainName} to {toChainName}.
         </p>
         <Button
           onClick={() => {
@@ -159,6 +155,11 @@ export default function TransferRequest(props) {
         wrappedTokens={props.wrappedTokens}
         setView={props.setView}
       />) : null}
+
+      <AmountErrorMessage
+        amountErrorMessage={props.amountErrorMessage}
+        actionBtnDisabled={props.actionBtnDisabled}
+      />
       <SFuelWarning
         chain1={props.chain1}
         chain2={props.chain2}
