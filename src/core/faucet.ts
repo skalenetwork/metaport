@@ -39,7 +39,7 @@ function getFunc(chainName: string, skaleNetwork: string) {
 
 export function isFaucetAvailable(chainName: string, skaleNetwork: string) {
     if (!FAUCET_DATA[skaleNetwork]) return false;
-    let keys = Object.keys(FAUCET_DATA[skaleNetwork]);
+    const keys = Object.keys(FAUCET_DATA[skaleNetwork]);
     return keys.includes(chainName);
 }
 
