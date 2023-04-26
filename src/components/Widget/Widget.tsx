@@ -27,7 +27,7 @@ import { externalEvents } from '../../core/events';
 import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
 import { ActionType } from '../../core/actions/action';
-import { getSFuelData } from '../../core/sfuel';
+
 import { isTransferRequestActive } from '../../core/helper';
 import { getTransferSteps } from '../../core/transferSteps';
 
@@ -151,7 +151,6 @@ export function Widget(props) {
 
   useEffect(() => {
     if (props.config.tokens) checkWrappedTokens();
-    initSFuelData();
     if (((sChain1 && sChain2) || (sChain1 && mainnet) || (mainnet && sChain2))) {
       externalEvents.connected();
       setToken(undefined);
@@ -490,45 +489,6 @@ export function Widget(props) {
     if (defaultToken && view === View.UNWRAP) {
       log(`Setting defaultToken: ${defaultToken.keyname} from wrappedTokens`)
       setToken(defaultToken);
-    }
-  }
-
-  async function initSFuelData() {
-    if (sChain1 && chainName1) {
-      log(`_MP_INFO: initSFuelData - ${chainName1}`);
-      try {
-        const sFuelData1 = await getSFuelData(
-          props.config.chainsMetadata,
-          chainName1,
-          sChain1.web3,
-          address
-        );
-        setSFuelData1(sFuelData1);
-      } catch (err) {
-        log(`_MP_ERROR: getSFuelData for ${chainName1} failed`);
-        log(err);
-        setSFuelData1({});
-      }
-    } else {
-      setSFuelData1({});
-    }
-    if (sChain2 && chainName2) {
-      log(`_MP_INFO: initSFuelData - ${chainName2}`);
-      try {
-        const sFuelData2 = await getSFuelData(
-          props.config.chainsMetadata,
-          chainName2,
-          sChain2.web3,
-          address
-        );
-        setSFuelData2(sFuelData2);
-      } catch (err) {
-        log(`_MP_ERROR: getSFuelData for ${chainName2} failed`);
-        log(err);
-        setSFuelData2({});
-      }
-    } else {
-      setSFuelData2({});
     }
   }
 

@@ -238,9 +238,6 @@
 
 
 .darkTheme {
-  .mp__chainName {
-    color: white !important;
-  }
 
   .eth-logo {
     filter: invert(1) contrast(1.5);
@@ -254,6 +251,11 @@
   .mp__infoIcon,
   .mp__backIcon {
     color: rgb(255 255 255 / 65%) !important;
+  }
+
+  .mp__chainName,
+  .mp__pWhite {
+    color: white !important;
   }
 
   .mp__textGray,

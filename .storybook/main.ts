@@ -1,40 +1,32 @@
 const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 import type { StorybookConfig } from "@storybook/react-webpack5";
-
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  core: {
-    builder: {
-      name: '@storybook/builder-webpack5',
-      options: {
-        lazyCompilation: true,
-      },
-    }
-  },
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/preset-create-react-app",
-    "@storybook/addon-interactions",
-  ],
+  core: {},
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/preset-create-react-app", "@storybook/addon-interactions"],
   framework: {
     name: "@storybook/react-webpack5",
-    options: {},
+    options: {
+      builder: {
+        lazyCompilation: true
+      }
+    }
   },
   docs: {
-    autodocs: "tag",
+    autodocs: "tag"
   },
   staticDirs: ["../build"],
-  webpackFinal: async (config) => {
-
+  webpackFinal: async config => {
     if (config.resolve && config.resolve.alias) {
-      const { global, ...alias } = config.resolve.alias
+      const {
+        global,
+        ...alias
+      } = config.resolve.alias;
       // config.resolve.alias['global'] = undefined;
       // const { ...alias } = config.resolve.alias
-      config.resolve.alias = alias
+      config.resolve.alias = alias;
     }
-
     if (config.module && config.module.rules) {
       config.module.rules.push({
         test: /\.scss$/,
@@ -62,14 +54,12 @@ const config: StorybookConfig = {
       });
       config.module.rules.push({
         test: /\.svg$/,
-        use: [
-          {
-            loader: 'svg-url-loader',
-            options: {
-              limit: 10000,
-            },
-          },
-        ],
+        use: [{
+          loader: 'svg-url-loader',
+          options: {
+            limit: 10000
+          }
+        }]
       });
     }
     if (config.plugins) {
@@ -91,7 +81,8 @@ const config: StorybookConfig = {
         //...config.resolve.fallback,
       };
     }
+
     return config;
-  },
+  }
 };
 export default config;

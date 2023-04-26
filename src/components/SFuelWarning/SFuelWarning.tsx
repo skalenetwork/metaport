@@ -25,19 +25,25 @@
 import React, { useEffect } from 'react';
 import debug from 'debug';
 
-import Web3 from 'web3';
-
 import Button from '@mui/material/Button';
 
-import { initChainWeb3 } from '../../core/core';
-import { Collapse } from '@mui/material';
-import { MAINNET_CHAIN_NAME, SFUEL_CHEKCS_INTERVAL, SFUEL_TEXT } from '../../core/constants';
+import LoadingButton from '@mui/lab/LoadingButton';
 
+import { Collapse } from '@mui/material';
+import {
+    MAINNET_CHAIN_NAME,
+    SFUEL_CHEKCS_INTERVAL,
+    SFUEL_TEXT,
+    DEFAULT_FAUCET_URL
+} from '../../core/constants';
 
 import { clsNames } from '../../core/helper';
+import { Station, StationData } from '../../core/sfuel';
 import styles from "../WidgetUI/WidgetUI.scss";
 import { TransferParams } from 'core/interfaces';
 import { View } from '../../core/dataclasses/View';
+
+import CustomStationUrl from '../CustomStationUrl';
 
 
 debug.enable('*');
@@ -70,54 +76,66 @@ export default function SFuelWarning(props: {
     }
 
     const [loading, setLoading] = React.useState<boolean>(true);
-    const [fromChainWeb3, setFromChainWeb3] = React.useState<Web3>();
-    const [toChainWeb3, setToChainWeb3] = React.useState<Web3>();
-    const [hubChainWeb3, setHubChainWeb3] = React.useState<Web3>();
+    const [mining, setMining] = React.useState<boolean>(false);
+
+    const [fromChainStation, setFromChainStation] = React.useState<Station>();
+    const [toChainStation, setToChainStation] = React.useState<Station>();
+    const [hubChainStation, setHubChainStation] = React.useState<Station>();
 
     const [updateBalanceTime, setUpdateBalanceTime] = React.useState<number>(Date.now());
 
-    const [fromChainSFuel, setFromChainSFuel] = React.useState<string>();
-    const [toChainSFuel, setToChainSFuel] = React.useState<string>();
-    const [hubChainSFuel, setHubChainSFuel] = React.useState<string>();
+    const [fromStationData, setFromStationData] = React.useState<StationData>();
+    const [toStationData, setToStationData] = React.useState<StationData>();
+    const [hubStationData, setHubStationData] = React.useState<StationData>();
 
     const [sFuelStatus, setSFuelStatus] = React.useState<'action' | 'warning' | 'error'>('action');
 
     useEffect(() => {
         if (!fromChain || !toChain || !props.address) return;
         log('Initializing SFuelWarning web3', fromChain, toChain, hubChain, props.address);
-        setFromChainWeb3(initChainWeb3(props.config, fromChain));
-        setToChainWeb3(initChainWeb3(props.config, toChain));
+
+        setFromChainStation(new Station(
+            fromChain,
+            props.config.skaleNetwork,
+            props.config.mainnetEndpoint,
+            props.config.chainsMetadata
+        ));
+
+        setToChainStation(new Station(
+            toChain,
+            props.config.skaleNetwork,
+            props.config.mainnetEndpoint,
+            props.config.chainsMetadata
+        ));
+
         if (hubChain) {
-            setHubChainWeb3(initChainWeb3(props.config, hubChain));
+            setHubChainStation(new Station(
+                hubChain,
+                props.config.skaleNetwork,
+                props.config.mainnetEndpoint,
+                props.config.chainsMetadata
+            ));
         }
-        const interval = setInterval(() => setUpdateBalanceTime(Date.now()), SFUEL_CHEKCS_INTERVAL * 1000);
+
+        const interval = setInterval(
+            () => setUpdateBalanceTime(Date.now()), SFUEL_CHEKCS_INTERVAL * 1000);
         return () => clearInterval(interval);
     }, [fromChain, toChain, hubChain]);
 
-    useEffect(() => {
-        getFromChainBalance();
-    }, [fromChainWeb3]);
+    useEffect(() => { updateFromStationData(); }, [fromChainStation]);
+    useEffect(() => { updateToStationData(); }, [toChainStation]);
+    useEffect(() => { updateHubStationData(); }, [hubChainStation]);
+
+    useEffect(() => { updateBalances(); }, [updateBalanceTime, props.address]);
 
     useEffect(() => {
-        getToChainBalance();
-    }, [toChainWeb3]);
-
-    useEffect(() => {
-        getHubChainBalance();
-    }, [hubChainWeb3]);
-
-    useEffect(() => {
-        updateBalances();
-    }, [updateBalanceTime, props.address]);
-
-    useEffect(() => {
-        if (!fromChainSFuel || !toChainSFuel) return;
+        if (!fromStationData || !toStationData) return;
         setLoading(true);
-        if (fromChainSFuel === '0' || (hubChainSFuel && hubChainSFuel === '0')) {
+        if (!fromStationData.ok || (hubStationData && !hubStationData.ok)) {
             setSFuelStatus('error');
             props.setSFuelOk(false);
         } else {
-            if (toChainSFuel === '0') {
+            if (!toStationData.ok) {
                 setSFuelStatus('warning');
             } else {
                 setSFuelStatus('action');
@@ -125,50 +143,101 @@ export default function SFuelWarning(props: {
             props.setSFuelOk(true);
         }
         setLoading(false);
-    }, [fromChainSFuel, toChainSFuel, hubChainSFuel]);
+    }, [fromStationData, toStationData, hubStationData]);
 
     function updateBalances() {
-        getFromChainBalance();
-        getToChainBalance();
-        getHubChainBalance();
+        updateFromStationData();
+        updateToStationData();
+        updateHubStationData();
     }
 
-    async function getFromChainBalance() {
-        if (!fromChainWeb3) return;
-        const balance = await fromChainWeb3.eth.getBalance(props.address);
-        // log('> fromChain sFUEL balance:', balance);
-        setFromChainSFuel(balance);
+    async function updateFromStationData() {
+        if (!fromChainStation) return;
+        setFromStationData(await fromChainStation.getData(props.address));
     }
 
-    async function getToChainBalance() {
-        if (!toChainWeb3) return;
-        const balance = await toChainWeb3.eth.getBalance(props.address);
-        // log('> toChain sFUEL balance:', balance);
-        setToChainSFuel(balance);
+    async function updateToStationData() {
+        if (!toChainStation) return;
+        setToStationData(await toChainStation.getData(props.address));
     }
 
-    async function getHubChainBalance() {
-        if (!hubChainWeb3) return;
-        const balance = await hubChainWeb3.eth.getBalance(props.address);
-        // log('hubChain sFUEL balance:', balance);
-        setHubChainSFuel(balance);
+    async function updateHubStationData() {
+        if (!hubChainStation) return;
+        setHubStationData(await hubChainStation.getData(props.address));
     }
 
-    const noEth = (fromChainSFuel === '0' && fromChain === MAINNET_CHAIN_NAME);
+    async function doPoW() {
+        let fromPowRes;
+        let toPowRes;
+        let hubPowRes;
+
+        setMining(true);
+
+        if (fromStationData && !fromStationData.ok) {
+            log(`Doing PoW on ${fromChainStation.chainName}`);
+            fromPowRes = await fromChainStation.doPoW(props.address);
+        }
+        if (toStationData && !toStationData.ok) {
+            log(`Doing PoW on ${toChainStation.chainName}`);
+            toPowRes = await toChainStation.doPoW(props.address);
+        }
+        if (hubStationData && !hubStationData.ok) {
+            log(`Doing PoW on ${hubChainStation.chainName}`);
+            hubPowRes = await hubChainStation.doPoW(props.address);
+        }
+
+        if (
+            (fromPowRes && !fromPowRes.ok) ||
+            (toPowRes && !toPowRes.ok) ||
+            (hubPowRes && !hubPowRes.ok)
+        ) {
+            log('PoW failed!');
+            if (fromPowRes) log(fromChain, fromPowRes.message);
+            if (toPowRes) log(toChain, toPowRes.message);
+            if (hubPowRes) log(hubChain, hubPowRes.message);
+            window.open(DEFAULT_FAUCET_URL, '_blank');
+        }
+
+        await updateFromStationData();
+        await updateToStationData();
+        await updateHubStationData();
+        setMining(false);
+    }
+
+    const noEth = (fromStationData && !fromStationData.ok && fromChain === MAINNET_CHAIN_NAME);
 
     return (<Collapse in={!loading && sFuelStatus !== 'action'} className='mp__noMarg'>
-        <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margTop20)}>
+        <p className={clsNames(
+            styles.mp__flex,
+            styles.mp__p3,
+            styles.mp__p,
+            styles.mp__flexGrow,
+            styles.mp__margTop20
+        )}>
             ⛽ {noEth ? SFUEL_TEXT['gas'][sFuelStatus] : SFUEL_TEXT['sfuel'][sFuelStatus]}
         </p>
         {
-            !noEth ? (<Button
-                variant="contained" color="primary" size="medium"
-                className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
-                target="_blank"
-                href='https://sfuel.skale.network/'
-            >
-                Get sFUEL
-            </Button>) : null
+            !noEth ? (<div>
+                {mining ? <LoadingButton
+                    loading
+                    loadingPosition="start"
+                    size='small'
+                    variant='contained'
+                    className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+                >
+                    Getting sFUEL...
+                </LoadingButton> : <Button
+                    variant="contained" color="primary" size="medium"
+                    className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+                    onClick={doPoW}
+                >
+                    Get sFUEL
+                </Button>}
+                <CustomStationUrl stationData={fromStationData} type='source' />
+                <CustomStationUrl stationData={toStationData} type='destination' />
+                <CustomStationUrl stationData={hubStationData} type='hub' />
+            </div>
+            ) : null
         }
     </Collapse>)
 }
