@@ -52,6 +52,19 @@ const actionIcons: { [actionName: string]: ReactElement; } = {
     'approveWrap': <DoneRoundedIcon />,
 }
 
+
+const actionAliases: { [actionName: string]: string; } = {
+    'deposit': 'Deposit',
+    'transferToSchain': 'Transfer',
+    'wrap': 'Wrap',
+    'unwrap': 'Unwrap',
+    'getMyEth': 'Unlock ETH',
+    'withdraw': 'Withdraw',
+    'approve': 'Approve',
+    'approveWrap': 'Approve wrap'
+}
+
+
 export default function TransactionData(props: {
     transactionData: TransactionHistory,
     config: MetaportConfig
@@ -75,7 +88,7 @@ export default function TransactionData(props: {
         <div className={clsNames(styles.mp__margLeft20, styles.mp__flexGrow, styles.mp__flex)}>
             <div>
                 <p className={clsNames(styles.mp__p, styles.mp__p2, styles.mp__capitalize, styles.sk__colorText)}>
-                    {props.transactionData.txName}
+                    {actionAliases[props.transactionData.txName]}
                 </p>
                 <p className={clsNames(styles.mp__p, styles.mp__p3)}>
                     {new Date(props.transactionData.timestamp * 1000).toUTCString()}

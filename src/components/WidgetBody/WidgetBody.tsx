@@ -76,7 +76,7 @@ export default function WidgetBody(props) {
 
       <TransactionsHistory
         transactionsHistory={props.transactionsHistory}
-        setTransactionsHistory={props.setTransactionsHistory}
+        clearTransactionsHistory={props.clearTransactionsHistory}
         config={props.config}
         setExpanded={setExpandedHistory}
         expanded={expandedHistory}
@@ -143,13 +143,12 @@ export default function WidgetBody(props) {
       }>
         <TransactionsHistory
           transactionsHistory={props.transactionsHistory}
-          setTransactionsHistory={props.setTransactionsHistory}
+          clearTransactionsHistory={props.clearTransactionsHistory}
           config={props.config}
           setExpanded={setExpandedHistory}
           expanded={expandedHistory}
         />
       </Collapse>
-
     </div >
   )
 }

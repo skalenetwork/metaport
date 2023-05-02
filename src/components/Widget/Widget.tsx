@@ -116,11 +116,10 @@ export function Widget(props) {
     addAccountChangedListener(accountsChangedFallback);
     addChainChangedListener(chainChangedFallback);
     addinternalEventsListeners();
-    window.addEventListener(
-      "metaport_transactionCompleted",
-      transactionCompleted,
-      false
-    );
+    updateTransactionCompletedEventListener();
+    return () => {
+      window.removeEventListener('metaport_transactionCompleted', transactionCompleted, false);
+    };
   }, []);
 
   useEffect(() => {
@@ -268,11 +267,26 @@ export function Widget(props) {
     }
   }, [extChainId, chainId, token, activeStep, transferRequest, view]);
 
+
+  useEffect(() => {
+    updateTransactionCompletedEventListener()
+  }, [transactionsHistory]);
+
   // FALLBACKS & HANDLERS
 
-  async function transactionCompleted(e: any) {
+  function transactionCompleted(e: any) {
     transactionsHistory.push(e.detail); // todo: fix
     setTransactionsHistory([...transactionsHistory]);
+  }
+
+  function updateTransactionCompletedEventListener() {
+    window.removeEventListener("metaport_transactionCompleted", transactionCompleted, false);
+    window.addEventListener("metaport_transactionCompleted", transactionCompleted, false);
+  }
+
+  function clearTransactionsHistory() {
+    updateTransactionCompletedEventListener();
+    setTransactionsHistory([]);
   }
 
   function addinternalEventsListeners() {
@@ -738,6 +752,6 @@ export function Widget(props) {
     resetWidgetState={resetWidgetState}
 
     transactionsHistory={transactionsHistory}
-    setTransactionsHistory={setTransactionsHistory}
+    clearTransactionsHistory={clearTransactionsHistory}
   />)
 }

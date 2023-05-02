@@ -154,7 +154,7 @@ export default function TransferRequest(props) {
 
       <TransactionsHistory
         transactionsHistory={props.transactionsHistory}
-        setTransactionsHistory={props.setTransactionsHistory}
+        clearTransactionsHistory={props.clearTransactionsHistory}
         config={props.config}
         setExpanded={props.setExpandedHistory}
         expanded={props.expandedHistory}

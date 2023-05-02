@@ -77,7 +77,13 @@ export default function TransferUI(props) {
 
       <Collapse in={props.chain1 && props.chain2}>
         <Collapse in={!!props.expandedTokens}>
-          <p className={clsNames(styles.mp__p3, styles.mp__p, styles.mp__margBott5, styles.mp__margTop20Pt)}>
+          <p className={clsNames(
+            styles.mp__p3,
+            styles.mp__p,
+            styles.mp__margBott5,
+            styles.mp__margTop20Pt,
+            styles.sk__uppercase
+          )}>
             Token
           </p>
         </Collapse>

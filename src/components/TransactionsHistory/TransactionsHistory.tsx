@@ -43,7 +43,7 @@ import styles from "../WidgetUI/WidgetUI.scss";
 
 export default function TransactionsHistory(props: {
     transactionsHistory: TransactionHistory[],
-    setTransactionsHistory: any,
+    clearTransactionsHistory: any,
     config: MetaportConfig,
     setExpanded: any,
     expanded: string | false,
@@ -55,8 +55,8 @@ export default function TransactionsHistory(props: {
             props.setExpanded(isExpanded ? panel : false);
         };
 
-    function clearTransferHistory() { 
-        props.setTransactionsHistory([]);
+    function clearTransferHistory() {
+        props.clearTransactionsHistory();
         props.setExpanded(false);
     }
 
@@ -82,7 +82,7 @@ export default function TransactionsHistory(props: {
                         <HistoryRoundedIcon />
                     </div>
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
-                        Mined transactions
+                        Completed transactions
                     </p>
                 </div>
             </AccordionSummary>
