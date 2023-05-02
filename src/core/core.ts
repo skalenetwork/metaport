@@ -197,20 +197,24 @@ export function remove0x(s: any) {
 
 export function initChainWeb3(config: MetaportConfig, chainName: string): Web3 {
   log(`Initializing web3 instance for ${chainName}`);
-  const endpoint = getChainEndpoint(config, chainName);
+  const endpoint = getChainEndpoint(chainName, config.mainnetEndpoint, config.skaleNetwork);
   return initWeb3(endpoint);
 }
 
 
-function initWeb3(endpoint: string) {
+export function initWeb3(endpoint: string) {
   const provider = new Web3.providers.HttpProvider(endpoint);
   return new Web3(provider);
 }
 
 
-function getChainEndpoint(config: MetaportConfig, chainName: string): string {
+export function getChainEndpoint(
+  chainName: string,
+  mainnetEndpoint: string,
+  skaleNetwork: string
+): string {
   if (chainName === MAINNET_CHAIN_NAME) {
-    return config.mainnetEndpoint;
+    return mainnetEndpoint;
   }
-  return getProxyEndpoint(config.skaleNetwork) + '/v1/' + chainName;
+  return getProxyEndpoint(skaleNetwork) + '/v1/' + chainName;
 }

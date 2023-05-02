@@ -84,3 +84,10 @@ export const SFUEL_TEXT = {
         'error': 'You need ETH to perform a transfer'
     }
 };
+
+// faucet constants
+
+export const ZERO_FUNCSIG = '0x00000000';
+
+import faucetJson from '../metadata/faucet.json';
+export const FAUCET_DATA = faucetJson;

@@ -262,7 +262,6 @@
 
 
 .darkTheme {
-
   .br__action_deposit {
     background-image: linear-gradient(45deg, #8A463C 0%, #b02d50 100%);
   }
@@ -318,7 +317,9 @@
     color: rgb(255 255 255 / 65%) !important;
   }
 
-  .sk__colorText {
+  .sk__colorText,
+  .mp__chainName,
+  .mp__pWhite {
     color: white !important;
   }
 
@@ -680,6 +681,6 @@
   text-transform: uppercase !important;
 }
 
-.sk__skeleton{
+.sk__skeleton {
   border-radius: $sk-border-radius !important;
 }

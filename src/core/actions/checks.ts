@@ -50,7 +50,7 @@ export async function checkEthBalance( // TODO: optimize balance checks
         log(`address: ${address}, eth balance: ${balance}, amount: ${amount}`);
         const balanceEther = fromWei(balance, tokenData.decimals);
         if (Number(amount) > Number(balanceEther)) {
-            checkRes.msg = `Current balance: ${balanceEther}`;
+            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.symbol}`;
         } else {
             checkRes.res = true;
         }
@@ -76,7 +76,7 @@ export async function checkERC20Balance(
         log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
         const balanceEther = fromWei(balance, tokenData.decimals);
         if (Number(amount) > Number(balanceEther)) {
-            checkRes.msg = `Current balance: ${balanceEther}`;
+            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.symbol}`;
         } else {
             checkRes.res = true;
         }
