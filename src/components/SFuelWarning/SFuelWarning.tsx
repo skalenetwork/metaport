@@ -213,7 +213,7 @@ export default function SFuelWarning(props: {
             styles.mp__p,
             styles.mp__flexGrow,
             styles.mp__margTop20,
-            styles.sk__uppercasse
+            styles.sk__uppercase
         )}>
             ⛽ {noEth ? SFUEL_TEXT['gas'][sFuelStatus] : SFUEL_TEXT['sfuel'][sFuelStatus]}
         </p>
