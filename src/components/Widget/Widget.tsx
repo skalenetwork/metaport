@@ -36,6 +36,7 @@ import TokenData from '../../core/dataclasses/TokenData';
 import { TransferRequestStatus } from '../../core/dataclasses/TransferRequestStatus';
 import { View } from '../../core/dataclasses/View';
 import { MetaportTheme } from '../../core/interfaces/Theme';
+import { TransactionHistory } from '../../core/interfaces';
 import { TokenType } from '../../core/dataclasses';
 
 
@@ -106,6 +107,7 @@ export function Widget(props) {
   const [errorMessage, setErrorMessage] = React.useState(undefined);
   const [amountErrorMessage, setAmountErrorMessage] = React.useState<string>(undefined);
 
+  const [transactionsHistory, setTransactionsHistory] = React.useState<TransactionHistory[]>([]);
 
   // EFFECTS
 
@@ -114,6 +116,11 @@ export function Widget(props) {
     addAccountChangedListener(accountsChangedFallback);
     addChainChangedListener(chainChangedFallback);
     addinternalEventsListeners();
+    window.addEventListener(
+      "metaport_transactionCompleted",
+      transactionCompleted,
+      false
+    );
   }, []);
 
   useEffect(() => {
@@ -263,6 +270,11 @@ export function Widget(props) {
   }, [extChainId, chainId, token, activeStep, transferRequest, view]);
 
   // FALLBACKS & HANDLERS
+
+  async function transactionCompleted(e: any) {
+    transactionsHistory.push(e.detail); // todo: fix
+    setTransactionsHistory([...transactionsHistory]);
+  }
 
   function addinternalEventsListeners() {
     window.addEventListener("_metaport_transfer", transferHandler, false);
@@ -764,5 +776,8 @@ export function Widget(props) {
     extChainId={extChainId}
 
     resetWidgetState={resetWidgetState}
+
+    transactionsHistory={transactionsHistory}
+    setTransactionsHistory={setTransactionsHistory}
   />)
 }

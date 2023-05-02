@@ -12,6 +12,7 @@ import TransferUI from '../TransferUI';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import TransferRequest from '../TransferRequest';
 import SFuelWarning from '../SFuelWarning';
+import TransactionsHistory from '../TransactionsHistory';
 
 
 export default function WidgetBody(props) {
@@ -19,6 +20,7 @@ export default function WidgetBody(props) {
   const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
+  const [expandedHistory, setExpandedHistory] = React.useState<string | false>(false);
 
   // TODO: tmp wrap tokens fix
   const wrapTransferAction = props.actionSteps && props.actionSteps.length === 2 && props.activeStep > 0;
@@ -30,6 +32,8 @@ export default function WidgetBody(props) {
   if (isTransferRequestView(props.view)) {
     return <TransferRequest
       disabledChains={props.disabledChains}
+      setExpandedHistory={setExpandedHistory}
+      expandedHistory={expandedHistory}
       theme={props.theme}
       {...props}
     />
@@ -69,58 +73,83 @@ export default function WidgetBody(props) {
         setExpandedTo={setExpandedTo}
         setExpandedTokens={setExpandedTokens}
       />
+
+      <TransactionsHistory
+        transactionsHistory={props.transactionsHistory}
+        setTransactionsHistory={props.setTransactionsHistory}
+        config={props.config}
+        setExpanded={setExpandedHistory}
+        expanded={expandedHistory}
+      />
     </div>
   }
 
   return (
     <div>
-      <CurrentChain
-        schains={props.config.chains}
-        setChain={props.setChain1}
-        chain={props.chain1}
-        disabledChain={props.chain2}
-        fromChain={true}
-        config={props.config}
-        disabled={props.disabledChains}
 
-        theme={props.theme}
-        expanded={expandedFrom}
-        setExpanded={setExpandedFrom}
+      <Collapse in={!expandedHistory}>
+        <CurrentChain
+          schains={props.config.chains}
+          setChain={props.setChain1}
+          chain={props.chain1}
+          disabledChain={props.chain2}
+          fromChain={true}
+          config={props.config}
+          disabled={props.disabledChains}
 
-        expandedTo={expandedTo}
-        expandedTokens={expandedTokens}
+          theme={props.theme}
+          expanded={expandedFrom}
+          setExpanded={setExpandedFrom}
 
-        sFuelData={props.sFuelData1}
-      />
-      <TransferUI
-        {...props}
-        expandedFrom={expandedFrom}
-        expandedTo={expandedTo}
-        expandedTokens={expandedTokens}
-        setExpandedFrom={setExpandedFrom}
-        setExpandedTo={setExpandedTo}
-        setExpandedTokens={setExpandedTokens}
-      />
-      <SFuelWarning
-        chain1={props.chain1}
-        chain2={props.chain2}
-        transferRequest={props.transferRequest}
-        config={props.config}
-        address={props.address}
-        setSFuelOk={props.setSFuelOk}
-        view={props.view}
-      />
+          expandedTo={expandedTo}
+          expandedTokens={expandedTokens}
+
+          sFuelData={props.sFuelData1}
+        />
+        <TransferUI
+          {...props}
+          expandedFrom={expandedFrom}
+          expandedTo={expandedTo}
+          expandedTokens={expandedTokens}
+          setExpandedFrom={setExpandedFrom}
+          setExpandedTo={setExpandedTo}
+          setExpandedTokens={setExpandedTokens}
+        />
+        <SFuelWarning
+          chain1={props.chain1}
+          chain2={props.chain2}
+          transferRequest={props.transferRequest}
+          config={props.config}
+          address={props.address}
+          setSFuelOk={props.setSFuelOk}
+          view={props.view}
+        />
+        <Collapse in={
+          !expandedFrom &&
+          !expandedTo &&
+          !expandedTokens &&
+          !wrapTransferAction
+        }>
+          <WrappedTokensWarning
+            wrappedTokens={props.wrappedTokens}
+            setView={props.setView}
+          />
+        </Collapse>
+      </Collapse>
       <Collapse in={
         !expandedFrom &&
         !expandedTo &&
-        !expandedTokens &&
-        !wrapTransferAction
+        !expandedTokens
       }>
-        <WrappedTokensWarning
-          wrappedTokens={props.wrappedTokens}
-          setView={props.setView}
+        <TransactionsHistory
+          transactionsHistory={props.transactionsHistory}
+          setTransactionsHistory={props.setTransactionsHistory}
+          config={props.config}
+          setExpanded={setExpandedHistory}
+          expanded={expandedHistory}
         />
       </Collapse>
+
     </div >
   )
 }

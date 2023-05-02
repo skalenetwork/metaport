@@ -43,6 +43,19 @@ export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...';
 export const DEFAULT_MP_MARGIN = '20pt';
 export const DEFAULT_MP_Z_INDEX = 99000;
 
+export const HTTPS_PREFIX = 'https://';
+
+export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
+    mainnet: 'https://etherscan.io',
+    staging3: 'https://goerli.etherscan.io/',
+    legacy: 'https://goerli.etherscan.io/'
+};
+
+export const BASE_EXPLORER_URLS = {
+    mainnet: "explorer.mainnet.skalenodes.com",
+    staging3: "explorer.staging-v3.skalenodes.com",
+    legacy: "explorer.staging-v3.skalenodes.com"
+};
 
 // ETA constants
 

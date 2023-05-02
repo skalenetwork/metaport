@@ -56,7 +56,7 @@ export default function TransferUI(props) {
             styles.mp__flexGrow,
             (props.expandedTo ? styles.mp__transferToFix : null)
           )}>
-            to
+            TO
           </p>
           {/* <div className={styles.mp__flex}>
             <SFuelBadge from={false} data={props.sFuelData2} />
@@ -83,13 +83,14 @@ export default function TransferUI(props) {
         </Collapse>
         <Collapse in={!props.expandedFrom && !props.expandedTo}>
           <div className={styles.mp__margTop10}>
-            {(props.loadingTokens || props.transferRequest) ? (<Skeleton animation="wave" height={48} />) : (<TokenList
-              availableTokens={props.availableTokens}
-              setToken={props.setToken}
-              token={props.token}
-              expanded={props.expandedTokens}
-              setExpanded={props.setExpandedTokens}
-            />)}
+            {(props.loadingTokens || props.transferRequest) ? (
+              <Skeleton className={styles.sk__skeleton} animation="wave" height={48} />) : (<TokenList
+                availableTokens={props.availableTokens}
+                setToken={props.setToken}
+                token={props.token}
+                expanded={props.expandedTokens}
+                setExpanded={props.setExpandedTokens}
+              />)}
           </div>
         </Collapse>
         <Collapse in={(!props.expandedFrom && !props.expandedTo && !props.expandedTokens && props.token) && [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)}>

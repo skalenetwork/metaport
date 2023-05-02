@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SKALE Metaport
@@ -17,15 +18,20 @@
  */
 
 /**
- * @file index.ts
- * @copyright SKALE Labs 2022-Present
+ * @file TransactionHistory.ts
+ * @copyright SKALE Labs 2023-Present
  */
 
-export * from "./Config";
-export * from "./ChainsMetadata";
-export * from "./Theme";
-export * from "./Tokens";
-export * from "./TokenDataMap";
-export * from "./TransferParams";
-export * from "./CheckRes";
-export * from "./TransactionHistory";
+
+interface TxData {
+    gasUsed: number;
+    transactionHash: string;
+}
+
+
+export interface TransactionHistory {
+    tx: TxData;
+    timestamp: number;
+    chainName: string;
+    txName: string;
+}

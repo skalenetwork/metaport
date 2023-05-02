@@ -157,13 +157,20 @@ export default function SFuelWarning(props: {
     const noEth = (fromChainSFuel === '0' && fromChain === MAINNET_CHAIN_NAME);
 
     return (<Collapse in={!loading && sFuelStatus !== 'action'} className='mp__noMarg'>
-        <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margTop20)}>
+        <p className={clsNames(
+            styles.mp__flex,
+            styles.mp__p3,
+            styles.mp__p,
+            styles.mp__flexGrow,
+            styles.mp__margTop20,
+            styles.sk__uppercasse
+        )}>
             ⛽ {noEth ? SFUEL_TEXT['gas'][sFuelStatus] : SFUEL_TEXT['sfuel'][sFuelStatus]}
         </p>
         {
             !noEth ? (<Button
                 variant="contained" color="primary" size="medium"
-                className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+                className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
                 target="_blank"
                 href='https://sfuel.skale.network/'
             >
