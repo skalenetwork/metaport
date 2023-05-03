@@ -1,3 +1,5 @@
+@import './variables';
+
 .imaWidgetBody {
   position: fixed;
 }
@@ -41,13 +43,13 @@
 }
 
 .mp__popup {
-  padding: 18pt;
+  padding: 15pt;
   max-height: calc(100vh - 110pt);
 
   :global(.MuiButton-root) {
     font-weight: 600 !important;
     box-shadow: none !important;
-    border-radius: 15px !important;
+    border-radius: $sk-border-radius !important;
   }
 }
 
@@ -115,6 +117,13 @@
   margin-right: 5px !important;
 }
 
+.mp__margBottMin10 {
+  margin-bottom: -10px !important;
+}
+
+.mp__margBottMin15 {
+  margin-bottom: -15px !important;
+}
 
 .marg-top-20 {
   margin-top: 20px !important;
@@ -130,6 +139,10 @@
 
 .mp__margBott20 {
   margin-bottom: 20px !important;
+}
+
+.mp__margBott15 {
+  margin-bottom: 15px !important;
 }
 
 .mp__margBott10 {
@@ -166,6 +179,11 @@
   padding-top: 10px !important;
 }
 
+
+.mp__capitalize {
+  text-transform: capitalize;
+}
+
 .mp__chainName {
   font-weight: bold;
   padding-left: 10pt;
@@ -197,6 +215,7 @@
   font-weight: 600 !important;
   padding-top: 0.8em !important;
   padding-bottom: 0.8em !important;
+  min-height: $sk-btn-height !important;
 }
 
 
@@ -205,9 +224,14 @@
     margin: 0 !important;
   }
 
+  :global(.MuiAccordionSummary-root) {
+    min-height: $sk-btn-height !important;
+  }
+
   :global .MuiAccordion-root {
-    border-radius: 10px !important;
-    background-color: rgb(161 161 161 / 20%) !important;
+    border-radius: $sk-border-radius !important;
+    background-color: $sk-paper-color !important;
+    box-shadow: none !important;
 
     .Mui-disabled {
       .MuiAccordionSummary-expandIconWrapper {
@@ -238,6 +262,46 @@
 
 
 .darkTheme {
+  .br__action_deposit {
+    background-image: linear-gradient(45deg, #8A463C 0%, #b02d50 100%);
+  }
+
+  .br__action_transferToSchain {
+    background-image: linear-gradient(120deg, #9c27b0 0%, #3f51b5 100%)
+  }
+
+  .br__action_wrap {
+    background-image: linear-gradient(160deg, #237bc3 0%, #1a3b94 100%);
+  }
+
+  .br__action_unwrap {
+    background-image: linear-gradient(160deg, #1a3b94 0%, #237bc3 100%);
+  }
+
+  .br__action_withdraw {
+    background-image: linear-gradient(45deg, #b02d50 0%, #8A463C 100%);
+  }
+
+  .br__action_getMyEth {
+    background-image: linear-gradient(45deg, #009688 0%, #0c5f57 100%);
+  }
+
+  .br__action_approve {
+    background-image: linear-gradient(135deg, #29b1a9 0%, #14532a 100%);
+  }
+
+  .br__action_approveWrap {
+    background-image: linear-gradient(135deg, #14532a 0%, #29b1a9 100%);
+  }
+
+  .br__action_wallet {
+    background-image: linear-gradient(135deg, #dedede 0%, #aeaeae 100%);
+  }
+
+
+  .mp__chainName {
+    color: white !important;
+  }
 
   .eth-logo {
     filter: invert(1) contrast(1.5);
@@ -253,6 +317,7 @@
     color: rgb(255 255 255 / 65%) !important;
   }
 
+  .sk__colorText,
   .mp__chainName,
   .mp__pWhite {
     color: white !important;
@@ -282,7 +347,7 @@
 
   .mp__btnSwitch {
     :global(.Mui-disabled) {
-      background-color: rgba(161, 161, 161, 0.2) !important;
+      background-color: $sk-paper-color !important;
     }
   }
 
@@ -302,6 +367,43 @@
 
 
 .lightTheme {
+
+  .br__action_deposit {
+    background-image: linear-gradient(45deg, #f7c9b1 0%, #f8d4da 100%);
+  }
+
+  .br__action_transferToSchain {
+    background-image: linear-gradient(120deg, #e0baf0 0%, #c1ccf8 100%);
+  }
+
+  .br__action_wrap {
+    background-image: linear-gradient(160deg, #9dcff1 0%, #8ab1dd 100%);
+  }
+
+  .br__action_unwrap {
+    background-image: linear-gradient(160deg, #8ab1dd 0%, #9dcff1 100%);
+  }
+
+  .br__action_withdraw {
+    background-image: linear-gradient(45deg, #f8d4da 0%, #f7c9b1 100%);
+  }
+
+  .br__action_getMyEth {
+    background-image: linear-gradient(45deg, #92f7e1 0%, #76afaa 100%);
+  }
+
+  .br__action_approve {
+    background-image: linear-gradient(135deg, #89e0ce 0%, #58a47c 100%);
+  }
+
+  .br__action_approveWrap {
+    background-image: linear-gradient(135deg, #58a47c 0%, #89e0ce 100%);
+  }
+
+  .br__action_wallet {
+    background-image: linear-gradient(135deg, #f5f5f5 0%, #dfdfdf 100%);
+  }
+
   .mp__chainName {
     color: black !important;
   }
@@ -310,6 +412,10 @@
   .mp__infoIcon,
   .mp__backIcon {
     color: rgb(0 0 0 / 65%) !important;
+  }
+
+  .sk__colorText {
+    color: black !important;
   }
 
   .MuiInput-root {
@@ -377,7 +483,7 @@
 .mp__p3 {
   margin: 0;
   font-weight: 600 !important;
-  text-transform: uppercase !important;
+  // text-transform: uppercase !important;
   font-size: 0.6525rem !important;
   line-height: 1.6 !important;
   letter-spacing: 0.02857em !important;
@@ -386,7 +492,7 @@
 .mp__p2 {
   margin: 0;
   font-weight: 600 !important;
-  text-transform: uppercase !important;
+  // text-transform: uppercase !important;
   font-size: 0.8525rem !important;
   line-height: 1.6 !important;
   letter-spacing: 0.03857em !important;
@@ -436,7 +542,7 @@
   }
 
   :global(.MuiPaper-root) {
-    background-color: rgba(161, 161, 161, 0.2) !important;
+    background-color: $sk-paper-color !important;
     width: 100%;
     padding: 10pt 15pt;
     border-radius: 15px !important;
@@ -556,4 +662,25 @@
     font-size: 1.3em;
     font-weight: 600;
   }
+}
+
+
+.br__history {
+  :global .MuiAccordion-root:before {
+    opacity: 0;
+  }
+}
+
+.sk__smBth {
+  font-size: 0.7rem !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.sk__uppercase {
+  text-transform: uppercase !important;
+}
+
+.sk__skeleton {
+  border-radius: $sk-border-radius !important;
 }

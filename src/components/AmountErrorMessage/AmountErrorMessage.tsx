@@ -13,7 +13,8 @@ export default function AmountErrorMessage(props) {
         styles.mp__p,
         styles.mp__errorMessage,
         styles.mp__flexGrow,
-        styles.mp__margTop20
+        styles.mp__margTop20,
+        styles.sk__uppercase
       )}>
         🔴 {props.amountErrorMessage}
       </p>

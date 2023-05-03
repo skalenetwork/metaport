@@ -53,6 +53,16 @@ const ERC1155_TR_REQ_SAMPLE = {
     "toApp": "ruby"
 }
 
+const ERC20_S2S_TR_REQ_SAMPLE = {
+    "amount": "10",
+    "chains": ["staging-perfect-parallel-gacrux", "staging-severe-violet-wezen"],
+    "tokenKeyname": "_SKL_0x099A46F35b627CABee27dc917eDA253fFbC55Be6",
+    "tokenType": "erc20",
+    "lockValue": true,
+    "fromApp": "ruby",
+    "toApp": "nftrade"
+}
+
 
 export const storyDecorator = storyFn => <div style={styles}>
     <div style={{ borderBottom: '1px solid hsla(203, 50%, 30%, 0.15)', marginTop: '10px', }}>
@@ -137,6 +147,15 @@ export const TransferRequestEditor = () => {
                 onClick={() => { setInputValue(JSON.stringify(ERC1155_TR_REQ_SAMPLE)) }}
             >
                 Load ERC1155 TR REQ
+            </Button>
+
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ERC20_S2S_TR_REQ_SAMPLE)) }}
+            >
+                Load ERC20 S2S TR REQ
             </Button>
 
         </div>

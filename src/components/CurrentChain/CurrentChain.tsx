@@ -22,11 +22,11 @@ export default function CurrentChain(props) {
             <ArrowBackIosIcon className={styles.mp__backIcon} />
           </IconButton>
           <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow)}>
-            Unwrap stuck tokens
+            UNWRAP STUCK TOKENS
           </p>
         </div>) :
           (<p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow)}>
-            From
+            FROM
           </p>)}
         {/* <div className={styles.mp__flex}>
           <SFuelBadge from={true} data={props.sFuelData} />

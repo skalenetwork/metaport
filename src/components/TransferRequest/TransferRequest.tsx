@@ -12,15 +12,16 @@ import { getIconSrc } from "../TokenList/helper";
 
 import TokenData from '../../core/dataclasses/TokenData';
 import EthTokenData from '../../core/dataclasses/EthTokenData';
+import { TransferRequestStatus } from '../../core/dataclasses';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import * as interfaces from '../../core/interfaces/index';
 import { isTransferRequestSteps } from '../../core/views';
-
 import { getChainName } from '../ChainsList/helper';
+
+import TransactionsHistory from '../TransactionsHistory';
 import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
-import { TransferRequestStatus } from '../../core/dataclasses';
 import AmountErrorMessage from '../AmountErrorMessage';
 
 
@@ -150,6 +151,15 @@ export default function TransferRequest(props) {
           Go to Sandbox
         </Button>
       </Collapse>
+
+      <TransactionsHistory
+        transactionsHistory={props.transactionsHistory}
+        clearTransactionsHistory={props.clearTransactionsHistory}
+        config={props.config}
+        setExpanded={props.setExpandedHistory}
+        expanded={props.expandedHistory}
+        transferRequestView={true}
+      />
 
       {props.transferRequestStep === 0 ? (<WrappedTokensWarning
         wrappedTokens={props.wrappedTokens}

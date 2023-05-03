@@ -34,18 +34,13 @@ export default function AmountInput(props) {
         <Button
           color="primary"
           size="small"
-          className={styles.mp__btnChain}
+          className={clsNames(styles.mp__btnChain, localStyles.mp__btnMax)}
           onClick={setMaxAmount}
           disabled={props.loading || !props.token.balance || props.amountLocked}
         >
           MAX
         </Button>
       </div>
-      {/* <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margRi20)}>
-        <p className={clsNames(styles.mp__p3, styles.mp__p)}>
-          Amount
-        </p>
-      </div> */}
     </div>
   )
 }

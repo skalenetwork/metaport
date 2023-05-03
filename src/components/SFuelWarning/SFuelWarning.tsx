@@ -212,7 +212,8 @@ export default function SFuelWarning(props: {
             styles.mp__p3,
             styles.mp__p,
             styles.mp__flexGrow,
-            styles.mp__margTop20
+            styles.mp__margTop20,
+            styles.sk__uppercase
         )}>
             ⛽ {noEth ? SFUEL_TEXT['gas'][sFuelStatus] : SFUEL_TEXT['sfuel'][sFuelStatus]}
         </p>
@@ -223,12 +224,12 @@ export default function SFuelWarning(props: {
                     loadingPosition="start"
                     size='small'
                     variant='contained'
-                    className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+                    className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
                 >
                     Getting sFUEL...
                 </LoadingButton> : <Button
                     variant="contained" color="primary" size="medium"
-                    className={clsNames(styles.mp__btnAction, styles.mp__margTop20)}
+                    className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
                     onClick={doPoW}
                 >
                     Get sFUEL
