@@ -104,11 +104,11 @@ export namespace externalEvents {
         dispatchEvent(
             'metaport_actionStateUpdated',
             {
-                actionState: actionState,
-                actionName: actionName,
-                actionData: actionData,
-                transactionHash: transactionHash,
-                timestamp: timestamp
+                actionState,
+                actionName,
+                actionData,
+                transactionHash,
+                timestamp
             }
         );
     }
