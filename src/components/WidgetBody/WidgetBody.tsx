@@ -25,7 +25,7 @@ export default function WidgetBody(props) {
   // TODO: tmp wrap tokens fix
   const wrapTransferAction = props.actionSteps && props.actionSteps.length === 2 && props.activeStep > 0;
 
-  if (props.errorMessage && !props.transferRequestLoading) {
+  if (props.errorMessage) {
     return (<ErrorMessage errorMessage={props.errorMessage} />)
   }
 
@@ -72,6 +72,7 @@ export default function WidgetBody(props) {
         setExpandedFrom={setExpandedFrom}
         setExpandedTo={setExpandedTo}
         setExpandedTokens={setExpandedTokens}
+        btnText={props.btnText}
       />
 
       <TransactionsHistory

@@ -66,7 +66,7 @@ export class TransactionErrorMessage extends BaseErrorMessage {
         super(fallback);
         this.icon = <SentimentVeryDissatisfiedIcon />;
         this.text = text;
-        this.btnText = 'Start over';
+        this.btnText = 'Try again';
     }
 }
 

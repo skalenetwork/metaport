@@ -42,7 +42,7 @@ export default function StepperV2(props) {
                     variant="contained" color="primary" size="medium"
                     className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                   >
-                    {step.btnLoadingText}
+                    {props.btnText}
                   </LoadingButton>
                 ) : (
                   <Button

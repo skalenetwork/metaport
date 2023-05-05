@@ -107,51 +107,71 @@ export default function TransferRequest(props) {
 
   return (
     <div>
-      <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
-        <h2 className={clsNames(styles.mp__noMarg)}>Transfer</h2>
-        <img
-          className={clsNames(styles.mp__amountIcon, styles.mp__margLeft10, styles.mp__margRi5)}
-          src={getIconSrc(token)}
+      <Collapse in={!props.expandedHistory}>
+        <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
+          <h2 className={clsNames(styles.mp__noMarg)}>Transfer</h2>
+          <img
+            className={clsNames(styles.mp__amountIcon, styles.mp__margLeft10, styles.mp__margRi5)}
+            src={getIconSrc(token)}
+          />
+          <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount, styles.mp__flexGrow)}>
+            {amountText}
+          </h2>
+        </div>
+        <Route
+          config={props.config}
+          transferRequest={props.transferRequest}
+          theme={props.theme}
+          explanationText={explanationText}
+          size={isTransferRequestSteps(props.view) ? 'small' : 'medium'}
         />
-        <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount, styles.mp__flexGrow)}>
-          {amountText}
-        </h2>
-      </div>
-      <Route
-        config={props.config}
-        transferRequest={props.transferRequest}
-        theme={props.theme}
-        explanationText={explanationText}
-        size={isTransferRequestSteps(props.view) ? 'small' : 'medium'}
-      />
-      <Collapse in={props.errorMessage}>
-        <ErrorMessage errorMessage={props.errorMessage} />
-      </Collapse>
+        <Collapse in={props.errorMessage}>
+          <ErrorMessage errorMessage={props.errorMessage} />
+        </Collapse>
 
-      <Collapse in={!props.errorMessage && props.transferRequestStatus !== TransferRequestStatus.DONE}>
-        {isTransferRequestSteps(props.view) ?
-          <StepperV2 {...props} token={token} /> :
-          <TransferSummary {...props} explanationText={explanationText} />
-        }
-      </Collapse>
+        <Collapse in={!props.errorMessage && props.transferRequestStatus !== TransferRequestStatus.DONE}>
+          {isTransferRequestSteps(props.view) ?
+            <StepperV2 {...props} token={token} /> :
+            <TransferSummary {...props} explanationText={explanationText} />
+          }
+        </Collapse>
 
-      <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE}>
-        <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
-          💫 You've successfully transferred {amountText} from {fromChainName} to {toChainName}.
-        </p>
-        <Button
-          onClick={() => {
-            props.setTransferRequest
-            props.resetWidgetState();
-          }}
-          color="primary"
-          size="medium"
-          className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
-        >
-          Go to Sandbox
-        </Button>
-      </Collapse>
+        <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE}>
+          <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
+            💫 You've successfully transferred {amountText} from {fromChainName} to {toChainName}.
+          </p>
+          <Button
+            onClick={() => {
+              props.setTransferRequest
+              props.resetWidgetState();
+            }}
+            color="primary"
+            size="medium"
+            className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
+          >
+            Go to Sandbox
+          </Button>
+        </Collapse>
 
+        {props.transferRequestStep === 0 ? (<WrappedTokensWarning
+          wrappedTokens={props.wrappedTokens}
+          setView={props.setView}
+        />) : null}
+
+        <AmountErrorMessage
+          amountErrorMessage={props.amountErrorMessage}
+          actionBtnDisabled={props.actionBtnDisabled}
+        />
+        <SFuelWarning
+          chain1={props.chain1}
+          chain2={props.chain2}
+          transferRequest={props.transferRequest}
+          config={props.config}
+          address={props.address}
+          setSFuelOk={props.setSFuelOk}
+          view={props.view}
+        />
+      </Collapse>
       <TransactionsHistory
         transactionsHistory={props.transactionsHistory}
         clearTransactionsHistory={props.clearTransactionsHistory}
@@ -159,25 +179,6 @@ export default function TransferRequest(props) {
         setExpanded={props.setExpandedHistory}
         expanded={props.expandedHistory}
         transferRequestView={true}
-      />
-
-      {props.transferRequestStep === 0 ? (<WrappedTokensWarning
-        wrappedTokens={props.wrappedTokens}
-        setView={props.setView}
-      />) : null}
-
-      <AmountErrorMessage
-        amountErrorMessage={props.amountErrorMessage}
-        actionBtnDisabled={props.actionBtnDisabled}
-      />
-      <SFuelWarning
-        chain1={props.chain1}
-        chain2={props.chain2}
-        transferRequest={props.transferRequest}
-        config={props.config}
-        address={props.address}
-        setSFuelOk={props.setSFuelOk}
-        view={props.view}
       />
     </div>
   )

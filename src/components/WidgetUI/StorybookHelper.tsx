@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -63,6 +63,20 @@ const ERC20_S2S_TR_REQ_SAMPLE = {
     "toApp": "nftrade"
 }
 
+const ETH_ROUTED_TR_REQ_SAMPLE = {
+    "amount": "0.01",
+    "chains": ["mainnet", "staging-severe-violet-wezen"],
+    "tokenKeyname": "eth",
+    "tokenType": "eth",
+    "lockValue": true,
+    "toApp": "nftrade",
+    "route": {
+        "hub": "staging-perfect-parallel-gacrux",
+        "tokenType": "erc20",
+        "tokenKeyname": "_ETH_0xBA3f8192e28224790978794102C0D7aaa65B7d70"
+    }
+}
+
 
 export const storyDecorator = storyFn => <div style={styles}>
     <div style={{ borderBottom: '1px solid hsla(203, 50%, 30%, 0.15)', marginTop: '10px', }}>
@@ -81,6 +95,7 @@ export const storyDecorator = storyFn => <div style={styles}>
 
 export const TransferRequestEditor = () => {
     const [inputValue, setInputValue] = useState(JSON.stringify(ERC20_TR_REQ_SAMPLE));
+    const [events, setEvents] = useState([]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -94,6 +109,18 @@ export const TransferRequestEditor = () => {
             console.error('Invalid JSON object');
         }
     };
+
+    useEffect(() => {
+        window.addEventListener('metaport_actionStateUpdated', eventHandled, false);
+        return () => {
+            window.removeEventListener('metaport_actionStateUpdated', eventHandled, false);
+        };
+    }, []);
+
+    function eventHandled(e: any) {
+        events.push(e.detail);
+        setEvents([...events]);
+    }
 
     return (
         <div>
@@ -158,6 +185,20 @@ export const TransferRequestEditor = () => {
                 Load ERC20 S2S TR REQ
             </Button>
 
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ETH_ROUTED_TR_REQ_SAMPLE)) }}
+            >
+                Load ETH ROUTED TR REQ
+            </Button>
+            <div style={{ marginTop: "20px" }}>
+                <h2>Events</h2>
+                {events.map((event, key) => (
+                    <div key={key}>{event.actionName} - {event.actionState}</div>
+                ))}
+            </div>
         </div>
     );
 }

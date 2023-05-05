@@ -162,6 +162,8 @@ export default function TransferUI(props) {
 
                 cleanData={props.cleanData}
                 sFuelData={props.sFuelData1}
+
+                btnText={props.btnText}
               />)}
             </div>
           )}

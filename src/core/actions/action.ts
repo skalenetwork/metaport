@@ -25,6 +25,7 @@ import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 import TokenData from '../dataclasses/TokenData';
 import { externalEvents } from '../events';
 import { toWei } from '../convertation';
+import { ActionState, LOADING_BUTTON_TEXT } from './actionState';
 
 
 export type ActionType = typeof Action;
@@ -54,6 +55,7 @@ export class Action {
     activeStep: number
 
     setAmountErrorMessage: React.Dispatch<React.SetStateAction<string>>
+    setBtnText: (btnText: string) => void
 
     wrap: boolean
 
@@ -71,6 +73,7 @@ export class Action {
         setActiveStep: React.Dispatch<React.SetStateAction<number>>,
         activeStep: number,
         setAmountErrorMessage: React.Dispatch<React.SetStateAction<string>>,
+        setBtnText: (btnText: string) => void
     ) {
         this.mainnet = mainnet;
         this.sChain1 = sChain1;
@@ -88,8 +91,31 @@ export class Action {
         this.activeStep = activeStep;
 
         this.setAmountErrorMessage = setAmountErrorMessage;
+        this.setBtnText = setBtnText;
 
         if (this.tokenData) this.wrap = !!this.tokenData.unwrappedSymbol && !this.tokenData.clone;
+    }
+
+    updateState(
+        currentState: ActionState,
+        transactionHash?: string,
+        timestamp?: string | number
+    ) {
+        externalEvents.actionStateUpdated(
+            this.constructor.name,
+            currentState,
+            {
+                chainName1: this.chainName1,
+                chainName2: this.chainName2,
+                address: this.address,
+                amount: this.amount,
+                amountWei: this.amountWei,
+                tokenId: this.tokenId
+            },
+            transactionHash,
+            timestamp
+        );
+        this.setBtnText(LOADING_BUTTON_TEXT[currentState]);
     }
 }
 

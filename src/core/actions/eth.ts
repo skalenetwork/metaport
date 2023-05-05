@@ -37,6 +37,7 @@ const log = debug('metaport:actions:eth');
 export class TransferEthM2S extends TransferAction {
     async execute() {
         log('TransferEthM2S: started');
+        this.updateState('transferETH');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const sChainBalanceBefore = await this.sChain2.ethBalance(this.address);
         const tx = await this.mainnet.eth.deposit(
@@ -46,9 +47,11 @@ export class TransferEthM2S extends TransferAction {
                 value: amountWei
             }
         );
+        this.updateState('transferETHDone');
         const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
         externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'deposit');
         await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore);
+        this.updateState('receivedETH');
         externalEvents.transferComplete(
             tx, this.chainName1, this.chainName2, this.tokenData.keyname);
     }
@@ -68,15 +71,18 @@ export class TransferEthM2S extends TransferAction {
 export class TransferEthS2M extends TransferAction {
     async execute() {
         log('TransferEthS2M: started');
+        this.updateState('transferETH');
         const amountWei = toWei(this.amount, this.tokenData.decimals);
         const lockedETHAmount = await this.mainnet.eth.lockedETHAmount(this.address);
         const tx = await this.sChain1.eth.withdraw(
             amountWei,
             { address: this.address }
         );
+        this.updateState('transferETHDone');
         const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
         externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'withdraw');
         await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount);
+        this.updateState('receivedETH');
         externalEvents.transferComplete(
             tx, this.chainName1, this.chainName2, this.tokenData.keyname);
     }
@@ -100,12 +106,15 @@ export class UnlockEthM extends Action {
 
     async execute() {
         log('UnlockEthM: started');
+        this.updateState('switch');
         await this.switchMetamaskChain(false);
+        this.updateState('unlock');
         const tx = await this.mainnet.eth.getMyEth(
             { address: this.address }
         );
         const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
         externalEvents.transactionCompleted(tx, block.timestamp, 'mainnet', 'getMyEth');
+        this.updateState('unlockDone');
         externalEvents.ethUnlocked(tx);
     }
 }

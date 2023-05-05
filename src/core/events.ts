@@ -23,6 +23,7 @@
 
 import debug from 'debug';
 import * as interfaces from './interfaces/index';
+import { ActionState } from './actions/actionState';
 
 
 debug.enable('*');
@@ -71,6 +72,7 @@ export namespace externalEvents {
         chainName: string,
         txName: string
     ): void {
+        log('WARNING: Event metaport_transactionCompleted will be removed in the next version')
         dispatchEvent(
             'metaport_transactionCompleted',
             {
@@ -81,6 +83,32 @@ export namespace externalEvents {
                 timestamp,
                 chainName,
                 txName
+            }
+        );
+    }
+
+    export function actionStateUpdated(
+        actionName: string,
+        actionState: ActionState,
+        actionData: {
+            chainName1: string,
+            chainName2: string,
+            address: string,
+            amount: string,
+            amountWei: string,
+            tokenId: number
+        },
+        transactionHash?: string,
+        timestamp?: string | number
+    ): void {
+        dispatchEvent(
+            'metaport_actionStateUpdated',
+            {
+                actionState: actionState,
+                actionName: actionName,
+                actionData: actionData,
+                transactionHash: transactionHash,
+                timestamp: timestamp
             }
         );
     }
