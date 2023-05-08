@@ -81,7 +81,6 @@ export function getActionName(
 }
 
 
-// const wrapActions = [ApproveWrapERC20S, WrapERC20S];
 const wrapActions = [WrapERC20S];
 const unwrapActions = [UnWrapERC20S2S];
 const sFuelWrapActions = [WrapSFuelERC20S];

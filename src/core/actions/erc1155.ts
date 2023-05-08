@@ -45,12 +45,14 @@ export class TransferERC1155M extends TransferAction {
         );
         this.setAmountErrorMessage(checkRes.msg);
         if (!checkRes.approved) {
+            this.updateState('approve');
             log(`TransferERC1155M:execute - approving token ${this.tokenId} (${this.chainName1})`);
             const approveTx = await this.mainnet.erc1155.approveAll(
                 this.tokenData.keyname,
                 { address: this.address }
             )
             const txBlock = await this.mainnet.web3.eth.getBlock(approveTx.blockNumber);
+            this.updateState('approveDone', approveTx.transactionHash, txBlock.timestamp);
             externalEvents.transactionCompleted(
                 approveTx, txBlock.timestamp, this.chainName1, 'approve');
             log('TransferERC1155M:execute - approve tx completed: %O', approveTx);
@@ -71,6 +73,7 @@ export class TransferERC1155S extends TransferAction {
         );
         this.setAmountErrorMessage(checkRes.msg);
         if (!checkRes.approved) {
+            this.updateState('approve');
             log(`TransferERC1155S:execute - approving token ${this.tokenId} (${this.chainName1})`);
             const approveTx = await this.sChain1.erc1155.approveAll(
                 this.tokenData.keyname,
@@ -78,6 +81,7 @@ export class TransferERC1155S extends TransferAction {
                 { address: this.address }
             );
             const txBlock = await this.sChain1.web3.eth.getBlock(approveTx.blockNumber);
+            this.updateState('approveDone', approveTx.transactionHash, txBlock.timestamp);
             externalEvents.transactionCompleted(
                 approveTx, txBlock.timestamp, this.chainName1, 'approve');
             log('TransferERC1155M:execute - approve tx completed: %O', approveTx);
@@ -88,7 +92,9 @@ export class TransferERC1155S extends TransferAction {
 
 export class TransferERC1155M2S extends TransferERC1155M {
     async execute() {
+        this.updateState('init');
         await this.approve();
+        this.updateState('transfer');
         const destTokenContract = this.sChain2.erc1155.tokens[this.tokenData.keyname]
         const balanceOnDestination = await this.sChain2.getERC1155Balance(
             destTokenContract,
@@ -103,11 +109,13 @@ export class TransferERC1155M2S extends TransferERC1155M {
             { address: this.address }
         );
         const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
+        this.updateState('transferDone', tx.transactionHash, block.timestamp);
         externalEvents.transactionCompleted(
             tx, block.timestamp, this.chainName1, 'deposit');
         log('TransferERC1155M2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC1155BalanceChange(
             destTokenContract, this.address, this.tokenId, balanceOnDestination);
+        this.updateState('received');
         log('TransferERC1155M2S:execute - tokens received to destination chain');
         this.transferComplete(tx);
     }
@@ -129,7 +137,9 @@ export class TransferERC1155M2S extends TransferERC1155M {
 
 export class TransferERC1155S2M extends TransferERC1155S {
     async execute() {
+        this.updateState('init');
         await this.approve();
+        this.updateState('transfer');
         const destTokenContract = this.mainnet.erc1155.tokens[this.tokenData.keyname];
         const balanceOnDestination = await this.mainnet.getERC1155Balance(
             destTokenContract,
@@ -143,10 +153,12 @@ export class TransferERC1155S2M extends TransferERC1155S {
             { address: this.address }
         );
         const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        this.updateState('transferDone', tx.transactionHash, block.timestamp);
         externalEvents.transactionCompleted(
             tx, block.timestamp, this.chainName1, 'withdraw');
         await this.mainnet.waitERC1155BalanceChange(
             destTokenContract, this.address, this.tokenId, balanceOnDestination);
+        this.updateState('received');
         log('TransferERC1155S2M:execute - tokens received to destination chain');
         this.transferComplete(tx);
     }
@@ -168,7 +180,9 @@ export class TransferERC1155S2M extends TransferERC1155S {
 
 export class TransferERC1155S2S extends TransferERC1155S {
     async execute() {
+        this.updateState('init');
         await this.approve();
+        this.updateState('transfer');
         const destTokenContract = this.sChain2.erc1155.tokens[this.tokenData.keyname];
         const ownerOnDestination = await this.sChain2.getERC1155Balance(
             destTokenContract,
@@ -183,10 +197,12 @@ export class TransferERC1155S2S extends TransferERC1155S {
             { address: this.address }
         );
         const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
+        this.updateState('transferDone', tx.transactionHash, block.timestamp);
         externalEvents.transactionCompleted(
             tx, block.timestamp, this.chainName1, 'transferToSchain');
         await this.sChain2.waitERC1155BalanceChange(
             destTokenContract, this.address, this.tokenId, ownerOnDestination);
+        this.updateState('received');
         log('TransferERC1155S2S:execute - tokens received to destination chain');
         this.transferComplete(tx);
     }

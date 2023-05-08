@@ -20,7 +20,7 @@
         // border-radius: 4px;
     }
 
-    background-color: rgb(161 161 161 / 34%);
+    background-color: $sk-paper-color !important;
     border-radius: $sk-border-radius !important;
 
     :global .MuiButton-root {

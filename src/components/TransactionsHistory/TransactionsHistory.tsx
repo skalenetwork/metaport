@@ -64,7 +64,7 @@ export default function TransactionsHistory(props: {
         in={props.transactionsHistory.length !== 0}
         className={clsNames(styles.br__history)}
     >
-        <Collapse in={!props.expanded || props.transferRequestView}>
+        <Collapse in={!props.expanded}>
             <div className={clsNames(styles.mp__margTop20)}></div>
         </Collapse>
         <Accordion
@@ -82,7 +82,7 @@ export default function TransactionsHistory(props: {
                         <HistoryRoundedIcon />
                     </div>
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
-                        Completed transactions
+                        Completed transactions ({props.transactionsHistory.length})
                     </p>
                 </div>
             </AccordionSummary>

@@ -102,12 +102,14 @@ export function Widget(props) {
     TransferRequestStatus.NO_REQEST);
   const [transferRequestStep, setTransferRequestStep] = React.useState<number>(0);
   const [transferRequestSteps, setTransferRequestSteps] = React.useState<Array<any>>();
-  const [transferRequestLoading, setTransferRequestLoading] = React.useState<boolean>(true);
+  const [transferRequestLoading, setTransferRequestLoading] = React.useState<boolean>(false);
 
   const [errorMessage, setErrorMessage] = React.useState(undefined);
   const [amountErrorMessage, setAmountErrorMessage] = React.useState<string>(undefined);
 
   const [transactionsHistory, setTransactionsHistory] = React.useState<TransactionHistory[]>([]);
+
+  const [btnText, setBtnText] = React.useState<string>();
 
   // EFFECTS
 
@@ -258,7 +260,8 @@ export function Widget(props) {
     const isUnwrapActionSteps = activeStep === 1 || activeStep === 2;
     const isUwrapAction = token && token.unwrappedSymbol && token.clone && isUnwrapActionSteps;
     const isUnlockAction = actionName === 'eth_s2m' && isUnwrapActionSteps;
-    if (extChainId && chainId && extChainId !== chainId && !isUwrapAction && !isUnlockAction) {
+    if (extChainId && chainId && extChainId !== chainId && !isUwrapAction && !isUnlockAction
+      && !transferRequestLoading) {
       log('_MP_INFO: setting WrongNetworkMessage');
       setTransferRequestLoading(true);
       setErrorMessage(new WrongNetworkMessage(enforceMetamaskNetwork));
@@ -413,7 +416,8 @@ export function Widget(props) {
         switchMetamaskChain,
         setActiveStep,
         activeStep,
-        setAmountErrorMessage
+        setAmountErrorMessage,
+        setBtnText
       ).execute();
     } catch (err) {
       console.error(err);
@@ -588,7 +592,7 @@ export function Widget(props) {
     setActionName(undefined);
     setAmountErrorMessage(undefined);
     setActionBtnDisabled(false);
-    setTransferRequestLoading(true);
+    setTransferRequestLoading(false);
     setTransferRequestStatus(TransferRequestStatus.NO_REQEST);
 
     if (transferRequest && keepTransferRequest) {
@@ -619,7 +623,8 @@ export function Widget(props) {
           switchMetamaskChain,
           setActiveStep,
           activeStep,
-          setAmountErrorMessage
+          setAmountErrorMessage,
+          setBtnText
         ).preAction();
       } catch (e) {
         console.error(e);
@@ -753,5 +758,7 @@ export function Widget(props) {
 
     transactionsHistory={transactionsHistory}
     clearTransactionsHistory={clearTransactionsHistory}
+
+    btnText={btnText}
   />)
 }
