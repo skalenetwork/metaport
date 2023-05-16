@@ -759,6 +759,7 @@ export function Widget(props) {
       setLoadingCommunityPool('activate');
       let activeM = false;
       const chainHash = mainnet.web3.utils.soliditySha3(chainName1);
+      let counter = 0;
       while (!activeM) {
         log('Waiting for account activation...');
         activeM = await mainnet.communityPool.contract.methods.activeUsers(
@@ -766,6 +767,8 @@ export function Widget(props) {
           chainHash
         ).call();
         await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000);
+        counter++;
+        if (counter >= 10) break;
       }
     } catch (err) {
       console.error(err);
