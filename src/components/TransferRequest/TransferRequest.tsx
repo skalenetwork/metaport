@@ -23,6 +23,7 @@ import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
 import AmountErrorMessage from '../AmountErrorMessage';
+import CommunityPool from '../CommunityPool';
 
 
 function getTokenDataFromConfig(
@@ -107,7 +108,7 @@ export default function TransferRequest(props) {
 
   return (
     <div>
-      <Collapse in={!props.expandedHistory}>
+      <Collapse in={!props.expandedHistory && !props.expandedExit}>
         <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
           <h2 className={clsNames(styles.mp__noMarg)}>Transfer</h2>
           <img
@@ -136,7 +137,7 @@ export default function TransferRequest(props) {
           }
         </Collapse>
 
-        <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE}>
+        <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE && !props.expandedExit}>
           <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
             💫 You've successfully transferred {amountText} from {fromChainName} to {toChainName}.
           </p>
@@ -170,6 +171,22 @@ export default function TransferRequest(props) {
           address={props.address}
           setSFuelOk={props.setSFuelOk}
           view={props.view}
+        />
+      </Collapse>
+      <Collapse in={props.communityPoolData.balance !== null}>
+        <CommunityPool
+          communityPoolData={props.communityPoolData}
+
+          rechargeAmount={props.rechargeAmount}
+          setRechargeAmount={props.setRechargeAmount}
+
+          expanded={props.expandedExit}
+          setExpanded={props.setExpandedExit}
+
+          loading={props.loadingCommunityPool}
+          recharge={props.rechargeCommunityPool}
+          withdraw={props.withdrawCommunityPool}
+          marg={false}
         />
       </Collapse>
       <TransactionsHistory

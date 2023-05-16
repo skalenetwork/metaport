@@ -27,8 +27,12 @@ import utils from 'web3-utils';
 import { TransferRequestStatus } from './dataclasses';
 
 
-export function clsNames(...args) {
-    return args.join(' ');
+export function clsNames(...args: any): string {
+    const filteredArgs = args.map((clsName: any) => {
+        if (typeof clsName === 'string') return clsName;
+        if (Array.isArray(clsName) && clsName.length === 2 && clsName[1]) return clsName[0];
+    });
+    return filteredArgs.join(' ');
 }
 
 
@@ -50,4 +54,8 @@ export function addressesEqual(address1: string, address2: string): boolean {
 export function isTransferRequestActive(transferRequestStatus: TransferRequestStatus) {
     return transferRequestStatus === TransferRequestStatus.IN_PROGRESS ||
         transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB;
+}
+
+export function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

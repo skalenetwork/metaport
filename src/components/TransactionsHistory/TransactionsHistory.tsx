@@ -65,7 +65,7 @@ export default function TransactionsHistory(props: {
         className={clsNames(styles.br__history)}
     >
         <Collapse in={!props.expanded}>
-            <div className={clsNames(styles.mp__margTop20)}></div>
+            <div className={clsNames(styles.mp__margTop10)}></div>
         </Collapse>
         <Accordion
             expanded={props.expanded === 'panel1'}

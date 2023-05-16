@@ -91,3 +91,10 @@ export const ZERO_FUNCSIG = '0x00000000';
 
 import faucetJson from '../metadata/faucet.json';
 export const FAUCET_DATA = faucetJson;
+
+// community pool
+
+export const RECHARGE_MULTIPLIER = 1.2;
+export const MINIMUM_RECHARGE_AMOUNT = 0.005;
+export const COMMUNITY_POOL_WITHDRAW_GAS_LIMIT = '1500000';
+export const BALANCE_UPDATE_INTERVAL_SECONDS = 10;

@@ -77,6 +77,28 @@ const ETH_ROUTED_TR_REQ_SAMPLE = {
     }
 }
 
+const ETH_ROUTED_REVERSED_TR_REQ_SAMPLE = {
+    "amount": "0.01",
+    "chains": ["staging-severe-violet-wezen", "mainnet"],
+    "tokenKeyname": "_ETH_0xBA3f8192e28224790978794102C0D7aaa65B7d70",
+    "tokenType": "erc20",
+    "lockValue": true,
+    "toApp": "nftrade",
+    "route": {
+        "hub": "staging-perfect-parallel-gacrux",
+        "tokenType": "eth",
+        "tokenKeyname": "eth"
+    }
+}
+
+const ETH_S2M_TR_REQ_SAMPLE = {
+    "amount": "0.01",
+    "chains": ["staging-perfect-parallel-gacrux", "mainnet"],
+    "tokenKeyname": "eth",
+    "tokenType": "eth",
+    "lockValue": true
+};
+
 
 export const storyDecorator = storyFn => <div style={styles}>
     <div style={{ borderBottom: '1px solid hsla(203, 50%, 30%, 0.15)', marginTop: '10px', }}>
@@ -192,6 +214,25 @@ export const TransferRequestEditor = () => {
                 onClick={() => { setInputValue(JSON.stringify(ETH_ROUTED_TR_REQ_SAMPLE)) }}
             >
                 Load ETH ROUTED TR REQ
+            </Button>
+
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ETH_ROUTED_REVERSED_TR_REQ_SAMPLE)) }}
+            >
+                Load ETH ROUTED REV TR REQ
+            </Button>
+
+
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "20px", marginRight: "20px", ...btnStyles }}
+                onClick={() => { setInputValue(JSON.stringify(ETH_S2M_TR_REQ_SAMPLE)) }}
+            >
+                Load ETH S2M
             </Button>
             <div style={{ marginTop: "20px" }}>
                 <h2>Events</h2>

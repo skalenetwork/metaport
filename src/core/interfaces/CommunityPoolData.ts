@@ -17,16 +17,16 @@
  */
 
 /**
- * @file index.ts
- * @copyright SKALE Labs 2022-Present
+ * @file CommunityPoolData.ts
+ * @copyright SKALE Labs 2023-Present
  */
 
-export * from "./Config";
-export * from "./ChainsMetadata";
-export * from "./Theme";
-export * from "./Tokens";
-export * from "./TokenDataMap";
-export * from "./TransferParams";
-export * from "./CheckRes";
-export * from "./TransactionHistory";
-export * from "./CommunityPoolData";
+
+export interface CommunityPoolData {
+    exitGasOk: boolean
+    isActive: boolean
+    balance: string
+    accountBalance: string
+    recommendedRechargeAmount: string
+    originalRecommendedRechargeAmount: string
+}

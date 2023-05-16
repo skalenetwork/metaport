@@ -33,9 +33,9 @@ export function getChainIcon(skaleNetwork: string, chainName: string, dark: bool
     const iconPath = chainIconPath(skaleNetwork, chainName, app);
     if (iconPath !== undefined) {
         if (iconPath.default) {
-            return <img src={'./' + iconPath.default} className='eth-logo' height='20px' width='20px' />;
+            return <img src={'./' + iconPath.default} />;
         }
-        return <img src={iconPath} className='eth-logo' height='20px' width='20px' />;
+        return <img src={iconPath} />;
     }
-    return (<OfflineBoltIcon sx={{ color: stringToColor(chainName, dark) }} width='20px' />);
+    return (<OfflineBoltIcon sx={{ color: stringToColor(chainName, dark) }} />);
 }
