@@ -749,7 +749,10 @@ export function Widget(props) {
     setLoadingCommunityPool('recharge');
     try {
       log('Recharging community pool...')
-      setSChain1(null);
+      const sChain = initSChain(
+        props.config.skaleNetwork,
+        chainName1
+      );
       const mainnetMetamask = await initMainnet1();
       setChainId(getChainId(props.config.skaleNetwork, MAINNET_CHAIN_NAME));
       await mainnetMetamask.communityPool.recharge(chainName1, address, {
@@ -757,15 +760,19 @@ export function Widget(props) {
         value: toWei(rechargeAmount, DEFAULT_ERC20_DECIMALS)
       });
       setLoadingCommunityPool('activate');
-      let activeM = false;
+      let active = false;
       const chainHash = mainnet.web3.utils.soliditySha3(chainName1);
       let counter = 0;
-      while (!activeM) {
+      while (!active) {
         log('Waiting for account activation...');
-        activeM = await mainnet.communityPool.contract.methods.activeUsers(
+        let activeM = await mainnet.communityPool.contract.methods.activeUsers(
           address,
           chainHash
         ).call();
+        let activeS = await sChain.communityLocker.contract.methods.activeUsers(
+          address
+        ).call();
+        active = activeS && activeM;
         await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000);
         counter++;
         if (counter >= 10) break;
