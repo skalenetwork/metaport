@@ -705,7 +705,8 @@ export function Widget(props) {
         await updateWeb3SChainMetamask(
           sChain1,
           props.config.skaleNetwork,
-          chainName1
+          chainName1,
+          props.config.chainsMetadata
         );
         updateWeb3Mainnet(mainnet, props.config.mainnetEndpoint);
       } else {
