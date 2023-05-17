@@ -118,9 +118,9 @@ export default function CommunityPool(props: {
                         styles.sk__colorText
                     )}>
                         Exit gas wallet support is in BETA. <br /><br />
-                        You need a balance in this wallet to transfer to Ethereum.
-                        This wallet is used to pay for gas fees when your transaction is presented
-                        to Ethereum. You may withdraw from the wallet at anytime.
+                        This wallet is used to pay for Ethereum gas fees from your transactions to
+                        the Ethereum Mainnet. You may withdraw funds from your SKALE Gas Wallet at
+                        anytime.
                     </p>
                     <Grid container spacing={2} >
                         <Grid className={styles.mp__margTop20} item xs={6}>

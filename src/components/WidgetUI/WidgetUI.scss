@@ -695,3 +695,11 @@
     height: 15px !important;
   }
 }
+
+
+.mp__chainIconSm {
+  :global(img) {
+    width: 20px;
+    height: 20px;
+  }
+}
