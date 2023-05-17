@@ -179,7 +179,12 @@ function getTransferStep(
     config: MetaportConfig,
     theme: any
 ) {
-    const fromChainName = getChainName(config.chainsMetadata, fromChain, config.skaleNetwork, fromApp);
+    const fromChainName = getChainName(
+        config.chainsMetadata,
+        fromChain,
+        config.skaleNetwork,
+        fromApp
+    );
     const toChainName = getChainName(config.chainsMetadata, toChain, config.skaleNetwork, toApp);
     const toChainIcon = getChainIcon(config.skaleNetwork, toChain, theme.dark, toApp);
     return {
