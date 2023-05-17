@@ -28,6 +28,7 @@ import stagingAddresses from '../metadata/addresses/staging.json';
 import staging3Addresses from '../metadata/addresses/staging3.json';
 import legacyAddresses from '../metadata/addresses/legacy.json';
 
+import { getChainName } from './helper';
 import { MAINNET_CHAIN_NAME } from './constants';
 import { MetaportConfig } from './interfaces';
 
@@ -71,12 +72,13 @@ export function initSChain(network: string, schainName: string) {
 export async function switchMetamaskNetwork( // TODO: use new function
   network: string,
   chainName: string,
-  mainnetEndpoint: string
+  mainnetEndpoint: string,
+  chainsMetadata: any
 ) {
   if (chainName === MAINNET_CHAIN_NAME) {
     return await initMainnetMetamask(network, mainnetEndpoint);
   } else {
-    return await initSChainMetamask(network, chainName);
+    return await initSChainMetamask(network, chainName, chainsMetadata);
   }
 }
 
@@ -87,10 +89,11 @@ export function getChainId(network: string, chainName: string): string { // TODO
 }
 
 
-export async function initSChainMetamask(network: string, schainName: string) {
+export async function initSChainMetamask(network: string, schainName: string, chainsMetadata: any) {
   const endpoint = getSChainEndpoint(network, schainName);
   const chainId = calcChainId(schainName);
-  const networkParams = schainNetworkParams(schainName, endpoint, chainId);
+  const chainName = getChainName(chainsMetadata, schainName, network);
+  const networkParams = schainNetworkParams(chainName, endpoint, chainId);
   await changeMetamaskNetwork(networkParams);
   const sChainWeb3 = new Web3(window.ethereum);
   return new SChain(sChainWeb3, sChainAbi);
@@ -105,11 +108,13 @@ export function updateWeb3SChain(schain: SChain, network: string, schainName: st
 export async function updateWeb3SChainMetamask(
   schain: SChain,
   network: string,
-  schainName: string
+  schainName: string,
+  chainsMetadata: any
 ): Promise<void> {
   const endpoint = getSChainEndpoint(network, schainName);
   const chainId = calcChainId(schainName);
-  const networkParams = schainNetworkParams(schainName, endpoint, chainId);
+  const chainName = getChainName(chainsMetadata, schainName, network);
+  const networkParams = schainNetworkParams(chainName, endpoint, chainId);
   await changeMetamaskNetwork(networkParams);
   const sChainWeb3 = new Web3(window.ethereum);
   schain.updateWeb3(sChainWeb3);

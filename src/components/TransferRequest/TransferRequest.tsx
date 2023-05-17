@@ -2,7 +2,7 @@ import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 
 import styles from "../WidgetUI/WidgetUI.scss";
-import { clsNames } from '../../core/helper';
+import { clsNames, getChainName } from '../../core/helper';
 
 import ErrorMessage from '../ErrorMessage';
 import StepperV2 from '../StepperV2';
@@ -16,7 +16,6 @@ import { TransferRequestStatus } from '../../core/dataclasses';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import * as interfaces from '../../core/interfaces/index';
 import { isTransferRequestSteps } from '../../core/views';
-import { getChainName } from '../ChainsList/helper';
 
 import TransactionsHistory from '../TransactionsHistory';
 import SkeletonLoader from '../SkeletonLoader';
@@ -89,12 +88,26 @@ export default function TransferRequest(props) {
   const trReq: interfaces.TransferParams = props.transferRequest;
   const token = getTokenDataFromConfig(props.config.tokens, trReq);
 
-  const fromChainName = getChainName(props.config.chainsMetadata, trReq.chains[0], trReq.fromApp);
-  const toChainName = getChainName(props.config.chainsMetadata, trReq.chains[1], trReq.toApp);
+  const fromChainName = getChainName(
+    props.config.chainsMetadata,
+    trReq.chains[0],
+    props.config.skaleNetwork,
+    trReq.fromApp
+  );
+  const toChainName = getChainName(
+    props.config.chainsMetadata,
+    trReq.chains[1],
+    props.config.skaleNetwork,
+    trReq.toApp
+  );
 
   let explanationText = 'Transfer assets from ' + fromChainName + ' to ' + toChainName + '.';
   if (trReq.route) {
-    const hubChainName = getChainName(props.config.chainsMetadata, trReq.route.hub);
+    const hubChainName = getChainName(
+      props.config.chainsMetadata,
+      trReq.route.hub,
+      props.config.skaleNetwork
+    );
     if (token.clone) {
       explanationText += ' Tokens will be unwrapped on ' + hubChainName + '.';
     } else {

@@ -1,6 +1,5 @@
 import Web3 from 'web3';
 
-
 export const CHAIN_IDS = {
   'staging': '0x4',
   'staging3': '0x5',
@@ -11,27 +10,27 @@ export const CHAIN_IDS = {
 
 
 export async function changeMetamaskNetwork(networkParams) {
-    try {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: networkParams.chainId }],
+    });
+  } catch (switchError) {
+    // This error code indicates that the chain has not been added to MetaMask.
+    if (switchError.code === 4902) {
+      try {
         await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{chainId: networkParams.chainId}],
+          method: 'wallet_addEthereumChain',
+          params: [networkParams],
         });
-      } catch (switchError) {
-        // This error code indicates that the chain has not been added to MetaMask.
-        if (switchError.code === 4902) {
-          try {
-            await window.ethereum.request({
-              method: 'wallet_addEthereumChain',
-              params: [networkParams],
-            });
-            return [0, new Web3(window.ethereum)];
-          } catch (addError) {
-            return [1, addError];
-          }
-        }
-        return [1, switchError];
+        return [0, new Web3(window.ethereum)];
+      } catch (addError) {
+        return [1, addError];
+      }
     }
-    return [0, new Web3(window.ethereum)];
+    return [1, switchError];
+  }
+  return [0, new Web3(window.ethereum)];
 }
 
 
@@ -54,14 +53,14 @@ export const connect = (connectFallback) => {
 export const addAccountChangedListener = (accountsChangedFallback) => {
   window.ethereum.on('accountsChanged', accountsChangedFallback); // todo: do only once!!!!
   window.ethereum
-  .request({ method: 'eth_accounts' })
-  .then(accountsChangedFallback)
-  .catch((_) => {
-    // Some unexpected error.
-    // For backwards compatibility reasons, if no accounts are available,
-    // eth_accounts will return an empty array.
-    // console.error(err);
-  });
+    .request({ method: 'eth_accounts' })
+    .then(accountsChangedFallback)
+    .catch((_) => {
+      // Some unexpected error.
+      // For backwards compatibility reasons, if no accounts are available,
+      // eth_accounts will return an empty array.
+      // console.error(err);
+    });
 }
 
 
@@ -70,15 +69,19 @@ export const addChainChangedListener = (chainChangedFallback) => {
 }
 
 
-export function schainNetworkParams(schainName, schainChainUrl, schainChainId) {
+export function schainNetworkParams(
+  chainName: string,
+  schainChainUrl: string,
+  schainChainId: string
+) {
   return {
     chainId: schainChainId,
-    chainName: "SKALE Chain | " + schainName,
+    chainName: "[S] " + chainName,
     rpcUrls: [schainChainUrl],
     nativeCurrency: {
-        name: "sFUEL",
-        symbol: "sFUEL",
-        decimals: 18
+      name: "sFUEL",
+      symbol: "sFUEL",
+      decimals: 18
     }
   };
 }
