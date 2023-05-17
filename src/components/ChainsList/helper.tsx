@@ -1,7 +1,6 @@
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
 import { chainIconPath } from '../TokenList/helper';
-import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
 
 function stringToColor(_, dark) {
@@ -11,21 +10,6 @@ function stringToColor(_, dark) {
     }
     return 'hsl(0deg 0% 15%)';
     // return `hsl(${hashCode(str) % 360}, 55%, 40%)`;
-}
-
-
-export function getChainName(chainsMetadata: any, chainName: string, app?: string): string {
-    if (chainName == MAINNET_CHAIN_NAME) {
-        return 'Mainnet';
-    }
-    if (chainsMetadata && chainsMetadata[chainName]) {
-        if (app && chainsMetadata[chainName]['apps'][app]) {
-            return chainsMetadata[chainName]['apps'][app].alias;
-        }
-        return chainsMetadata[chainName].alias;
-    } else {
-        return chainName;
-    }
 }
 
 

@@ -205,6 +205,14 @@ export default function SFuelWarning(props: {
     }
 
     const noEth = (fromStationData && !fromStationData.ok && fromChain === MAINNET_CHAIN_NAME);
+    const noEthDest = (toStationData && !toStationData.ok && toChain === MAINNET_CHAIN_NAME);
+
+    function getSFuelText() {
+        if (noEth || (fromStationData && fromStationData.ok && noEthDest)) {
+            return SFUEL_TEXT['gas'][sFuelStatus];
+        }
+        return SFUEL_TEXT['sfuel'][sFuelStatus];
+    }
 
     return (<Collapse in={!loading && sFuelStatus !== 'action'} className='mp__noMarg'>
         <p className={clsNames(
@@ -215,10 +223,10 @@ export default function SFuelWarning(props: {
             styles.mp__margTop20,
             styles.sk__uppercase
         )}>
-            ⛽ {noEth ? SFUEL_TEXT['gas'][sFuelStatus] : SFUEL_TEXT['sfuel'][sFuelStatus]}
+            ⛽ {getSFuelText()}
         </p>
         {
-            !noEth ? (<div>
+            !noEth && ((fromStationData && !fromStationData.ok) || !noEthDest) ? (<div>
                 {mining ? <LoadingButton
                     loading
                     loadingPosition="start"

@@ -485,8 +485,9 @@ export function Widget(props) {
     log('Running initSchain1...');
     setSChain1(await initSChainMetamask(
       props.config.skaleNetwork,
-      chainName1
-    ))
+      chainName1,
+      props.config.chainsMetadata
+    ));
   }
 
   async function initMainnet1() {
@@ -669,7 +670,8 @@ export function Widget(props) {
     await updateWeb3SChainMetamask(
       switchBack ? sChain1 : sChain2,
       props.config.skaleNetwork,
-      switchBack ? chainName1 : chainName2
+      switchBack ? chainName1 : chainName2,
+      props.config.chainsMetadata
     );
   }
 
