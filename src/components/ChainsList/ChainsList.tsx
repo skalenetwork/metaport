@@ -12,7 +12,7 @@ import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 import { iconPath } from '../TokenList/helper';
 import { MAINNET_CHAIN_NAME } from '../../core/constants';
 
-import { clsNames } from '../../core/helper';
+import { clsNames, getChainName } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 
 
@@ -43,17 +43,6 @@ export default function ChainsList(props) {
   function handle(schainName) {
     props.setExpanded(false);
     props.setChain(schainName);
-  }
-
-  function getChainName(chainName: string) {
-    if (chainName == MAINNET_CHAIN_NAME) {
-      return 'Mainnet';
-    }
-    if (props.config.chainsMetadata && props.config.chainsMetadata[chainName]) {
-      return props.config.chainsMetadata[chainName].alias;
-    } else {
-      return chainName;
-    }
   }
 
   function getChainIcon(chainName: string) {
@@ -87,7 +76,7 @@ export default function ChainsList(props) {
                   styles.mp__chainName,
                   styles.mp__margRi10
                 )}>
-                  {getChainName(props.chain)}
+                  {getChainName(props.config.chainsMetadata, props.chain, props.config.skaleNetwork)}
                 </p>
               </div>
             </Tooltip>
@@ -118,7 +107,7 @@ export default function ChainsList(props) {
                       {getChainIcon(name)}
                     </div>
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
-                      {getChainName(name)}
+                      {getChainName(props.config.chainsMetadata, name, props.config.skaleNetwork)}
                     </p>
                   </div>
                 </Button>
