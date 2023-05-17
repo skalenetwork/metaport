@@ -148,7 +148,8 @@ export default function WidgetBody(props) {
       <Collapse in={
         !expandedFrom &&
         !expandedTo &&
-        !expandedTokens
+        !expandedTokens &&
+        !expandedExit
       }>
         <TransactionsHistory
           transactionsHistory={props.transactionsHistory}

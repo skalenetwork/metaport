@@ -100,7 +100,7 @@ export default function TransferUI(props) {
               />)}
           </div>
         </Collapse>
-        <Collapse in={(!props.expandedFrom && !props.expandedTo && !props.expandedExit && !props.expandedTokens && props.token) && [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)}>
+        <Collapse in={props.communityPoolData.exitGasOk && (!props.expandedFrom && !props.expandedTo && !props.expandedExit && !props.expandedTokens && props.token) && [TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)}>
           <div className={styles.mp__margTop10}>
             <TokenIdInput
               tokenId={props.tokenId}
@@ -113,7 +113,7 @@ export default function TransferUI(props) {
             />
           </div>
         </Collapse>
-        <Collapse in={(!props.expandedFrom && !props.expandedTo && !props.expandedExit && !props.expandedTokens && props.token) && [TokenType.eth, TokenType.erc20, TokenType.erc1155].includes(props.token.type)}>
+        <Collapse in={props.communityPoolData.exitGasOk && (!props.expandedFrom && !props.expandedTo && !props.expandedExit && !props.expandedTokens && props.token) && [TokenType.eth, TokenType.erc20, TokenType.erc1155].includes(props.token.type)}>
           <div className={styles.mp__margTop10}>
             <AmountInput
               amount={props.amount}

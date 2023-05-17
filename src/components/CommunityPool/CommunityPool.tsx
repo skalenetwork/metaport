@@ -85,7 +85,7 @@ export default function CommunityPool(props: {
         return 'Withdraw all';
     }
 
-    return (<div className={clsNames(styles.mp__margTop10)}>
+    return (<div className={clsNames([styles.mp__margTop10, !props.expanded])}>
         <Accordion
             disabled={!!props.loading}
             expanded={props.expanded === 'panel1'}

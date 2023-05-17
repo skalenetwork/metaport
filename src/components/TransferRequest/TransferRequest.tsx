@@ -173,7 +173,7 @@ export default function TransferRequest(props) {
           view={props.view}
         />
       </Collapse>
-      <Collapse in={props.communityPoolData.balance !== null}>
+      <Collapse in={props.communityPoolData.balance !== null && !props.expandedHistory}>
         <CommunityPool
           communityPoolData={props.communityPoolData}
 
@@ -189,14 +189,16 @@ export default function TransferRequest(props) {
           marg={false}
         />
       </Collapse>
-      <TransactionsHistory
-        transactionsHistory={props.transactionsHistory}
-        clearTransactionsHistory={props.clearTransactionsHistory}
-        config={props.config}
-        setExpanded={props.setExpandedHistory}
-        expanded={props.expandedHistory}
-        transferRequestView={true}
-      />
+      <Collapse in={!props.expandedExit}>
+        <TransactionsHistory
+          transactionsHistory={props.transactionsHistory}
+          clearTransactionsHistory={props.clearTransactionsHistory}
+          config={props.config}
+          setExpanded={props.setExpandedHistory}
+          expanded={props.expandedHistory}
+          transferRequestView={true}
+        />
+      </Collapse>
     </div>
   )
 }
