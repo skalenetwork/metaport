@@ -60,7 +60,7 @@ export default function ChainsList(props) {
           {props.chain ? (
             <Tooltip title={'SKALE Chain ' + props.chain}>
               <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-                <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                <div className={clsNames(styles.mp__flex, styles.mp__flexCentered, styles.mp__chainIconSm)}>
                   {getChainIcon(props.config.skaleNetwork, props.chain, props.dark)}
                 </div>
                 <p className={clsNames(
@@ -95,7 +95,7 @@ export default function ChainsList(props) {
                   onClick={() => handle(name)}
                 >
                   <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered, styles.mp__chainIconSm)}>
                       {getChainIcon(props.config.skaleNetwork, name, props.dark)}
                     </div>
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>

@@ -43,7 +43,7 @@
 }
 
 .mp__popup {
-  padding: 15pt;
+  padding: 14pt;
   max-height: calc(100vh - 110pt);
 
   :global(.MuiButton-root) {
@@ -92,6 +92,11 @@
 .mp__margTop20 {
   margin-top: 20px !important;
 }
+
+.mp__margTop40 {
+  margin-top: 40px !important;
+}
+
 
 .mp__margLeft5 {
   margin-left: 5px !important;
@@ -237,9 +242,7 @@
       .MuiAccordionSummary-expandIconWrapper {
         display: none !important;
       }
-
       opacity: 1 !important;
-      border-radius: 4px !important;
     }
   }
 }
@@ -247,8 +250,8 @@
 .mp__btnSwitch {
   width: 100%;
   text-align: center;
-  margin-top: -4pt;
-  margin-bottom: -22pt;
+  margin-top: -6pt;
+  margin-bottom: -24pt;
 
   button {
     border: 10px #1a1a1a solid;
@@ -683,4 +686,20 @@
 
 .sk__skeleton {
   border-radius: $sk-border-radius !important;
+}
+
+
+.sk__balanceCard {
+  .chainIcon {
+    width: 15px !important;
+    height: 15px !important;
+  }
+}
+
+
+.mp__chainIconSm {
+  :global(img) {
+    width: 20px;
+    height: 20px;
+  }
 }

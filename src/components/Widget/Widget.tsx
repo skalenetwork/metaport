@@ -11,12 +11,13 @@ import {
   initMainnet,
   initMainnetMetamask,
   updateWeb3SChain,
+  updateWeb3Mainnet,
   updateWeb3SChainMetamask,
   updateWeb3MainnetMetamask,
   getChainId
 } from '../../core';
 
-
+import { getCommunityPoolData, getEmptyCommunityPoolData } from '../../core/community_pool';
 import { getAvailableTokens, getTokenBalances } from '../../core/tokens/index';
 import { getWrappedTokens } from '../../core/tokens/erc20';
 import { getEmptyTokenDataMap, getDefaultToken } from '../../core/tokens/helper';
@@ -24,20 +25,27 @@ import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
 import { connect, addAccountChangedListener, addChainChangedListener } from '../WalletConnector'
 import { externalEvents } from '../../core/events';
-import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../../core/constants';
+import {
+  MAINNET_CHAIN_NAME,
+  DEFAULT_ERROR_MSG,
+  DEFAULT_ERC20_DECIMALS,
+  COMMUNITY_POOL_WITHDRAW_GAS_LIMIT,
+  BALANCE_UPDATE_INTERVAL_SECONDS
+} from '../../core/constants';
 import { getActionName, getActionSteps } from '../../core/actions';
 import { ActionType } from '../../core/actions/action';
 
-import { isTransferRequestActive } from '../../core/helper';
-import { getTransferSteps } from '../../core/transferSteps';
+import { isTransferRequestActive, delay } from '../../core/helper';
+import { getTransferSteps } from '../../core/transfer_steps';
 
 import * as interfaces from '../../core/interfaces/index';
+import { TransactionHistory, CommunityPoolData, MetaportTheme } from '../../core/interfaces';
 import TokenData from '../../core/dataclasses/TokenData';
 import { TransferRequestStatus } from '../../core/dataclasses/TransferRequestStatus';
 import { View } from '../../core/dataclasses/View';
-import { MetaportTheme } from '../../core/interfaces/Theme';
-import { TransactionHistory } from '../../core/interfaces';
 import { TokenType } from '../../core/dataclasses';
+
+import { toWei } from '../../core/convertation';
 
 
 debug.enable('*');
@@ -111,6 +119,12 @@ export function Widget(props) {
 
   const [btnText, setBtnText] = React.useState<string>();
 
+  const [communityPoolData, setCommunityPoolData] = React.useState<CommunityPoolData>(
+    getEmptyCommunityPoolData());
+  const [rechargeAmount, setRechargeAmount] = React.useState<string>('');
+  const [loadingCommunityPool, setLoadingCommunityPool] = React.useState<string | false>(false);
+  const [updateCommunityDataFlag, setUpdateCommunityDataFlag] = React.useState<boolean>(false);
+
   // EFFECTS
 
   useEffect(() => {
@@ -119,8 +133,13 @@ export function Widget(props) {
     addChainChangedListener(chainChangedFallback);
     addinternalEventsListeners();
     updateTransactionCompletedEventListener();
+    const interval = setInterval(
+      () => { setUpdateCommunityDataFlag((updateCommunityDataFlag) => !updateCommunityDataFlag) },
+      BALANCE_UPDATE_INTERVAL_SECONDS * 1000
+    );
     return () => {
       window.removeEventListener('metaport_transactionCompleted', transactionCompleted, false);
+      clearInterval(interval);
     };
   }, []);
 
@@ -164,9 +183,34 @@ export function Widget(props) {
       setToken(undefined);
       setLoading(false);
       setActiveStep(0);
+      updateCommunityPoolData();
       tokenLookup();
     }
   }, [sChain1, sChain2, mainnet]);
+
+  useEffect(() => {
+    if (!loadingCommunityPool) {
+      updateCommunityPoolData();
+    }
+  }, [updateCommunityDataFlag]);
+
+  useEffect(() => {
+    if (communityPoolData.recommendedRechargeAmount) {
+      setRechargeAmount(communityPoolData.recommendedRechargeAmount);
+    }
+  }, [communityPoolData]);
+
+  async function updateCommunityPoolData() {
+    const cpData = await getCommunityPoolData(
+      address,
+      chainName1,
+      chainName2,
+      mainnet,
+      sChain1
+    );
+    setCommunityPoolData(cpData);
+    return cpData;
+  }
 
   useEffect(() => {
     log(`view changed: ${view}`);
@@ -492,7 +536,12 @@ export function Widget(props) {
 
   async function initMainnet1() {
     log(`Running initSchain1: ${chainName1}`);
-    setMainnet(await initMainnetMetamask(props.config.skaleNetwork, props.config.mainnetEndpoint))
+    const mainnetMetamask = await initMainnetMetamask(
+      props.config.skaleNetwork,
+      props.config.mainnetEndpoint
+    );
+    setMainnet(mainnetMetamask);
+    return mainnetMetamask;
   }
 
   async function checkWrappedTokens() {
@@ -596,6 +645,8 @@ export function Widget(props) {
     setTransferRequestLoading(false);
     setTransferRequestStatus(TransferRequestStatus.NO_REQEST);
 
+    setCommunityPoolData(getEmptyCommunityPoolData());
+
     if (transferRequest && keepTransferRequest) {
       setTransferRequestStatus(TransferRequestStatus.RECEIVED);
       setView(View.TRANSFER_REQUEST_SUMMARY);
@@ -650,16 +701,26 @@ export function Widget(props) {
     //   );  
     // }
     if (chainName2 === MAINNET_CHAIN_NAME) {
-      updateWeb3SChain(
-        sChain1,
-        props.config.skaleNetwork,
-        chainName1
-      )
-      await updateWeb3MainnetMetamask(
-        mainnet,
-        props.config.skaleNetwork,
-        props.config.mainnetEndpoint
-      )
+      if (switchBack) {
+        await updateWeb3SChainMetamask(
+          sChain1,
+          props.config.skaleNetwork,
+          chainName1,
+          props.config.chainsMetadata
+        );
+        updateWeb3Mainnet(mainnet, props.config.mainnetEndpoint);
+      } else {
+        updateWeb3SChain(
+          sChain1,
+          props.config.skaleNetwork,
+          chainName1
+        )
+        await updateWeb3MainnetMetamask(
+          mainnet,
+          props.config.skaleNetwork,
+          props.config.mainnetEndpoint
+        )
+      }
       return;
     }
     updateWeb3SChain(
@@ -684,6 +745,78 @@ export function Widget(props) {
     setActiveStep(0);
     setTransferRequestLoading(false);
     setTransferRequestStatus(TransferRequestStatus.NO_REQEST);
+  }
+
+  async function rechargeCommunityPool() {
+    // todo: optimize
+    setLoadingCommunityPool('recharge');
+    try {
+      log('Recharging community pool...')
+      const sChain = initSChain(
+        props.config.skaleNetwork,
+        chainName1
+      );
+      const mainnetMetamask = await initMainnet1();
+      setChainId(getChainId(props.config.skaleNetwork, MAINNET_CHAIN_NAME));
+      await mainnetMetamask.communityPool.recharge(chainName1, address, {
+        address: address,
+        value: toWei(rechargeAmount, DEFAULT_ERC20_DECIMALS)
+      });
+      setLoadingCommunityPool('activate');
+      let active = false;
+      const chainHash = mainnet.web3.utils.soliditySha3(chainName1);
+      let counter = 0;
+      while (!active) {
+        log('Waiting for account activation...');
+        let activeM = await mainnet.communityPool.contract.methods.activeUsers(
+          address,
+          chainHash
+        ).call();
+        let activeS = await sChain.communityLocker.contract.methods.activeUsers(
+          address
+        ).call();
+        active = activeS && activeM;
+        await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000);
+        counter++;
+        if (counter >= 10) break;
+      }
+    } catch (err) {
+      console.error(err);
+      const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
+      setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
+    } finally {
+      await initSchain1();
+      setChainId(getChainId(props.config.skaleNetwork, chainName1));
+      setMainnet(initMainnet(props.config.skaleNetwork, props.config.mainnetEndpoint));
+      await updateCommunityPoolData();
+      setLoadingCommunityPool(false);
+    }
+  }
+
+  async function withdrawCommunityPool() {
+    // todo: optimize
+    setLoadingCommunityPool('withdraw');
+    try {
+      log('Withdrawing community pool...')
+      setSChain1(null);
+      const mainnetMetamask = await initMainnet1();
+      setChainId(getChainId(props.config.skaleNetwork, MAINNET_CHAIN_NAME));
+      await mainnetMetamask.communityPool.withdraw(chainName1, communityPoolData.balance, {
+        address: address,
+        customGasLimit: COMMUNITY_POOL_WITHDRAW_GAS_LIMIT
+      });
+    } catch (err) {
+      console.error(err);
+      const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
+      setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
+    } finally {
+      await initSchain1();
+      setChainId(getChainId(props.config.skaleNetwork, chainName1));
+      setMainnet(initMainnet(props.config.skaleNetwork, props.config.mainnetEndpoint));
+      const cpData = await updateCommunityPoolData();
+      setRechargeAmount(cpData.recommendedRechargeAmount);
+      setLoadingCommunityPool(false);
+    }
   }
 
   return (<WidgetUI
@@ -762,5 +895,13 @@ export function Widget(props) {
     clearTransactionsHistory={clearTransactionsHistory}
 
     btnText={btnText}
+
+    communityPoolData={communityPoolData}
+    rechargeAmount={rechargeAmount}
+    setRechargeAmount={setRechargeAmount}
+    loadingCommunityPool={loadingCommunityPool}
+
+    rechargeCommunityPool={rechargeCommunityPool}
+    withdrawCommunityPool={withdrawCommunityPool}
   />)
 }

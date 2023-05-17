@@ -38,8 +38,12 @@ export const CHAINS_META = {
 }
 
 
-export function clsNames(...args) {
-    return args.join(' ');
+export function clsNames(...args: any): string {
+    const filteredArgs = args.map((clsName: any) => {
+        if (typeof clsName === 'string') return clsName;
+        if (Array.isArray(clsName) && clsName.length === 2 && clsName[1]) return clsName[0];
+    });
+    return filteredArgs.join(' ');
 }
 
 
@@ -63,6 +67,9 @@ export function isTransferRequestActive(transferRequestStatus: TransferRequestSt
         transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB;
 }
 
+export function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export function getChainName(
     chainsMetadata: any,

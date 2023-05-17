@@ -30,7 +30,7 @@ export default function AmountInput(props) {
           disabled={props.loading || props.amountLocked}
         />
       </div>
-      <div className={styles.mp__flex}>
+      {props.maxBtn ? <div className={styles.mp__flex}>
         <Button
           color="primary"
           size="small"
@@ -40,7 +40,7 @@ export default function AmountInput(props) {
         >
           MAX
         </Button>
-      </div>
+      </div> : null}
     </div>
   )
 }

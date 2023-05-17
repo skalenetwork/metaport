@@ -21,6 +21,7 @@ export default function WidgetBody(props) {
   const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
   const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
   const [expandedHistory, setExpandedHistory] = React.useState<string | false>(false);
+  const [expandedExit, setExpandedExit] = React.useState<string | false>(false);
 
   // TODO: tmp wrap tokens fix
   const wrapTransferAction = props.actionSteps && props.actionSteps.length === 2 && props.activeStep > 0;
@@ -34,6 +35,10 @@ export default function WidgetBody(props) {
       disabledChains={props.disabledChains}
       setExpandedHistory={setExpandedHistory}
       expandedHistory={expandedHistory}
+
+      expandedExit={expandedExit}
+      setExpandedExit={setExpandedExit}
+
       theme={props.theme}
       {...props}
     />
@@ -87,7 +92,6 @@ export default function WidgetBody(props) {
 
   return (
     <div>
-
       <Collapse in={!expandedHistory}>
         <CurrentChain
           schains={props.config.chains}
@@ -104,6 +108,7 @@ export default function WidgetBody(props) {
 
           expandedTo={expandedTo}
           expandedTokens={expandedTokens}
+          expandedExit={expandedExit}
 
           sFuelData={props.sFuelData1}
         />
@@ -115,6 +120,9 @@ export default function WidgetBody(props) {
           setExpandedFrom={setExpandedFrom}
           setExpandedTo={setExpandedTo}
           setExpandedTokens={setExpandedTokens}
+
+          expandedExit={expandedExit}
+          setExpandedExit={setExpandedExit}
         />
         <SFuelWarning
           chain1={props.chain1}
@@ -140,7 +148,8 @@ export default function WidgetBody(props) {
       <Collapse in={
         !expandedFrom &&
         !expandedTo &&
-        !expandedTokens
+        !expandedTokens &&
+        !expandedExit
       }>
         <TransactionsHistory
           transactionsHistory={props.transactionsHistory}

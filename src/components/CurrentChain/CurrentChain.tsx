@@ -11,7 +11,7 @@ import ChainsList from '../ChainsList';
 
 export default function CurrentChain(props) {
   return (
-    <Collapse in={!props.expandedTo && !props.expandedTokens}>
+    <Collapse in={!props.expandedTo && !props.expandedTokens && !props.expandedExit}>
       <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margBott5)}>
         {props.view === View.UNWRAP ? (<div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
           <IconButton

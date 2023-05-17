@@ -31,6 +31,7 @@ export default function TransferSummary(props) {
           loading={props.loading}
           activeStep={props.activeStep}
           amountLocked={props.amountLocked}
+          maxBtn={true}
         />
       </div>
       }
