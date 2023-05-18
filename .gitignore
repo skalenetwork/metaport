@@ -53,3 +53,8 @@ test.mjs
 
 
 src/meta/
+
+metaportConfig.json
+
+storybook-static/
+.vercel

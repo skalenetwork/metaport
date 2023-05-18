@@ -8,7 +8,8 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import * as interfaces from '../../core/interfaces/index';
 
-import { getChainName, getChainIcon } from '../ChainsList/helper';
+import { getChainIcon } from '../ChainsList/helper';
+import { getChainName } from '../../core/helper'
 
 
 export default function Route(props: {
@@ -21,8 +22,8 @@ export default function Route(props: {
   const isSmall = props.size === 'small';
   const trReq: interfaces.TransferParams = props.transferRequest;
 
-  const fromChainName = getChainName(props.config.chainsMetadata, trReq.chains[0], trReq.fromApp);
-  const toChainName = getChainName(props.config.chainsMetadata, trReq.chains[1], trReq.toApp);
+  const fromChainName = getChainName(props.config.chainsMetadata, trReq.chains[0], props.config.skaleNetwork, trReq.fromApp);
+  const toChainName = getChainName(props.config.chainsMetadata, trReq.chains[1], props.config.skaleNetwork, trReq.toApp);
 
   const fromChainIcon = getChainIcon(props.config.skaleNetwork, trReq.chains[0], props.theme.dark, trReq.fromApp);
   const toChainIcon = getChainIcon(props.config.skaleNetwork, trReq.chains[1], props.theme.dark, trReq.toApp);

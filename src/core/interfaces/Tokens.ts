@@ -32,6 +32,7 @@ export interface Token {
     name?: string,
     iconUrl?: string,
     decimals?: string,
+    wrapsSFuel?: boolean,
     wraps?: WrapsData,
 }
 

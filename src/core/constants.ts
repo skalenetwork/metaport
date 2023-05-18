@@ -43,6 +43,19 @@ export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...';
 export const DEFAULT_MP_MARGIN = '20pt';
 export const DEFAULT_MP_Z_INDEX = 99000;
 
+export const HTTPS_PREFIX = 'https://';
+
+export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
+    mainnet: 'https://etherscan.io',
+    staging3: 'https://goerli.etherscan.io/',
+    legacy: 'https://goerli.etherscan.io/'
+};
+
+export const BASE_EXPLORER_URLS = {
+    mainnet: "explorer.mainnet.skalenodes.com",
+    staging3: "explorer.staging-v3.skalenodes.com",
+    legacy: "explorer.staging-v3.skalenodes.com"
+};
 
 // ETA constants
 
@@ -71,3 +84,17 @@ export const SFUEL_TEXT = {
         'error': 'You need ETH to perform a transfer'
     }
 };
+
+// faucet constants
+
+export const ZERO_FUNCSIG = '0x00000000';
+
+import faucetJson from '../metadata/faucet.json';
+export const FAUCET_DATA = faucetJson;
+
+// community pool
+
+export const RECHARGE_MULTIPLIER = 1.2;
+export const MINIMUM_RECHARGE_AMOUNT = 0.005;
+export const COMMUNITY_POOL_WITHDRAW_GAS_LIMIT = '1500000';
+export const BALANCE_UPDATE_INTERVAL_SECONDS = 10;

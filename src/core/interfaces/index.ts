@@ -28,3 +28,5 @@ export * from "./Tokens";
 export * from "./TokenDataMap";
 export * from "./TransferParams";
 export * from "./CheckRes";
+export * from "./TransactionHistory";
+export * from "./CommunityPoolData";

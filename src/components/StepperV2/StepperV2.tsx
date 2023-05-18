@@ -42,14 +42,14 @@ export default function StepperV2(props) {
                     variant="contained" color="primary" size="medium"
                     className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                   >
-                    {step.btnLoadingText}
+                    {props.btnText}
                   </LoadingButton>
                 ) : (
                   <Button
                     variant="contained" color="primary" size="medium"
                     className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                     onClick={props.handleNextStep}
-                    disabled={props.actionBtnDisabled || props.loading}
+                    disabled={props.amountErrorMessage || props.actionBtnDisabled || props.loading || !props.communityPoolData.exitGasOk}
                   >
                     {step.btnText}
                   </Button>

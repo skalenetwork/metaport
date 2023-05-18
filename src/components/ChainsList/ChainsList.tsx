@@ -9,10 +9,9 @@ import Button from '@mui/material/Button';
 
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
-import { iconPath } from '../TokenList/helper';
-import { MAINNET_CHAIN_NAME } from '../../core/constants';
+import { getChainIcon } from '../ChainsList/helper';
 
-import { clsNames } from '../../core/helper';
+import { clsNames, getChainName } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 
 
@@ -45,24 +44,6 @@ export default function ChainsList(props) {
     props.setChain(schainName);
   }
 
-  function getChainName(chainName: string) {
-    if (chainName == MAINNET_CHAIN_NAME) {
-      return 'Mainnet';
-    }
-    if (props.config.chainsMetadata && props.config.chainsMetadata[chainName]) {
-      return props.config.chainsMetadata[chainName].alias;
-    } else {
-      return chainName;
-    }
-  }
-
-  function getChainIcon(chainName: string) {
-    if (chainName == MAINNET_CHAIN_NAME) {
-      return <img src={iconPath('eth')} className='eth-logo' height='20px' width='20px' />;
-    }
-    return (<OfflineBoltIcon sx={{ color: stringToColor(props.chain, props.dark) }} width='20px' />);
-  }
-
   return (
     <div>
       <Accordion
@@ -79,15 +60,15 @@ export default function ChainsList(props) {
           {props.chain ? (
             <Tooltip title={'SKALE Chain ' + props.chain}>
               <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-                <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                  {getChainIcon(props.chain)}
+                <div className={clsNames(styles.mp__flex, styles.mp__flexCentered, styles.mp__chainIconSm)}>
+                  {getChainIcon(props.config.skaleNetwork, props.chain, props.dark)}
                 </div>
                 <p className={clsNames(
                   styles.mp__flex,
                   styles.mp__chainName,
                   styles.mp__margRi10
                 )}>
-                  {getChainName(props.chain)}
+                  {getChainName(props.config.chainsMetadata, props.chain, props.config.skaleNetwork)}
                 </p>
               </div>
             </Tooltip>
@@ -114,11 +95,11 @@ export default function ChainsList(props) {
                   onClick={() => handle(name)}
                 >
                   <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                      {getChainIcon(name)}
+                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered, styles.mp__chainIconSm)}>
+                      {getChainIcon(props.config.skaleNetwork, name, props.dark)}
                     </div>
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
-                      {getChainName(name)}
+                      {getChainName(props.config.chainsMetadata, name, props.config.skaleNetwork)}
                     </p>
                   </div>
                 </Button>

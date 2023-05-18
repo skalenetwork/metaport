@@ -23,6 +23,7 @@
 
 import debug from 'debug';
 import * as interfaces from './interfaces/index';
+import { ActionState } from './actions/actionState';
 
 
 debug.enable('*');
@@ -63,6 +64,53 @@ export namespace externalEvents {
 
     export function transferRequestCompleted(transferRequest: interfaces.TransferParams) {
         dispatchEvent('metaport_transferRequestCompleted', { 'transferRequest': transferRequest });
+    }
+
+    export function transactionCompleted(
+        txData: any,
+        timestamp: string | number,
+        chainName: string,
+        txName: string
+    ): void {
+        log('WARNING: Event metaport_transactionCompleted will be removed in the next version')
+        dispatchEvent(
+            'metaport_transactionCompleted',
+            {
+                tx: {
+                    gasUsed: txData.gasUsed,
+                    transactionHash: txData.transactionHash
+                },
+                timestamp,
+                chainName,
+                txName
+            }
+        );
+    }
+
+    export function actionStateUpdated(
+        actionName: string,
+        actionState: ActionState,
+        actionData: {
+            chainName1: string,
+            chainName2: string,
+            address: string,
+            amount: string,
+            amountWei: string,
+            tokenId: number
+        },
+        transactionHash?: string,
+        timestamp?: string | number
+    ): void {
+        dispatchEvent(
+            'metaport_actionStateUpdated',
+            {
+                actionState,
+                actionName,
+                actionData,
+                transactionHash,
+                timestamp
+            }
+        );
     }
 
     export function unwrapComplete(

@@ -90,6 +90,8 @@ export default function UnwrapUI(props) {
 
                 cleanData={props.cleanData}
                 sFuelData={props.sFuelData1}
+
+                btnText={props.btnText}
               />)}
             </div>
           )}

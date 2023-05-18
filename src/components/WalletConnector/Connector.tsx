@@ -10,7 +10,13 @@ import styles from '../WidgetUI/WidgetUI.scss';
 export function Connector(props) {
   return (
     <div>
-      <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow)}>
+      <p className={clsNames(
+        styles.mp__flex,
+        styles.mp__p3,
+        styles.mp__p,
+        styles.mp__flexGrow,
+        styles.sk__uppercase
+      )}>
         Connect a wallet
       </p>
       <ButtonBase

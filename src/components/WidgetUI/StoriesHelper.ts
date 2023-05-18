@@ -6,7 +6,7 @@ import { getWidgetTheme } from '../WidgetUI/Themes';
 export * as dataclasses from '../../core/dataclasses/index';
 import * as interfaces from '../../core/interfaces/index';
 import { View } from '../../core/dataclasses/View';
-import { getTransferSteps } from '../../core/transferSteps';
+import { getTransferSteps } from '../../core/transfer_steps';
 
 function setMock() { return };
 

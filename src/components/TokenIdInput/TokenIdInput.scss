@@ -1,3 +1,4 @@
+@import '../WidgetUI/variables';
 
 .mp__inputAmount {
 
@@ -19,8 +20,8 @@
         // border-radius: 4px;
     }
 
-    background-color: rgb(161 161 161 / 34%);
-    border-radius: 10px;
+    background-color: $sk-paper-color !important;
+    border-radius: $sk-border-radius !important;
 
     :global .MuiButton-root {
         border-radius: 0 10px 10px 0 !important;
