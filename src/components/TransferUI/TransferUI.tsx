@@ -121,7 +121,7 @@ export default function TransferUI(props) {
               token={props.token}
               loading={props.loading}
               activeStep={props.activeStep}
-              amountLocked={props.amountLocked}
+              amountLocked={props.amountLocked || props.activeStep !== 0}
               maxBtn={true}
             />
           </div>

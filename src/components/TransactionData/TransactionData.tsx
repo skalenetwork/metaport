@@ -50,6 +50,7 @@ const actionIcons: { [actionName: string]: ReactElement; } = {
     'withdraw': <LogoutIcon />,
     'approve': <DoneRoundedIcon />,
     'approveWrap': <DoneRoundedIcon />,
+    'wrapsfuel': <MoveDownIcon />
 }
 
 
@@ -61,7 +62,8 @@ const actionAliases: { [actionName: string]: string; } = {
     'getMyEth': 'Unlock ETH',
     'withdraw': 'Withdraw',
     'approve': 'Approve',
-    'approveWrap': 'Approve wrap'
+    'approveWrap': 'Approve wrap',
+    'wrapsfuel': 'Wrap sFUEL'
 }
 
 
