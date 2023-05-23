@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 
+import ChainApps from '../ChainApps';
 import { getChainIcon } from '../ChainsList/helper';
 
 import { clsNames, getChainName } from '../../core/helper';
@@ -58,20 +59,27 @@ export default function ChainsList(props) {
           id="panel1bh-header"
         >
           {props.chain ? (
-            <Tooltip title={'SKALE Chain ' + props.chain}>
-              <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-                <div className={clsNames(styles.mp__flex, styles.mp__flexCentered, styles.mp__chainIconSm)}>
-                  {getChainIcon(props.config.skaleNetwork, props.chain, props.dark)}
-                </div>
+            <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
+              <div className={clsNames(styles.mp__flex, styles.mp__flexCentered, styles.mp__chainIconSm)}>
+                {getChainIcon(props.config.skaleNetwork, props.chain, props.dark)}
+              </div>
+              <Tooltip title={'SKALE Chain ' + props.chain}>
                 <p className={clsNames(
-                  styles.mp__flex,
                   styles.mp__chainName,
                   styles.mp__margRi10
                 )}>
                   {getChainName(props.config.chainsMetadata, props.chain, props.config.skaleNetwork)}
                 </p>
+              </Tooltip>
+              <div className={clsNames(styles.mp__flex, styles.mp__flexGrow)}></div>
+              <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                <ChainApps
+                  config={props.config}
+                  chain={props.chain}
+                  dark={props.dark}
+                />
               </div>
-            </Tooltip>
+            </div>
           ) : (
             <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
               <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
@@ -101,6 +109,14 @@ export default function ChainsList(props) {
                     <p className={clsNames(styles.mp__flex, styles.mp__chainName, styles.mp__margRi10)}>
                       {getChainName(props.config.chainsMetadata, name, props.config.skaleNetwork)}
                     </p>
+                    <div className={clsNames(styles.mp__flex, styles.mp__flexGrow)}></div>
+                    <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
+                      <ChainApps
+                        config={props.config}
+                        chain={name}
+                        dark={props.dark}
+                      />
+                    </div>
                   </div>
                 </Button>
               </Typography>
@@ -108,6 +124,6 @@ export default function ChainsList(props) {
           </div>
         </AccordionDetails>
       </Accordion>
-    </div>
+    </div >
   )
 }

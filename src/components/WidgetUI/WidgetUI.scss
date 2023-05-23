@@ -588,7 +588,7 @@
 }
 
 .mp__popper {
-  width: 310pt;
+  width: 300pt;
 }
 
 .mp__transferToFix {
@@ -699,7 +699,20 @@
 
 .mp__chainIconSm {
   :global(img) {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
   }
+}
+
+.mp__chainIconXs {
+  :global(img) {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.sk__chainApps {
+  background-color: $sk-paper-color;
+  border-radius: $sk-border-radius !important;
+  padding: 5px;
 }

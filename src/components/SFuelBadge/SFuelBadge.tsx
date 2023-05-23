@@ -7,7 +7,6 @@ import Tooltip from '@mui/material/Tooltip';
 import localStyles from './SFuelBadge.scss';
 
 
-
 const BadgeStates = {
   success: {
     tooltip: 'Ok text',
