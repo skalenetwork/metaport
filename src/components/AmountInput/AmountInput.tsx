@@ -6,6 +6,9 @@ import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
 import localStyles from './AmountInput.scss';
 
+import { TokenType } from '../../core/dataclasses/TokenType';
+import { SFUEL_RESERVE_AMOUNT } from "../../core/constants";
+
 
 export default function AmountInput(props) {
 
@@ -14,7 +17,11 @@ export default function AmountInput(props) {
   };
 
   const setMaxAmount = () => {
-    props.setAmount(props.token.balance);
+    if (props.token && (props.token.wrapsSFuel || props.token.type === TokenType.eth)) {
+      props.setAmount((Number(props.token.balance) - SFUEL_RESERVE_AMOUNT).toString());
+    } else {
+      props.setAmount(props.token.balance);
+    }
   }
 
   if (!props.token) return;
