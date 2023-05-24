@@ -12,7 +12,8 @@
 
     :global(input) {
         border-radius: 4px 0 0 4px;
-        padding: 9pt 15pt;
+        padding: 15pt 15pt;
+        font-weight: bold !important;
     }
 
     :global(.MuiFormControl-root) {

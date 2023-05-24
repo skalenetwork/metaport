@@ -12,7 +12,8 @@
 
     :global input {
         border-radius: 4px 0 0 4px;
-        padding: 9pt 15pt;
+        padding: 15pt 15pt;
+        font-weight: bold !important;
     }
 
     :global .MuiFormControl-root {
@@ -31,10 +32,12 @@
     input::-webkit-inner-spin-button {
         /* display: none; <- Crashes Chrome on hover */
         -webkit-appearance: none;
-        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
     }
 
     :global input[type=number] {
-        -moz-appearance:textfield; /* Firefox */
+        -moz-appearance: textfield;
+        /* Firefox */
     }
 }

@@ -17,10 +17,15 @@ export default function AmountInput(props) {
   };
 
   const setMaxAmount = () => {
-    if (props.token && (props.token.wrapsSFuel || props.token.type === TokenType.eth)) {
+    if (props.token && !props.token.clone &&
+      (props.token.wrapsSFuel || props.token.type === TokenType.eth)) {
       props.setAmount((Number(props.token.balance) - SFUEL_RESERVE_AMOUNT).toString());
     } else {
-      props.setAmount(props.token.balance);
+      if (props.token && !props.token.clone && props.token.unwrappedBalance) {
+        props.setAmount(props.token.unwrappedBalance);
+      } else {
+        props.setAmount(props.token.balance);
+      }  
     }
   }
 
