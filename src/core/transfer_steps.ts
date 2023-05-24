@@ -78,7 +78,7 @@ export function getTransferSteps(
             ));
         }
     } else {
-        if (token.unwrappedSymbol) {
+        if (token.unwrappedSymbol || token.wrapsSFuel) {
             if (!token.clone) {
                 log('adding wrap step');
                 steps.unshift(getWrapStep(
@@ -89,12 +89,14 @@ export function getTransferSteps(
                 ));
             } else {
                 log('adding unwrap step');
-                steps.push(getUnwrapStep(
-                    trReq.chains[1],
-                    trReq.toApp,
-                    config,
-                    theme
-                ));
+                if (!token.wrapsSFuel) {
+                    steps.push(getUnwrapStep(
+                        trReq.chains[1],
+                        trReq.toApp,
+                        config,
+                        theme
+                    ));
+                }
             }
         }
     };
