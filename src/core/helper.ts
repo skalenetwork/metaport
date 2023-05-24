@@ -101,3 +101,9 @@ function getChainNameMeta(chainName: string, skaleNetwork: string, app?: string)
     }
     return chainName;
 }
+
+export function getChainAppsMeta(chainName: string, skaleNetwork: string) {
+    if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
+        return CHAINS_META[skaleNetwork][chainName].apps;
+    }
+}
