@@ -506,6 +506,7 @@ export function Widget(props) {
   }
 
   function confirmSummary() {
+    setLoading(true);
     setView(View.TRANSFER_REQUEST_STEPS);
     setTransferRequestStatus(TransferRequestStatus.IN_PROGRESS);
     const fromChain = transferRequest.chains[0];

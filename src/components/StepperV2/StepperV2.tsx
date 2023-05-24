@@ -35,21 +35,26 @@ export default function StepperV2(props) {
                 {step.text}
               </p>
               <div className={styles.mp__margTop10}>
-                {props.loading ? (
+                {props.loading || props.loadingTokens ? (
                   <LoadingButton
                     loading
                     loadingPosition="start"
                     variant="contained" color="primary" size="medium"
                     className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                   >
-                    {props.btnText}
+                    {props.loadingTokens ? 'Loading...' : props.btnText}
                   </LoadingButton>
                 ) : (
                   <Button
                     variant="contained" color="primary" size="medium"
                     className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
                     onClick={props.handleNextStep}
-                    disabled={props.amountErrorMessage || props.actionBtnDisabled || props.loading || !props.communityPoolData.exitGasOk}
+                    disabled={props.amountErrorMessage ||
+                      props.actionBtnDisabled ||
+                      props.loading ||
+                      props.loadingTokens ||
+                      !props.communityPoolData.exitGasOk
+                    }
                   >
                     {step.btnText}
                   </Button>
