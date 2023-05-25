@@ -17,6 +17,8 @@ Feature highlights:
 
 image:metaport-examples.png[]
 
+Skip down to xref:_demos[demos] for video examples of Metaport widget in action.
+
 [TIP]
 To test out a playground environment, check out https://skale-metaport-demo-cra.vercel.app/
 
@@ -155,3 +157,5 @@ include::functions.adoc[]
 include::events.adoc[]
 
 include::tips-tricks.adoc[]
+
+include::demos.adoc[]
