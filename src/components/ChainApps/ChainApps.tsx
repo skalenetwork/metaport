@@ -29,7 +29,7 @@ export default function ChainApps(props: {
       styles.mp__flexCenteredVert
     )}>
       <Tooltip title={'Apps on a chain: ' + appNames}>
-        <div>
+        <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
           {Object.keys(apps).map((key, _) => (
             <div key={key} className={clsNames(
               styles.mp__flex,
