@@ -86,7 +86,7 @@ export function getChainName(
         }
         return chainsMetadata[chainName].alias;
     } else {
-        return getChainNameMeta(chainName, skaleNetwork);
+        return getChainNameMeta(chainName, skaleNetwork, app);
     }
 }
 
