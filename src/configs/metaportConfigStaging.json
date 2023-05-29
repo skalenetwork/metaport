@@ -1,209 +1,159 @@
 {
-  "skaleNetwork": "staging3",
-  "autoLookup": false,
-  "openOnLoad": true,
+  "skaleNetwork": "mainnet",
+  "autoLookup": true,
   "openButton": true,
-  "debug": false,
   "chains": [
     "mainnet",
-    "staging-perfect-parallel-gacrux",
-    "staging-severe-violet-wezen",
-    "staging-legal-crazy-castor",
-    "staging-utter-unripe-menkar",
-    "staging-faint-slimy-achird",
-    "staging-weepy-fitting-caph"
+    "elated-tan-skat",
+    "honorable-steel-rasalhague",
+    "affectionate-immediate-pollux",
+    "turbulent-unique-scheat",
+    "green-giddy-denebola",
+    "wan-red-ain",
+    "adorable-quaint-bellatrix",
+    "frayed-decent-antares"
   ],
-  "chainsMetadata": {
-    "staging-perfect-parallel-gacrux": {
-      "alias": "Europa Hub",
-      "apps": {
-        "ruby": {
-          "alias": "Ruby Exchange",
-          "background": "#02001f",
-          "url": "https://ruby.exchange/"
-        }
-      }
-    },
-    "staging-severe-violet-wezen": {
-      "alias": "Calypso Hub",
-      "apps": {
-        "nftrade": {
-          "alias": "NFTrade",
-          "background": "#ffffff",
-          "url": "https://nftrade.com/"
-        }
-      }
-    }
-  },
   "tokens": {
     "mainnet": {
       "eth": {
         "chains": [
-          "staging-perfect-parallel-gacrux",
-          "staging-legal-crazy-castor"
+          "elated-tan-skat",
+          "adorable-quaint-bellatrix"
         ]
       },
       "erc20": {
-        "_SKL_0x493D4442013717189C9963a2e275Ad33bfAFcE11": {
-          "name": "SKL",
-          "address": "0x493D4442013717189C9963a2e275Ad33bfAFcE11",
-          "symbol": "SKL"
+        "_RAZOR_0x50DE6856358Cc35f3A9a57eAAA34BD4cB707d2cd": {
+          "address": "0x50DE6856358Cc35f3A9a57eAAA34BD4cB707d2cd",
+          "decimals": "18",
+          "name": "RAZOR Network",
+          "symbol": "RAZOR",
+          "iconUrl": "https://assets.coingecko.com/coins/images/13797/small/icon.png"
         },
-        "_skl_0x2868716b3B4AEa43E8387922AFE71a77D101854e": {
-          "address": "0x2868716b3B4AEa43E8387922AFE71a77D101854e",
+        "_DAI_0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+          "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+          "decimals": "18",
+          "name": "Dai Stablecoin",
+          "symbol": "DAI"
+        },
+        "_RUBY_0x918D8F3670c67f14Ff3fEB025D46B9C165d12a23": {
+          "address": "0x918D8F3670c67f14Ff3fEB025D46B9C165d12a23",
+          "decimals": "18",
+          "name": "Ruby Token",
+          "iconUrl": "https://ruby.exchange/images/tokens/ruby-square.png",
+          "symbol": "RUBY"
+        },
+        "_SKL_0x00c83aeCC790e8a4453e5dD3B0B4b3680501a7A7": {
+          "address": "0x00c83aeCC790e8a4453e5dD3B0B4b3680501a7A7",
           "decimals": "18",
           "name": "SKALE",
-          "symbol": "skl",
-          "mappings": {
-            "staging-perfect-parallel-gacrux": "0x6FA34A9A1eb81d550D6bB5E129B9FDc35aa0F021"
-          }
+          "symbol": "SKL"
         },
-        "_usdc_0xdE7EBAA09961D4BdD9E41206De23D2214e22b5d2": {
-          "address": "0xdE7EBAA09961D4BdD9E41206De23D2214e22b5d2",
-          "decimals": "18",
-          "name": "USDC",
-          "symbol": "usdc"
+        "_USDC_0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+          "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "decimals": "6",
+          "name": "USD Coin",
+          "symbol": "USDC"
         },
-        "_usdt_0xB89fCb83F7868d8Cfd104c768FF93FDF74C8a590": {
-          "address": "0xB89fCb83F7868d8Cfd104c768FF93FDF74C8a590",
+        "_USDP_0x8E870D67F660D95d5be530380D0eC0bd388289E1": {
+          "address": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
           "decimals": "18",
-          "name": "USDT",
-          "symbol": "usdt"
+          "name": "Pax Dollar",
+          "iconUrl": "https://ruby.exchange/images/tokens/usdp-square.png",
+          "symbol": "USDP"
         },
-        "_wbtc_0xd7BAd1A8E66050178a815355567E5e0218a5B659": {
-          "address": "0xd7BAd1A8E66050178a815355567E5e0218a5B659",
+        "_USDT_0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "decimals": "6",
+          "name": "Tether USD",
+          "symbol": "USDT"
+        },
+        "_WBTC_0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
+          "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+          "decimals": "8",
+          "name": "Wrapped BTC",
+          "symbol": "WBTC"
+        },
+        "_HMT_0xd1ba9BAC957322D6e8c07a160a3A8dA11A0d2867": {
+          "address": "0xd1ba9BAC957322D6e8c07a160a3A8dA11A0d2867",
           "decimals": "18",
-          "name": "WBTC",
-          "symbol": "wbtc"
-        }
-      },
-      "erc721meta": {
-        "_SPACE_0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6": {
-          "address": "0x1b7729d7E1025A031aF9D6E68598b57f4C2adfF6",
-          "name": "SKALE Space",
-          "symbol": "SPACE",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png"
-        }
-      },
-      "erc1155": {
-        "_SKALIENS_0x6cb73D413970ae9379560aA45c769b417Fbf33D6": {
-          "address": "0x6cb73D413970ae9379560aA45c769b417Fbf33D6",
-          "name": "SKALIENS Collection",
-          "symbol": "SKALIENS",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Alien/3D/alien_3d.png"
+          "name": "Human Token",
+          "symbol": "HMT",
+          "iconUrl": "https://s2.coinmarketcap.com/static/img/coins/64x64/10347.png"
         }
       }
     },
-    "staging-utter-unripe-menkar": {
-      "erc721": {
-        "_TANK_0x4aaa1bb85d9339811b65566fa1aae11a8a9db28d": {
-          "name": "TANK",
-          "address": "0x4aaa1bb85d9339811b65566fa1aae11a8a9db28d",
-          "symbol": "TANK",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Bomb/3D/bomb_3d.png"
-        }
-      }
-    },
-    "staging-legal-crazy-castor": {
+    "frayed-decent-antares": {
       "erc20": {
-        "_ETH_0xa270484784f043e159f74C03B691F80B6F6e3c24": {
-          "name": "ETH",
-          "address": "0xa270484784f043e159f74C03B691F80B6F6e3c24",
-          "symbol": "ETH",
-          "iconUrl": "https://ruby.exchange/images/tokens/eth-square.jpg",
-          "wraps": {
-            "iconUrl": "https://ruby.exchange/images/tokens/eth-square.jpg",
-            "address": "0xD2Aaa00700000000000000000000000000000000",
-            "symbol": "ETHC"
-          }
-        },
-        "_SKL_0x6a679eF80aF3fE01A646F858Ca1e26D58b5430B6": {
-          "name": "SKL",
-          "symbol": "SKL",
-          "address": "0x6a679eF80aF3fE01A646F858Ca1e26D58b5430B6",
-          "iconUrl": "https://ruby.exchange/images/tokens/skl-square.jpg",
-          "wraps": {
-            "address": "0xbA1E9BA7CDd4815Da6a51586bE56e8643d1bEAb6",
-            "symbol": "SKL",
-            "iconUrl": "https://ruby.exchange/images/tokens/skl-square.jpg"
-          }
-        },
-        "_USDC_0x4f250cCE5b8B39caA96D1144b9A32E1c6a9f97b0": {
-          "name": "USDC",
-          "symbol": "USDC",
-          "address": "0x4f250cCE5b8B39caA96D1144b9A32E1c6a9f97b0",
-          "iconUrl": "https://ruby.exchange/images/tokens/usdc-square.jpg",
-          "wraps": {
-            "address": "0x5d42495D417fcd9ECf42F3EA8a55FcEf44eD9B33",
-            "symbol": "USDC",
-            "iconUrl": "https://ruby.exchange/images/tokens/usdc-square.jpg"
-          }
+        "_BRAWL_0xE0A107a0010930Ac218ED0a50937b50D5633EB3e": {
+          "address": "0xE0A107a0010930Ac218ED0a50937b50D5633EB3e",
+          "name": "BRAWL",
+          "symbol": "BRAWL",
+          "iconUrl": "https://ruby.exchange/images/tokens/brawl-square.png",
+          "wrapsSFuel": true
         }
       }
     },
-    "staging-perfect-parallel-gacrux": {
+    "elated-tan-skat": {
       "erc20": {
-        "_ETH_0xBA3f8192e28224790978794102C0D7aaa65B7d70": {
-          "address": "0xBA3f8192e28224790978794102C0D7aaa65B7d70",
+        "_ETH_0xa5274efA35EbeFF47C1510529D9a8812F95F5735": {
+          "address": "0xa5274efA35EbeFF47C1510529D9a8812F95F5735",
           "name": "ETH",
           "symbol": "ETH",
           "cloneSymbol": "ETH",
           "wraps": {
             "address": "0xD2Aaa00700000000000000000000000000000000",
             "symbol": "ETH",
-            "name": "aaaa"
+            "name": "ETH"
           }
         },
-        "_SKILL_0xb36A1DdaBf21161ad71013A34D502381DD1aa7BA": {
-          "address": "0xb36A1DdaBf21161ad71013A34D502381DD1aa7BA",
-          "name": "SKILL Token",
-          "symbol": "SKILL",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Compass/3D/compass_3d.png"
-        },
-        "DMT": {
-          "address": "0xb36A1DdaBf21161ad71013A34D502381DD1aa7BA",
-          "name": "DMT",
-          "symbol": "DMT",
-          "cloneSymbol": "DMTC",
+        "_SKL_0xD162bB5c75FE99144295b03510bAb2DF99617440": {
+          "address": "0xD162bB5c75FE99144295b03510bAb2DF99617440",
+          "name": "SKL",
+          "symbol": "SKL",
+          "cloneSymbol": "SKL",
           "wraps": {
-            "address": "0x688f6d050B935BF06531b51B5e598318788fA7a5",
-            "symbol": "DMT",
-            "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Compass/3D/compass_3d.png"
+            "address": "0xE0595a049d02b7674572b0d59cd4880Db60EDC50",
+            "symbol": "SKL",
+            "name": "SKL"
           }
         },
-        "_SKL_0x099A46F35b627CABee27dc917eDA253fFbC55Be6": {
-          "address": "0x099A46F35b627CABee27dc917eDA253fFbC55Be6",
-          "decimals": "18",
-          "name": "SKL S2S",
-          "symbol": "SKL"
-        }
-      },
-      "erc721": {
-        "_SPS_0x30216880A73B67133F37de35e769b8e1A943D35c": {
-          "address": "0x30216880A73B67133F37de35e769b8e1A943D35c",
-          "name": "SKALE Space S2S",
-          "symbol": "SPS",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Glowing%20star/3D/glowing_star_3d.png"
-        }
-      },
-      "erc1155": {
-        "skaliens": {
-          "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
-          "name": "SKALIENS Collection",
-          "symbol": "SKALIENS2S",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Alien/3D/alien_3d.png"
+        "_HMT_0xA0f4D4db1457E442b83555cb92aaBB8DE959Aa75": {
+          "address": "0xA0f4D4db1457E442b83555cb92aaBB8DE959Aa75",
+          "name": "HMT",
+          "symbol": "HMT",
+          "cloneSymbol": "HMT",
+          "iconUrl": "https://s2.coinmarketcap.com/static/img/coins/64x64/10347.png",
+          "wraps": {
+            "address": "0xBE3530a3eDf9472693065041B8c9155C7FeCB8e5",
+            "symbol": "HMT",
+            "name": "HMT"
+          }
         },
-        "medals": {
-          "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
-          "name": "Medals",
-          "symbol": "MEDALS2S",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/1st%20place%20medal/3D/1st_place_medal_3d.png"
-        },
-        "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
-          "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
-          "name": "Funny Animals",
-          "symbol": "ANIMALS",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Frog/3D/frog_3d.png"
+        "_USDC_0x1c566a47e1baC535Ca616373146e3BE024F88Aa4": {
+          "address": "0x1c566a47e1baC535Ca616373146e3BE024F88Aa4",
+          "name": "USDC",
+          "symbol": "USDC",
+          "cloneSymbol": "USDC",
+          "decimals": "6",
+          "wraps": {
+            "address": "0x5F795bb52dAC3085f578f4877D450e2929D2F13d",
+            "symbol": "USDC",
+            "name": "USDC"
+          }
+        }
+      }
+    },
+    "honorable-steel-rasalhague": {},
+    "turbulent-unique-scheat": {},
+    "green-giddy-denebola": {},
+    "wan-red-ain": {},
+    "affectionate-immediate-pollux": {
+      "erc20": {
+        "_SKILL_0x5F6E97612482095C0c2C02BC495C0171e61017d7": {
+          "address": "0x5F6E97612482095C0c2C02BC495C0171e61017d7",
+          "name": "SKILL",
+          "symbol": "SKILL",
+          "iconUrl": "https://ruby.exchange/images/tokens/skill-square.png"
         }
       }
     }
