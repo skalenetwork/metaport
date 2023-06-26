@@ -13,19 +13,26 @@ import { SFUEL_RESERVE_AMOUNT } from "../../core/constants";
 export default function AmountInput(props) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (parseFloat(event.target.value) < 0) {
+      props.setAmount('');
+      return;
+    }
     props.setAmount(event.target.value);
   };
 
   const setMaxAmount = () => {
     if (props.token && !props.token.clone &&
       (props.token.wrapsSFuel || props.token.type === TokenType.eth)) {
-      props.setAmount((Number(props.token.balance) - SFUEL_RESERVE_AMOUNT).toString());
+      const adjustedAmount = Number(props.token.balance) - SFUEL_RESERVE_AMOUNT;
+      if (adjustedAmount > 0) {
+        props.setAmount(adjustedAmount.toString());
+      }
     } else {
       if (props.token && !props.token.clone && props.token.unwrappedBalance) {
         props.setAmount(props.token.unwrappedBalance);
       } else {
         props.setAmount(props.token.balance);
-      }  
+      }
     }
   }
 
