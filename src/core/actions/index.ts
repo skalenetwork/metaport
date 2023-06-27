@@ -33,19 +33,16 @@ import {
     UnWrapERC20S,
     UnWrapERC20S2S,
     TransferERC20M2S,
-    TransferERC20S2M
+    TransferERC20S2M,
+    WrapSFuelERC20S
 } from './erc20';
 import {
-    ApproveERC721M,
     TransferERC721M2S,
-    ApproveERC721S,
     TransferERC721S2M,
     TransferERC721S2S
 } from './erc721';
 import {
-    ApproveERC1155M,
     TransferERC1155M2S,
-    ApproveERC1155S,
     TransferERC1155S2M,
     TransferERC1155S2S
 } from './erc1155';
@@ -84,9 +81,9 @@ export function getActionName(
 }
 
 
-// const wrapActions = [ApproveWrapERC20S, WrapERC20S];
 const wrapActions = [WrapERC20S];
 const unwrapActions = [UnWrapERC20S2S];
+const sFuelWrapActions = [WrapSFuelERC20S];
 
 
 export const ACTIONS = {
@@ -100,17 +97,17 @@ export const ACTIONS = {
 
     erc20_unwrap: [UnWrapERC20S],
 
-    erc721_m2s: [ApproveERC721M, TransferERC721M2S],
-    erc721_s2m: [ApproveERC721S, TransferERC721S2M],
-    erc721_s2s: [ApproveERC721S, TransferERC721S2S],
+    erc721_m2s: [TransferERC721M2S],
+    erc721_s2m: [TransferERC721S2M],
+    erc721_s2s: [TransferERC721S2S],
 
-    erc721meta_m2s: [ApproveERC721M, TransferERC721M2S],
-    erc721meta_s2m: [ApproveERC721S, TransferERC721S2M],
-    erc721meta_s2s: [ApproveERC721S, TransferERC721S2S],
+    erc721meta_m2s: [TransferERC721M2S],
+    erc721meta_s2m: [TransferERC721S2M],
+    erc721meta_s2s: [TransferERC721S2S],
 
-    erc1155_m2s: [ApproveERC1155M, TransferERC1155M2S],
-    erc1155_s2m: [ApproveERC1155S, TransferERC1155S2M],
-    erc1155_s2s: [ApproveERC1155S, TransferERC1155S2S]
+    erc1155_m2s: [TransferERC1155M2S],
+    erc1155_s2m: [TransferERC1155S2M],
+    erc1155_s2s: [TransferERC1155S2S]
 }
 
 
@@ -123,6 +120,9 @@ export function getActionSteps(
     // TODO: tmp fix
     if (tokenData.unwrappedSymbol && !tokenData.clone && actionName !== 'erc20_unwrap') {
         actionsList.push(...wrapActions);
+    }
+    if (tokenData.wrapsSFuel && !tokenData.clone && actionName !== 'erc20_unwrap') {
+        actionsList.push(...sFuelWrapActions);
     }
     actionsList.push(...ACTIONS[actionName]);
     if (tokenData.unwrappedSymbol && tokenData.clone) {

@@ -41,11 +41,6 @@ class ERC721Action extends Action {
     s2() { return this.isMeta() ? this.sChain2.erc721meta : this.sChain2.erc721; };
 }
 
-class ERC721Approve extends ERC721Action {
-    static label = 'Approve transfer'
-    static buttonText = 'Approve'
-    static loadingText = 'Approving'
-}
 
 class ERC721Transfer extends ERC721Action {
     static label = 'Transfer'
@@ -64,15 +59,35 @@ class ERC721Transfer extends ERC721Action {
 }
 
 
-export class ApproveERC721M extends ERC721Approve {
-    async execute() {
-        await this.mn().approve(
-            this.tokenData.keyname,
+class ERC721TransferS extends ERC721Transfer {
+    async approve(): Promise<void> {
+        const checkRes = await checkERC721(
+            this.address,
+            this.s1().address,
             this.tokenId,
-            { address: this.address }
-        )
+            this.s1().tokens[this.tokenData.keyname]
+        );
+        this.setAmountErrorMessage(checkRes.msg);
+        if (!checkRes.approved) {
+            this.updateState('approve');
+            log(`ERC721TransferS:execute - approving token ${this.tokenId} (${this.chainName1})`);
+            const approveTx = await this.s1().approve(
+                this.tokenData.keyname,
+                this.tokenId,
+                { address: this.address }
+            );
+            const txBlock = await this.s1().web3.eth.getBlock(approveTx.blockNumber);
+            this.updateState('approveDone', approveTx.transactionHash, txBlock.timestamp);
+            externalEvents.transactionCompleted(
+                approveTx, txBlock.timestamp, this.chainName1, 'approve');
+            log('ERC721TransferS:execute - approve tx completed: %O', approveTx);
+        }
     }
-    async preAction() {
+}
+
+
+class ERC721TransferM extends ERC721Transfer {
+    async approve(): Promise<void> {
         const checkRes = await checkERC721(
             this.address,
             this.mn().address,
@@ -80,13 +95,29 @@ export class ApproveERC721M extends ERC721Approve {
             this.mn().tokens[this.tokenData.keyname]
         );
         this.setAmountErrorMessage(checkRes.msg);
-        if (checkRes.approved) this.setActiveStep(1);
+        if (!checkRes.approved) {
+            this.updateState('approve');
+            log(`ERC721TransferM:execute - approving token ${this.tokenId} (${this.chainName1})`);
+            const approveTx = await this.mn().approve(
+                this.tokenData.keyname,
+                this.tokenId,
+                { address: this.address }
+            )
+            const txBlock = await this.mn().web3.eth.getBlock(approveTx.blockNumber);
+            this.updateState('approveDone', approveTx.transactionHash, txBlock.timestamp);
+            externalEvents.transactionCompleted(
+                approveTx, txBlock.timestamp, this.chainName1, 'approve');
+            log('ERC721TransferS:execute - approve tx completed: %O', approveTx);
+        }
     }
 }
 
 
-export class TransferERC721M2S extends ERC721Transfer {
+export class TransferERC721M2S extends ERC721TransferM {
     async execute() {
+        this.updateState('init');
+        await this.approve();
+        this.updateState('transfer');
         const destTokenContract = this.s2().tokens[this.tokenData.keyname]
         const ownerOnDestination = await this.sChain2.getERC721OwnerOf(
             destTokenContract,
@@ -98,9 +129,14 @@ export class TransferERC721M2S extends ERC721Transfer {
             this.tokenId,
             { address: this.address }
         );
-        log('Transfer transaction done, waiting for token to be received');
+        const block = await this.mn().web3.eth.getBlock(tx.blockNumber);
+        this.updateState('transferDone', tx.transactionHash, block.timestamp);
+        externalEvents.transactionCompleted(
+            tx, block.timestamp, this.chainName1, 'deposit');
+        log('TransferERC721M2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC721OwnerChange(
             destTokenContract, this.tokenId, ownerOnDestination);
+        this.updateState('received');
         log('Token received to destination chain');
         this.transferComplete(tx);
     }
@@ -118,30 +154,11 @@ export class TransferERC721M2S extends ERC721Transfer {
 }
 
 
-
-export class ApproveERC721S extends ERC721Approve {
+export class TransferERC721S2M extends ERC721TransferS {
     async execute() {
-        await this.s1().approve(
-            this.tokenData.keyname,
-            this.tokenId,
-            { address: this.address }
-        );
-    }
-    async preAction() {
-        const checkRes = await checkERC721(
-            this.address,
-            this.s1().address,
-            this.tokenId,
-            this.s1().tokens[this.tokenData.keyname]
-        );
-        this.setAmountErrorMessage(checkRes.msg);
-        if (checkRes.approved) this.setActiveStep(1);
-    }
-}
-
-
-export class TransferERC721S2M extends ERC721Transfer {
-    async execute() {
+        this.updateState('init');
+        await this.approve();
+        this.updateState('transfer');
         const destTokenContract = this.mn().tokens[this.tokenData.keyname];
         const ownerOnDestination = await this.mainnet.getERC721OwnerOf(
             destTokenContract,
@@ -152,10 +169,16 @@ export class TransferERC721S2M extends ERC721Transfer {
             this.tokenId,
             { address: this.address }
         );
-        log('Transfer transaction done, waiting for token to be received');
+
+        const block = await this.s1().web3.eth.getBlock(tx.blockNumber);
+        this.updateState('transferDone', tx.transactionHash, block.timestamp);
+        externalEvents.transactionCompleted(
+            tx, block.timestamp, this.chainName1, 'withdraw');
+        log('TransferERC721S2M:execute - tx completed %O', tx);
         await this.mainnet.waitERC721OwnerChange(
             destTokenContract, this.tokenId, ownerOnDestination);
-        log('Token received to destination chain');
+        this.updateState('received');
+        log('TransferERC721S2M:execute - tokens received to destination chain');
         this.transferComplete(tx);
     }
 
@@ -172,23 +195,31 @@ export class TransferERC721S2M extends ERC721Transfer {
 }
 
 
-export class TransferERC721S2S extends ERC721Transfer {
+export class TransferERC721S2S extends ERC721TransferS {
     async execute() {
+        this.updateState('init');
+        await this.approve();
+        this.updateState('transfer');
         const destTokenContract = this.s2().tokens[this.tokenData.keyname];
         const ownerOnDestination = await this.sChain2.getERC721OwnerOf(
             destTokenContract,
             this.tokenId
         );
-        const tx = await this.sChain1.erc721.transferToSchain(
+        const tx = await this.s1().transferToSchain(
             this.chainName2,
             this.tokenData.originAddress,
             this.tokenId,
             { address: this.address }
         );
-        log('Transfer transaction done, waiting for token to be received');
+        const block = await this.s1().web3.eth.getBlock(tx.blockNumber);
+        this.updateState('transferDone', tx.transactionHash, block.timestamp);
+        externalEvents.transactionCompleted(
+            tx, block.timestamp, this.chainName1, 'transferToSchain');
+        log('TransferERC721S2S:execute - tx completed %O', tx);
         await this.sChain2.waitERC721OwnerChange(
             destTokenContract, this.tokenId, ownerOnDestination);
-        log('Token received to destination chain');
+        this.updateState('received');
+        log('TransferERC721S2S:execute - tokens received to destination chain');
         this.transferComplete(tx);
     }
 

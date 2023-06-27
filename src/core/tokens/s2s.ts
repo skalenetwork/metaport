@@ -132,7 +132,8 @@ async function addTokenData(
         tokenType,
         unwrappedSymbol,
         unwrappedAddress,
-        unwrappedIconUrl
+        unwrappedIconUrl,
+        configToken.wrapsSFuel
     );
     addToken(sChain1, availableTokens[tokenType][tokenKeyname], true);
     addToken(sChain2, availableTokens[tokenType][tokenKeyname], false);
@@ -174,6 +175,13 @@ function addToken(sChain: SChain, token: TokenData, fromChain: boolean): void {
             initContract(token.type, token.unwrappedAddress, sChain.web3)
         );
     } else {
+        if (token.wrapsSFuel && !token.clone) {
+            sChain[token.type].addToken(
+                token.keyname,
+                initContract('sfuelwrap', address, sChain.web3)
+            );
+            return;
+        }
         sChain[token.type].addToken(token.keyname, initContract(token.type, address, sChain.web3));
     }
 }

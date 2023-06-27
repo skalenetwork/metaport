@@ -30,6 +30,7 @@ import { fromWei } from '../convertation';
 import TokenData from '../dataclasses/TokenData';
 import * as interfaces from '../interfaces';
 import { addressesEqual } from '../helper';
+import { DEFAULT_ERC20_DECIMALS, SFUEL_RESERVE_AMOUNT } from '../constants';
 
 
 debug.enable('*');
@@ -48,8 +49,9 @@ export async function checkEthBalance( // TODO: optimize balance checks
         const balance = await chain.ethBalance(address);
         log(`address: ${address}, eth balance: ${balance}, amount: ${amount}`);
         const balanceEther = fromWei(balance, tokenData.decimals);
-        if (Number(amount) > Number(balanceEther)) {
-            checkRes.msg = `Current balance: ${balanceEther}`;
+        if (Number(amount) + SFUEL_RESERVE_AMOUNT > Number(balanceEther)) {
+            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.symbol}. \
+            ${SFUEL_RESERVE_AMOUNT} ETH will be reserved to cover transfer costs.`;
         } else {
             checkRes.res = true;
         }
@@ -75,7 +77,32 @@ export async function checkERC20Balance(
         log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
         const balanceEther = fromWei(balance, tokenData.decimals);
         if (Number(amount) > Number(balanceEther)) {
-            checkRes.msg = `Current balance: ${balanceEther}`;
+            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.symbol}`;
+        } else {
+            checkRes.res = true;
+        }
+        return checkRes;
+    } catch (err) {
+        log(err);
+        checkRes.msg = 'Something went wrong, check developer console';
+        return checkRes;
+    }
+}
+
+export async function checkSFuelBalance(
+    address: string,
+    amount: string,
+    sChain: SChain
+): Promise<interfaces.CheckRes> {
+    const checkRes: interfaces.CheckRes = { res: false };
+    if (!amount || Number(amount) === 0) return checkRes;
+    try {
+        const balance = await sChain.web3.eth.getBalance(address);
+        log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
+        const balanceEther = fromWei(balance, DEFAULT_ERC20_DECIMALS);
+        if (Number(amount) + SFUEL_RESERVE_AMOUNT > Number(balanceEther)) {
+            checkRes.msg = `Current balance: ${balanceEther}. \
+            ${SFUEL_RESERVE_AMOUNT} sFUEL will be reserved for transfers.`;
         } else {
             checkRes.res = true;
         }

@@ -2,6 +2,7 @@ import { TokenType } from '../../core/dataclasses/TokenType';
 import { clsNames } from '../../core/helper';
 import styles from "../WidgetUI/WidgetUI.scss";
 
+
 function roundDown(number, decimals) {
     decimals = decimals || 0;
     return (Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
@@ -28,9 +29,8 @@ export default function TokenBalance(props) {
                 styles.mp__flexCenteredVert,
                 styles.mp__margRi5
             )}>
-                {roundDown(balance, 4)} {symbol}
+                {roundDown(balance, 8)} {symbol}
             </p>
         </div>
-
     )
 }

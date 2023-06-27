@@ -2,7 +2,7 @@ import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 
 import styles from "../WidgetUI/WidgetUI.scss";
-import { clsNames } from '../../core/helper';
+import { clsNames, getChainName } from '../../core/helper';
 
 import ErrorMessage from '../ErrorMessage';
 import StepperV2 from '../StepperV2';
@@ -12,15 +12,17 @@ import { getIconSrc } from "../TokenList/helper";
 
 import TokenData from '../../core/dataclasses/TokenData';
 import EthTokenData from '../../core/dataclasses/EthTokenData';
+import { TransferRequestStatus } from '../../core/dataclasses';
 import { TokenType } from '../../core/dataclasses/TokenType';
 import * as interfaces from '../../core/interfaces/index';
 import { isTransferRequestSteps } from '../../core/views';
 
-import { getChainName } from '../ChainsList/helper';
+import TransactionsHistory from '../TransactionsHistory';
 import SkeletonLoader from '../SkeletonLoader';
 import WrappedTokensWarning from '../WrappedTokensWarning';
 import SFuelWarning from '../SFuelWarning';
-import { TransferRequestStatus } from '../../core/dataclasses';
+import AmountErrorMessage from '../AmountErrorMessage';
+import CommunityPool from '../CommunityPool';
 
 
 function getTokenDataFromConfig(
@@ -86,12 +88,26 @@ export default function TransferRequest(props) {
   const trReq: interfaces.TransferParams = props.transferRequest;
   const token = getTokenDataFromConfig(props.config.tokens, trReq);
 
-  const fromChainName = getChainName(props.config.chainsMetadata, trReq.chains[0], trReq.fromApp);
-  const toChainName = getChainName(props.config.chainsMetadata, trReq.chains[1], trReq.toApp);
+  const fromChainName = getChainName(
+    props.config.chainsMetadata,
+    trReq.chains[0],
+    props.config.skaleNetwork,
+    trReq.fromApp
+  );
+  const toChainName = getChainName(
+    props.config.chainsMetadata,
+    trReq.chains[1],
+    props.config.skaleNetwork,
+    trReq.toApp
+  );
 
   let explanationText = 'Transfer assets from ' + fromChainName + ' to ' + toChainName + '.';
   if (trReq.route) {
-    const hubChainName = getChainName(props.config.chainsMetadata, trReq.route.hub);
+    const hubChainName = getChainName(
+      props.config.chainsMetadata,
+      trReq.route.hub,
+      props.config.skaleNetwork
+    );
     if (token.clone) {
       explanationText += ' Tokens will be unwrapped on ' + hubChainName + '.';
     } else {
@@ -99,75 +115,103 @@ export default function TransferRequest(props) {
     }
   };
 
+  const showAmount = trReq.lockValue && trReq.amount;
+  let amountText = showAmount ? `${trReq.amount} ${token.symbol}` : token.symbol;
+  amountText += trReq.tokenId ? ` (#${trReq.tokenId})` : '';
+
   return (
     <div>
-      <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
-        <h2 className={clsNames(styles.mp__noMarg)}>Transfer</h2>
-        <img
-          className={clsNames(styles.mp__amountIcon, styles.mp__margLeft10, styles.mp__margRi5)}
-          src={getIconSrc(token)}
+      <Collapse in={!props.expandedHistory && !props.expandedExit}>
+        <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp_flexRow)}>
+          <h2 className={clsNames(styles.mp__noMarg)}>Transfer</h2>
+          <img
+            className={clsNames(styles.mp__amountIcon, styles.mp__margLeft10, styles.mp__margRi5)}
+            src={getIconSrc(token)}
+          />
+          <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount, styles.mp__flexGrow)}>
+            {amountText}
+          </h2>
+        </div>
+        <Route
+          config={props.config}
+          transferRequest={props.transferRequest}
+          theme={props.theme}
+          explanationText={explanationText}
+          size={isTransferRequestSteps(props.view) ? 'small' : 'medium'}
         />
-        <h2 className={clsNames(styles.mp__noMarg, styles.mp__amount, styles.mp__flexGrow)}>
-          {trReq.lockValue ? trReq.amount + ' ' + token.symbol : token.symbol}
-        </h2>
-        {/* <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
-          <IconButton
-            size="small"
+        <Collapse in={props.errorMessage}>
+          <ErrorMessage errorMessage={props.errorMessage} />
+        </Collapse>
+
+        <Collapse in={!props.errorMessage && props.transferRequestStatus !== TransferRequestStatus.DONE}>
+          {isTransferRequestSteps(props.view) ?
+            <StepperV2 {...props} token={token} /> :
+            <TransferSummary {...props} explanationText={explanationText} />
+          }
+        </Collapse>
+
+        <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE && !props.expandedExit}>
+          <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
+            💫 You've successfully transferred {amountText} from {fromChainName} to {toChainName}.
+          </p>
+          <Button
+            onClick={() => {
+              props.setTransferRequest
+              props.resetWidgetState();
+            }}
             color="primary"
-            onClick={() => { props.setView(View.SANDBOX) }}
+            size="medium"
+            className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
           >
-            <CloseIcon className={styles.mp__backIcon} />
-          </IconButton>
-        </div> */}
-      </div>
-      <Route
-        config={props.config}
-        transferRequest={props.transferRequest}
-        theme={props.theme}
-        explanationText={explanationText}
-        size={isTransferRequestSteps(props.view) ? 'small' : 'medium'}
-      />
-      <Collapse in={props.errorMessage}>
-        <ErrorMessage errorMessage={props.errorMessage} />
-      </Collapse>
+            Go to Sandbox
+          </Button>
+        </Collapse>
 
-      <Collapse in={!props.errorMessage && props.transferRequestStatus !== TransferRequestStatus.DONE}>
-        {isTransferRequestSteps(props.view) ?
-          <StepperV2 {...props} token={token} /> :
-          <TransferSummary {...props} explanationText={explanationText} />
-        }
-      </Collapse>
+        {props.transferRequestStep === 0 ? (<WrappedTokensWarning
+          wrappedTokens={props.wrappedTokens}
+          setView={props.setView}
+        />) : null}
 
-      <Collapse in={props.transferRequestStatus === TransferRequestStatus.DONE}>
-        <p className={clsNames(styles.mp__margTop20, styles.mp__margBott10, styles.mp__p, styles.mp__completeText)}>
-          💫 You've successfully transferred {trReq.amount} {token.symbol ? token.symbol.toUpperCase() : ''} from {fromChainName} to {toChainName}.
-        </p>
-        <Button
-          onClick={() => {
-            props.setTransferRequest
-            props.resetWidgetState();
-          }}
-          color="primary"
-          size="medium"
-          className={clsNames(styles.mp__btnAction, styles.mp__margTop10)}
-        >
-          Go to Sandbox
-        </Button>
+        <AmountErrorMessage
+          amountErrorMessage={props.amountErrorMessage}
+          actionBtnDisabled={props.actionBtnDisabled}
+        />
+        <SFuelWarning
+          chain1={props.chain1}
+          chain2={props.chain2}
+          transferRequest={props.transferRequest}
+          config={props.config}
+          address={props.address}
+          setSFuelOk={props.setSFuelOk}
+          view={props.view}
+        />
       </Collapse>
+      <Collapse in={props.communityPoolData.balance !== null && !props.expandedHistory}>
+        <CommunityPool
+          communityPoolData={props.communityPoolData}
 
-      {props.transferRequestStep === 0 ? (<WrappedTokensWarning
-        wrappedTokens={props.wrappedTokens}
-        setView={props.setView}
-      />) : null}
-      <SFuelWarning
-        chain1={props.chain1}
-        chain2={props.chain2}
-        transferRequest={props.transferRequest}
-        config={props.config}
-        address={props.address}
-        setSFuelOk={props.setSFuelOk}
-        view={props.view}
-      />
+          rechargeAmount={props.rechargeAmount}
+          setRechargeAmount={props.setRechargeAmount}
+
+          expanded={props.expandedExit}
+          setExpanded={props.setExpandedExit}
+
+          loading={props.loadingCommunityPool}
+          recharge={props.rechargeCommunityPool}
+          withdraw={props.withdrawCommunityPool}
+          marg={false}
+        />
+      </Collapse>
+      <Collapse in={!props.expandedExit}>
+        <TransactionsHistory
+          transactionsHistory={props.transactionsHistory}
+          clearTransactionsHistory={props.clearTransactionsHistory}
+          config={props.config}
+          setExpanded={props.setExpandedHistory}
+          expanded={props.expandedHistory}
+          transferRequestView={true}
+        />
+      </Collapse>
     </div>
   )
 }

@@ -6,15 +6,34 @@ import { clsNames } from '../../core/helper';
 import styles from '../WidgetUI/WidgetUI.scss';
 import localStyles from './AmountInput.scss';
 
+import { TokenType } from '../../core/dataclasses/TokenType';
+import { SFUEL_RESERVE_AMOUNT } from "../../core/constants";
+
 
 export default function AmountInput(props) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (parseFloat(event.target.value) < 0) {
+      props.setAmount('');
+      return;
+    }
     props.setAmount(event.target.value);
   };
 
   const setMaxAmount = () => {
-    props.setAmount(props.token.balance);
+    if (props.token && !props.token.clone &&
+      (props.token.wrapsSFuel || props.token.type === TokenType.eth)) {
+      const adjustedAmount = Number(props.token.balance) - SFUEL_RESERVE_AMOUNT;
+      if (adjustedAmount > 0) {
+        props.setAmount(adjustedAmount.toString());
+      }
+    } else {
+      if (props.token && !props.token.clone && props.token.unwrappedBalance) {
+        props.setAmount(props.token.unwrappedBalance);
+      } else {
+        props.setAmount(props.token.balance);
+      }
+    }
   }
 
   if (!props.token) return;
@@ -30,22 +49,17 @@ export default function AmountInput(props) {
           disabled={props.loading || props.amountLocked}
         />
       </div>
-      <div className={styles.mp__flex}>
+      {props.maxBtn ? <div className={styles.mp__flex}>
         <Button
           color="primary"
           size="small"
-          className={styles.mp__btnChain}
+          className={clsNames(styles.mp__btnChain, localStyles.mp__btnMax)}
           onClick={setMaxAmount}
           disabled={props.loading || !props.token.balance || props.amountLocked}
         >
           MAX
         </Button>
-      </div>
-      {/* <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert, styles.mp__margRi20)}>
-        <p className={clsNames(styles.mp__p3, styles.mp__p)}>
-          Amount
-        </p>
-      </div> */}
+      </div> : null}
     </div>
   )
 }

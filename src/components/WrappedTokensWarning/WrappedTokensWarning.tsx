@@ -34,7 +34,14 @@ export default function WrappedTokensWarning(props) {
     const wrappedTokens = Object.entries(props.wrappedTokens.erc20);
     if (wrappedTokens.length === 0) return;
     return (<div>
-        <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margTop20)}>
+        <p className={clsNames(
+            styles.mp__flex,
+            styles.mp__p3,
+            styles.mp__p,
+            styles.mp__flexGrow,
+            styles.mp__margTop20,
+            styles.sk__uppercase
+        )}>
             ❗ You have wrapped tokens in your wallet. Please unwrap them before proceeding with your transfer.
         </p>
         <Button

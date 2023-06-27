@@ -6,7 +6,8 @@ import TokenData from './dataclasses/TokenData';
 import * as interfaces from './interfaces/index';
 import { MetaportConfig } from './interfaces/index';
 
-import { getChainName, getChainIcon } from '../components/ChainsList/helper';
+import { getChainIcon } from '../components/ChainsList/helper';
+import { getChainName } from './helper';
 import { MAINNET_CHAIN_NAME } from './constants';
 
 
@@ -77,7 +78,7 @@ export function getTransferSteps(
             ));
         }
     } else {
-        if (token.unwrappedSymbol) {
+        if (token.unwrappedSymbol || token.wrapsSFuel) {
             if (!token.clone) {
                 log('adding wrap step');
                 steps.unshift(getWrapStep(
@@ -88,12 +89,14 @@ export function getTransferSteps(
                 ));
             } else {
                 log('adding unwrap step');
-                steps.push(getUnwrapStep(
-                    trReq.chains[1],
-                    trReq.toApp,
-                    config,
-                    theme
-                ));
+                if (!token.wrapsSFuel) {
+                    steps.push(getUnwrapStep(
+                        trReq.chains[1],
+                        trReq.toApp,
+                        config,
+                        theme
+                    ));
+                }
             }
         }
     };
@@ -118,7 +121,7 @@ function getWrapStep(
     config: MetaportConfig,
     theme: any
 ) {
-    const chainName = getChainName(config.chainsMetadata, chain, app);
+    const chainName = getChainName(config.chainsMetadata, chain, config.skaleNetwork, app);
     const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
     return {
         chainName,
@@ -137,7 +140,7 @@ function getUnwrapStep(
     config: MetaportConfig,
     theme: any
 ) {
-    const chainName = getChainName(config.chainsMetadata, chain, app);
+    const chainName = getChainName(config.chainsMetadata, chain, config.skaleNetwork, app);
     const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
     return {
         chainName,
@@ -156,7 +159,7 @@ function getUnlockStep(
     config: MetaportConfig,
     theme: any
 ) {
-    const chainName = getChainName(config.chainsMetadata, chain, app);
+    const chainName = getChainName(config.chainsMetadata, chain, config.skaleNetwork, app);
     const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
     return {
         chainName,
@@ -178,8 +181,13 @@ function getTransferStep(
     config: MetaportConfig,
     theme: any
 ) {
-    const fromChainName = getChainName(config.chainsMetadata, fromChain, fromApp);
-    const toChainName = getChainName(config.chainsMetadata, toChain, toApp);
+    const fromChainName = getChainName(
+        config.chainsMetadata,
+        fromChain,
+        config.skaleNetwork,
+        fromApp
+    );
+    const toChainName = getChainName(config.chainsMetadata, toChain, config.skaleNetwork, toApp);
     const toChainIcon = getChainIcon(config.skaleNetwork, toChain, theme.dark, toApp);
     return {
         chainName: toChainName,
