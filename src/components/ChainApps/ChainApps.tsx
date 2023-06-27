@@ -16,10 +16,6 @@ export default function ChainApps(props: {
   const apps = getChainAppsMeta(props.chain, props.config.skaleNetwork);
   if (!apps || !Object.keys(apps) || Object.keys(apps).length === 0) return <div></div>;
 
-  const appNames = Object.keys(apps).map((appName) => {
-    return appName.toUpperCase();
-  }).join(', ');
-
   return (
     <div className={clsNames(
       styles.sk__chainApps,
@@ -28,10 +24,10 @@ export default function ChainApps(props: {
       styles.mp__flex,
       styles.mp__flexCenteredVert
     )}>
-      <Tooltip title={'Apps on a chain: ' + appNames}>
-        <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
-          {Object.keys(apps).map((key, _) => (
-            <div key={key} className={clsNames(
+      <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
+        {Object.keys(apps).map((key, _) => (
+          <Tooltip key={key} title={'App on this chain - ' + apps[key].alias}>
+            <div className={clsNames(
               styles.mp__flex,
               styles.mp__flexCenteredVert,
               styles.mp__margRi5,
@@ -39,9 +35,9 @@ export default function ChainApps(props: {
             )}>
               {getChainIcon(props.config.skaleNetwork, props.chain, props.dark, key)}
             </div>
-          ))}
-        </div>
-      </Tooltip>
+          </Tooltip>
+        ))}
+      </div>
     </div>
   )
 }
