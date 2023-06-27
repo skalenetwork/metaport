@@ -26,6 +26,9 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "version": "node -e \"console.log(require('./package.json').version);\""
   },
+  "resolutions": {
+    "webpack": "^5"
+  },
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.21.4",
