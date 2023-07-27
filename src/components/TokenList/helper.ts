@@ -48,7 +48,8 @@ const CHAIN_ICONS = {
     'mainnet': importAll(require.context('../../meta/mainnet/icons', false, /\.(png|jpe?g|svg)$/)),
     'staging3': importAll(require.context('../../meta/staging/icons', false, /\.(png|jpe?g|svg)$/)),
     'legacy': importAll(require.context('../../meta/legacy/icons', false, /\.(png|jpe?g|svg)$/)),
-    'regression': importAll(require.context('../../meta/regression/icons', false, /\.(png|jpe?g|svg)$/))
+    'regression': importAll(
+        require.context('../../meta/regression/icons', false, /\.(png|jpe?g|svg)$/))
 }
 
 
