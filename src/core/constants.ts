@@ -48,13 +48,15 @@ export const HTTPS_PREFIX = 'https://';
 export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
     mainnet: 'https://etherscan.io',
     staging3: 'https://goerli.etherscan.io/',
-    legacy: 'https://goerli.etherscan.io/'
+    legacy: 'https://goerli.etherscan.io/',
+    regression: 'https://goerli.etherscan.io/'
 };
 
 export const BASE_EXPLORER_URLS = {
     mainnet: "explorer.mainnet.skalenodes.com",
     staging3: "explorer.staging-v3.skalenodes.com",
-    legacy: "explorer.staging-v3.skalenodes.com"
+    legacy: "explorer.staging-v3.skalenodes.com",
+    regression: "regression-explorer.skalenodes.com"
 };
 
 // ETA constants

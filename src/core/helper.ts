@@ -29,12 +29,14 @@ import { TransferRequestStatus } from './dataclasses';
 import mainnetMeta from '../meta/mainnet/chains.json';
 import stagingMeta from '../meta/staging/chains.json';
 import legacyMeta from '../meta/legacy/chains.json';
+import regressionMeta from '../meta/regression/chains.json';
 
 
 export const CHAINS_META = {
     'mainnet': mainnetMeta,
     'staging3': stagingMeta,
-    'legacy': legacyMeta
+    'legacy': legacyMeta,
+    'regression': regressionMeta
 }
 
 
