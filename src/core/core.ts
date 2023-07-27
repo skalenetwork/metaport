@@ -27,6 +27,7 @@ import mainnetAddresses from '../metadata/addresses/mainnet.json';
 import stagingAddresses from '../metadata/addresses/staging.json';
 import staging3Addresses from '../metadata/addresses/staging3.json';
 import legacyAddresses from '../metadata/addresses/legacy.json';
+import regressionAddresses from '../metadata/addresses/regression.json';
 
 import { getChainName } from './helper';
 import { MAINNET_CHAIN_NAME } from './constants';
@@ -148,6 +149,9 @@ function getMainnetAbi(network: string) {
   }
   if (network === 'legacy') {
     return { ...mainnetAbi, ...legacyAddresses }
+  }
+  if (network === 'regression') {
+    return { ...mainnetAbi, ...regressionAddresses }
   }
   return { ...mainnetAbi, ...mainnetAddresses }
 }
