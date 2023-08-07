@@ -36,5 +36,6 @@
     }
   },
   "staging": null,
-  "legacy": null
+  "legacy": null,
+  "regression": null
 }

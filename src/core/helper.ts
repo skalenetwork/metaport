@@ -31,12 +31,14 @@ import { SkaleNetwork } from './interfaces';
 import mainnetMeta from '../meta/mainnet/chains.json';
 import stagingMeta from '../meta/staging/chains.json';
 import legacyMeta from '../meta/legacy/chains.json';
+import regressionMeta from '../meta/regression/chains.json';
 
 
 export const CHAINS_META = {
     'mainnet': mainnetMeta,
     'staging': stagingMeta,
-    'legacy': legacyMeta
+    'legacy': legacyMeta,
+    'regression': regressionMeta
 }
 
 
