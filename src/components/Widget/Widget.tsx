@@ -36,8 +36,7 @@ import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 
 import {
     injectedWallet,
-    coinbaseWallet,
-    metaMaskWallet
+    coinbaseWallet
 } from '@rainbow-me/rainbowkit/wallets';
 
 import { MetaportConfig } from "core/interfaces"
@@ -84,7 +83,7 @@ const connectors = connectorsForWallets([
     {
         groupName: 'Supported Wallets',
         wallets: [
-            metaMaskWallet({ chains, projectId: '' }),
+            // metaMaskWallet({ chains, projectId: '' }),
             injectedWallet({ chains }),
             coinbaseWallet({ chains, appName: 'TEST' })
         ],
