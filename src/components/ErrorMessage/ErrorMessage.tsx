@@ -1,25 +1,63 @@
 import Button from '@mui/material/Button';
 
-import { clsNames } from '../../core/helper';
-import styles from "../WidgetUI/WidgetUI.scss";
+import { cls } from '../../core/helper';
+import common from "../../styles/common.scss";
+import styles from "../../styles/styles.scss";
+
+import { ErrorMessage } from '../../core/dataclasses';
+
+import LinkOffRoundedIcon from '@mui/icons-material/LinkOffRounded';
+import PublicOffRoundedIcon from '@mui/icons-material/PublicOffRounded';
+import SentimentDissatisfiedRoundedIcon from '@mui/icons-material/SentimentDissatisfiedRounded';
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
 
 
-export default function ErrorMessage(props) {
+const ERROR_ICONS = {
+  'link-off': <LinkOffRoundedIcon />,
+  'public-off': <PublicOffRoundedIcon />,
+  'sentiment': <SentimentDissatisfiedRoundedIcon />,
+  'error': <ErrorRoundedIcon />
+};
+
+
+export default function Error(props: { errorMessage: ErrorMessage }) {
   if (!props.errorMessage) return
   return (
     <div>
-      <div className={clsNames(styles.mp__margTop20Pt, styles.mp__infoIcon)}>
-        {props.errorMessage.icon}
+      <div className={cls(common.margTop20Pt, styles.infoIcon, common.pMain)}>
+        {ERROR_ICONS[props.errorMessage.icon]}
       </div>
-      <div className={styles.mp__flex}>
-        <p className={clsNames(
-          styles.mp__p2,
-          styles.mp__p,
-          styles.mp__flexGrow,
-          styles.mp__textCentered,
-          styles.mp__margTop10,
-          styles.mp__margBott20,
-          styles.mp__minContent,
+      <p style={{ wordBreak: 'break-all' }} className={cls(
+        common.p1,
+        common.p,
+        common.p600,
+        common.pMain,
+        common.flexGrow,
+        common.textCentered,
+        common.margTop10
+      )}>
+        Error occured
+      </p>
+      <p  className={cls(
+        common.p4,
+        common.p,
+        common.p600,
+        common.pSecondary,
+        common.flexGrow,
+        common.textCentered,
+        common.margBott10
+      )}>
+        Please check logs in developer console
+      </p>
+      <div className={common.flex}>
+        <p style={{ wordBreak: 'break-all' }} className={cls(
+          common.p3,
+          common.p,
+          common.pMain,
+          common.flexGrow,
+          common.textCentered,
+          common.margTop10,
+          common.margBott20
         )}>
           {props.errorMessage.text}
         </p>
@@ -27,7 +65,7 @@ export default function ErrorMessage(props) {
 
       {props.errorMessage.fallback ? (<Button
         variant="contained" color="primary" size="medium"
-        className={clsNames(styles.mp__btnAction, styles.mp__margTop5)}
+        className={cls(styles.btnAction, common.margTop5)}
         onClick={() => { props.errorMessage.fallback() }}
       >
         {props.errorMessage.btnText}

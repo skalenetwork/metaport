@@ -21,18 +21,14 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { Unit, toWei as _toWei, fromWei as _fromWei, unitMap, toBN } from 'web3-utils';
+import { formatUnits, parseUnits, BigNumberish } from 'ethers';
 
 
-export function toWei(value: string, decimals: string): string {
-    return _toWei(value, decimalsToUnit(decimals));
+export function toWei(value: string, decimals: string): bigint {
+    return parseUnits(value, parseInt(decimals as string));
 }
 
-export function fromWei(value: string, decimals: string): string {
-    return _fromWei(value, decimalsToUnit(decimals));
-}
 
-function decimalsToUnit(decimals: string): Unit {
-    return Object.keys(unitMap).find(
-        key => unitMap[key] === toBN(10).pow(toBN(decimals)).toString()) as Unit;
+export function fromWei(value: BigNumberish, decimals: string): string {
+    return formatUnits(value, parseInt(decimals as string));
 }

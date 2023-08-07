@@ -1,35 +1,37 @@
-import { TokenType } from '../../core/dataclasses/TokenType';
-import { clsNames } from '../../core/helper';
-import styles from "../WidgetUI/WidgetUI.scss";
+import { formatUnits } from 'ethers';
+
+import { TokenType, TokenData } from '../../core/dataclasses';
+import { TokenBalancesMap } from '../../core/interfaces';
+
+import { cls } from '../../core/helper';
+import common from "../../styles/common.scss";
 
 
-function roundDown(number, decimals) {
-    decimals = decimals || 0;
-    return (Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
+function formatBalance(balance: bigint, token: TokenData): string {
+    return formatUnits(balance, parseInt(token.meta.decimals));
 }
 
 
-export default function TokenBalance(props) {
+export default function TokenBalance(props: {
+    token: TokenData,
+    tokenBalances: TokenBalancesMap
+}) {
     if ([TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)) return;
-    let balance = props.token.unwrappedSymbol ? props.token.unwrappedBalance : props.token.balance;
-    let symbol = props.token.unwrappedSymbol ? props.token.unwrappedSymbol : props.token.symbol;
 
-    if (props.token.clone) {
-        balance = props.token.balance;
-        symbol = props.token.cloneSymbol ? props.token.cloneSymbol : symbol;
-    }
+    const balance = props.tokenBalances[props.token.keyname];
 
-    if (!balance) return;
+    if (balance === undefined || balance === null) return;
     return (
-        <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
-            <p className={clsNames(
-                styles.mp__p,
-                styles.mp__p3,
-                styles.mp__flex,
-                styles.mp__flexCenteredVert,
-                styles.mp__margRi5
+        <div className={cls(common.flex, common.flexCenteredVert)}>
+            <p className={cls(
+                common.p,
+                common.p4,
+                common.pSecondary,
+                common.flex,
+                common.flexCenteredVert,
+                common.margRi5
             )}>
-                {roundDown(balance, 8)} {symbol}
+                {formatBalance(balance, props.token)} {props.token.meta.symbol}
             </p>
         </div>
     )

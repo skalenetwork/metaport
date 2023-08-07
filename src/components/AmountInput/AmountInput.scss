@@ -1,6 +1,16 @@
-@import '../WidgetUI/variables';
+@import '../../styles/variables';
 
 .mp__inputAmount {
+
+    .tokenSymbol {
+        font-weight: bold !important;
+        font-size: 1.3rem !important;
+    }
+
+    .tokenSymbolPlaceholder {
+        color: #979797;
+    }
+
 
     :global .MuiInput-root::after {
         border-bottom: none !important;
@@ -14,6 +24,7 @@
         border-radius: 4px 0 0 4px;
         padding: 9pt 15pt;
         font-weight: bold !important;
+        font-size: 1.3rem !important;
     }
 
     :global(.MuiFormControl-root) {
@@ -21,7 +32,7 @@
         // border-radius: 4px;
     }
 
-    background-color: $sk-paper-color !important;
+    background-color: transparent !important;
     border-radius: $sk-border-radius !important;
 
 

@@ -1,67 +1,112 @@
+/**
+ * @license
+ * SKALE Metaport
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/**
+ * @file WidgetUI.ts
+ * @copyright SKALE Labs 2023-Present
+ */
+
 import React from 'react';
 import { StyledEngineProvider } from '@mui/material/styles';
 
+import { useAccount } from 'wagmi';
+
+import Collapse from '@mui/material/Collapse';
 import Fab from '@mui/material/Fab';
 import CloseIcon from '@mui/icons-material/Close';
-import Paper from '@mui/material/Paper';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getMuiZIndex } from './Themes';
+import { getMuiZIndex } from '../../core/themes';
 
 import skaleLogo from './skale_logo_short.svg';
 
-import WidgetBody from '../WidgetBody';
-import { Connector } from '../WalletConnector';
-import Debug from '../Debug';
+import { useUIStore } from '../../store/Store'
+import { useMetaportStore } from '../../store/MetaportState'
+import SkPaper from '../SkPaper';
 
-import { clsNames } from '../../core/helper';
-import styles from "./WidgetUI.scss";
+import WidgetBody from '../WidgetBody';
+
+
+import { cls } from '../../core/helper';
+
+import styles from "../../styles/styles.scss";
+import common from "../../styles/common.scss";
+import { PaletteMode } from '@mui/material';
+
+import SkConnect from '../SkConnect';
+import ErrorMessage from '../ErrorMessage';
 
 
 export function WidgetUI(props) {
+
+  const { address } = useAccount();
+
+  const metaportTheme = useUIStore((state) => state.theme);
+  const isOpen = useUIStore((state) => state.open);
+  const setOpen = useUIStore((state) => state.setOpen);
+
+  const errorMessage = useMetaportStore((state) => state.errorMessage);
+
+  if (!metaportTheme) return <div></div>
+
   let theme = createTheme({
-    zIndex: getMuiZIndex(props.theme),
+    zIndex: getMuiZIndex(metaportTheme),
     palette: {
-      mode: props.theme.mode,
+      mode: metaportTheme.mode as PaletteMode,
       background: {
-        paper: props.theme.background
+        paper: metaportTheme.background
       },
       primary: {
-        main: props.theme.primary,
+        main: metaportTheme.primary,
       },
       secondary: {
-        main: props.theme.background
+        main: metaportTheme.background
       },
     },
   });
 
   const handleClick = (_: React.MouseEvent<HTMLElement>) => {
-    props.setOpen(props.open ? false : true);
+    setOpen(isOpen ? false : true);
   };
 
-  const themeCls = props.theme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
+  const themeCls = metaportTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
+  const commonThemeCls = metaportTheme.mode === 'dark' ? common.darkTheme : common.lightTheme;
 
   let fabTop: boolean = false;
   let fabLeft: boolean = false;
-  if (props.theme) {
-    fabTop = props.theme.position.bottom === 'auto';
-    fabLeft = props.theme.position.right === 'auto';
+  if (metaportTheme) {
+    fabTop = metaportTheme.position.bottom === 'auto';
+    fabLeft = metaportTheme.position.right === 'auto';
   }
 
-  const fabButton = (<div className={clsNames(styles.mp__flex)}>
-    <div className={(fabLeft ? null : clsNames(styles.mp__flexGrow))}></div>
-    <div className={styles.mp__flex}>
+  const fabButton = (<div className={cls(common.flex)}>
+    <div className={(fabLeft ? null : cls(common.flexGrow))}></div>
+    <div className={common.flex}>
       <Fab
-        color={props.open ? 'secondary' : 'primary'}
+        color={isOpen ? 'secondary' : 'primary'}
         className={props.config.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
         aria-label="add"
         type="button"
         onClick={handleClick}
       >
-        {props.open ? (
+        {isOpen ? (
           <CloseIcon
             style={{
-              color: props.theme.mode == 'dark' ? 'white' : 'black'
+              color: metaportTheme.mode == 'dark' ? 'white' : 'black'
             }}
           />
         ) : (<img
@@ -77,32 +122,25 @@ export function WidgetUI(props) {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <div
-          className={clsNames(styles.imaWidgetBody, themeCls)}
-          style={props.theme ? { ...props.theme.position, zIndex: props.theme.zIndex } : null}
+          className={cls(styles.imaWidgetBody, themeCls, commonThemeCls)}
+          style={metaportTheme ? { ...metaportTheme.position, zIndex: metaportTheme.zIndex } : null}
         >
-          <div className={(props.config.openButton ? styles.mp__margBott20 : null)}>
+          <div className={(props.config.openButton ? common.margBott20 : null)}>
             {fabTop ? fabButton : null}
           </div>
-          <div className={clsNames(styles.mp__popper, (props.open ? null : styles.noDisplay))}>
-            <div className={clsNames(styles.mp__popupWrapper, themeCls)}>
-              <Paper elevation={4} className={styles.mp__paper}>
-                <div className={styles.mp__popup}>
-                  <Debug {...props}/>
-                  {props.walletConnected ? (
-                    <WidgetBody
-                      {...props}
-                      theme={props.theme}
-                    />
-                  ) : (
-                    <Connector
-                      connectMetamask={props.connectMetamask}
-                    />
-                  )}
-                </div>
-              </Paper>
-            </div>
-          </div>
-          <div className={(props.config.openButton ? styles.mp__margTop20 : null)}>
+          <Collapse in={isOpen}>
+            <SkPaper className={cls(styles.popper)}>
+              <SkConnect />
+
+              <Collapse in={!!errorMessage}>
+                <ErrorMessage errorMessage={errorMessage} />
+              </Collapse>
+              <Collapse in={!errorMessage}>
+                {address ? <WidgetBody config={props.config} /> : <div></div>}
+              </Collapse>
+            </SkPaper>
+          </Collapse>
+          <div className={(props.config.openButton ? common.margTop20 : null)}>
             {fabTop ? null : fabButton}
           </div>
         </div>

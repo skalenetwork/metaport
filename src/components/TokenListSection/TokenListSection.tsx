@@ -1,17 +1,24 @@
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import TokenData from '../../core/dataclasses/TokenData';
-import { clsNames } from '../../core/helper';
+import { TokenData, TokenType } from '../../core/dataclasses';
+import { TokenBalancesMap, TokenDataMap } from '../../core/interfaces';
+import { cls } from '../../core/helper';
 
 import TokenBalance from '../TokenList/TokenBalance';
+import TokenIcon from '../TokenIcon';
 
-import styles from "../WidgetUI/WidgetUI.scss";
-import localStyles from "./TokenListSection.scss";
-import { getIconSrc, getTokenName } from "../TokenList/helper";
+import common from "../../styles/common.scss";
+
+import { getTokenName } from "../../core/metadata";
 
 
-export default function TokenListSection(props) {
+export default function TokenListSection(props: {
+  setExpanded: (expanded: string | false) => void,
+  setToken: (token: TokenData) => void,
+  tokens: TokenDataMap,
+  type: TokenType,
+  tokenBalances?: TokenBalancesMap
+}) {
 
   function handle(tokenData: TokenData): void {
     props.setExpanded(false);
@@ -21,37 +28,57 @@ export default function TokenListSection(props) {
   if (Object.keys(props.tokens).length === 0) return;
 
   return (
-    <div className={styles.mp__margBott5}>
-      <p className={clsNames(styles.mp__flex, styles.mp__p3, styles.mp__p, styles.mp__flexGrow, styles.mp__margBott5)}>
+    <div className={cls(common.chainsList, common.margBott10, common.margRi10)}
+      style={{ marginLeft: '8px' }}>
+      <p
+        className={cls(
+          common.flex,
+          common.uppercase,
+          common.p4,
+          common.p,
+          common.pSecondary,
+          common.flexGrow,
+          common.margBott10
+        )}
+        style={{ marginLeft: '16px' }}
+      >
         {props.type}
       </p>
       {Object.keys(props.tokens).map((key, _) => (
-        <Typography key={key}>
-          <Button
-            color="secondary"
-            size="small"
-            className={styles.mp__btnChain}
-            onClick={() => handle(props.tokens[key])}
-          >
-            <div className={clsNames(styles.mp__flex, styles.mp__btnChain)}>
-              <div className={clsNames(styles.mp__flex, styles.mp__flexCentered)}>
-                <img
-                  className={clsNames(localStyles.mp__iconToken, localStyles.mp__iconTokenAccent)}
-                  src={getIconSrc(props.tokens[key])}
-                />
-              </div>
-              <p className={clsNames(
-                styles.mp__chainName,
-                styles.mp__flex,
-                styles.mp__flexGrow,
-                styles.mp__margRi10
-              )}>
-                {getTokenName(props.tokens[key])}
-              </p>
-              <TokenBalance token={props.tokens[key]} />
+        <Button
+          key={key}
+          color="secondary"
+          size="small"
+          className={common.fullWidth}
+          onClick={() => handle(props.tokens[key])}
+        >
+          <div className={cls(
+            common.flex,
+            common.flexCenteredVert,
+            common.fullWidth,
+            common.margTop5,
+            common.margBott5
+          )}>
+            <div className={cls(common.flex, common.flexCentered, common.margLeft10)}>
+              <TokenIcon token={props.tokens[key]} />
             </div>
-          </Button>
-        </Typography>
+            <p className={cls(
+              common.p,
+              common.p3,
+              common.p600,
+              common.pMain,
+              common.flex,
+              common.flexGrow,
+              common.margRi10,
+              common.margLeft10
+            )}>
+              {getTokenName(props.tokens[key])}
+            </p>
+            <div className={common.margRi10}>
+              <TokenBalance token={props.tokens[key]} tokenBalances={props.tokenBalances} />
+            </div>
+          </div>
+        </Button>
       ))}
     </div>
   )

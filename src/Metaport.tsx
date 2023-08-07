@@ -25,14 +25,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { Widget } from './components/Widget';
+import Widget from './components/Widget';
 import { internalEvents } from './core/events';
 
 import * as interfaces from './core/interfaces/index';
 export * as dataclasses from './core/dataclasses/index';
 export * as interfaces from './core/interfaces/index';
 
-export * as sfuel from './core/sfuel';
+// export * as sfuel from './core/sfuel';
 
 
 export class Metaport {

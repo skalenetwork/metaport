@@ -22,84 +22,84 @@
  */
 
 
-import debug from 'debug';
-import { MainnetChain, SChain } from '@skalenetwork/ima-js';
+// import debug from 'debug';
+// import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
-import { CommunityPoolData } from './interfaces';
-import { fromWei } from './convertation';
-import {
-    MAINNET_CHAIN_NAME,
-    DEFAULT_ERC20_DECIMALS,
-    RECHARGE_MULTIPLIER,
-    MINIMUM_RECHARGE_AMOUNT
-} from './constants';
-
-
-debug.enable('*');
-const log = debug('metaport:core:community_pool');
+// import { CommunityPoolData } from './interfaces';
+// import { fromWei } from './convertation';
+// import {
+//     MAINNET_CHAIN_NAME,
+//     DEFAULT_ERC20_DECIMALS,
+//     RECHARGE_MULTIPLIER,
+//     MINIMUM_RECHARGE_AMOUNT
+// } from './constants';
 
 
-export function getEmptyCommunityPoolData(): CommunityPoolData {
-    return {
-        exitGasOk: null,
-        isActive: null,
-        balance: null,
-        accountBalance: null,
-        recommendedRechargeAmount: null,
-        originalRecommendedRechargeAmount: null
-    };
-}
+// debug.enable('*');
+// const log = debug('metaport:core:community_pool');
 
 
-export async function getCommunityPoolData(
-    address: string,
-    chainName1: string,
-    chainName2: string,
-    mainnet: MainnetChain,
-    sChain: SChain
-): Promise<CommunityPoolData> {
+// export function getEmptyCommunityPoolData(): CommunityPoolData {
+//     return {
+//         exitGasOk: null,
+//         isActive: null,
+//         balance: null,
+//         accountBalance: null,
+//         recommendedRechargeAmount: null,
+//         originalRecommendedRechargeAmount: null
+//     };
+// }
 
-    if (chainName2 !== MAINNET_CHAIN_NAME) {
-        log('not a S2M transfer, skipping community pool check');
-        return {
-            exitGasOk: true,
-            isActive: null,
-            balance: null,
-            accountBalance: null,
-            recommendedRechargeAmount: null,
-            originalRecommendedRechargeAmount: null
-        }
-    }
 
-    log('Getting community pool data', address, chainName1);
-    const balanceWei = await mainnet.communityPool.balance(address, chainName1);
-    const accountBalanceWei = await mainnet.ethBalance(address);
-    const activeS = await sChain.communityLocker.contract.methods.activeUsers(
-        address
-    ).call();
-    const chainHash = mainnet.web3.utils.soliditySha3(chainName1);
-    const activeM = await mainnet.communityPool.contract.methods.activeUsers(
-        address,
-        chainHash
-    ).call();
+// export async function getCommunityPoolData(
+//     address: string,
+//     chainName1: string,
+//     chainName2: string,
+//     mainnet: MainnetChain,
+//     sChain: SChain
+// ): Promise<CommunityPoolData> {
 
-    const rraWei = await mainnet.communityPool.contract.methods.getRecommendedRechargeAmount(
-        mainnet.web3.utils.soliditySha3(chainName1),
-        address
-    ).call();
-    const rraEther = fromWei(rraWei as string, DEFAULT_ERC20_DECIMALS);
+//     if (chainName2 !== MAINNET_CHAIN_NAME) {
+//         log('not a S2M transfer, skipping community pool check');
+//         return {
+//             exitGasOk: true,
+//             isActive: null,
+//             balance: null,
+//             accountBalance: null,
+//             recommendedRechargeAmount: null,
+//             originalRecommendedRechargeAmount: null
+//         }
+//     }
 
-    let recommendedAmount = parseFloat(rraEther as string) * RECHARGE_MULTIPLIER;
-    if (recommendedAmount < MINIMUM_RECHARGE_AMOUNT) recommendedAmount = MINIMUM_RECHARGE_AMOUNT;
+//     log('Getting community pool data', address, chainName1);
+//     const balanceWei = await mainnet.communityPool.balance(address, chainName1);
+//     const accountBalanceWei = await mainnet.ethBalance(address);
+//     const activeS = await sChain.communityLocker.contract.activeUsers(
+//         address
+//     )
+//     const chainHash = mainnet.web3.utils.soliditySha3(chainName1);
+//     const activeM = await mainnet.communityPool.contract.activeUsers(
+//         address,
+//         chainHash
+//     )
 
-    const communityPoolData = {
-        exitGasOk: activeM && activeS && rraWei === '0',
-        isActive: activeM && activeS,
-        balance: balanceWei,
-        accountBalance: accountBalanceWei,
-        recommendedRechargeAmount: recommendedAmount.toString(),
-        originalRecommendedRechargeAmount: rraWei
-    }
-    log('communityPoolData:', communityPoolData);
-    return communityPoolData;
-}
+//     const rraWei = await mainnet.communityPool.contract.getRecommendedRechargeAmount(
+//         mainnet.web3.utils.soliditySha3(chainName1),
+//         address
+//     )
+//     const rraEther = fromWei(rraWei as string, DEFAULT_ERC20_DECIMALS);
+
+//     let recommendedAmount = parseFloat(rraEther as string) * RECHARGE_MULTIPLIER;
+//     if (recommendedAmount < MINIMUM_RECHARGE_AMOUNT) recommendedAmount = MINIMUM_RECHARGE_AMOUNT;
+
+//     const communityPoolData = {
+//         exitGasOk: activeM && activeS && rraWei === '0',
+//         isActive: activeM && activeS,
+//         balance: balanceWei,
+//         accountBalance: accountBalanceWei,
+//         recommendedRechargeAmount: recommendedAmount.toString(),
+//         originalRecommendedRechargeAmount: rraWei
+//     }
+//     log('communityPoolData:', communityPoolData);
+//     return communityPoolData;
+// }

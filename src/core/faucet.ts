@@ -21,31 +21,33 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { ZERO_ADDRESS, ZERO_FUNCSIG, FAUCET_DATA } from './constants';
-import Web3 from 'web3';
+
+// TODO!
+
+// import { ZERO_ADDRESS, ZERO_FUNCSIG, FAUCET_DATA } from './constants';
 
 
-function getAddress(chainName: string, skaleNetwork: string) {
-    if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_ADDRESS;
-    const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork];
-    return faucet[chainName].address;
-}
+// function getAddress(chainName: string, skaleNetwork: string) {
+//     if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_ADDRESS;
+//     const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork];
+//     return faucet[chainName].address;
+// }
 
-function getFunc(chainName: string, skaleNetwork: string) {
-    if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_FUNCSIG;
-    const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork];
-    return faucet[chainName].func;
-}
+// function getFunc(chainName: string, skaleNetwork: string) {
+//     if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_FUNCSIG;
+//     const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork];
+//     return faucet[chainName].func;
+// }
 
-export function isFaucetAvailable(chainName: string, skaleNetwork: string) {
-    if (!FAUCET_DATA[skaleNetwork]) return false;
-    const keys = Object.keys(FAUCET_DATA[skaleNetwork]);
-    return keys.includes(chainName);
-}
+// export function isFaucetAvailable(chainName: string, skaleNetwork: string) {
+//     if (!FAUCET_DATA[skaleNetwork]) return false;
+//     const keys = Object.keys(FAUCET_DATA[skaleNetwork]);
+//     return keys.includes(chainName);
+// }
 
-export function getFuncData(web3: Web3, chainName: string, address: string, skaleNetwork: string) {
-    const faucetAddress = getAddress(chainName, skaleNetwork);
-    const functionSig = getFunc(chainName, skaleNetwork);
-    const functionParam = web3.eth.abi.encodeParameter('address', address);
-    return { to: faucetAddress, data: functionSig + functionParam.slice(2) };
-}
+// export function getFuncData(web3: Web3, chainName: string, address: string, skaleNetwork: string) {
+//     const faucetAddress = getAddress(chainName, skaleNetwork);
+//     const functionSig = getFunc(chainName, skaleNetwork);
+//     const functionParam = web3.eth.abi.encodeParameter('address', address);
+//     return { to: faucetAddress, data: functionSig + functionParam.slice(2) };
+// }

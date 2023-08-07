@@ -1,164 +1,95 @@
-import React from 'react';
+import { useCollapseStore } from '../../store/Store'
+import { useMetaportStore } from '../../store/MetaportState'
 
-import Collapse from '@mui/material/Collapse';
+import TokenList from '../TokenList';
+import ChainsList from '../ChainsList';
+import AmountInput from '../AmountInput';
+import SkStepper from '../Stepper';
+import SkPaper from '../SkPaper';
+import AmountErrorMessage from '../AmountErrorMessage';
+import SwitchDirection from '../SwitchDirection';
 
-import { View } from '../../core/dataclasses/View';
-import { isTransferRequestView } from '../../core/views';
-
-import CurrentChain from '../CurrentChain';
-import ErrorMessage from '../ErrorMessage';
-import UnwrapUI from '../UnwrapUI';
-import TransferUI from '../TransferUI';
-import WrappedTokensWarning from '../WrappedTokensWarning';
-import TransferRequest from '../TransferRequest';
-import SFuelWarning from '../SFuelWarning';
-import TransactionsHistory from '../TransactionsHistory';
+import common from '../../styles/common.scss';
+import { cls } from '../../core/helper';
+import { Collapse } from '@mui/material';
 
 
-export default function WidgetBody(props) {
+export function WidgetBody(props) {
 
-  const [expandedFrom, setExpandedFrom] = React.useState<boolean>(false);
-  const [expandedTo, setExpandedTo] = React.useState<boolean>(false);
-  const [expandedTokens, setExpandedTokens] = React.useState<boolean>(false);
-  const [expandedHistory, setExpandedHistory] = React.useState<string | false>(false);
-  const [expandedExit, setExpandedExit] = React.useState<string | false>(false);
+  const expandedFrom = useCollapseStore((state) => state.expandedFrom);
+  const setExpandedFrom = useCollapseStore((state) => state.setExpandedFrom);
 
-  // TODO: tmp wrap tokens fix
-  const wrapTransferAction = props.actionSteps && props.actionSteps.length === 2 && props.activeStep > 0;
+  const expandedTo = useCollapseStore((state) => state.expandedTo);
+  const setExpandedTo = useCollapseStore((state) => state.setExpandedTo);
 
-  if (props.errorMessage) {
-    return (<ErrorMessage errorMessage={props.errorMessage} />)
-  }
+  const token = useMetaportStore((state) => state.token);
+  const chainName1 = useMetaportStore((state) => state.chainName1);
+  const chainName2 = useMetaportStore((state) => state.chainName2);
 
-  if (isTransferRequestView(props.view)) {
-    return <TransferRequest
-      disabledChains={props.disabledChains}
-      setExpandedHistory={setExpandedHistory}
-      expandedHistory={expandedHistory}
+  const setChainName1 = useMetaportStore((state) => state.setChainName1);
+  const setChainName2 = useMetaportStore((state) => state.setChainName2);
 
-      expandedExit={expandedExit}
-      setExpandedExit={setExpandedExit}
-
-      theme={props.theme}
-      {...props}
-    />
-  }
-
-  if (props.view === View.UNWRAP) {
-    return <div>
-      <CurrentChain
-        schains={props.config.chains}
-        setChain={props.setChain1}
-        chain={props.chain1}
-        disabledChain={props.chain2}
-        fromChain={true}
-        config={props.config}
-        disabled={props.disabledChains}
-
-        theme={props.theme}
-        expanded={expandedFrom}
-        setExpanded={setExpandedFrom}
-
-        expandedTo={expandedTo}
-        expandedTokens={expandedTokens}
-
-        sFuelData={props.sFuelData1}
-
-        view={props.view}
-        setView={props.setView}
-
-        resetWidgetState={props.resetWidgetState}
-      />
-      <UnwrapUI
-        {...props}
-        expandedFrom={expandedFrom}
-        expandedTo={expandedTo}
-        expandedTokens={expandedTokens}
-        setExpandedFrom={setExpandedFrom}
-        setExpandedTo={setExpandedTo}
-        setExpandedTokens={setExpandedTokens}
-        btnText={props.btnText}
-      />
-
-      <TransactionsHistory
-        transactionsHistory={props.transactionsHistory}
-        clearTransactionsHistory={props.clearTransactionsHistory}
-        config={props.config}
-        setExpanded={setExpandedHistory}
-        expanded={expandedHistory}
-      />
-    </div>
-  }
+  const transferInProgress = useMetaportStore((state) => state.transferInProgress);
 
   return (
     <div>
-      <Collapse in={!expandedHistory}>
-        <CurrentChain
-          schains={props.config.chains}
-          setChain={props.setChain1}
-          chain={props.chain1}
-          disabledChain={props.chain2}
-          fromChain={true}
-          config={props.config}
-          disabled={props.disabledChains}
+      <SkPaper gray className={common.noPadd}>
+        <SkPaper background='transparent' className={common.noPadd}>
+          <ChainsList
+            config={props.config}
+            expanded={expandedFrom}
+            setExpanded={setExpandedFrom}
 
-          theme={props.theme}
-          expanded={expandedFrom}
-          setExpanded={setExpandedFrom}
+            chain={chainName1}
+            setChain={setChainName1}
 
-          expandedTo={expandedTo}
-          expandedTokens={expandedTokens}
-          expandedExit={expandedExit}
+            disabledChain={chainName2}
+            disabled={transferInProgress}
 
-          sFuelData={props.sFuelData1}
-        />
-        <TransferUI
-          {...props}
-          expandedFrom={expandedFrom}
-          expandedTo={expandedTo}
-          expandedTokens={expandedTokens}
-          setExpandedFrom={setExpandedFrom}
-          setExpandedTo={setExpandedTo}
-          setExpandedTokens={setExpandedTokens}
-
-          expandedExit={expandedExit}
-          setExpandedExit={setExpandedExit}
-        />
-        <SFuelWarning
-          chain1={props.chain1}
-          chain2={props.chain2}
-          transferRequest={props.transferRequest}
-          config={props.config}
-          address={props.address}
-          setSFuelOk={props.setSFuelOk}
-          view={props.view}
-        />
-        <Collapse in={
-          !expandedFrom &&
-          !expandedTo &&
-          !expandedTokens &&
-          !wrapTransferAction
-        }>
-          <WrappedTokensWarning
-            wrappedTokens={props.wrappedTokens}
-            setView={props.setView}
+            from={true}
           />
+          <Collapse in={!!chainName1}>
+            <div >
+              <TokenList />
+            </div>
+          </Collapse>
+        </SkPaper>
+
+        <Collapse in={!!token}>
+          <SkPaper gray className={cls()}>
+            <AmountInput />
+          </SkPaper>
         </Collapse>
-      </Collapse>
-      <Collapse in={
-        !expandedFrom &&
-        !expandedTo &&
-        !expandedTokens &&
-        !expandedExit
-      }>
-        <TransactionsHistory
-          transactionsHistory={props.transactionsHistory}
-          clearTransactionsHistory={props.clearTransactionsHistory}
+      </SkPaper>
+      <SwitchDirection />
+      <SkPaper gray className={common.noPadd}>
+        <ChainsList
           config={props.config}
-          setExpanded={setExpandedHistory}
-          expanded={expandedHistory}
+          expanded={expandedTo}
+          setExpanded={setExpandedTo}
+          chain={chainName2}
+          setChain={setChainName2}
+
+          disabledChain={chainName1}
+          disabled={transferInProgress}
         />
-      </Collapse>
-    </div >
-  )
+
+        {/* <div className={cls(common.flex, common.margTop10, common.margBott10)}>
+          <div className={cls(common.flex, common.flexGrow)}>
+
+          </div>
+          <div className={cls(common.flex, common.margRi10)}>
+            {token ? <TokenBalance token={token} tokenBalances={tokenBalances} /> : null}
+          </div>
+        </div> */}
+
+      </SkPaper>
+      <AmountErrorMessage />
+      <SkStepper skaleNetwork={props.config.skaleNetwork} />
+    </div>
+
+  );
 }
+
+
+export default WidgetBody;

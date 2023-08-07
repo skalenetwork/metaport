@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Widget } from "./Widget";
-import { storyDecorator } from "../WidgetUI/StorybookHelper";
+import Widget from "./Widget";
+// import { storyDecorator } from "../WidgetUI/StorybookHelper";
 
-
-const METAPORT_CONFIG = require('../../configs/metaportConfigStaging.json');
+const METAPORT_CONFIG = require('../../metadata/metaportConfigStaging.json');
 METAPORT_CONFIG.mainnetEndpoint = process.env.STORYBOOK_MAINNET_ENDPOINT;
 
 
 const meta: Meta<typeof Widget> = {
   title: "Functional/Widget",
   component: Widget,
-  decorators: [storyDecorator],
+  // decorators: [storyDecorator],
 };
 
 export default meta;

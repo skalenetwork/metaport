@@ -1,22 +1,27 @@
 import Collapse from '@mui/material/Collapse';
 
-import { clsNames } from '../../core/helper';
-import styles from "../WidgetUI/WidgetUI.scss";
+import { cls } from '../../core/helper';
+import common from '../../styles/common.scss';
+
+import { useMetaportStore } from '../../store/MetaportState'
 
 
-export default function AmountErrorMessage(props) {
+export default function AmountErrorMessage() {
+  const amountErrorMessage = useMetaportStore((state) => state.amountErrorMessage);
   return (
-    <Collapse in={props.amountErrorMessage} className='mp__noMarg'>
-      <p className={clsNames(
-        styles.mp__flex,
-        styles.mp__p3,
-        styles.mp__p,
-        styles.mp__errorMessage,
-        styles.mp__flexGrow,
-        styles.mp__margTop20,
-        styles.sk__uppercase
+    <Collapse in={!!amountErrorMessage || amountErrorMessage === ''} className='mp__noMarg'>
+      <p className={cls(
+        common.flex,
+        common.p3,
+        common.p,
+        common.pSecondary,
+        common.errorMessage,
+        common.flexGrow,
+        common.margTop10,
+        common.margLeft10,
+        // common.uppercase
       )}>
-        🔴 {props.amountErrorMessage}
+        🔴 {amountErrorMessage}
       </p>
     </Collapse>)
 }

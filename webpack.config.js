@@ -54,31 +54,51 @@ module.exports = {
       //     },
       //   ],
       // },
+
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          
-          // Creates `style` nodes from JS strings
-          {
-            loader: 'style-loader',
-            options: {
-              esModule: false,
-            },
-          },
-          // Translates CSS into CommonJS
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              sourceMap: true,
-              // importLoaders: 2,
-              // esModule: false
-            }
-          },
-          // Compiles Sass to CSS
-          "sass-loader",
-        ],
-      }
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            sourceMap: true,
+            importLoaders: 2,
+            esModule: false
+          }
+        }, "sass-loader"],
+        include: path.resolve(__dirname, "../")
+      },
+
+
+      // {
+      //   test: /\.s[ac]ss$/i,
+      //   use: [
+
+      //     // Creates `style` nodes from JS strings
+      //     {
+      //       loader: 'style-loader',
+      //       options: {
+      //         esModule: false,
+      //       },
+      //     },
+      //     // Translates CSS into CommonJS
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         modules: true,
+      //         sourceMap: true,
+      //         // importLoaders: 2,
+      //         // esModule: false
+      //       }
+      //     },
+      //     // Compiles Sass to CSS
+      //     "sass-loader",
+      //   ],
+      // }
     ]
   },
   resolve: {

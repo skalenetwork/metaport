@@ -55,6 +55,7 @@ test.mjs
 src/meta/
 
 metaportConfig.json
+metaportConfigMainnet.json
 
 storybook-static/
 .vercel

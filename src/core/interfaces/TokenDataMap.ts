@@ -21,9 +21,10 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import TokenData from '../../core/dataclasses/TokenData';
+import { TokenData } from '../../core/dataclasses/TokenData';
 import EthTokenData from '../../core/dataclasses/EthTokenData';
 import { TokenType } from '../../core/dataclasses/TokenType';
+import { Contract } from "ethers";
 
 
 export interface TokenDataMap { [tokenSymbol: string]: TokenData; }
@@ -37,3 +38,6 @@ export type TokenDataTypesMap = {
     [TokenType.erc721meta]: TokenDataMap
     [TokenType.erc1155]: TokenDataMap
 }
+
+export interface TokenContractsMap { [tokenKeyname: string]: Contract; };
+export interface TokenBalancesMap { [tokenKeyname: string]: bigint; };

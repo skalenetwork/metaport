@@ -35,6 +35,6 @@ export function isTransferRequestSummary(view: View) {
 }
 
 
-export function isTransferRequestSteps(view: View) {
+export function isStepsMetadata(view: View) {
     return view === View.TRANSFER_REQUEST_STEPS
 }

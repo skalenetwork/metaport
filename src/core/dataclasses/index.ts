@@ -22,5 +22,8 @@
  */
 
 export * from "./TokenType";
+export * from "./TokenData";
 export * from "./Position";
 export * from "./TransferRequestStatus";
+export * from "./StepMetadata";
+export * from "./ErrorMessage";

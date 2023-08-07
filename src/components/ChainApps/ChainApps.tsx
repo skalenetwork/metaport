@@ -1,41 +1,48 @@
-import Tooltip from '@mui/material/Tooltip';
+import { cls, getChainAppsMeta, getChainAlias } from '../../core/helper';
 
-import { getChainIcon } from '../ChainsList/helper';
+import styles from "../../styles/styles.scss";
+import common from "../../styles/common.scss";
+import { SkaleNetwork } from '../../core/interfaces';
 
-import { clsNames, getChainAppsMeta } from '../../core/helper';
-import styles from "../WidgetUI/WidgetUI.scss";
-import { MetaportConfig } from '../../core/interfaces';
+import ChainIcon from '../ChainIcon';
 
 
 export default function ChainApps(props: {
-  config: MetaportConfig,
-  chain: string,
-  dark: boolean
+  skaleNetwork: SkaleNetwork,
+  chain: string
 }) {
 
-  const apps = getChainAppsMeta(props.chain, props.config.skaleNetwork);
+  const apps = getChainAppsMeta(props.chain, props.skaleNetwork);
   if (!apps || !Object.keys(apps) || Object.keys(apps).length === 0) return <div></div>;
 
   return (
-    <div className={clsNames(
+    <div className={cls(
       styles.sk__chainApps,
-      styles.mp__chainIconXs,
-      styles.mp__margRi10,
-      styles.mp__flex,
-      styles.mp__flexCenteredVert
+      common.margRi10,
+      common.flex,
+      common.flexCenteredVert
     )}>
-      <div className={clsNames(styles.mp__flex, styles.mp__flexCenteredVert)}>
+      <div className={cls(common.fldex, common.flexCenteredVert)}>
         {Object.keys(apps).map((key, _) => (
-          <Tooltip key={key} title={'App on this chain - ' + apps[key].alias}>
-            <div className={clsNames(
-              styles.mp__flex,
-              styles.mp__flexCenteredVert,
-              styles.mp__margRi5,
-              styles.mp__margLeft5
-            )}>
-              {getChainIcon(props.config.skaleNetwork, props.chain, props.dark, key)}
-            </div>
-          </Tooltip>
+          <div className={cls(
+            common.flex,
+            common.flexCenteredVert,
+            common.margRi5,
+            common.margLeft5,
+            common.margBott10,
+            common.margTop10
+          )}>
+            <ChainIcon
+              className={cls(common.margLeft20)}
+              skaleNetwork={props.skaleNetwork}
+              chainName={props.chain}
+              app={key}
+              size='xs'
+            />
+            <p className={cls(common.p, common.p4, common.pSecondary, common.p600, common.margLeft10)}>
+              {getChainAlias(props.skaleNetwork, props.chain, key)}
+            </p>
+          </div>
         ))}
       </div>
     </div>

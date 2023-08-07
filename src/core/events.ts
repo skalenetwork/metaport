@@ -95,7 +95,7 @@ export namespace externalEvents {
             chainName2: string,
             address: string,
             amount: string,
-            amountWei: string,
+            amountWei: bigint,
             tokenId: number
         },
         transactionHash?: string,

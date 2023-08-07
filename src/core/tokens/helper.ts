@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import TokenData from '../dataclasses/TokenData';
+import { TokenData } from '../dataclasses/TokenData';
 import * as interfaces from '../interfaces/index';
 
 import { eqArrays } from '../helper';
@@ -45,7 +45,7 @@ export function getAvailableTokensTotal(availableTokens): number {
 export function getDefaultToken(availableTokens: interfaces.TokenDataTypesMap): TokenData {
     if (availableTokens === undefined) return;
     const availableTokenNumers = getAvailableTokenNumers(availableTokens);
-    if (eqArrays(availableTokenNumers, [1, 0, 0, 0, 0])) return availableTokens.eth.eth;
+    // if (eqArrays(availableTokenNumers, [1, 0, 0, 0, 0])) return availableTokens.eth.eth;
     if (eqArrays(availableTokenNumers, [0, 1, 0, 0, 0])) {
         return Object.values(availableTokens.erc20)[0];
     }

@@ -1,65 +1,86 @@
 import React from "react";
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { useAccount } from 'wagmi'
 
-import { clsNames } from '../../core/helper';
-import styles from '../WidgetUI/WidgetUI.scss';
+import TextField from '@mui/material/TextField';
+
+import { cls } from '../../core/helper';
+import common from '../../styles/common.scss';
 import localStyles from './AmountInput.scss';
 
-import { TokenType } from '../../core/dataclasses/TokenType';
-import { SFUEL_RESERVE_AMOUNT } from "../../core/constants";
+import { useMetaportStore } from '../../store/MetaportState'
 
 
-export default function AmountInput(props) {
+export default function AmountInput() {
+
+  const { address } = useAccount()
+
+  const token = useMetaportStore((state) => state.token);
+  const transferInProgress = useMetaportStore((state) => state.transferInProgress);
+  const setAmount = useMetaportStore((state) => state.setAmount);
+  const amount = useMetaportStore((state) => state.amount);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (parseFloat(event.target.value) < 0) {
-      props.setAmount('');
+      setAmount('', address);
       return;
     }
-    props.setAmount(event.target.value);
+    setAmount(event.target.value, address);
   };
 
-  const setMaxAmount = () => {
-    if (props.token && !props.token.clone &&
-      (props.token.wrapsSFuel || props.token.type === TokenType.eth)) {
-      const adjustedAmount = Number(props.token.balance) - SFUEL_RESERVE_AMOUNT;
-      if (adjustedAmount > 0) {
-        props.setAmount(adjustedAmount.toString());
-      }
-    } else {
-      if (props.token && !props.token.clone && props.token.unwrappedBalance) {
-        props.setAmount(props.token.unwrappedBalance);
-      } else {
-        props.setAmount(props.token.balance);
-      }
-    }
-  }
+  // const setMaxAmount = () => {
+  //   if (token && !token.clone &&
+  //     (token.wrapsSFuel || token.type === TokenType.eth)) {
+  //     const adjustedAmount = Number(token.balance) - SFUEL_RESERVE_AMOUNT;
+  //     if (adjustedAmount > 0) {
+  //       props.setAmount(adjustedAmount.toString());
+  //     }
+  //   } else {
+  //     if (token && !token.clone && token.unwrappedBalance) {
+  //       props.setAmount(token.unwrappedBalance);
+  //     } else {
+  //       props.setAmount(token.balance);
+  //     }
+  //   }
+  // }
 
-  if (!props.token) return;
+  if (!token) return;
   return (
-    <div className={clsNames(styles.mp__flex, localStyles.mp__inputAmount)}>
-      <div className={clsNames(styles.mp__flex, styles.mp__flexGrow)}>
+    <div className={cls(common.flex, localStyles.mp__inputAmount)}>
+      <div className={cls(common.flex, common.flexGrow)}>
         <TextField
           type="number"
           variant="standard"
           placeholder="0.00"
-          value={props.amount}
+          value={amount}
           onChange={handleChange}
-          disabled={props.loading || props.amountLocked}
+          disabled={transferInProgress}
         />
       </div>
-      {props.maxBtn ? <div className={styles.mp__flex}>
+
+      <div className={cls(
+        common.p,
+        common.pMain,
+        [common.pDisabled, transferInProgress],
+        common.flex,
+        common.flexCenteredVert,
+        common.margRi20,
+        localStyles.tokenSymbol,
+        [localStyles.tokenSymbolPlaceholder, !amount]
+      )}>
+        {token.meta.symbol}
+      </div>
+
+      {/* {props.maxBtn ? <div className={common.flex}>
         <Button
           color="primary"
           size="small"
-          className={clsNames(styles.mp__btnChain, localStyles.mp__btnMax)}
-          onClick={setMaxAmount}
-          disabled={props.loading || !props.token.balance || props.amountLocked}
+          className={cls(styles.btnChain, localStyles.mp__btnMax)}
+        // onClick={setMaxAmount}
+        // disabled={props.loading || !token.balance || props.amountLocked}
         >
           MAX
         </Button>
-      </div> : null}
+      </div> : null} */}
     </div>
   )
 }

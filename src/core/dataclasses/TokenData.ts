@@ -22,68 +22,44 @@
  */
 
 import { DEFAULT_ERC20_DECIMALS } from '../constants';
+import { TokenMetadata, ConnectedChainMap } from '../interfaces';
 import { TokenType } from './TokenType';
 
 
-export default class TokenData {
-    originAddress: string
-    cloneAddress: string
-    cloneSymbol: string
-
-    name: string
-    symbol: string
-    keyname: string
-
-    clone: boolean
-    type: TokenType
-
-    balance: string
-
-    iconUrl: string
-    decimals: string
-
-    unwrappedSymbol: string
-    unwrappedAddress: string
-    unwrappedIconUrl: string
-    unwrappedBalance: string
-
-    wrapsSFuel: boolean
+export class TokenData {
+    address: string;
+    keyname: string;
+    type: TokenType;
+    meta: TokenMetadata;
+    connections: ConnectedChainMap;
+    chain: string;
 
     constructor(
-        cloneAddress: string,
-        originAddress: string,
-        name: string,
-        symbol: string,
-        cloneSymbol: string,
-        clone: boolean,
-        iconUrl: string,
-        decimals: string,
+        address: string,
         type: TokenType,
-        unwrappedSymbol: string,
-        unwrappedAddress: string,
-        unwrappedIconUrl: string,
-        wrapsSFuel: boolean = false
+        tokenKeyname: string,
+        metadata: TokenMetadata,
+        connections: ConnectedChainMap,
+        chain: string
     ) {
-        this.cloneAddress = cloneAddress;
-        this.cloneSymbol = cloneSymbol ? cloneSymbol : symbol;
-        this.originAddress = originAddress;
-        this.name = name;
-        this.symbol = symbol;
-        this.clone = clone;
-        this.iconUrl = iconUrl;
-        this.decimals = decimals ? decimals : DEFAULT_ERC20_DECIMALS;
+        this.address = address;
+        this.meta = metadata;
+        this.meta.decimals = this.meta.decimals ? this.meta.decimals : DEFAULT_ERC20_DECIMALS;
+        this.connections = connections;
         this.type = type;
-
-        this.keyname = getTokenKeyname(symbol, originAddress);
-
-        this.unwrappedSymbol = unwrappedSymbol;
-        this.unwrappedAddress = unwrappedAddress;
-        this.unwrappedIconUrl = unwrappedIconUrl;
-        this.wrapsSFuel = wrapsSFuel;
+        this.keyname = tokenKeyname;
+        this.chain = chain;
     }
-}
 
+    wrapper(destChain: string): string | undefined {
+        return this.connections[destChain].wrapper
+    }
 
-export function getTokenKeyname(symbol: string, originAddress: string): string {
-    return `_${symbol}_${originAddress}`;
+    isClone(destChain: string): boolean | undefined {
+        return this.connections[destChain].clone
+    }
+
+    wrapsSFuel(destChain: string): boolean | undefined {
+        return this.connections[destChain].wrapsSFuel
+    }
 }

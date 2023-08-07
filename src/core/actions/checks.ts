@@ -23,11 +23,11 @@
 
 
 import debug from 'debug';
-import { Contract } from 'web3-eth-contract';
+import { Contract } from "ethers";
 import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
 import { fromWei } from '../convertation';
-import TokenData from '../dataclasses/TokenData';
+import { TokenData } from '../dataclasses/TokenData';
 import * as interfaces from '../interfaces';
 import { addressesEqual } from '../helper';
 import { DEFAULT_ERC20_DECIMALS, SFUEL_RESERVE_AMOUNT } from '../constants';
@@ -48,9 +48,9 @@ export async function checkEthBalance( // TODO: optimize balance checks
     try {
         const balance = await chain.ethBalance(address);
         log(`address: ${address}, eth balance: ${balance}, amount: ${amount}`);
-        const balanceEther = fromWei(balance, tokenData.decimals);
+        const balanceEther = fromWei(balance, tokenData.meta.decimals);
         if (Number(amount) + SFUEL_RESERVE_AMOUNT > Number(balanceEther)) {
-            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.symbol}. \
+            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.meta.symbol}. \
             ${SFUEL_RESERVE_AMOUNT} ETH will be reserved to cover transfer costs.`;
         } else {
             checkRes.res = true;
@@ -73,11 +73,11 @@ export async function checkERC20Balance(
     const checkRes: interfaces.CheckRes = { res: false };
     if (!amount || Number(amount) === 0) return checkRes;
     try {
-        const balance = await tokenContract.methods.balanceOf(address).call();
+        const balance = await tokenContract.balanceOf(address);
         log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
-        const balanceEther = fromWei(balance, tokenData.decimals);
+        const balanceEther = fromWei(balance, tokenData.meta.decimals);
         if (Number(amount) > Number(balanceEther)) {
-            checkRes.msg = `Current balance: ${balanceEther} ${tokenData.symbol}`;
+            checkRes.msg = `Insufficient balance: ${balanceEther} ${tokenData.meta.symbol}`;
         } else {
             checkRes.res = true;
         }
@@ -97,7 +97,7 @@ export async function checkSFuelBalance(
     const checkRes: interfaces.CheckRes = { res: false };
     if (!amount || Number(amount) === 0) return checkRes;
     try {
-        const balance = await sChain.web3.eth.getBalance(address);
+        const balance = await sChain.provider.getBalance(address);
         log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`);
         const balanceEther = fromWei(balance, DEFAULT_ERC20_DECIMALS);
         if (Number(amount) + SFUEL_RESERVE_AMOUNT > Number(balanceEther)) {
@@ -125,11 +125,11 @@ export async function checkERC20Allowance(
     const checkRes: interfaces.CheckRes = { res: false };
     if (!amount || Number(amount) === 0) return checkRes;
     try {
-        const allowance = await tokenContract.methods.allowance(
+        const allowance = await tokenContract.allowance(
             address,
             approvalAddress
-        ).call();
-        const allowanceEther = fromWei(allowance, tokenData.decimals);
+        )
+        const allowanceEther = fromWei(allowance, tokenData.meta.decimals);
         log(`allowanceEther: ${allowanceEther}, amount: ${amount}`);
         checkRes.res = Number(allowanceEther) >= Number(amount);
         return checkRes;
@@ -151,7 +151,7 @@ export async function checkERC721(
     const checkRes: interfaces.CheckRes = { res: true, approved: false };
     if (!tokenId) return checkRes;
     try {
-        approvedAddress = await tokenContract.methods.getApproved(tokenId).call();
+        approvedAddress = await tokenContract.getApproved(tokenId)
         log(`approvedAddress: ${approvedAddress}, address: ${address}`);
     } catch (err) {
         log(err);
@@ -159,7 +159,7 @@ export async function checkERC721(
         return checkRes;
     }
     try {
-        const currentOwner = await tokenContract.methods.ownerOf(tokenId).call();;
+        const currentOwner = await tokenContract.ownerOf(tokenId);
         log(`currentOwner: ${currentOwner}, address: ${address}`);
         if (!addressesEqual(currentOwner, address)) {
             checkRes.msg = 'This account is not an owner of this tokenId';
@@ -187,15 +187,15 @@ export async function checkERC1155(
     if (!tokenId || !amount) return checkRes;
 
     try {
-        const balance = await tokenContract.methods.balanceOf(address, tokenId).call();
+        const balance = await tokenContract.balanceOf(address, tokenId)
         log(`address: ${address}, balanceEther: ${balance}, amount: ${amount}`);
         if (Number(amount) > Number(balance)) {
-            checkRes.msg = `Current balance: ${balance} ${tokenData.symbol}`;
+            checkRes.msg = `Current balance: ${balance} ${tokenData.meta.symbol}`;
         }
-        checkRes.approved = await tokenContract.methods.isApprovedForAll(
+        checkRes.approved = await tokenContract.isApprovedForAll(
             address,
             approvalAddress
-        ).call();
+        )
     } catch (err) {
         log(err);
         checkRes.msg = 'Something went wrong, check developer console';

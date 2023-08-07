@@ -47,13 +47,13 @@ export const HTTPS_PREFIX = 'https://';
 
 export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
     mainnet: 'https://etherscan.io',
-    staging3: 'https://goerli.etherscan.io/',
+    staging: 'https://goerli.etherscan.io/',
     legacy: 'https://goerli.etherscan.io/'
 };
 
 export const BASE_EXPLORER_URLS = {
     mainnet: "explorer.mainnet.skalenodes.com",
-    staging3: "explorer.staging-v3.skalenodes.com",
+    staging: "explorer.staging-v3.skalenodes.com",
     legacy: "explorer.staging-v3.skalenodes.com"
 };
 
@@ -101,3 +101,5 @@ export const BALANCE_UPDATE_INTERVAL_SECONDS = 10;
 
 
 export const SFUEL_RESERVE_AMOUNT = 0.02;
+
+export const SUCCESS_EMOJIS = ['🎉', '👌', '✅', '🙌', '🎊'];

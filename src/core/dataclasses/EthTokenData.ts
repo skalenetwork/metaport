@@ -21,26 +21,26 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { ETH_ERC20_ADDRESS } from '../constants';
-import { TokenType } from './TokenType';
-import TokenData from './TokenData';
+// import { ETH_ERC20_ADDRESS } from '../constants';
+// import { TokenType } from './TokenType';
+import { TokenData } from './TokenData';
 
 
 export default class EthTokenData extends TokenData {
-    constructor(clone: boolean) {
-        super(
-            ETH_ERC20_ADDRESS,
-            null,
-            TokenType.eth,
-            TokenType.eth,
-            TokenType.eth,
-            clone,
-            null,
-            null,
-            TokenType.eth,
-            null,
-            null,
-            null
-        );
-    }
+    // constructor(clone: boolean) {
+    //     super(
+    //         ETH_ERC20_ADDRESS,
+    //         null,
+    //         TokenType.eth,
+    //         TokenType.eth,
+    //         TokenType.eth,
+    //         clone,
+    //         null,
+    //         null,
+    //         TokenType.eth,
+    //         null,
+    //         null,
+    //         null
+    //     );
+    // }
 }

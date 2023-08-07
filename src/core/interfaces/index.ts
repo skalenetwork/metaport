@@ -30,3 +30,4 @@ export * from "./TransferParams";
 export * from "./CheckRes";
 export * from "./TransactionHistory";
 export * from "./CommunityPoolData";
+export * from "./TokenMetadata";

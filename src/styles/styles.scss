@@ -1,0 +1,262 @@
+@import './variables';
+
+.paper {
+    padding: 10px;
+    border-radius: $sk-border-radius;
+}
+
+.paperGrey {
+    // background-color: $sk-gray-background-color !important;
+    background-color: $sk-paper-color !important;
+}
+
+.fullHeight {
+    height: 100%;
+}
+
+.popper {
+    width: 390px;
+    max-height: calc(100vh - 110pt);
+    padding: 10pt;
+    border-radius: $sk-border-radius-outter;
+    border: 1px rgba(127, 127, 127, .2705882353) solid;
+
+    :global(.Mui-disabled) {
+        :global(.MuiAccordionSummary-expandIconWrapper) {
+            display: none !important;
+        }
+        opacity: 1 !important;
+    }
+}
+
+.darkTheme {
+    .skaleLogoSm {
+        filter: invert(1);
+    }
+
+    .defaultChainIcon {
+        color: 'hsl(120deg 2% 88%)';
+    }
+
+    .sk__btnSwitch {
+        :global(.Mui-disabled) {
+            background-color: $sk-paper-color !important;
+        }
+    }
+
+    :global .MuiIconButton-root {
+        svg {
+            color: #000000;
+        }
+    }
+
+    :global(.MuiIconButton-root.Mui-disabled) {
+        svg {
+            color: rgba(255, 255, 255, 0.3);
+        }
+    }
+
+    :global(.Mui-completed) {
+        color: $sk-disabled-dark;
+    }
+
+}
+
+.lightTheme {
+    .skaleLogoLg {
+        filter: invert(1);
+    }
+
+    .defaultChainIcon {
+        color: 'hsl(120deg 2% 88%)';
+    }
+
+    .sk__btnSwitch {
+        :global(.Mui-disabled) {
+            background-color: rgb(224 224 224) !important;
+        }
+    }
+
+    :global(.MuiIconButton-root) {
+        svg {
+            color: #ffffff;
+        }
+    }
+
+    :global(.MuiIconButton-root.Mui-disabled) {
+        svg {
+            color: rgba(0, 0, 0, 0.26);
+        }
+    }
+
+    :global(.Mui-completed) {
+        color: $sk-disabled-light;
+    }
+}
+
+.skaleBtnHidden {
+    display: none !important;
+}
+
+.skaleBtn {
+    border: 1px #7f7f7f45 solid;
+    box-shadow: none !important;
+}
+
+
+.skaleLogoSm {
+    width: 18pt;
+}
+
+
+button {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+.imaWidgetBody {
+    border-radius: $sk-border-radius-outter !important;
+    position: fixed;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+
+    :global(.MuiAccordion-root) {
+        background-color: transparent !important;
+    }
+
+    :global(.MuiAccordionDetails-root) {
+        padding: 0 !important;
+    }
+
+    :global(.MuiButton-root) {
+        font-weight: 600 !important;
+        box-shadow: none !important;
+        border-radius: $sk-border-radius !important;
+    }
+}
+
+.chainIconxs {
+    width: 17px;
+    height: 17px;
+
+    svg {
+        width: 17px;
+        height: 17px;
+    }
+}
+
+.chainIconsm {
+    width: 26px;
+    height: 26px;
+
+    svg {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+.chainIconmd {
+    width: 35px;
+    height: 35px;
+
+    svg {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+.chainIconlg {
+    width: 45px;
+    height: 45px;
+}
+
+.sk__chainApps {
+
+    border-left: 1px #bdbdbd solid;
+    margin-left: 30px !important;
+
+    // background-color: $sk-paper-color;
+    // border-radius: $sk-border-radius !important;
+    // padding: 5px;
+}
+
+
+
+.sk__btnSwitch {
+    width: 100%;
+    text-align: center;
+    margin-top: -13pt;
+    margin-bottom: -13pt;
+
+    button {
+        border: 13px #1a1a1a solid;
+    }
+
+    :global(svg) {
+        width: 14pt;
+        height: 14pt;
+    }
+}
+
+.btnSwitchAnimation {
+    transition: all 0.2s ease-in-out;
+}
+
+.btnAction {
+    width: 100%;
+    text-transform: none !important;
+    font-size: 0.8025rem !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0.02857em !important;
+    font-weight: 600 !important;
+    padding-top: 0.8em !important;
+    padding-bottom: 0.8em !important;
+    min-height: $sk-btn-height !important;
+}
+
+.btnChain {
+    width: 100%;
+    text-align: left;
+    text-transform: none !important;
+    font-size: 0.6525rem !important;
+    line-height: 1.6;
+    letter-spacing: 0.02857em;
+}
+
+
+@keyframes resize {
+
+    0%,
+    100% {
+        transform: scale(1);
+        /* Initial and final size: 100% (no change) */
+    }
+
+    50% {
+        transform: scale(1.1);
+        /* At half-time, size becomes 110% (10% larger) */
+    }
+}
+
+.skMovingDiv {
+    animation: resize 3s infinite ease-in-out;
+}
+
+.infoIcon {
+    svg {
+        height: 45pt;
+        width: 100%;
+    }
+}
+
+:global(.spin) {
+    transform: rotate(360deg);
+}
+
+
+
+.accordionSummary {
+    padding: 10px 26px !important;
+}

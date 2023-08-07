@@ -1,1 +1,1 @@
-export { Widget } from "./Widget";
+export { default } from "./Widget";

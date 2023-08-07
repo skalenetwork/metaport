@@ -29,3 +29,9 @@ export enum TokenType {
     erc721meta = 'erc721meta',
     erc1155 = 'erc1155'
 }
+
+
+export enum CustomAbiTokenType {
+    erc20wrap = 'erc20wrap',
+    sfuelwrap = 'sfuelwrap'
+}
