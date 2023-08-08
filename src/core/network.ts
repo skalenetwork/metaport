@@ -75,6 +75,9 @@ export function getMainnetAbi(network: string) {
     if (network === 'legacy') {
         return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.legacy }
     }
+    if (network === 'regression') {
+        return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.regression }
+    }
     return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.mainnet }
 }
 

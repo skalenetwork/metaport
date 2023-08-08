@@ -36,7 +36,8 @@ import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 
 import {
     injectedWallet,
-    coinbaseWallet
+    coinbaseWallet,
+    metaMaskWallet
 } from '@rainbow-me/rainbowkit/wallets';
 
 import { MetaportConfig } from "core/interfaces"
@@ -56,7 +57,6 @@ const { chains, webSocketPublicClient } = configureChains(
     [
         mainnet,
         goerli,
-
         constructWagmiChain('staging', "staging-legal-crazy-castor"),
         constructWagmiChain('staging', "staging-utter-unripe-menkar"),
         constructWagmiChain('staging', "staging-faint-slimy-achird"),
@@ -83,7 +83,7 @@ const connectors = connectorsForWallets([
     {
         groupName: 'Supported Wallets',
         wallets: [
-            // metaMaskWallet({ chains, projectId: '' }),
+            metaMaskWallet({ chains, projectId: '' }),
             injectedWallet({ chains }),
             coinbaseWallet({ chains, appName: 'TEST' })
         ],
@@ -96,8 +96,6 @@ const wagmiConfig = createConfig({
     connectors,
     publicClient: webSocketPublicClient
 });
-
-
 
 
 export default function Widget(props: {

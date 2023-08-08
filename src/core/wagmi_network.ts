@@ -61,5 +61,5 @@ export function constructWagmiChain(network: SkaleNetwork, chainName: string): C
 
 export function getWebSocketUrl(chain: Chain): string {
     // return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : '';
-    return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : ''; // TODO - IP!
+    return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : 'wss://goerli-light.eth.linkpool.io/ws'; // TODO - IP!
 }

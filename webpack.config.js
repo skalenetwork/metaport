@@ -13,6 +13,8 @@ module.exports = {
   },
   module: {
     rules: [
+      { test: /\.m?js$/, type: 'javascript/auto' },
+      { test: /\.m?js$/, resolve: { fullySpecified: false } },
       {
         test: /\.(ts|tsx)$/,
         loader: require.resolve("babel-loader"),
@@ -40,65 +42,38 @@ module.exports = {
           },
         ],
       },
-      // {
-      //   test: /\.png$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         limit: 10000,
-      //         outputPath: 'icons',
-      //         publicPath: 'icons',
-      //         name: '[name].[ext]',
-      //       },
-      //     },
-      //   ],
-      // },
-
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        sideEffects: true,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          }
+        ]
       },
       {
-        test: /\.scss$/,
-        use: ["style-loader", {
-          loader: 'css-loader',
-          options: {
-            modules: true,
-            sourceMap: true,
-            importLoaders: 2,
-            esModule: false
-          }
-        }, "sass-loader"],
-        include: path.resolve(__dirname, "../")
-      },
-
-
-      // {
-      //   test: /\.s[ac]ss$/i,
-      //   use: [
-
-      //     // Creates `style` nodes from JS strings
-      //     {
-      //       loader: 'style-loader',
-      //       options: {
-      //         esModule: false,
-      //       },
-      //     },
-      //     // Translates CSS into CommonJS
-      //     {
-      //       loader: 'css-loader',
-      //       options: {
-      //         modules: true,
-      //         sourceMap: true,
-      //         // importLoaders: 2,
-      //         // esModule: false
-      //       }
-      //     },
-      //     // Compiles Sass to CSS
-      //     "sass-loader",
-      //   ],
-      // }
+        test: /\.s[ac]ss$/i,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              esModule: false,
+            },
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true
+            }
+          },
+          "sass-loader",
+        ],
+      }
     ]
   },
   resolve: {
@@ -122,11 +97,5 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
-  ],
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all',
-  //   }
-  // }
-
+  ]
 };
