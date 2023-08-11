@@ -1,22 +1,26 @@
 const path = require('path');
 const webpack = require("webpack");
 
+
 module.exports = {
   entry: path.join(__dirname, '/src/index.ts'),
   mode: 'production',
   output: {
     filename: 'index.js',
-    publicPath: '',
+    // publicPath: '',
     path: path.join(__dirname, 'build'),
-    libraryTarget: 'commonjs',
-    //chunkFilename: '[id].[chunkhash].js'
+    library: {
+      type: 'commonjs'
+    },
+    // chunkFilename: '[id].[chunkhash].js'
   },
   module: {
     rules: [
-      { test: /\.m?js$/, type: 'javascript/auto' },
-      { test: /\.m?js$/, resolve: { fullySpecified: false } },
+      // { test: /\.m?js$/, type: 'javascript/auto' },
+      // { test: /\.m?js$/, resolve: { fullySpecified: false } },
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(js|ts|tsx)$/,
+        exclude: /node_modules/, // excludes node_modules directory
         loader: require.resolve("babel-loader"),
         options: {
           presets: [["react-app", {
@@ -96,6 +100,23 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
-    }),
-  ]
+    })
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        vendors: false,
+        // Merge all the chunks into one.
+        single: {
+          name: 'main',
+          chunks: 'all',
+          minChunks: 1,
+          reuseExistingChunk: true,
+          enforce: true
+        }
+      }
+    },
+    runtimeChunk: false
+  }
 };

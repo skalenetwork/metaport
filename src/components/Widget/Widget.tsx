@@ -40,7 +40,7 @@ import {
     metaMaskWallet
 } from '@rainbow-me/rainbowkit/wallets';
 
-import { MetaportConfig } from "core/interfaces"
+import { MetaportConfig } from "../../core/interfaces"
 
 import WidgetUI from '../WidgetUI'
 import { useUIStore } from '../../store/Store'

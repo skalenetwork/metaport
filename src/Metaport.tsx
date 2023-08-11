@@ -41,7 +41,12 @@ export class Metaport {
     if (config.autoLookup === undefined) config.autoLookup = true;
     if (config.skaleNetwork === undefined) config.skaleNetwork = 'mainnet';
     if (config.debug === undefined) config.debug = false;
-    createRoot(document.getElementById('metaport')).render(<Widget config={config} />);
+    const el = document.getElementById('metaport');
+    if (el) {
+      createRoot(el).render(<Widget config={config} />);
+    } else {
+      console.log('div with id="metaport" does not exist')
+    }
   }
 
   transfer(params: interfaces.TransferParams): void {
@@ -53,7 +58,7 @@ export class Metaport {
 
   // updateParams(params) { internalEvents.updateParams(params) }
   // requestBalance(params) { internalEvents.requestBalance(params) }
-  setTheme(theme) { internalEvents.setTheme(theme) }
+  setTheme(theme: any) { internalEvents.setTheme(theme) }
   close() { internalEvents.close() }
   open() { internalEvents.open() }
   reset() { internalEvents.reset() }
