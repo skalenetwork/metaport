@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2023-Present
 */
 
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { cls } from '../../core/helper';
 
 import styles from "../../styles/styles.scss";

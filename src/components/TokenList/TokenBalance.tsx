@@ -1,3 +1,4 @@
+import React from 'react';
 import { formatUnits } from 'ethers';
 
 import { TokenType, TokenData } from '../../core/dataclasses';

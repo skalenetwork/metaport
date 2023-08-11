@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import {
     RainbowKitProvider,

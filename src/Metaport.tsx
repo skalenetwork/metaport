@@ -32,6 +32,8 @@ import * as interfaces from './core/interfaces/index';
 export * as dataclasses from './core/dataclasses/index';
 export * as interfaces from './core/interfaces/index';
 
+export * as ChainIcon from './components/ChainIcon';
+
 // export * as sfuel from './core/sfuel';
 
 

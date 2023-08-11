@@ -1,3 +1,4 @@
+import React from 'react';
 import Collapse from '@mui/material/Collapse';
 
 import { cls } from '../../core/helper';

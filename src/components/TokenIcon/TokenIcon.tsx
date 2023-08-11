@@ -21,6 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
+import React from 'react';
 import TollRoundedIcon from '@mui/icons-material/TollRounded';
 import { TokenData } from '../../core/dataclasses';
 import { tokenIconPath } from '../../core/metadata';

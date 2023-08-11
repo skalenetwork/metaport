@@ -1,3 +1,4 @@
+import React from 'react';
 import OfflineBoltRoundedIcon from '@mui/icons-material/OfflineBoltRounded';
 import { SkaleNetwork } from '../../core/interfaces';
 import { chainIconPath } from '../../core/metadata';

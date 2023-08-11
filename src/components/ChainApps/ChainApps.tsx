@@ -1,3 +1,4 @@
+import React from 'react';
 import { cls, getChainAppsMeta, getChainAlias } from '../../core/helper';
 
 import styles from "../../styles/styles.scss";
