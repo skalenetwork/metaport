@@ -20,7 +20,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyledEngineProvider } from '@mui/material/styles';
 
 import { useAccount } from 'wagmi';
@@ -47,17 +47,38 @@ import styles from "../../styles/styles.module.scss";
 import common from "../../styles/common.module.scss";
 import { PaletteMode } from '@mui/material';
 
+import { getWidgetTheme } from '../../core/themes';
+
 import SkConnect from '../SkConnect';
 import ErrorMessage from '../ErrorMessage';
+import { MetaportConfig } from '../../core/interfaces';
+import MetaportCore from '../../core/metaport'
 
 
-export function WidgetUI(props) {
+export function WidgetUI(props: { config: MetaportConfig }) {
+
+  const widgetTheme = getWidgetTheme(props.config.theme);
+
+  const setTheme = useUIStore((state) => state.setTheme);
+  const setMpc = useMetaportStore((state) => state.setMpc);
+  const setOpen = useUIStore((state) => state.setOpen);
+
+  useEffect(() => {
+    setOpen(props.config.openOnLoad);
+  }, []);
+
+  useEffect(() => {
+    setTheme(widgetTheme);
+  }, [setTheme]);
+
+  useEffect(() => {
+    setMpc(new MetaportCore(props.config));
+  }, [setMpc]);
 
   const { address } = useAccount();
 
   const metaportTheme = useUIStore((state) => state.theme);
   const isOpen = useUIStore((state) => state.open);
-  const setOpen = useUIStore((state) => state.setOpen);
 
   const errorMessage = useMetaportStore((state) => state.errorMessage);
 

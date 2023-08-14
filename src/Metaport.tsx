@@ -39,11 +39,13 @@ export { ChainIcon };
 import WidgetUI from './components/WidgetUI';
 export { WidgetUI };
 
+import Metaport from './components/Metaport';
+export { Metaport };
 
 // export * as sfuel from './core/sfuel';
 
 
-export class Metaport {
+export class InjectedMetaport {
   constructor(config: interfaces.MetaportConfig) {
     if (config.openButton === undefined) config.openButton = true;
     if (config.autoLookup === undefined) config.autoLookup = true;
