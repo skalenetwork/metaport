@@ -243,67 +243,22 @@
     },
     "staging-perfect-parallel-gacrux": {
       "erc20": {
-        "_ETH_0xBA3f8192e28224790978794102C0D7aaa65B7d70": {
-          "address": "0xBA3f8192e28224790978794102C0D7aaa65B7d70",
-          "name": "ETH",
-          "symbol": "ETH",
-          "cloneSymbol": "ETH",
-          "wraps": {
-            "address": "0xD2Aaa00700000000000000000000000000000000",
-            "symbol": "ETH",
-            "name": "aaaa"
-          }
-        },
-        "_SKILL_0xb36A1DdaBf21161ad71013A34D502381DD1aa7BA": {
-          "address": "0xb36A1DdaBf21161ad71013A34D502381DD1aa7BA",
-          "name": "SKILL Token",
-          "symbol": "SKILL",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Compass/3D/compass_3d.png"
-        },
-        "DMT": {
-          "address": "0xb36A1DdaBf21161ad71013A34D502381DD1aa7BA",
-          "name": "DMT",
-          "symbol": "DMT",
-          "cloneSymbol": "DMTC",
-          "wraps": {
-            "address": "0x688f6d050B935BF06531b51B5e598318788fA7a5",
-            "symbol": "DMT",
-            "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Compass/3D/compass_3d.png"
-          }
-        },
-        "_SKL_0x099A46F35b627CABee27dc917eDA253fFbC55Be6": {
-          "address": "0x099A46F35b627CABee27dc917eDA253fFbC55Be6",
-          "decimals": "18",
-          "name": "SKL S2S",
-          "symbol": "SKL"
-        }
       },
       "erc721": {
-        "_SPS_0x30216880A73B67133F37de35e769b8e1A943D35c": {
-          "address": "0x30216880A73B67133F37de35e769b8e1A943D35c",
-          "name": "SKALE Space S2S",
-          "symbol": "SPS",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Glowing%20star/3D/glowing_star_3d.png"
-        }
+
       },
       "erc1155": {
         "skaliens": {
           "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
-          "name": "SKALIENS Collection",
-          "symbol": "SKALIENS2S",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Alien/3D/alien_3d.png"
+          "chains": {}
         },
         "medals": {
           "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
-          "name": "Medals",
-          "symbol": "MEDALS2S",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/1st%20place%20medal/3D/1st_place_medal_3d.png"
+          "chains": {}
         },
         "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
           "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
-          "name": "Funny Animals",
-          "symbol": "ANIMALS",
-          "iconUrl": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Frog/3D/frog_3d.png"
+          "chains": {}
         }
       }
     }

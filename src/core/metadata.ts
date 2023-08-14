@@ -25,32 +25,28 @@ import { TokenData } from './dataclasses';
 import { SkaleNetwork } from './interfaces';
 import { MAINNET_CHAIN_NAME } from './constants';
 
-
-function importAll(r) {
-    const images = {};
-    r.keys().map((item, _) => { images[item.replace('./', '')] = r(item); });
-    return images;
-}
-
+import * as MAINNET_CHAIN_ICONS from '../meta/mainnet/icons';
+import * as STAGING_CHAIN_ICONS from '../meta/staging/icons';
+import * as LEGACY_CHAIN_ICONS from '../meta/legacy/icons';
+import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons';
 
 const icons = {};
 const CHAIN_ICONS = {
-    'mainnet': {},
-    'staging': {},
-    'legacy': {},
-    'regression': {}
+    'mainnet': MAINNET_CHAIN_ICONS,
+    'staging': STAGING_CHAIN_ICONS,
+    'legacy': LEGACY_CHAIN_ICONS,
+    'regression': REGRESSION_CHAIN_ICONS
 }
 
 
 export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: string) {
     if (!name) return;
-    let filename = name.toLowerCase();
-    if (app)
-        filename += `-${app}`;
-    filename += '.svg';
+    let filename = name.toLowerCase()
+    if (app) filename += `-${app}`;
     if (name === MAINNET_CHAIN_NAME) {
-        return icons['eth.svg'];
+        return CHAIN_ICONS[skaleNetwork]['mainnet'];
     }
+    filename = filename.replace(/-([a-z])/g, (_, g) => g.toUpperCase())
     if (CHAIN_ICONS[skaleNetwork][filename]) {
         return CHAIN_ICONS[skaleNetwork][filename];
     }
