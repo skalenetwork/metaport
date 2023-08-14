@@ -214,6 +214,8 @@ button {
     padding-top: 0.8em !important;
     padding-bottom: 0.8em !important;
     min-height: $sk-btn-height !important;
+    border-radius: $sk-border-radius !important;
+    box-shadow: none !important;
 }
 
 .btnChain {

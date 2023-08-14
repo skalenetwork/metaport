@@ -16,31 +16,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 /**
- * @file Widget.ts
+ * @file MetaportProvider.ts
  * @copyright SKALE Labs 2023-Present
  */
 
-import React, { useEffect } from 'react'
+import { ReactElement, useEffect } from 'react'
 
-import { RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { mainnet, goerli } from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit'
+import { PaletteMode } from '@mui/material'
 
 import { injectedWallet, coinbaseWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig } from '../../core/interfaces'
 
-import WidgetUI from '../WidgetUI'
-import { useUIStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
-import { getWidgetTheme } from '../../core/themes'
-import MetaportCore from '../../core/metaport'
+import { StyledEngineProvider } from '@mui/material/styles'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import '@rainbow-me/rainbowkit/styles.css'
 
 import { constructWagmiChain, getWebSocketUrl } from '../../core/wagmi_network'
+
+import { getWidgetTheme, getMuiZIndex } from '../../core/themes'
+
+import { useUIStore } from '../../store/Store'
+import { useMetaportStore } from '../../store/MetaportState'
+import MetaportCore from '../../core/metaport'
+
 
 const { chains, webSocketPublicClient } = configureChains(
   [
@@ -84,16 +89,18 @@ const wagmiConfig = createConfig({
   publicClient: webSocketPublicClient,
 })
 
-export default function Widget(props: { config: MetaportConfig }) {
+export default function MetaportProvider(props: {
+  config: MetaportConfig,
+  className?: string
+  children?: ReactElement | ReactElement[]
+}) {
+
   const widgetTheme = getWidgetTheme(props.config.theme)
-  const theme = widgetTheme.mode === 'dark' ? darkTheme() : lightTheme()
 
   const setTheme = useUIStore((state) => state.setTheme)
   const setMpc = useMetaportStore((state) => state.setMpc)
   const setOpen = useUIStore((state) => state.setOpen)
-
-  theme.colors.connectButtonInnerBackground = widgetTheme.background
-  theme.colors.connectButtonBackground = widgetTheme.background
+  const metaportTheme = useUIStore((state) => state.theme)
 
   useEffect(() => {
     setOpen(props.config.openOnLoad)
@@ -107,6 +114,24 @@ export default function Widget(props: { config: MetaportConfig }) {
     setMpc(new MetaportCore(props.config))
   }, [setMpc])
 
+  let theme = createTheme({
+    zIndex: getMuiZIndex(widgetTheme),
+    palette: {
+      mode: widgetTheme.mode as PaletteMode,
+      background: {
+        paper: widgetTheme.background,
+      },
+      primary: {
+        main: widgetTheme.primary,
+      },
+      secondary: {
+        main: widgetTheme.background,
+      },
+    },
+  })
+
+  if (!metaportTheme) return <div></div>
+
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
@@ -116,9 +141,12 @@ export default function Widget(props: { config: MetaportConfig }) {
         }}
         showRecentTransactions={true}
         chains={chains}
-        theme={theme}
       >
-        <WidgetUI config={props.config} />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            {props.children}
+          </ThemeProvider>
+        </StyledEngineProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )

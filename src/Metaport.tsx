@@ -25,7 +25,6 @@
 import React from 'react'
 // import { createRoot } from 'react-dom/client';
 
-import Widget from './components/Widget'
 import { internalEvents } from './core/events'
 
 import * as interfaces from './core/interfaces/index'
@@ -40,6 +39,15 @@ export { WidgetUI }
 
 import Metaport from './components/Metaport'
 export { Metaport }
+
+import MetaportProvider from './components/MetaportProvider';
+export { MetaportProvider }
+
+import SkPaper from './components/SkPaper';
+export { SkPaper }
+
+import SkConnect from './components/SkConnect';
+export { SkConnect }
 
 // export * as sfuel from './core/sfuel';
 
