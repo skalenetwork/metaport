@@ -14,8 +14,8 @@ import ChainIcon from '../ChainIcon';
 import { MetaportConfig } from '../../core/interfaces';
 
 import { cls, getChainAlias } from '../../core/helper';
-import common from "../../styles/common.scss";
-import styles from "../../styles/styles.scss";
+import common from "../../styles/common.module.scss";
+import styles from "../../styles/styles.module.scss";
 
 
 export default function ChainsList(props: {

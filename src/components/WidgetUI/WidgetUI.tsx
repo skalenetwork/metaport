@@ -43,8 +43,8 @@ import WidgetBody from '../WidgetBody';
 
 import { cls } from '../../core/helper';
 
-import styles from "../../styles/styles.scss";
-import common from "../../styles/common.scss";
+import styles from "../../styles/styles.module.scss";
+import common from "../../styles/common.module.scss";
 import { PaletteMode } from '@mui/material';
 
 import SkConnect from '../SkConnect';

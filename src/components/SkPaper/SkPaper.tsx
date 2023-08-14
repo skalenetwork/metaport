@@ -24,8 +24,8 @@
 import React, { ReactElement } from 'react';
 import { cls } from '../../core/helper';
 
-import styles from "../../styles/styles.scss";
-import common from "../../styles/common.scss";
+import styles from "../../styles/styles.module.scss";
+import common from "../../styles/common.module.scss";
 
 import { useUIStore } from '../../store/Store'
 

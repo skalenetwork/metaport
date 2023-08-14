@@ -8,7 +8,7 @@ import { cls } from '../../core/helper';
 import TokenBalance from '../TokenList/TokenBalance';
 import TokenIcon from '../TokenIcon';
 
-import common from "../../styles/common.scss";
+import common from "../../styles/common.module.scss";
 
 import { getTokenName } from "../../core/metadata";
 

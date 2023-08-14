@@ -23,7 +23,7 @@
 
 // @ts-ignore
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+// import { createRoot } from 'react-dom/client';
 
 import Widget from './components/Widget';
 import { internalEvents } from './core/events';
@@ -32,7 +32,13 @@ import * as interfaces from './core/interfaces/index';
 export * as dataclasses from './core/dataclasses/index';
 export * as interfaces from './core/interfaces/index';
 
-export * as ChainIcon from './components/ChainIcon';
+import ChainIcon from './components/ChainIcon';
+export { ChainIcon };
+
+
+import WidgetUI from './components/WidgetUI';
+export { WidgetUI };
+
 
 // export * as sfuel from './core/sfuel';
 
@@ -45,7 +51,7 @@ export class Metaport {
     if (config.debug === undefined) config.debug = false;
     const el = document.getElementById('metaport');
     if (el) {
-      createRoot(el).render(<Widget config={config} />);
+      // createRoot(el).render(<Widget config={config} />);
     } else {
       console.log('div with id="metaport" does not exist')
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import Collapse from '@mui/material/Collapse';
 
 import { cls } from '../../core/helper';
-import common from '../../styles/common.scss';
+import common from '../../styles/common.module.scss';
 
 import { useMetaportStore } from '../../store/MetaportState'
 

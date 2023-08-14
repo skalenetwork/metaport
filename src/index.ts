@@ -1,1 +1,1 @@
-export { Metaport, ChainIcon, interfaces, dataclasses } from "./Metaport";
+export { Metaport, ChainIcon, WidgetUI, interfaces, dataclasses } from "./Metaport";

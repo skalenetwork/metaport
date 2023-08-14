@@ -26,7 +26,7 @@ import TollRoundedIcon from '@mui/icons-material/TollRounded';
 import { TokenData } from '../../core/dataclasses';
 import { tokenIconPath } from '../../core/metadata';
 
-import styles from "../../styles/styles.scss";
+import styles from "../../styles/styles.module.scss";
 
 
 export default function TokenIcon(props: {

@@ -10,7 +10,7 @@ import SkPaper from '../SkPaper';
 import AmountErrorMessage from '../AmountErrorMessage';
 import SwitchDirection from '../SwitchDirection';
 
-import common from '../../styles/common.scss';
+import common from '../../styles/common.module.scss';
 import { cls } from '../../core/helper';
 import { Collapse } from '@mui/material';
 

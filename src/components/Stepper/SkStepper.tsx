@@ -9,9 +9,9 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { cls, getChainAlias, getRandom } from '../../core/helper';
-import common from '../../styles/common.scss';
-import styles from '../../styles/styles.scss';
-import localStyles from './SkStepper.scss';
+import common from '../../styles/common.module.scss';
+import styles from '../../styles/styles.module.scss';
+import localStyles from './SkStepper.module.scss';
 import ChainIcon from "../ChainIcon";
 import SkPaper from "../SkPaper";
 

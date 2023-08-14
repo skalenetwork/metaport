@@ -1,8 +1,8 @@
 import React from 'react';
 import { cls, getChainAppsMeta, getChainAlias } from '../../core/helper';
 
-import styles from "../../styles/styles.scss";
-import common from "../../styles/common.scss";
+import styles from "../../styles/styles.module.scss";
+import common from "../../styles/common.module.scss";
 import { SkaleNetwork } from '../../core/interfaces';
 
 import ChainIcon from '../ChainIcon';

@@ -4,7 +4,7 @@ import { SkaleNetwork } from '../../core/interfaces';
 import { chainIconPath } from '../../core/metadata';
 
 import { cls } from '../../core/helper';
-import styles from "../../styles/styles.scss";
+import styles from "../../styles/styles.module.scss";
 
 
 export default function ChainIcon(props: {

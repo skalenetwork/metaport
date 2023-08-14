@@ -5,7 +5,7 @@ import { TokenType, TokenData } from '../../core/dataclasses';
 import { TokenBalancesMap } from '../../core/interfaces';
 
 import { cls } from '../../core/helper';
-import common from "../../styles/common.scss";
+import common from "../../styles/common.module.scss";
 
 
 function formatBalance(balance: bigint, token: TokenData): string {

@@ -19,8 +19,8 @@ import TokenListSection from '../TokenListSection';
 import TokenBalance from './TokenBalance';
 import TokenIcon from "../TokenIcon";
 
-import styles from "../../styles/styles.scss";
-import common from "../../styles/common.scss";
+import styles from "../../styles/styles.module.scss";
+import common from "../../styles/common.module.scss";
 import { getTokenName } from "../../core/metadata";
 
 import { useCollapseStore } from '../../store/Store';

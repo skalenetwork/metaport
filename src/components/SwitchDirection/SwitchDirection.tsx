@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
-import styles from '../../styles/styles.scss';
-import common from '../../styles/common.scss';
+import styles from '../../styles/styles.module.scss';
+import common from '../../styles/common.module.scss';
 import { cls } from '../../core/helper';
 
 import { useUIStore } from '../../store/Store'

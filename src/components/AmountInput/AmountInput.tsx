@@ -4,8 +4,8 @@ import { useAccount } from 'wagmi'
 import TextField from '@mui/material/TextField';
 
 import { cls } from '../../core/helper';
-import common from '../../styles/common.scss';
-import localStyles from './AmountInput.scss';
+import common from '../../styles/common.module.scss';
+import localStyles from './AmountInput.module.scss';
 
 import { useMetaportStore } from '../../store/MetaportState'
 
