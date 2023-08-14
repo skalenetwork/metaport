@@ -1,36 +1,33 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React from 'react'
+import Button from '@mui/material/Button'
 
-import { TokenData, TokenType } from '../../core/dataclasses';
-import { TokenBalancesMap, TokenDataMap } from '../../core/interfaces';
-import { cls } from '../../core/helper';
+import { TokenData, TokenType } from '../../core/dataclasses'
+import { TokenBalancesMap, TokenDataMap } from '../../core/interfaces'
+import { cls } from '../../core/helper'
 
-import TokenBalance from '../TokenList/TokenBalance';
-import TokenIcon from '../TokenIcon';
+import TokenBalance from '../TokenList/TokenBalance'
+import TokenIcon from '../TokenIcon'
 
-import common from "../../styles/common.module.scss";
+import common from '../../styles/common.module.scss'
 
-import { getTokenName } from "../../core/metadata";
-
+import { getTokenName } from '../../core/metadata'
 
 export default function TokenListSection(props: {
-  setExpanded: (expanded: string | false) => void,
-  setToken: (token: TokenData) => void,
-  tokens: TokenDataMap,
-  type: TokenType,
+  setExpanded: (expanded: string | false) => void
+  setToken: (token: TokenData) => void
+  tokens: TokenDataMap
+  type: TokenType
   tokenBalances?: TokenBalancesMap
 }) {
-
   function handle(tokenData: TokenData): void {
-    props.setExpanded(false);
-    props.setToken(tokenData);
+    props.setExpanded(false)
+    props.setToken(tokenData)
   }
 
-  if (Object.keys(props.tokens).length === 0) return;
+  if (Object.keys(props.tokens).length === 0) return
 
   return (
-    <div className={cls(common.chainsList, common.margBott10, common.margRi10)}
-      style={{ marginLeft: '8px' }}>
+    <div className={cls(common.chainsList, common.margBott10, common.margRi10)} style={{ marginLeft: '8px' }}>
       <p
         className={cls(
           common.flex,
@@ -39,7 +36,7 @@ export default function TokenListSection(props: {
           common.p,
           common.pSecondary,
           common.flexGrow,
-          common.margBott10
+          common.margBott10,
         )}
         style={{ marginLeft: '16px' }}
       >
@@ -53,26 +50,24 @@ export default function TokenListSection(props: {
           className={common.fullWidth}
           onClick={() => handle(props.tokens[key])}
         >
-          <div className={cls(
-            common.flex,
-            common.flexCenteredVert,
-            common.fullWidth,
-            common.margTop5,
-            common.margBott5
-          )}>
+          <div
+            className={cls(common.flex, common.flexCenteredVert, common.fullWidth, common.margTop5, common.margBott5)}
+          >
             <div className={cls(common.flex, common.flexCentered, common.margLeft10)}>
               <TokenIcon token={props.tokens[key]} />
             </div>
-            <p className={cls(
-              common.p,
-              common.p3,
-              common.p600,
-              common.pMain,
-              common.flex,
-              common.flexGrow,
-              common.margRi10,
-              common.margLeft10
-            )}>
+            <p
+              className={cls(
+                common.p,
+                common.p3,
+                common.p600,
+                common.pMain,
+                common.flex,
+                common.flexGrow,
+                common.margRi10,
+                common.margLeft10,
+              )}
+            >
               {getTokenName(props.tokens[key])}
             </p>
             <div className={common.margRi10}>

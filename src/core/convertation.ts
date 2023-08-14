@@ -21,14 +21,12 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { formatUnits, parseUnits, BigNumberish } from 'ethers';
-
+import { formatUnits, parseUnits, BigNumberish } from 'ethers'
 
 export function toWei(value: string, decimals: string): bigint {
-    return parseUnits(value, parseInt(decimals as string));
+  return parseUnits(value, parseInt(decimals as string))
 }
 
-
 export function fromWei(value: BigNumberish, decimals: string): string {
-    return formatUnits(value, parseInt(decimals as string));
+  return formatUnits(value, parseInt(decimals as string))
 }

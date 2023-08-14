@@ -21,72 +21,54 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-
-import debug from 'debug';
+import debug from 'debug'
 
 import {
-    TokenData,
-    WrapStepMetadata,
-    UnwrapStepMetadata,
-    TransferStepMetadata,
-    StepMetadata,
-    getActionType
-} from './dataclasses';
+  TokenData,
+  WrapStepMetadata,
+  UnwrapStepMetadata,
+  TransferStepMetadata,
+  StepMetadata,
+  getActionType,
+} from './dataclasses'
 
-import { MetaportConfig } from './interfaces/index';
+import { MetaportConfig } from './interfaces/index'
 
-import { MAINNET_CHAIN_NAME } from './constants';
+import { MAINNET_CHAIN_NAME } from './constants'
 
+debug.enable('*')
+const log = debug('metaport:core:transferSteps')
 
-debug.enable('*');
-const log = debug('metaport:core:transferSteps');
+export function getStepsMetadata(config: MetaportConfig, token: TokenData, to: string): StepMetadata[] {
+  const steps: StepMetadata[] = []
+  if (token === undefined || token === null || to === null || to === '') return steps
 
+  const toChain = token.connections[to].hub ?? to
+  const hubTokenOptions = config.connections[toChain][token.type][token.keyname].chains[token.chain]
+  const destTokenOptions = config.connections[to][token.type][token.keyname].chains[token.chain]
+  const isCloneToClone = token.isClone(to) && destTokenOptions.clone
 
-export function getStepsMetadata(
-    config: MetaportConfig,
-    token: TokenData,
-    to: string
-): StepMetadata[] {
-    const steps: StepMetadata[] = [];
-    if (token === undefined || token === null || to === null || to === '') return steps;
+  log(`Setting toChain: ${toChain}`)
 
-    const toChain = token.connections[to].hub ?? to;
-    const hubTokenOptions = config.connections[toChain][token.type][token.keyname].chains[token.chain];
-    const destTokenOptions = config.connections[to][token.type][token.keyname].chains[token.chain];
-    const isCloneToClone = token.isClone(to) && destTokenOptions.clone;
-
-    log(`Setting toChain: ${toChain}`);
-
-    if (token.connections[toChain].wrapper) {
-        steps.push(new WrapStepMetadata(
-            token.chain,
-            to
-        ))
+  if (token.connections[toChain].wrapper) {
+    steps.push(new WrapStepMetadata(token.chain, to))
+  }
+  steps.push(new TransferStepMetadata(getActionType(token.chain, toChain, token.type), token.chain, toChain))
+  if (hubTokenOptions.wrapper && !isCloneToClone) {
+    steps.push(new UnwrapStepMetadata(token.chain, toChain))
+  }
+  if (token.connections[to].hub) {
+    const tokenOptionsHub = config.connections[toChain][token.type][token.keyname].chains[to]
+    if (tokenOptionsHub.wrapper && !isCloneToClone) {
+      steps.push(new WrapStepMetadata(toChain, to))
     }
-    steps.push(new TransferStepMetadata(
-        getActionType(token.chain, toChain, token.type),
-        token.chain,
-        toChain
-    ));
-    if (hubTokenOptions.wrapper && !isCloneToClone) {
-        steps.push(new UnwrapStepMetadata(token.chain, toChain));
-    }
-    if (token.connections[to].hub) {
-        const tokenOptionsHub = config.connections[toChain][token.type][token.keyname].chains[to];
-        if (tokenOptionsHub.wrapper && !isCloneToClone) {
-            steps.push(new WrapStepMetadata(toChain, to));
-        }
-        steps.push(new TransferStepMetadata(
-            getActionType(toChain, to, token.type),
-            toChain,
-            to
-        ));
-    }
-    if (to === MAINNET_CHAIN_NAME && token.keyname === 'eth') {
-        // todo: add unlock step!
-    }
+    steps.push(new TransferStepMetadata(getActionType(toChain, to, token.type), toChain, to))
+  }
+  if (to === MAINNET_CHAIN_NAME && token.keyname === 'eth') {
+    // todo: add unlock step!
+  }
 
-    log(`Action steps metadata:`);
-    log(steps);
-    return steps;
+  log(`Action steps metadata:`)
+  log(steps)
+  return steps
 }

@@ -1,1 +1,1 @@
-export { default } from "./WidgetBody";
+export { default } from './WidgetBody'

@@ -1,4 +1,3 @@
-
 /**
  * @license
  * SKALE Metaport
@@ -29,16 +28,13 @@
 // import { getFuncData, isFaucetAvailable } from '../core/faucet';
 // import { DEFAULT_MIN_SFUEL_WEI, DEFAULT_FAUCET_URL, MAINNET_CHAIN_NAME } from '../core/constants';
 
-
 // debug.enable('*');
 // const log = debug('metaport:Widget');
-
 
 // function getFaucetUrl(chainsMetadata: object, chainName: string): string {
 //     if (chainsMetadata && chainsMetadata[chainName]) return chainsMetadata[chainName].faucetUrl;
 //     return DEFAULT_FAUCET_URL;
 // }
-
 
 // function getMinSfuelWei(chainName: string, chainsMetadata?: object): string {
 //     if (chainsMetadata && chainsMetadata[chainName] && chainsMetadata[chainName].minSfuelWei) {
@@ -48,14 +44,12 @@
 //     }
 // }
 
-
 // async function getSfuelBalance(web3: any, address: string): Promise<string> {
 //     //return await provider.getBalance(address);
 //     // TODO!
 //     console.log(web3, address);
 //     return '';
 // }
-
 
 // export interface StationData {
 //     faucetUrl: string;
@@ -64,12 +58,10 @@
 //     ok: boolean;
 // }
 
-
 // export interface StationPowRes {
 //     message: string;
 //     ok: boolean;
 // }
-
 
 // export class Station {
 

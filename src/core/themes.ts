@@ -21,49 +21,44 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { Positions } from './dataclasses/Position';
-import { MetaportTheme } from './interfaces/Theme';
-import { DEFAULT_MP_Z_INDEX } from './constants';
-
+import { Positions } from './dataclasses/Position'
+import { MetaportTheme } from './interfaces/Theme'
+import { DEFAULT_MP_Z_INDEX } from './constants'
 
 const defaultThemes = {
-    'dark': {
-        primary: '#29FF94',
-        background: '#000000',
-        mode: 'dark',
-        position: Positions.bottomRight,
-        zIndex: DEFAULT_MP_Z_INDEX
-    },
-    'light': {
-        primary: '#173CFF',
-        background: '#EFEFEF',
-        mode: 'light',
-        position: Positions.bottomRight,
-        zIndex: DEFAULT_MP_Z_INDEX
-    }
+  dark: {
+    primary: '#29FF94',
+    background: '#000000',
+    mode: 'dark',
+    position: Positions.bottomRight,
+    zIndex: DEFAULT_MP_Z_INDEX,
+  },
+  light: {
+    primary: '#173CFF',
+    background: '#EFEFEF',
+    mode: 'light',
+    position: Positions.bottomRight,
+    zIndex: DEFAULT_MP_Z_INDEX,
+  },
 }
 
 // warning: order is important here
-const MUI_ELEMENTS = ['mobileStepper', 'fab', 'speedDial', 'appBar', 'drawer', 'modal',
-    'snackbar', 'tooltip'];
+const MUI_ELEMENTS = ['mobileStepper', 'fab', 'speedDial', 'appBar', 'drawer', 'modal', 'snackbar', 'tooltip']
 
-
-const INDEX_STEP = 50;
-
+const INDEX_STEP = 50
 
 export function getWidgetTheme(theme: MetaportTheme | null): MetaportTheme {
-    if (!theme) return defaultThemes.dark as MetaportTheme;
-    if (theme.mode && Object.keys(theme).length === 1) {
-        return defaultThemes[theme.mode] as MetaportTheme;;
-    }
-    if (theme.position === undefined) theme.position = Positions.bottomRight;
-    if (theme.zIndex === undefined) theme.zIndex = DEFAULT_MP_Z_INDEX;
-    if (theme.background === undefined) theme.background = defaultThemes[theme.mode].background;
-    if (theme.primary === undefined) theme.primary = defaultThemes[theme.mode].primary;
-    return theme;
+  if (!theme) return defaultThemes.dark as MetaportTheme
+  if (theme.mode && Object.keys(theme).length === 1) {
+    return defaultThemes[theme.mode] as MetaportTheme
+  }
+  if (theme.position === undefined) theme.position = Positions.bottomRight
+  if (theme.zIndex === undefined) theme.zIndex = DEFAULT_MP_Z_INDEX
+  if (theme.background === undefined) theme.background = defaultThemes[theme.mode].background
+  if (theme.primary === undefined) theme.primary = defaultThemes[theme.mode].primary
+  return theme
 }
 
-
 export function getMuiZIndex(theme: MetaportTheme): object {
-    return MUI_ELEMENTS.reduce((x, y, i) => (x[y] = theme.zIndex + ((i + 1) * INDEX_STEP), x), {});
+  return MUI_ELEMENTS.reduce((x, y, i) => ((x[y] = theme.zIndex + (i + 1) * INDEX_STEP), x), {})
 }

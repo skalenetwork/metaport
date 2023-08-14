@@ -1,1 +1,1 @@
-export { default } from "./Metaport";
+export { default } from './Metaport'

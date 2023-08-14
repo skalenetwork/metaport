@@ -22,10 +22,12 @@
  */
 
 export interface TokenMetadata {
-    symbol: string,
-    name?: string,
-    iconUrl?: string,
-    decimals?: string
+  symbol: string
+  name?: string
+  iconUrl?: string
+  decimals?: string
 }
 
-export interface TokenMetadataMap { [tokenName: string]: TokenMetadata; }
+export interface TokenMetadataMap {
+  [tokenName: string]: TokenMetadata
+}

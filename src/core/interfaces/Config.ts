@@ -21,22 +21,22 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenConnectionsMap, TokenMetadataMap, MetaportTheme } from '.';
+import { TokenConnectionsMap, TokenMetadataMap, MetaportTheme } from '.'
 
-export type SkaleNetwork = 'mainnet' | 'staging' | 'legacy' | 'regression';
+export type SkaleNetwork = 'mainnet' | 'staging' | 'legacy' | 'regression'
 
 export interface MetaportConfig {
-    openOnLoad?: boolean;
-    openButton?: boolean;
-    autoLookup?: boolean;
-    debug?: boolean;
+  openOnLoad?: boolean
+  openButton?: boolean
+  autoLookup?: boolean
+  debug?: boolean
 
-    skaleNetwork: SkaleNetwork;
-    mainnetEndpoint?: string;
-    chains?: string[];
+  skaleNetwork: SkaleNetwork
+  mainnetEndpoint?: string
+  chains?: string[]
 
-    tokens: TokenMetadataMap;
-    connections: TokenConnectionsMap;
+  tokens: TokenMetadataMap
+  connections: TokenConnectionsMap
 
-    theme?: MetaportTheme;
+  theme?: MetaportTheme
 }

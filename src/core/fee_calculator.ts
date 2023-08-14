@@ -21,33 +21,31 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { fromWei as _fromWei, toBN } from 'web3-utils';
-import debug from 'debug';
+import { fromWei as _fromWei, toBN } from 'web3-utils'
+import debug from 'debug'
 
-import { CoinGeckoClient } from 'coingecko-api-v3';
-import * as interfaces from './interfaces/index';
+import { CoinGeckoClient } from 'coingecko-api-v3'
+import * as interfaces from './interfaces/index'
 
-debug.enable('*');
-const log = debug('metaport:components:fee_calculator');
+debug.enable('*')
+const log = debug('metaport:components:fee_calculator')
 
-export async function getTransactionFee(
-    transferRequest: interfaces.TransferParams
-): Promise<number> {
-    // todo: get actual gas limit for transfer
-    // todo: get actual gas price
-    log(transferRequest);
-    const gasLimit = toBN('250000');
-    const gasPrice = toBN('10000000000');
+export async function getTransactionFee(transferRequest: interfaces.TransferParams): Promise<number> {
+  // todo: get actual gas limit for transfer
+  // todo: get actual gas price
+  log(transferRequest)
+  const gasLimit = toBN('250000')
+  const gasPrice = toBN('10000000000')
 
-    const amountWei = gasLimit.mul(gasPrice);
-    const amountEth = _fromWei(amountWei);
+  const amountWei = gasLimit.mul(gasPrice)
+  const amountEth = _fromWei(amountWei)
 
-    const client = new CoinGeckoClient({
-        timeout: 10000,
-        autoRetry: true,
-    });
-    const res = await client.simplePrice({ ids: 'ethereum', vs_currencies: 'usd' });
-    const ethToUsdRate = res.ethereum.usd;
-    const amountUSD = Number(amountEth) * ethToUsdRate;
-    return amountUSD;
+  const client = new CoinGeckoClient({
+    timeout: 10000,
+    autoRetry: true,
+  })
+  const res = await client.simplePrice({ ids: 'ethereum', vs_currencies: 'usd' })
+  const ethToUsdRate = res.ethereum.usd
+  const amountUSD = Number(amountEth) * ethToUsdRate
+  return amountUSD
 }

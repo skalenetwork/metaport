@@ -1,1 +1,1 @@
-export { default } from "./WidgetUI";
+export { default } from './WidgetUI'

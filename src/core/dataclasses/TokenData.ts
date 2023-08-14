@@ -21,45 +21,44 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { DEFAULT_ERC20_DECIMALS } from '../constants';
-import { TokenMetadata, ConnectedChainMap } from '../interfaces';
-import { TokenType } from './TokenType';
-
+import { DEFAULT_ERC20_DECIMALS } from '../constants'
+import { TokenMetadata, ConnectedChainMap } from '../interfaces'
+import { TokenType } from './TokenType'
 
 export class TokenData {
-    address: string;
-    keyname: string;
-    type: TokenType;
-    meta: TokenMetadata;
-    connections: ConnectedChainMap;
-    chain: string;
+  address: string
+  keyname: string
+  type: TokenType
+  meta: TokenMetadata
+  connections: ConnectedChainMap
+  chain: string
 
-    constructor(
-        address: string,
-        type: TokenType,
-        tokenKeyname: string,
-        metadata: TokenMetadata,
-        connections: ConnectedChainMap,
-        chain: string
-    ) {
-        this.address = address;
-        this.meta = metadata;
-        this.meta.decimals = this.meta.decimals ? this.meta.decimals : DEFAULT_ERC20_DECIMALS;
-        this.connections = connections;
-        this.type = type;
-        this.keyname = tokenKeyname;
-        this.chain = chain;
-    }
+  constructor(
+    address: string,
+    type: TokenType,
+    tokenKeyname: string,
+    metadata: TokenMetadata,
+    connections: ConnectedChainMap,
+    chain: string,
+  ) {
+    this.address = address
+    this.meta = metadata
+    this.meta.decimals = this.meta.decimals ? this.meta.decimals : DEFAULT_ERC20_DECIMALS
+    this.connections = connections
+    this.type = type
+    this.keyname = tokenKeyname
+    this.chain = chain
+  }
 
-    wrapper(destChain: string): string | undefined {
-        return this.connections[destChain].wrapper
-    }
+  wrapper(destChain: string): string | undefined {
+    return this.connections[destChain].wrapper
+  }
 
-    isClone(destChain: string): boolean | undefined {
-        return this.connections[destChain].clone
-    }
+  isClone(destChain: string): boolean | undefined {
+    return this.connections[destChain].clone
+  }
 
-    wrapsSFuel(destChain: string): boolean | undefined {
-        return this.connections[destChain].wrapsSFuel
-    }
+  wrapsSFuel(destChain: string): boolean | undefined {
+    return this.connections[destChain].wrapsSFuel
+  }
 }

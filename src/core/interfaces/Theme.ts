@@ -21,16 +21,14 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { Position } from '../dataclasses/Position';
+import { Position } from '../dataclasses/Position'
 
-
-export type PaletteMode = 'light' | 'dark';
-
+export type PaletteMode = 'light' | 'dark'
 
 export interface MetaportTheme {
-    mode: PaletteMode | string;
-    primary?: string;
-    background?: string;
-    position?: Position;
-    zIndex?: number;
+  mode: PaletteMode | string
+  primary?: string
+  background?: string
+  position?: Position
+  zIndex?: number
 }

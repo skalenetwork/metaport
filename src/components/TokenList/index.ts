@@ -1,1 +1,1 @@
-export { default } from "./TokenList";
+export { default } from './TokenList'

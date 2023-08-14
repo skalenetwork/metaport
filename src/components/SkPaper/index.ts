@@ -1,1 +1,1 @@
-export { default } from "./SkPaper";
+export { default } from './SkPaper'

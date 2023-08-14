@@ -1,28 +1,30 @@
-import React from 'react';
-import Collapse from '@mui/material/Collapse';
+import React from 'react'
+import Collapse from '@mui/material/Collapse'
 
-import { cls } from '../../core/helper';
-import common from '../../styles/common.module.scss';
+import { cls } from '../../core/helper'
+import common from '../../styles/common.module.scss'
 
 import { useMetaportStore } from '../../store/MetaportState'
 
-
 export default function AmountErrorMessage() {
-  const amountErrorMessage = useMetaportStore((state) => state.amountErrorMessage);
+  const amountErrorMessage = useMetaportStore((state) => state.amountErrorMessage)
   return (
-    <Collapse in={!!amountErrorMessage || amountErrorMessage === ''} className='mp__noMarg'>
-      <p className={cls(
-        common.flex,
-        common.p3,
-        common.p,
-        common.pSecondary,
-        common.errorMessage,
-        common.flexGrow,
-        common.margTop10,
-        common.margLeft10,
-        // common.uppercase
-      )}>
+    <Collapse in={!!amountErrorMessage || amountErrorMessage === ''} className="mp__noMarg">
+      <p
+        className={cls(
+          common.flex,
+          common.p3,
+          common.p,
+          common.pSecondary,
+          common.errorMessage,
+          common.flexGrow,
+          common.margTop10,
+          common.margLeft10,
+          // common.uppercase
+        )}
+      >
         🔴 {amountErrorMessage}
       </p>
-    </Collapse>)
+    </Collapse>
+  )
 }

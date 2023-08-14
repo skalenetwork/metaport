@@ -19,37 +19,41 @@
 /**
  * @file SkPaper.ts
  * @copyright SKALE Labs 2023-Present
-*/
+ */
 
-import React, { ReactElement } from 'react';
-import { cls } from '../../core/helper';
+import React, { ReactElement } from 'react'
+import { cls } from '../../core/helper'
 
-import styles from "../../styles/styles.module.scss";
-import common from "../../styles/common.module.scss";
+import styles from '../../styles/styles.module.scss'
+import common from '../../styles/common.module.scss'
 
 import { useUIStore } from '../../store/Store'
 
-
 export default function SkPaper(props: {
-    className?: string,
-    children?: ReactElement | ReactElement[],
-    background?: string,
-    gray?: boolean,
-    rounded?: boolean,
-    fullHeight?: boolean,
-    margTop?: boolean
+  className?: string
+  children?: ReactElement | ReactElement[]
+  background?: string
+  gray?: boolean
+  rounded?: boolean
+  fullHeight?: boolean
+  margTop?: boolean
 }) {
-    const metaportTheme = useUIStore((state) => state.theme);
-    const localStyle = {
-        'background': props.background ?? metaportTheme.background
-    };
-    return (<div style={localStyle} className={cls(
+  const metaportTheme = useUIStore((state) => state.theme)
+  const localStyle = {
+    background: props.background ?? metaportTheme.background,
+  }
+  return (
+    <div
+      style={localStyle}
+      className={cls(
         props.className,
         styles.paper,
         [styles.paperGrey, props.gray],
         [styles.fullHeight, props.fullHeight],
         [common.margTop20, props.margTop],
-    )}>
-        {props.children}
-    </div>)
+      )}
+    >
+      {props.children}
+    </div>
+  )
 }

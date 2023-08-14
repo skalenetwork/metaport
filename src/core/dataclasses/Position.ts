@@ -21,24 +21,22 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
-import { DEFAULT_MP_MARGIN } from '../constants';
-
+import { DEFAULT_MP_MARGIN } from '../constants'
 
 export interface Position {
-    top: string;
-    right: string;
-    bottom: string;
-    left: string;
+  top: string
+  right: string
+  bottom: string
+  left: string
 }
 
-
-export interface PositionMap { [positionName: string]: Position; }
-
+export interface PositionMap {
+  [positionName: string]: Position
+}
 
 export const Positions: PositionMap = {
-    topLeft: { top: DEFAULT_MP_MARGIN, left: DEFAULT_MP_MARGIN, right: 'auto', bottom: 'auto' },
-    topRight: { top: DEFAULT_MP_MARGIN, left: 'auto', right: DEFAULT_MP_MARGIN, bottom: 'auto' },
-    bottomRight: { top: 'auto', left: 'auto', right: DEFAULT_MP_MARGIN, bottom: DEFAULT_MP_MARGIN },
-    bottomLeft: { top: 'auto', left: DEFAULT_MP_MARGIN, right: 'auto', bottom: DEFAULT_MP_MARGIN }
+  topLeft: { top: DEFAULT_MP_MARGIN, left: DEFAULT_MP_MARGIN, right: 'auto', bottom: 'auto' },
+  topRight: { top: DEFAULT_MP_MARGIN, left: 'auto', right: DEFAULT_MP_MARGIN, bottom: 'auto' },
+  bottomRight: { top: 'auto', left: 'auto', right: DEFAULT_MP_MARGIN, bottom: DEFAULT_MP_MARGIN },
+  bottomLeft: { top: 'auto', left: DEFAULT_MP_MARGIN, right: 'auto', bottom: DEFAULT_MP_MARGIN },
 }

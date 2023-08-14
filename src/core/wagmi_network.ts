@@ -23,43 +23,41 @@
 
 import { Chain } from 'wagmi'
 
-import { getSChainEndpoint } from './network';
-import { getExplorerUrl } from './explorer';
-import { getChainAlias } from './helper';
-import { getChainId } from './chain_id';
+import { getSChainEndpoint } from './network'
+import { getExplorerUrl } from './explorer'
+import { getChainAlias } from './helper'
+import { getChainId } from './chain_id'
 
-import { SkaleNetwork } from './interfaces';
-
+import { SkaleNetwork } from './interfaces'
 
 export function constructWagmiChain(network: SkaleNetwork, chainName: string): Chain {
-    const endpointHttp = getSChainEndpoint(network, chainName);
-    const endpointWs = getSChainEndpoint(network, chainName, 'ws');
-    const explorerUrl = getExplorerUrl(network, chainName);
-    const name = getChainAlias(network, chainName);
-    const chainId = getChainId(chainName);
-    return {
-        id: chainId,
-        name: name,
-        network: `skale-${chainName}`,
-        nativeCurrency: {
-            decimals: 18,
-            name: 'sFUEL',
-            symbol: 'sFUEL',
-        },
-        rpcUrls: {
-            public: { http: [endpointHttp], webSocket: [endpointWs] },
-            default: { http: [endpointHttp], webSocket: [endpointWs] },
-        },
-        blockExplorers: {
-            etherscan: { name: 'SKALE Explorer', url: explorerUrl },
-            default: { name: 'SKALE Explorer', url: explorerUrl },
-        },
-        contracts: {}
-    } as const satisfies Chain
+  const endpointHttp = getSChainEndpoint(network, chainName)
+  const endpointWs = getSChainEndpoint(network, chainName, 'ws')
+  const explorerUrl = getExplorerUrl(network, chainName)
+  const name = getChainAlias(network, chainName)
+  const chainId = getChainId(chainName)
+  return {
+    id: chainId,
+    name: name,
+    network: `skale-${chainName}`,
+    nativeCurrency: {
+      decimals: 18,
+      name: 'sFUEL',
+      symbol: 'sFUEL',
+    },
+    rpcUrls: {
+      public: { http: [endpointHttp], webSocket: [endpointWs] },
+      default: { http: [endpointHttp], webSocket: [endpointWs] },
+    },
+    blockExplorers: {
+      etherscan: { name: 'SKALE Explorer', url: explorerUrl },
+      default: { name: 'SKALE Explorer', url: explorerUrl },
+    },
+    contracts: {},
+  } as const satisfies Chain
 }
 
-
 export function getWebSocketUrl(chain: Chain): string {
-    // return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : '';
-    return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : 'wss://goerli-light.eth.linkpool.io/ws'; // TODO - IP!
+  // return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : '';
+  return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : 'wss://goerli-light.eth.linkpool.io/ws' // TODO - IP!
 }

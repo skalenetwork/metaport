@@ -21,41 +21,41 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { CustomAbiTokenType, TokenType } from './dataclasses';
+import { CustomAbiTokenType, TokenType } from './dataclasses'
 
-import erc20Abi from '../metadata/erc20_abi.json';
-import erc721Abi from '../metadata/erc721_abi.json';
-import erc721MetaAbi from '../metadata/erc721meta_abi.json';
-import erc1155Abi from '../metadata/erc1155_abi.json';
-import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json';
-import sFuelWrapperAbi from '../metadata/sfuel_wrapper_abi.json';
+import erc20Abi from '../metadata/erc20_abi.json'
+import erc721Abi from '../metadata/erc721_abi.json'
+import erc721MetaAbi from '../metadata/erc721meta_abi.json'
+import erc1155Abi from '../metadata/erc1155_abi.json'
+import erc20WrapperAbi from '../metadata/erc20_wrapper_abi.json'
+import sFuelWrapperAbi from '../metadata/sfuel_wrapper_abi.json'
 
-import mainnetAddresses from '../metadata/addresses/mainnet.json';
-import stagingAddresses from '../metadata/addresses/staging.json';
-import legacyAddresses from '../metadata/addresses/legacy.json';
-import regressionAddresses from '../metadata/addresses/regression.json';
+import mainnetAddresses from '../metadata/addresses/mainnet.json'
+import stagingAddresses from '../metadata/addresses/staging.json'
+import legacyAddresses from '../metadata/addresses/legacy.json'
+import regressionAddresses from '../metadata/addresses/regression.json'
 
-import sChainAbi from '../metadata/schainAbi.json';
-import mainnetAbi from '../metadata/mainnetAbi.json';
+import sChainAbi from '../metadata/schainAbi.json'
+import mainnetAbi from '../metadata/mainnetAbi.json'
 
 export const ERC_ABIS: { [tokenType in CustomAbiTokenType | TokenType]: { ['abi']: any } } = {
-    eth: null,
-    erc20: erc20Abi,
-    erc20wrap: erc20WrapperAbi,
-    sfuelwrap: sFuelWrapperAbi,
-    erc721: erc721Abi,
-    erc721meta: erc721MetaAbi,
-    erc1155: erc1155Abi
+  eth: null,
+  erc20: erc20Abi,
+  erc20wrap: erc20WrapperAbi,
+  sfuelwrap: sFuelWrapperAbi,
+  erc721: erc721Abi,
+  erc721meta: erc721MetaAbi,
+  erc1155: erc1155Abi,
 }
 
 export const IMA_ADDRESSES = {
-    mainnet: mainnetAddresses,
-    staging: stagingAddresses,
-    legacy: legacyAddresses,
-    regression: regressionAddresses
+  mainnet: mainnetAddresses,
+  staging: stagingAddresses,
+  legacy: legacyAddresses,
+  regression: regressionAddresses,
 }
 
 export const IMA_ABIS = {
-    mainnet: mainnetAbi,
-    schain: sChainAbi
+  mainnet: mainnetAbi,
+  schain: sChainAbi,
 }

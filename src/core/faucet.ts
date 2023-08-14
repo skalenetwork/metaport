@@ -21,11 +21,9 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-
 // TODO!
 
 // import { ZERO_ADDRESS, ZERO_FUNCSIG, FAUCET_DATA } from './constants';
-
 
 // function getAddress(chainName: string, skaleNetwork: string) {
 //     if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_ADDRESS;

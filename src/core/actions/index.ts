@@ -21,68 +21,55 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import debug from 'debug';
+import debug from 'debug'
 
-import {
-    TransferERC20S2S,
-    WrapERC20S,
-    UnWrapERC20S,
-    TransferERC20M2S,
-    TransferERC20S2M
-} from './erc20';
+import { TransferERC20S2S, WrapERC20S, UnWrapERC20S, TransferERC20M2S, TransferERC20S2M } from './erc20'
 
-import { Action } from './action';
+import { Action } from './action'
 
-import { isMainnet } from '../helper';
-import { ActionType, TokenType } from '../dataclasses';
-import {
-    S2S_POSTFIX,
-    M2S_POSTFIX,
-    S2M_POSTFIX,
-} from '../constants';
+import { isMainnet } from '../helper'
+import { ActionType, TokenType } from '../dataclasses'
+import { S2S_POSTFIX, M2S_POSTFIX, S2M_POSTFIX } from '../constants'
 
+debug.enable('*')
+const log = debug('metaport:actions')
 
-debug.enable('*');
-const log = debug('metaport:actions');
-
-
-export function getActionName(
-    chainName1: string,
-    chainName2: string,
-    tokenType: TokenType
-): string {
-    if (!chainName1 || !chainName2 || !tokenType) return;
-    log(`Getting action name: ${chainName1} ${chainName2} ${tokenType}`);
-    let postfix = S2S_POSTFIX;
-    if (isMainnet(chainName1)) { postfix = M2S_POSTFIX; };
-    if (isMainnet(chainName2)) { postfix = S2M_POSTFIX; };
-    const actionName = tokenType + '_' + postfix;
-    log('Action name: ' + actionName);
-    return actionName;
+export function getActionName(chainName1: string, chainName2: string, tokenType: TokenType): string {
+  if (!chainName1 || !chainName2 || !tokenType) return
+  log(`Getting action name: ${chainName1} ${chainName2} ${tokenType}`)
+  let postfix = S2S_POSTFIX
+  if (isMainnet(chainName1)) {
+    postfix = M2S_POSTFIX
+  }
+  if (isMainnet(chainName2)) {
+    postfix = S2M_POSTFIX
+  }
+  const actionName = tokenType + '_' + postfix
+  log('Action name: ' + actionName)
+  return actionName
 }
 
+export const ACTIONS: { [actionType in ActionType]: typeof Action } = {
+  // eth_m2s: [TransferEthM2S],
+  // eth_s2m: [TransferEthS2M, UnlockEthM],
+  // eth_s2s: [],
 
-export const ACTIONS: { [actionType in ActionType]: typeof Action; } = {
-    // eth_m2s: [TransferEthM2S],
-    // eth_s2m: [TransferEthS2M, UnlockEthM],
-    // eth_s2s: [],
+  wrap: WrapERC20S,
+  unwrap: UnWrapERC20S,
 
-    wrap: WrapERC20S,
-    unwrap: UnWrapERC20S,
+  erc20_m2s: TransferERC20M2S,
+  erc20_s2m: TransferERC20S2M,
+  erc20_s2s: TransferERC20S2S,
 
-    erc20_m2s: TransferERC20M2S,
-    erc20_s2m: TransferERC20S2M,
-    erc20_s2s: TransferERC20S2S,
+  // erc721_m2s: [TransferERC721M2S],
+  // erc721_s2m: [TransferERC721S2M],
+  // erc721_s2s: [TransferERC721S2S],
 
-    // erc721_m2s: [TransferERC721M2S],
-    // erc721_s2m: [TransferERC721S2M],
-    // erc721_s2s: [TransferERC721S2S],
+  // erc721meta_m2s: [TransferERC721M2S],
+  // erc721meta_s2m: [TransferERC721S2M],
+  // erc721meta_s2s: [TransferERC721S2S],
 
-    // erc721meta_m2s: [TransferERC721M2S],
-    // erc721meta_s2m: [TransferERC721S2M],
-    // erc721meta_s2s: [TransferERC721S2S],
-
-    // erc1155_m2s: [TransferERC1155M2S],
-    // erc1155_s2m: [TransferERC1155S2M],
-    // erc1155_s2s: [TransferERC1155S2S]
+  // erc1155_m2s: [TransferERC1155M2S],
+  // erc1155_s2m: [TransferERC1155S2M],
+  // erc1155_s2s: [TransferERC1155S2S]
 }

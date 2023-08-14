@@ -23,53 +23,52 @@
 
 import { create } from 'zustand'
 
-import * as interfaces from '../core/interfaces';
+import * as interfaces from '../core/interfaces'
 
 interface UIState {
-    theme: interfaces.MetaportTheme
-    setTheme: (theme: interfaces.MetaportTheme) => void
-    open: boolean,
-    setOpen: (isOpen: boolean) => void
+  theme: interfaces.MetaportTheme
+  setTheme: (theme: interfaces.MetaportTheme) => void
+  open: boolean
+  setOpen: (isOpen: boolean) => void
 }
-
 
 export const useUIStore = create<UIState>()((set) => ({
-    theme: null,
-    setTheme: (theme: interfaces.MetaportTheme) => set(() => ({ theme: theme })),
-    open: false,
-    setOpen: (isOpen: boolean) => set(() => ({ open: isOpen })),
-}));
-
+  theme: null,
+  setTheme: (theme: interfaces.MetaportTheme) => set(() => ({ theme: theme })),
+  open: false,
+  setOpen: (isOpen: boolean) => set(() => ({ open: isOpen })),
+}))
 
 interface CollapseState {
-    expandedFrom: string | false,
-    setExpandedFrom: (expanded: string | false) => void,
-    expandedTo: string | false,
-    setExpandedTo: (expanded: string | false) => void
+  expandedFrom: string | false
+  setExpandedFrom: (expanded: string | false) => void
+  expandedTo: string | false
+  setExpandedTo: (expanded: string | false) => void
 
-    expandedTokens: string | false,
-    setExpandedTokens: (expanded: string | false) => void
+  expandedTokens: string | false
+  setExpandedTokens: (expanded: string | false) => void
 }
 
-
 export const useCollapseStore = create<CollapseState>()((set) => ({
-    expandedFrom: false,
-    setExpandedFrom: (expanded: string | false) => set(() => ({
-        expandedFrom: expanded,
-        expandedTo: false,
-        expandedTokens: false
+  expandedFrom: false,
+  setExpandedFrom: (expanded: string | false) =>
+    set(() => ({
+      expandedFrom: expanded,
+      expandedTo: false,
+      expandedTokens: false,
     })),
-    expandedTo: false,
-    setExpandedTo: (expanded: string | false) => set(() => ({
-        expandedTo: expanded,
-        expandedFrom: false,
-        expandedTokens: false
+  expandedTo: false,
+  setExpandedTo: (expanded: string | false) =>
+    set(() => ({
+      expandedTo: expanded,
+      expandedFrom: false,
+      expandedTokens: false,
     })),
-    expandedTokens: false,
-    setExpandedTokens: (expanded: string | false) => set(() => ({
-        expandedTokens: expanded,
-        expandedFrom: false,
-        expandedTo: false
-    }))
-}));
-
+  expandedTokens: false,
+  setExpandedTokens: (expanded: string | false) =>
+    set(() => ({
+      expandedTokens: expanded,
+      expandedFrom: false,
+      expandedTo: false,
+    })),
+}))

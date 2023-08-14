@@ -1,4 +1,3 @@
-
 /**
  * @license
  * SKALE Metaport
@@ -21,89 +20,77 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import {
-    RainbowKitProvider
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { mainnet, goerli } from 'wagmi/chains';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
-import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { mainnet, goerli } from 'wagmi/chains'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 
-import {
-    injectedWallet,
-    coinbaseWallet,
-    metaMaskWallet
-} from '@rainbow-me/rainbowkit/wallets';
+import { injectedWallet, coinbaseWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
 
-import { MetaportConfig } from "../../core/interfaces"
+import { MetaportConfig } from '../../core/interfaces'
 
 import WidgetUI from '../WidgetUI'
 
-import '@rainbow-me/rainbowkit/styles.css';
+import '@rainbow-me/rainbowkit/styles.css'
 
-import { constructWagmiChain, getWebSocketUrl } from '../../core/wagmi_network';
-
+import { constructWagmiChain, getWebSocketUrl } from '../../core/wagmi_network'
 
 const { chains, webSocketPublicClient } = configureChains(
-    [
-        mainnet,
-        goerli,
-        constructWagmiChain('staging', "staging-legal-crazy-castor"),
-        constructWagmiChain('staging', "staging-utter-unripe-menkar"),
-        constructWagmiChain('staging', "staging-faint-slimy-achird"),
-        constructWagmiChain('staging', "staging-perfect-parallel-gacrux"),
-        constructWagmiChain('staging', "staging-severe-violet-wezen"),
-        constructWagmiChain('staging', "staging-weepy-fitting-caph"),
+  [
+    mainnet,
+    goerli,
+    constructWagmiChain('staging', 'staging-legal-crazy-castor'),
+    constructWagmiChain('staging', 'staging-utter-unripe-menkar'),
+    constructWagmiChain('staging', 'staging-faint-slimy-achird'),
+    constructWagmiChain('staging', 'staging-perfect-parallel-gacrux'),
+    constructWagmiChain('staging', 'staging-severe-violet-wezen'),
+    constructWagmiChain('staging', 'staging-weepy-fitting-caph'),
 
-        constructWagmiChain('mainnet', 'honorable-steel-rasalhague'),
-        constructWagmiChain('mainnet', 'elated-tan-skat'),
-        constructWagmiChain('mainnet', 'affectionate-immediate-pollux')
-    ],
-    [
-        jsonRpcProvider({
-            rpc: chain => ({
-                http: chain.rpcUrls.default.http[0],
-                webSocket: getWebSocketUrl(chain)
-            }),
-        })
-    ]
-);
-
+    constructWagmiChain('mainnet', 'honorable-steel-rasalhague'),
+    constructWagmiChain('mainnet', 'elated-tan-skat'),
+    constructWagmiChain('mainnet', 'affectionate-immediate-pollux'),
+  ],
+  [
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        http: chain.rpcUrls.default.http[0],
+        webSocket: getWebSocketUrl(chain),
+      }),
+    }),
+  ],
+)
 
 const connectors = connectorsForWallets([
-    {
-        groupName: 'Supported Wallets',
-        wallets: [
-            metaMaskWallet({ chains, projectId: '' }),
-            injectedWallet({ chains }),
-            coinbaseWallet({ chains, appName: 'TEST' })
-        ],
-    }
-]);
-
+  {
+    groupName: 'Supported Wallets',
+    wallets: [
+      metaMaskWallet({ chains, projectId: '' }),
+      injectedWallet({ chains }),
+      coinbaseWallet({ chains, appName: 'TEST' }),
+    ],
+  },
+])
 
 const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient: webSocketPublicClient
-});
+  autoConnect: true,
+  connectors,
+  publicClient: webSocketPublicClient,
+})
 
-
-export default function Widget(props: {
-    config: MetaportConfig
-}) {
-    return (
-        <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider
-                coolMode
-                appInfo={{
-                    appName: 'SKALE Metaport'
-                }}
-                showRecentTransactions={true}
-                chains={chains}
-            >
-                <WidgetUI config={props.config} />
-            </RainbowKitProvider>
-        </WagmiConfig>
-    )
+export default function Widget(props: { config: MetaportConfig }) {
+  return (
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider
+        coolMode
+        appInfo={{
+          appName: 'SKALE Metaport',
+        }}
+        showRecentTransactions={true}
+        chains={chains}
+      >
+        <WidgetUI config={props.config} />
+      </RainbowKitProvider>
+    </WagmiConfig>
+  )
 }

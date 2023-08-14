@@ -21,28 +21,24 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { ethers } from 'ethers';
-
+import { ethers } from 'ethers'
 
 export function remove0x(s: any) {
-    if (!s.startsWith('0x')) return s;
-    return s.slice(2);
+  if (!s.startsWith('0x')) return s
+  return s.slice(2)
 }
-
 
 function calcChainId(chainName: string): number {
-    let h = ethers.solidityPackedKeccak256(['string'], [chainName]);
-    // let h = soliditySha3(sChainName);
-    h = remove0x(h).toLowerCase();
-    while (h.length < 64)
-        h = "0" + h;
-    h = h.substr(0, 13);
-    h = h.replace(/^0+/, '');
-    return ethers.getNumber("0x" + h);
+  let h = ethers.solidityPackedKeccak256(['string'], [chainName])
+  // let h = soliditySha3(sChainName);
+  h = remove0x(h).toLowerCase()
+  while (h.length < 64) h = '0' + h
+  h = h.substr(0, 13)
+  h = h.replace(/^0+/, '')
+  return ethers.getNumber('0x' + h)
 }
 
-
 export function getChainId(chainName: string): number {
-    // if (chainName === MAINNET_CHAIN_NAME) return CHAIN_IDS[network];
-    return calcChainId(chainName);
+  // if (chainName === MAINNET_CHAIN_NAME) return CHAIN_IDS[network];
+  return calcChainId(chainName)
 }

@@ -21,56 +21,51 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { TokenData } from './dataclasses';
-import { SkaleNetwork } from './interfaces';
-import { MAINNET_CHAIN_NAME } from './constants';
+import { TokenData } from './dataclasses'
+import { SkaleNetwork } from './interfaces'
+import { MAINNET_CHAIN_NAME } from './constants'
 
-import * as MAINNET_CHAIN_ICONS from '../meta/mainnet/icons';
-import * as STAGING_CHAIN_ICONS from '../meta/staging/icons';
-import * as LEGACY_CHAIN_ICONS from '../meta/legacy/icons';
-import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons';
+import * as MAINNET_CHAIN_ICONS from '../meta/mainnet/icons'
+import * as STAGING_CHAIN_ICONS from '../meta/staging/icons'
+import * as LEGACY_CHAIN_ICONS from '../meta/legacy/icons'
+import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons'
 
-import * as icons from '../icons';
-
+import * as icons from '../icons'
 
 const CHAIN_ICONS = {
-    'mainnet': MAINNET_CHAIN_ICONS,
-    'staging': STAGING_CHAIN_ICONS,
-    'legacy': LEGACY_CHAIN_ICONS,
-    'regression': REGRESSION_CHAIN_ICONS
+  mainnet: MAINNET_CHAIN_ICONS,
+  staging: STAGING_CHAIN_ICONS,
+  legacy: LEGACY_CHAIN_ICONS,
+  regression: REGRESSION_CHAIN_ICONS,
 }
-
 
 export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: string) {
-    if (!name) return;
-    let filename = name.toLowerCase()
-    if (app) filename += `-${app}`;
-    if (name === MAINNET_CHAIN_NAME) {
-        return CHAIN_ICONS[skaleNetwork]['mainnet'];
-    }
-    filename = filename.replace(/-([a-z])/g, (_, g) => g.toUpperCase())
-    if (CHAIN_ICONS[skaleNetwork][filename]) {
-        return CHAIN_ICONS[skaleNetwork][filename];
-    }
+  if (!name) return
+  let filename = name.toLowerCase()
+  if (app) filename += `-${app}`
+  if (name === MAINNET_CHAIN_NAME) {
+    return CHAIN_ICONS[skaleNetwork]['mainnet']
+  }
+  filename = filename.replace(/-([a-z])/g, (_, g) => g.toUpperCase())
+  if (CHAIN_ICONS[skaleNetwork][filename]) {
+    return CHAIN_ICONS[skaleNetwork][filename]
+  }
 }
-
 
 export function tokenIcon(name: string) {
-    if (!name) return;
-    const key = name.toLowerCase()
-    if (icons[key]) {
-        return icons[key];
-    } else {
-        return icons['eth'];
-    }
+  if (!name) return
+  const key = name.toLowerCase()
+  if (icons[key]) {
+    return icons[key]
+  } else {
+    return icons['eth']
+  }
 }
-
 
 export function tokenIconPath(token: TokenData) {
-    return token.meta.iconUrl ?? tokenIcon(token.meta.symbol);
+  return token.meta.iconUrl ?? tokenIcon(token.meta.symbol)
 }
 
-
 export function getTokenName(token: TokenData): string {
-    return token.meta.name ?? token.meta.symbol;
+  return token.meta.name ?? token.meta.symbol
 }

@@ -1,1 +1,1 @@
-export { default } from "./AmountErrorMessage";
+export { default } from './AmountErrorMessage'

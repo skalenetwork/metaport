@@ -22,36 +22,34 @@
  */
 
 // @ts-ignore
-import React from 'react';
+import React from 'react'
 // import { createRoot } from 'react-dom/client';
 
-import Widget from './components/Widget';
-import { internalEvents } from './core/events';
+import Widget from './components/Widget'
+import { internalEvents } from './core/events'
 
-import * as interfaces from './core/interfaces/index';
-export * as dataclasses from './core/dataclasses/index';
-export * as interfaces from './core/interfaces/index';
+import * as interfaces from './core/interfaces/index'
+export * as dataclasses from './core/dataclasses/index'
+export * as interfaces from './core/interfaces/index'
 
-import ChainIcon from './components/ChainIcon';
-export { ChainIcon };
+import ChainIcon from './components/ChainIcon'
+export { ChainIcon }
 
+import WidgetUI from './components/WidgetUI'
+export { WidgetUI }
 
-import WidgetUI from './components/WidgetUI';
-export { WidgetUI };
-
-import Metaport from './components/Metaport';
-export { Metaport };
+import Metaport from './components/Metaport'
+export { Metaport }
 
 // export * as sfuel from './core/sfuel';
 
-
 export class InjectedMetaport {
   constructor(config: interfaces.MetaportConfig) {
-    if (config.openButton === undefined) config.openButton = true;
-    if (config.autoLookup === undefined) config.autoLookup = true;
-    if (config.skaleNetwork === undefined) config.skaleNetwork = 'mainnet';
-    if (config.debug === undefined) config.debug = false;
-    const el = document.getElementById('metaport');
+    if (config.openButton === undefined) config.openButton = true
+    if (config.autoLookup === undefined) config.autoLookup = true
+    if (config.skaleNetwork === undefined) config.skaleNetwork = 'mainnet'
+    if (config.debug === undefined) config.debug = false
+    const el = document.getElementById('metaport')
     if (el) {
       // createRoot(el).render(<Widget config={config} />);
     } else {
@@ -68,8 +66,16 @@ export class InjectedMetaport {
 
   // updateParams(params) { internalEvents.updateParams(params) }
   // requestBalance(params) { internalEvents.requestBalance(params) }
-  setTheme(theme: any) { internalEvents.setTheme(theme) }
-  close() { internalEvents.close() }
-  open() { internalEvents.open() }
-  reset() { internalEvents.reset() }
+  setTheme(theme: any) {
+    internalEvents.setTheme(theme)
+  }
+  close() {
+    internalEvents.close()
+  }
+  open() {
+    internalEvents.open()
+  }
+  reset() {
+    internalEvents.reset()
+  }
 }

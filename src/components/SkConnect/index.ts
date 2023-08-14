@@ -1,1 +1,1 @@
-export { default } from "./SkConnect";
+export { default } from './SkConnect'

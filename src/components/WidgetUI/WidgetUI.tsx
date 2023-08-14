@@ -20,67 +20,64 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React, { useEffect } from 'react';
-import { StyledEngineProvider } from '@mui/material/styles';
+import React, { useEffect } from 'react'
+import { StyledEngineProvider } from '@mui/material/styles'
 
-import { useAccount } from 'wagmi';
+import { useAccount } from 'wagmi'
 
-import Collapse from '@mui/material/Collapse';
-import Fab from '@mui/material/Fab';
-import CloseIcon from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse'
+import Fab from '@mui/material/Fab'
+import CloseIcon from '@mui/icons-material/Close'
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getMuiZIndex } from '../../core/themes';
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { getMuiZIndex } from '../../core/themes'
 
-import skaleLogo from './skale_logo_short.svg';
+import skaleLogo from './skale_logo_short.svg'
 
 import { useUIStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
-import SkPaper from '../SkPaper';
+import SkPaper from '../SkPaper'
 
-import WidgetBody from '../WidgetBody';
+import WidgetBody from '../WidgetBody'
 
+import { cls } from '../../core/helper'
 
-import { cls } from '../../core/helper';
+import styles from '../../styles/styles.module.scss'
+import common from '../../styles/common.module.scss'
+import { PaletteMode } from '@mui/material'
 
-import styles from "../../styles/styles.module.scss";
-import common from "../../styles/common.module.scss";
-import { PaletteMode } from '@mui/material';
+import { getWidgetTheme } from '../../core/themes'
 
-import { getWidgetTheme } from '../../core/themes';
-
-import SkConnect from '../SkConnect';
-import ErrorMessage from '../ErrorMessage';
-import { MetaportConfig } from '../../core/interfaces';
+import SkConnect from '../SkConnect'
+import ErrorMessage from '../ErrorMessage'
+import { MetaportConfig } from '../../core/interfaces'
 import MetaportCore from '../../core/metaport'
 
-
 export function WidgetUI(props: { config: MetaportConfig }) {
+  const widgetTheme = getWidgetTheme(props.config.theme)
 
-  const widgetTheme = getWidgetTheme(props.config.theme);
-
-  const setTheme = useUIStore((state) => state.setTheme);
-  const setMpc = useMetaportStore((state) => state.setMpc);
-  const setOpen = useUIStore((state) => state.setOpen);
-
-  useEffect(() => {
-    setOpen(props.config.openOnLoad);
-  }, []);
+  const setTheme = useUIStore((state) => state.setTheme)
+  const setMpc = useMetaportStore((state) => state.setMpc)
+  const setOpen = useUIStore((state) => state.setOpen)
 
   useEffect(() => {
-    setTheme(widgetTheme);
-  }, [setTheme]);
+    setOpen(props.config.openOnLoad)
+  }, [])
 
   useEffect(() => {
-    setMpc(new MetaportCore(props.config));
-  }, [setMpc]);
+    setTheme(widgetTheme)
+  }, [setTheme])
 
-  const { address } = useAccount();
+  useEffect(() => {
+    setMpc(new MetaportCore(props.config))
+  }, [setMpc])
 
-  const metaportTheme = useUIStore((state) => state.theme);
-  const isOpen = useUIStore((state) => state.open);
+  const { address } = useAccount()
 
-  const errorMessage = useMetaportStore((state) => state.errorMessage);
+  const metaportTheme = useUIStore((state) => state.theme)
+  const isOpen = useUIStore((state) => state.open)
+
+  const errorMessage = useMetaportStore((state) => state.errorMessage)
 
   if (!metaportTheme) return <div></div>
 
@@ -89,55 +86,55 @@ export function WidgetUI(props: { config: MetaportConfig }) {
     palette: {
       mode: metaportTheme.mode as PaletteMode,
       background: {
-        paper: metaportTheme.background
+        paper: metaportTheme.background,
       },
       primary: {
         main: metaportTheme.primary,
       },
       secondary: {
-        main: metaportTheme.background
+        main: metaportTheme.background,
       },
     },
-  });
+  })
 
   const handleClick = (_: React.MouseEvent<HTMLElement>) => {
-    setOpen(isOpen ? false : true);
-  };
-
-  const themeCls = metaportTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme;
-  const commonThemeCls = metaportTheme.mode === 'dark' ? common.darkTheme : common.lightTheme;
-
-  let fabTop: boolean = false;
-  let fabLeft: boolean = false;
-  if (metaportTheme) {
-    fabTop = metaportTheme.position.bottom === 'auto';
-    fabLeft = metaportTheme.position.right === 'auto';
+    setOpen(isOpen ? false : true)
   }
 
-  const fabButton = (<div className={cls(common.flex)}>
-    <div className={(fabLeft ? null : cls(common.flexGrow))}></div>
-    <div className={common.flex}>
-      <Fab
-        color={isOpen ? 'secondary' : 'primary'}
-        className={props.config.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
-        aria-label="add"
-        type="button"
-        onClick={handleClick}
-      >
-        {isOpen ? (
-          <CloseIcon
-            style={{
-              color: metaportTheme.mode == 'dark' ? 'white' : 'black'
-            }}
-          />
-        ) : (<img
-          className={styles.skaleLogoSm}
-          src={skaleLogo}
-        />)
-        }
-      </Fab>
+  const themeCls = metaportTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme
+  const commonThemeCls = metaportTheme.mode === 'dark' ? common.darkTheme : common.lightTheme
+
+  let fabTop: boolean = false
+  let fabLeft: boolean = false
+  if (metaportTheme) {
+    fabTop = metaportTheme.position.bottom === 'auto'
+    fabLeft = metaportTheme.position.right === 'auto'
+  }
+
+  const fabButton = (
+    <div className={cls(common.flex)}>
+      <div className={fabLeft ? null : cls(common.flexGrow)}></div>
+      <div className={common.flex}>
+        <Fab
+          color={isOpen ? 'secondary' : 'primary'}
+          className={props.config.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
+          aria-label="add"
+          type="button"
+          onClick={handleClick}
+        >
+          {isOpen ? (
+            <CloseIcon
+              style={{
+                color: metaportTheme.mode == 'dark' ? 'white' : 'black',
+              }}
+            />
+          ) : (
+            <img className={styles.skaleLogoSm} src={skaleLogo} />
+          )}
+        </Fab>
+      </div>
     </div>
-  </div>);
+  )
 
   return (
     <StyledEngineProvider injectFirst>
@@ -146,9 +143,7 @@ export function WidgetUI(props: { config: MetaportConfig }) {
           className={cls(styles.imaWidgetBody, themeCls, commonThemeCls)}
           style={metaportTheme ? { ...metaportTheme.position, zIndex: metaportTheme.zIndex } : null}
         >
-          <div className={(props.config.openButton ? common.margBott20 : null)}>
-            {fabTop ? fabButton : null}
-          </div>
+          <div className={props.config.openButton ? common.margBott20 : null}>{fabTop ? fabButton : null}</div>
           <Collapse in={isOpen}>
             <SkPaper className={cls(styles.popper)}>
               <SkConnect />
@@ -156,19 +151,14 @@ export function WidgetUI(props: { config: MetaportConfig }) {
               <Collapse in={!!errorMessage}>
                 <ErrorMessage errorMessage={errorMessage} />
               </Collapse>
-              <Collapse in={!errorMessage}>
-                {address ? <WidgetBody config={props.config} /> : <div></div>}
-              </Collapse>
+              <Collapse in={!errorMessage}>{address ? <WidgetBody config={props.config} /> : <div></div>}</Collapse>
             </SkPaper>
           </Collapse>
-          <div className={(props.config.openButton ? common.margTop20 : null)}>
-            {fabTop ? null : fabButton}
-          </div>
+          <div className={props.config.openButton ? common.margTop20 : null}>{fabTop ? null : fabButton}</div>
         </div>
       </ThemeProvider>
     </StyledEngineProvider>
-  );
+  )
 }
 
-
-export default WidgetUI;
+export default WidgetUI

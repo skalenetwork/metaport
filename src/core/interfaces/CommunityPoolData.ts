@@ -21,12 +21,11 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-
 export interface CommunityPoolData {
-    exitGasOk: boolean
-    isActive: boolean
-    balance: string
-    accountBalance: string
-    recommendedRechargeAmount: string
-    originalRecommendedRechargeAmount: string
+  exitGasOk: boolean
+  isActive: boolean
+  balance: string
+  accountBalance: string
+  recommendedRechargeAmount: string
+  originalRecommendedRechargeAmount: string
 }

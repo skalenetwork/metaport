@@ -21,87 +21,86 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import debug from 'debug';
+import debug from 'debug'
 
-import { TokenType } from './TokenType';
-import { isMainnet } from '../helper';
-import {
-    S2S_POSTFIX,
-    M2S_POSTFIX,
-    S2M_POSTFIX,
-} from '../constants';
+import { TokenType } from './TokenType'
+import { isMainnet } from '../helper'
+import { S2S_POSTFIX, M2S_POSTFIX, S2M_POSTFIX } from '../constants'
 
-
-debug.enable('*');
-const log = debug('metaport:actions');
-
+debug.enable('*')
+const log = debug('metaport:actions')
 
 export enum ActionType {
-    erc20_m2s = 'erc20_m2s',
-    erc20_s2m = 'erc20_s2m',
-    erc20_s2s = 'erc20_s2s',
-    wrap = 'wrap',
-    unwrap = 'unwrap'
+  erc20_m2s = 'erc20_m2s',
+  erc20_s2m = 'erc20_s2m',
+  erc20_s2s = 'erc20_s2s',
+  wrap = 'wrap',
+  unwrap = 'unwrap',
 }
 
-
-export function getActionType(
-    chainName1: string,
-    chainName2: string,
-    tokenType: TokenType
-): ActionType {
-    if (!chainName1 || !chainName2 || !tokenType) return;
-    let postfix = S2S_POSTFIX;
-    if (isMainnet(chainName1)) { postfix = M2S_POSTFIX; };
-    if (isMainnet(chainName2)) { postfix = S2M_POSTFIX; };
-    const actionName = tokenType + '_' + postfix;
-    log('Action name: ' + actionName);
-    return actionName as ActionType;
+export function getActionType(chainName1: string, chainName2: string, tokenType: TokenType): ActionType {
+  if (!chainName1 || !chainName2 || !tokenType) return
+  let postfix = S2S_POSTFIX
+  if (isMainnet(chainName1)) {
+    postfix = M2S_POSTFIX
+  }
+  if (isMainnet(chainName2)) {
+    postfix = S2M_POSTFIX
+  }
+  const actionName = tokenType + '_' + postfix
+  log('Action name: ' + actionName)
+  return actionName as ActionType
 }
-
 
 export abstract class StepMetadata {
-    headline: string = '';
-    text: string = '';
-    btnText: string = '';
-    btnLoadingText: string = '';
+  headline: string = ''
+  text: string = ''
+  btnText: string = ''
+  btnLoadingText: string = ''
 
-    onSource: boolean = true;
+  onSource: boolean = true
 
-    constructor(public type: ActionType, public from: string, public to: string) { }
+  constructor(
+    public type: ActionType,
+    public from: string,
+    public to: string,
+  ) {}
 }
-
 
 export class TransferStepMetadata extends StepMetadata {
-    headline: string = 'Transfer to';
-    text: string = 'You may need to approve first.';
-    btnText: string = 'Transfer';
-    btnLoadingText: string = 'Transferring';
+  headline: string = 'Transfer to'
+  text: string = 'You may need to approve first.'
+  btnText: string = 'Transfer'
+  btnLoadingText: string = 'Transferring'
 
-    onSource: boolean = false;
+  onSource: boolean = false
 }
-
 
 export class WrapStepMetadata extends StepMetadata {
-    headline: string = 'Wrap on';
-    text: string = 'Tokens should be wrapped before transferring. Approval may be required.';
-    btnText: string = 'Wrap';
-    btnLoadingText: string = 'Wrapping';
+  headline: string = 'Wrap on'
+  text: string = 'Tokens should be wrapped before transferring. Approval may be required.'
+  btnText: string = 'Wrap'
+  btnLoadingText: string = 'Wrapping'
 
-    constructor(public from: string, public to: string) {
-        super(ActionType.wrap, from, to)
-    }
+  constructor(
+    public from: string,
+    public to: string,
+  ) {
+    super(ActionType.wrap, from, to)
+  }
 }
 
-
 export class UnwrapStepMetadata extends StepMetadata {
-    headline: string = 'Unwrap on';
-    text: string = 'Tokens should be unwrapped after transferring.';
-    btnText: string = 'Unwrap';
-    btnLoadingText: string = 'Unwrapping';
-    onSource: boolean = false;
+  headline: string = 'Unwrap on'
+  text: string = 'Tokens should be unwrapped after transferring.'
+  btnText: string = 'Unwrap'
+  btnLoadingText: string = 'Unwrapping'
+  onSource: boolean = false
 
-    constructor(public from: string, public to: string) {
-        super(ActionType.unwrap, from, to)
-    }
+  constructor(
+    public from: string,
+    public to: string,
+  ) {
+    super(ActionType.unwrap, from, to)
+  }
 }

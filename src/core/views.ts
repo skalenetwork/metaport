@@ -21,20 +21,16 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-
-import { View } from './dataclasses/View';
-
+import { View } from './dataclasses/View'
 
 export function isTransferRequestView(view: View) {
-    return view === View.TRANSFER_REQUEST_SUMMARY || view === View.TRANSFER_REQUEST_STEPS;
+  return view === View.TRANSFER_REQUEST_SUMMARY || view === View.TRANSFER_REQUEST_STEPS
 }
-
 
 export function isTransferRequestSummary(view: View) {
-    return view === View.TRANSFER_REQUEST_SUMMARY
+  return view === View.TRANSFER_REQUEST_SUMMARY
 }
 
-
 export function isStepsMetadata(view: View) {
-    return view === View.TRANSFER_REQUEST_STEPS
+  return view === View.TRANSFER_REQUEST_STEPS
 }

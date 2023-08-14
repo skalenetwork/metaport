@@ -1,1 +1,1 @@
-export { default } from "./AmountInput";
+export { default } from './AmountInput'

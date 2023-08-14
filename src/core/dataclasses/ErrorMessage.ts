@@ -21,54 +21,47 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
-
 export class ErrorMessage {
+  icon: string
+  text: string
+  btnText?: string
+  fallback?: Function
 
-    icon: string
-    text: string
-    btnText?: string
-    fallback?: Function
-
-    constructor(fallback?: Function) {
-        this.fallback = fallback
-    }
+  constructor(fallback?: Function) {
+    this.fallback = fallback
+  }
 }
-
 
 export class NoTokenPairsMessage extends ErrorMessage {
-    constructor() {
-        super()
-        this.icon = 'link-off'
-        this.text = 'No token pairs for these chains'
-    }
+  constructor() {
+    super()
+    this.icon = 'link-off'
+    this.text = 'No token pairs for these chains'
+  }
 }
-
 
 export class WrongNetworkMessage extends ErrorMessage {
-    constructor(fallback: Function) {
-        super(fallback)
-        this.icon = 'public-off'
-        this.text = 'Looks like you are connected to the wrong network'
-        this.btnText = 'Switch network'
-    }
+  constructor(fallback: Function) {
+    super(fallback)
+    this.icon = 'public-off'
+    this.text = 'Looks like you are connected to the wrong network'
+    this.btnText = 'Switch network'
+  }
 }
-
 
 export class TransactionErrorMessage extends ErrorMessage {
-    constructor(text: string, fallback: Function) {
-        super(fallback)
-        this.icon = 'sentiment'
-        this.text = text
-        this.btnText = 'Try again'
-    }
+  constructor(text: string, fallback: Function) {
+    super(fallback)
+    this.icon = 'sentiment'
+    this.text = text
+    this.btnText = 'Try again'
+  }
 }
 
-
 export class CustomErrorMessage extends ErrorMessage {
-    constructor(text: string) {
-        super(undefined)
-        this.icon = 'error'
-        this.text = text
-    }
+  constructor(text: string) {
+    super(undefined)
+    this.icon = 'error'
+    this.text = text
+  }
 }

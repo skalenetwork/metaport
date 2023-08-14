@@ -21,27 +21,23 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React from 'react';
-import TollRoundedIcon from '@mui/icons-material/TollRounded';
-import { TokenData } from '../../core/dataclasses';
-import { tokenIconPath } from '../../core/metadata';
+import React from 'react'
+import TollRoundedIcon from '@mui/icons-material/TollRounded'
+import { TokenData } from '../../core/dataclasses'
+import { tokenIconPath } from '../../core/metadata'
 
-import styles from "../../styles/styles.module.scss";
+import styles from '../../styles/styles.module.scss'
 
-
-export default function TokenIcon(props: {
-  token?: TokenData,
-  size?: 'xs' | 'sm' | 'md' | 'lg'
-}) {
-  const size = props.size ?? 'sm';
-  const className = styles[`chainIcon${size}`];
+export default function TokenIcon(props: { token?: TokenData; size?: 'xs' | 'sm' | 'md' | 'lg' }) {
+  const size = props.size ?? 'sm'
+  const className = styles[`chainIcon${size}`]
   if (props.token === undefined || props.token === null) {
     return <TollRoundedIcon />
   }
 
-  const iconPath = tokenIconPath(props.token);
+  const iconPath = tokenIconPath(props.token)
   if (iconPath.default) {
-    return <img className={className} src={iconPath.default} />;
+    return <img className={className} src={iconPath.default} />
   }
-  return <img className={className} src={iconPath} />;
+  return <img className={className} src={iconPath} />
 }

@@ -21,29 +21,23 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import {
-    HTTPS_PREFIX,
-    MAINNET_CHAIN_NAME,
-    MAINNET_EXPLORER_URLS,
-    BASE_EXPLORER_URLS
-} from './constants';
-import { SkaleNetwork } from './interfaces';
-
+import { HTTPS_PREFIX, MAINNET_CHAIN_NAME, MAINNET_EXPLORER_URLS, BASE_EXPLORER_URLS } from './constants'
+import { SkaleNetwork } from './interfaces'
 
 function getMainnetExplorerUrl(skaleNetwork: string) {
-    return MAINNET_EXPLORER_URLS[skaleNetwork];
+  return MAINNET_EXPLORER_URLS[skaleNetwork]
 }
 
 function getSChainExplorerUrl(skaleNetwork: string) {
-    return BASE_EXPLORER_URLS[skaleNetwork];
+  return BASE_EXPLORER_URLS[skaleNetwork]
 }
 
 export function getExplorerUrl(skaleNetwork: SkaleNetwork, chainName: string): string {
-    if (chainName === MAINNET_CHAIN_NAME) return getMainnetExplorerUrl(skaleNetwork);
-    return HTTPS_PREFIX + chainName + '.' + getSChainExplorerUrl(skaleNetwork);
+  if (chainName === MAINNET_CHAIN_NAME) return getMainnetExplorerUrl(skaleNetwork)
+  return HTTPS_PREFIX + chainName + '.' + getSChainExplorerUrl(skaleNetwork)
 }
 
 export function getTxUrl(chainName: string, skaleNetwork: SkaleNetwork, txHash: string): string {
-    const explorerUrl = getExplorerUrl(skaleNetwork, chainName);
-    return `${explorerUrl}/tx/${txHash}`;
+  const explorerUrl = getExplorerUrl(skaleNetwork, chainName)
+  return `${explorerUrl}/tx/${txHash}`
 }

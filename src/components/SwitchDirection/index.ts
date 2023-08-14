@@ -1,1 +1,1 @@
-export { default } from "./SwitchDirection";
+export { default } from './SwitchDirection'

@@ -21,12 +21,11 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { GAS_STATION_API_ENDPOINT } from './constants';
-
+import { GAS_STATION_API_ENDPOINT } from './constants'
 
 export async function getAvgWaitTime() {
-    const response = await fetch(GAS_STATION_API_ENDPOINT);
-    if (!response.ok) return 0;
-    const data = await response.json();
-    return data.avgWait;
+  const response = await fetch(GAS_STATION_API_ENDPOINT)
+  if (!response.ok) return 0
+  const data = await response.json()
+  return data.avgWait
 }

@@ -1,1 +1,1 @@
-export { default } from "./ChainApps";
+export { default } from './ChainApps'

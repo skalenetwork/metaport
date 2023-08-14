@@ -21,7 +21,6 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-
 // import debug from 'debug';
 // import { MainnetChain, SChain } from '@skalenetwork/ima-js';
 
@@ -34,10 +33,8 @@
 //     MINIMUM_RECHARGE_AMOUNT
 // } from './constants';
 
-
 // debug.enable('*');
 // const log = debug('metaport:core:community_pool');
-
 
 // export function getEmptyCommunityPoolData(): CommunityPoolData {
 //     return {
@@ -49,7 +46,6 @@
 //         originalRecommendedRechargeAmount: null
 //     };
 // }
-
 
 // export async function getCommunityPoolData(
 //     address: string,

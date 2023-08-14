@@ -22,23 +22,31 @@
  */
 
 export interface EthToken {
-    chains: ConnectedChainMap
+  chains: ConnectedChainMap
 }
 
 export interface Token {
-    address?: string,
-    chains: ConnectedChainMap
+  address?: string
+  chains: ConnectedChainMap
 }
 
 export interface ConnectedChain {
-    hub?: string
-    wrapper?: string
-    wrapsSFuel?: boolean
-    clone?: boolean
+  hub?: string
+  wrapper?: string
+  wrapsSFuel?: boolean
+  clone?: boolean
 }
 
-export interface ConnectedChainMap { [chainName: string]: ConnectedChain; }
-export interface ChainTokensMap { [tokenSymbol: string]: Token; }
+export interface ConnectedChainMap {
+  [chainName: string]: ConnectedChain
+}
+export interface ChainTokensMap {
+  [tokenSymbol: string]: Token
+}
 // export interface TokenTypeMap { [tokenType: string]: EthToken | ChainTokensMap; }
-export interface TokenTypeMap { [tokenType: string]: ChainTokensMap; }
-export interface TokenConnectionsMap { [chainName: string]: TokenTypeMap; }
+export interface TokenTypeMap {
+  [tokenType: string]: ChainTokensMap
+}
+export interface TokenConnectionsMap {
+  [chainName: string]: TokenTypeMap
+}

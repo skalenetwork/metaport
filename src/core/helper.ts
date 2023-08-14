@@ -21,85 +21,79 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { getAddress } from 'ethers';
+import { getAddress } from 'ethers'
 
-import { MAINNET_CHAIN_NAME } from './constants';
+import { MAINNET_CHAIN_NAME } from './constants'
 // import utils from 'web3-utils';
-import { TransferRequestStatus } from './dataclasses';
-import { SkaleNetwork } from './interfaces';
+import { TransferRequestStatus } from './dataclasses'
+import { SkaleNetwork } from './interfaces'
 
-import mainnetMeta from '../meta/mainnet/chains.json';
-import stagingMeta from '../meta/staging/chains.json';
-import legacyMeta from '../meta/legacy/chains.json';
-import regressionMeta from '../meta/regression/chains.json';
-
+import mainnetMeta from '../meta/mainnet/chains.json'
+import stagingMeta from '../meta/staging/chains.json'
+import legacyMeta from '../meta/legacy/chains.json'
+import regressionMeta from '../meta/regression/chains.json'
 
 export const CHAINS_META = {
-    'mainnet': mainnetMeta,
-    'staging': stagingMeta,
-    'legacy': legacyMeta,
-    'regression': regressionMeta
+  mainnet: mainnetMeta,
+  staging: stagingMeta,
+  legacy: legacyMeta,
+  regression: regressionMeta,
 }
-
 
 export function cls(...args: any): string {
-    const filteredArgs = args.map((clsName: any) => {
-        if (typeof clsName === 'string') return clsName;
-        if (Array.isArray(clsName) && clsName.length === 2 && clsName[1]) return clsName[0];
-    });
-    return filteredArgs.join(' ');
+  const filteredArgs = args.map((clsName: any) => {
+    if (typeof clsName === 'string') return clsName
+    if (Array.isArray(clsName) && clsName.length === 2 && clsName[1]) return clsName[0]
+  })
+  return filteredArgs.join(' ')
 }
-
 
 export function eqArrays(arr1, arr2) {
-    return JSON.stringify(arr1) === JSON.stringify(arr2);
+  return JSON.stringify(arr1) === JSON.stringify(arr2)
 }
-
 
 export function isMainnet(chainName: string): boolean {
-    return chainName === MAINNET_CHAIN_NAME;
+  return chainName === MAINNET_CHAIN_NAME
 }
-
 
 export function addressesEqual(address1: string, address2: string): boolean {
-    return getAddress(address1) === getAddress(address2);
+  return getAddress(address1) === getAddress(address2)
 }
 
-
 export default function isTransferRequestActive(transferRequestStatus: TransferRequestStatus) {
-    return transferRequestStatus === TransferRequestStatus.IN_PROGRESS ||
-        transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB;
+  return (
+    transferRequestStatus === TransferRequestStatus.IN_PROGRESS ||
+    transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB
+  )
 }
 
 export function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-
 export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
-    if (chainName === MAINNET_CHAIN_NAME) {
-        if (skaleNetwork != MAINNET_CHAIN_NAME) {
-            const network = skaleNetwork === 'staging' ? 'Goerli' : skaleNetwork;
-            return `Ethereum (${network})`;
-        }
-        return 'Ethereum';
+  if (chainName === MAINNET_CHAIN_NAME) {
+    if (skaleNetwork != MAINNET_CHAIN_NAME) {
+      const network = skaleNetwork === 'staging' ? 'Goerli' : skaleNetwork
+      return `Ethereum (${network})`
     }
-    if (CHAINS_META[skaleNetwork] && CHAINS_META[skaleNetwork][chainName]) {
-        if (app && CHAINS_META[skaleNetwork][chainName].apps &&
-            CHAINS_META[skaleNetwork][chainName].apps[app]) {
-            return CHAINS_META[skaleNetwork][chainName].apps[app].alias;
-        }
-        return CHAINS_META[skaleNetwork][chainName].alias;
+    return 'Ethereum'
+  }
+  if (CHAINS_META[skaleNetwork] && CHAINS_META[skaleNetwork][chainName]) {
+    if (app && CHAINS_META[skaleNetwork][chainName].apps && CHAINS_META[skaleNetwork][chainName].apps[app]) {
+      return CHAINS_META[skaleNetwork][chainName].apps[app].alias
     }
-    return chainName;
+    return CHAINS_META[skaleNetwork][chainName].alias
+  }
+  return chainName
 }
 
 export function getChainAppsMeta(chainName: string, skaleNetwork: SkaleNetwork) {
-    if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
-        return CHAINS_META[skaleNetwork][chainName].apps;
-    }
+  if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
+    return CHAINS_META[skaleNetwork][chainName].apps
+  }
 }
 
 export function getRandom(list: Array<any>) {
-    return list[Math.floor((Math.random() * list.length))];
+  return list[Math.floor(Math.random() * list.length)]
 }

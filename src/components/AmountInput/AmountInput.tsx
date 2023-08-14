@@ -1,31 +1,29 @@
-import React from "react";
+import React from 'react'
 import { useAccount } from 'wagmi'
 
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'
 
-import { cls } from '../../core/helper';
-import common from '../../styles/common.module.scss';
-import localStyles from './AmountInput.module.scss';
+import { cls } from '../../core/helper'
+import common from '../../styles/common.module.scss'
+import localStyles from './AmountInput.module.scss'
 
 import { useMetaportStore } from '../../store/MetaportState'
 
-
 export default function AmountInput() {
-
   const { address } = useAccount()
 
-  const token = useMetaportStore((state) => state.token);
-  const transferInProgress = useMetaportStore((state) => state.transferInProgress);
-  const setAmount = useMetaportStore((state) => state.setAmount);
-  const amount = useMetaportStore((state) => state.amount);
+  const token = useMetaportStore((state) => state.token)
+  const transferInProgress = useMetaportStore((state) => state.transferInProgress)
+  const setAmount = useMetaportStore((state) => state.setAmount)
+  const amount = useMetaportStore((state) => state.amount)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (parseFloat(event.target.value) < 0) {
-      setAmount('', address);
-      return;
+      setAmount('', address)
+      return
     }
-    setAmount(event.target.value, address);
-  };
+    setAmount(event.target.value, address)
+  }
 
   // const setMaxAmount = () => {
   //   if (token && !token.clone &&
@@ -43,7 +41,7 @@ export default function AmountInput() {
   //   }
   // }
 
-  if (!token) return;
+  if (!token) return
   return (
     <div className={cls(common.flex, localStyles.mp__inputAmount)}>
       <div className={cls(common.flex, common.flexGrow)}>
@@ -57,16 +55,18 @@ export default function AmountInput() {
         />
       </div>
 
-      <div className={cls(
-        common.p,
-        common.pMain,
-        [common.pDisabled, transferInProgress],
-        common.flex,
-        common.flexCenteredVert,
-        common.margRi20,
-        localStyles.tokenSymbol,
-        [localStyles.tokenSymbolPlaceholder, !amount]
-      )}>
+      <div
+        className={cls(
+          common.p,
+          common.pMain,
+          [common.pDisabled, transferInProgress],
+          common.flex,
+          common.flexCenteredVert,
+          common.margRi20,
+          localStyles.tokenSymbol,
+          [localStyles.tokenSymbolPlaceholder, !amount],
+        )}
+      >
         {token.meta.symbol}
       </div>
 

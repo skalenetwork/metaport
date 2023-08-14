@@ -21,41 +21,37 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenData } from '../dataclasses/TokenData';
-import * as interfaces from '../interfaces/index';
+import { TokenData } from '../dataclasses/TokenData'
+import * as interfaces from '../interfaces/index'
 
-import { eqArrays } from '../helper';
-
+import { eqArrays } from '../helper'
 
 export function getEmptyTokenDataMap(): interfaces.TokenDataTypesMap {
-    return { eth: {}, erc20: {}, erc721: {}, erc721meta: {}, erc1155: {} };
+  return { eth: {}, erc20: {}, erc721: {}, erc721meta: {}, erc1155: {} }
 }
-
 
 export function getAvailableTokenNumers(availableTokens): number[] {
-    return Object.entries(availableTokens).map(([_key, value]) => Object.entries(value).length);
+  return Object.entries(availableTokens).map(([_key, value]) => Object.entries(value).length)
 }
-
 
 export function getAvailableTokensTotal(availableTokens): number {
-    return getAvailableTokenNumers(availableTokens).reduce((a, b) => a + b, 0);
+  return getAvailableTokenNumers(availableTokens).reduce((a, b) => a + b, 0)
 }
 
-
 export function getDefaultToken(availableTokens: interfaces.TokenDataTypesMap): TokenData {
-    if (availableTokens === undefined) return;
-    const availableTokenNumers = getAvailableTokenNumers(availableTokens);
-    // if (eqArrays(availableTokenNumers, [1, 0, 0, 0, 0])) return availableTokens.eth.eth;
-    if (eqArrays(availableTokenNumers, [0, 1, 0, 0, 0])) {
-        return Object.values(availableTokens.erc20)[0];
-    }
-    if (eqArrays(availableTokenNumers, [0, 0, 1, 0, 0])) {
-        return Object.values(availableTokens.erc721)[0];
-    }
-    if (eqArrays(availableTokenNumers, [0, 0, 0, 1, 0])) {
-        return Object.values(availableTokens.erc721meta)[0];
-    }
-    if (eqArrays(availableTokenNumers, [0, 0, 0, 0, 1])) {
-        return Object.values(availableTokens.erc1155)[0];
-    }
+  if (availableTokens === undefined) return
+  const availableTokenNumers = getAvailableTokenNumers(availableTokens)
+  // if (eqArrays(availableTokenNumers, [1, 0, 0, 0, 0])) return availableTokens.eth.eth;
+  if (eqArrays(availableTokenNumers, [0, 1, 0, 0, 0])) {
+    return Object.values(availableTokens.erc20)[0]
+  }
+  if (eqArrays(availableTokenNumers, [0, 0, 1, 0, 0])) {
+    return Object.values(availableTokens.erc721)[0]
+  }
+  if (eqArrays(availableTokenNumers, [0, 0, 0, 1, 0])) {
+    return Object.values(availableTokens.erc721meta)[0]
+  }
+  if (eqArrays(availableTokenNumers, [0, 0, 0, 0, 1])) {
+    return Object.values(availableTokens.erc1155)[0]
+  }
 }

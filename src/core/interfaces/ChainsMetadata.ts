@@ -21,19 +21,19 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
 export interface ChainMetadata {
-    alias?: string;
-    minSfuelWei?: string;
-    faucetUrl?: string;
-    apps?: {
-        [appName: string]: {
-            alias: string;
-            background: string;
-            url: string;
-        };
+  alias?: string
+  minSfuelWei?: string
+  faucetUrl?: string
+  apps?: {
+    [appName: string]: {
+      alias: string
+      background: string
+      url: string
     }
+  }
 }
 
-
-export interface ChainsMetadataMap { [chainName: string]: ChainMetadata; }
+export interface ChainsMetadataMap {
+  [chainName: string]: ChainMetadata
+}
