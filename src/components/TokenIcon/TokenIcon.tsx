@@ -37,7 +37,11 @@ export default function TokenIcon(props: {
   const className = styles[`chainIcon${size}`];
   if (props.token === undefined || props.token === null) {
     return <TollRoundedIcon />
-    // return <img className={className} src={tokenIcon('eth')} />
   }
-  return <img className={className} src={tokenIconPath(props.token)} />
+
+  const iconPath = tokenIconPath(props.token);
+  if (iconPath.default) {
+    return <img className={className} src={iconPath.default} />;
+  }
+  return <img className={className} src={iconPath} />;
 }

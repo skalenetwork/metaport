@@ -53,6 +53,7 @@ test.mjs
 
 
 src/meta/
+src/icons/index.ts
 
 metaportConfig.json
 metaportConfigMainnet.json

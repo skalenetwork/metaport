@@ -30,7 +30,9 @@ import * as STAGING_CHAIN_ICONS from '../meta/staging/icons';
 import * as LEGACY_CHAIN_ICONS from '../meta/legacy/icons';
 import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons';
 
-const icons = {};
+import * as icons from '../icons';
+
+
 const CHAIN_ICONS = {
     'mainnet': MAINNET_CHAIN_ICONS,
     'staging': STAGING_CHAIN_ICONS,
@@ -53,18 +55,18 @@ export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: st
 }
 
 
-export function tokenIcon(name: string): string {
+export function tokenIcon(name: string) {
     if (!name) return;
-    const key = name.toLowerCase() + '.svg';
+    const key = name.toLowerCase()
     if (icons[key]) {
         return icons[key];
     } else {
-        return icons['eth.svg'];
+        return icons['eth'];
     }
 }
 
 
-export function tokenIconPath(token: TokenData): string {
+export function tokenIconPath(token: TokenData) {
     return token.meta.iconUrl ?? tokenIcon(token.meta.symbol);
 }
 
