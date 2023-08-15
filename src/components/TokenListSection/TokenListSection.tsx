@@ -54,10 +54,7 @@ export default function TokenListSection(props: {
             className={cls(common.flex, common.flexCenteredVert, common.fullWidth, common.margTop5, common.margBott5)}
           >
             <div className={cls(common.flex, common.flexCentered, common.margLeft10)}>
-              <TokenIcon
-                tokenSymbol={props.tokens[key]?.meta.symbol}
-                iconUrl={props.tokens[key]?.meta.iconUrl}
-              />
+              <TokenIcon tokenSymbol={props.tokens[key]?.meta.symbol} iconUrl={props.tokens[key]?.meta.iconUrl} />
             </div>
             <p
               className={cls(

@@ -27,10 +27,9 @@ import { tokenIcon } from '../../core/metadata'
 
 import styles from '../../styles/styles.module.scss'
 
-
 export default function TokenIcon(props: {
-  tokenSymbol: string | undefined | null;
-  iconUrl?: string | undefined | null,
+  tokenSymbol: string | undefined | null
+  iconUrl?: string | undefined | null
   size?: 'xs' | 'sm' | 'md' | 'lg'
 }) {
   const size = props.size ?? 'sm'

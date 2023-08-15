@@ -51,7 +51,6 @@ import MetaportCore from '../../core/metaport'
 import styles from '../../styles/styles.module.scss'
 import common from '../../styles/common.module.scss'
 
-
 const { chains, webSocketPublicClient } = configureChains(
   [
     mainnet,
@@ -95,11 +94,10 @@ const wagmiConfig = createConfig({
 })
 
 export default function MetaportProvider(props: {
-  config: MetaportConfig,
+  config: MetaportConfig
   className?: string
   children?: ReactElement | ReactElement[]
 }) {
-
   const widgetTheme = getWidgetTheme(props.config.theme)
 
   const setTheme = useUIStore((state) => state.setTheme)
@@ -152,9 +150,7 @@ export default function MetaportProvider(props: {
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <div className={cls(themeCls, commonThemeCls)}>
-              {props.children}
-            </div>
+            <div className={cls(themeCls, commonThemeCls)}>{props.children}</div>
           </ThemeProvider>
         </StyledEngineProvider>
       </RainbowKitProvider>

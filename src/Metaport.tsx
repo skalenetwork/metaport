@@ -40,13 +40,13 @@ export { WidgetUI }
 import Metaport from './components/Metaport'
 export { Metaport }
 
-import MetaportProvider from './components/MetaportProvider';
+import MetaportProvider from './components/MetaportProvider'
 export { MetaportProvider }
 
-import SkPaper from './components/SkPaper';
+import SkPaper from './components/SkPaper'
 export { SkPaper }
 
-import SkConnect from './components/SkConnect';
+import SkConnect from './components/SkConnect'
 export { SkConnect }
 
 // export * as sfuel from './core/sfuel';

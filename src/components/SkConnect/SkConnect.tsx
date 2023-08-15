@@ -32,7 +32,7 @@ import { cls } from '../../core/helper'
 import styles from '../../styles/styles.module.scss'
 import common from '../../styles/common.module.scss'
 
-import skaleLogoFull from '../WidgetUI/skale_logo.svg';
+import skaleLogoFull from '../WidgetUI/skale_logo.svg'
 import { useMetaportStore } from '../../store/MetaportState'
 
 import ChainIcon from '../ChainIcon'

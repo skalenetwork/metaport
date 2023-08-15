@@ -46,9 +46,7 @@ import SkConnect from '../SkConnect'
 import ErrorMessage from '../ErrorMessage'
 import { MetaportConfig } from '../../core/interfaces'
 
-
 export function WidgetUI(props: { config: MetaportConfig }) {
-
   const metaportTheme = useUIStore((state) => state.theme)
   const isOpen = useUIStore((state) => state.open)
   const setOpen = useUIStore((state) => state.setOpen)
@@ -57,11 +55,9 @@ export function WidgetUI(props: { config: MetaportConfig }) {
 
   const errorMessage = useMetaportStore((state) => state.errorMessage)
 
-
   const handleClick = (_: React.MouseEvent<HTMLElement>) => {
     setOpen(isOpen ? false : true)
   }
-
 
   let fabTop: boolean = false
   let fabLeft: boolean = false
