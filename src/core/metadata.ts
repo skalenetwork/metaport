@@ -52,18 +52,14 @@ export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: st
   }
 }
 
-export function tokenIcon(name: string) {
-  if (!name) return
-  const key = name.toLowerCase()
+export function tokenIcon(tokenSymbol: string) {
+  if (!tokenSymbol) return
+  const key = tokenSymbol.toLowerCase()
   if (icons[key]) {
     return icons[key]
   } else {
     return icons['eth']
   }
-}
-
-export function tokenIconPath(token: TokenData) {
-  return token.meta.iconUrl ?? tokenIcon(token.meta.symbol)
 }
 
 export function getTokenName(token: TokenData): string {

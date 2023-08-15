@@ -23,19 +23,22 @@
 
 import React from 'react'
 import TollRoundedIcon from '@mui/icons-material/TollRounded'
-import { TokenData } from '../../core/dataclasses'
-import { tokenIconPath } from '../../core/metadata'
+import { tokenIcon } from '../../core/metadata'
 
 import styles from '../../styles/styles.module.scss'
 
-export default function TokenIcon(props: { token?: TokenData; size?: 'xs' | 'sm' | 'md' | 'lg' }) {
+
+export default function TokenIcon(props: {
+  tokenSymbol: string | undefined | null;
+  iconUrl?: string | undefined | null,
+  size?: 'xs' | 'sm' | 'md' | 'lg'
+}) {
   const size = props.size ?? 'sm'
   const className = styles[`chainIcon${size}`]
-  if (props.token === undefined || props.token === null) {
+  if (props.tokenSymbol === undefined || props.tokenSymbol === null) {
     return <TollRoundedIcon />
   }
-
-  const iconPath = tokenIconPath(props.token)
+  const iconPath = props.iconUrl ?? tokenIcon(props.tokenSymbol)
   if (iconPath.default) {
     return <img className={className} src={iconPath.default} />
   }

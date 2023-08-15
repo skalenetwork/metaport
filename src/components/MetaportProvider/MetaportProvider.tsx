@@ -42,9 +42,14 @@ import { constructWagmiChain, getWebSocketUrl } from '../../core/wagmi_network'
 
 import { getWidgetTheme, getMuiZIndex } from '../../core/themes'
 
+import { cls } from '../../core/helper'
+
 import { useUIStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 import MetaportCore from '../../core/metaport'
+
+import styles from '../../styles/styles.module.scss'
+import common from '../../styles/common.module.scss'
 
 
 const { chains, webSocketPublicClient } = configureChains(
@@ -102,6 +107,9 @@ export default function MetaportProvider(props: {
   const setOpen = useUIStore((state) => state.setOpen)
   const metaportTheme = useUIStore((state) => state.theme)
 
+  const themeCls = widgetTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme
+  const commonThemeCls = widgetTheme.mode === 'dark' ? common.darkTheme : common.lightTheme
+
   useEffect(() => {
     setOpen(props.config.openOnLoad)
   }, [])
@@ -144,7 +152,9 @@ export default function MetaportProvider(props: {
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            {props.children}
+            <div className={cls(themeCls, commonThemeCls)}>
+              {props.children}
+            </div>
           </ThemeProvider>
         </StyledEngineProvider>
       </RainbowKitProvider>

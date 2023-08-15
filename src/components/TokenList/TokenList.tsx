@@ -89,7 +89,7 @@ export default function TokenList() {
         >
           <div className={cls(common.flex, common.flexCenteredVert, common.fullWidth)}>
             <div className={cls(common.flex, common.flexCentered, common.margRi10)}>
-              <TokenIcon token={token} />
+              <TokenIcon tokenSymbol={token?.meta.symbol} iconUrl={token?.meta.iconUrl}/>
             </div>
             <p
               className={cls(

@@ -62,8 +62,6 @@ export function WidgetUI(props: { config: MetaportConfig }) {
     setOpen(isOpen ? false : true)
   }
 
-  const themeCls = metaportTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme
-  const commonThemeCls = metaportTheme.mode === 'dark' ? common.darkTheme : common.lightTheme
 
   let fabTop: boolean = false
   let fabLeft: boolean = false
@@ -99,14 +97,13 @@ export function WidgetUI(props: { config: MetaportConfig }) {
 
   return (
     <div
-      className={cls(styles.imaWidgetBody, themeCls, commonThemeCls)}
+      className={cls(styles.imaWidgetBody)}
       style={metaportTheme ? { ...metaportTheme.position, zIndex: metaportTheme.zIndex } : null}
     >
       <div className={props.config.openButton ? common.margBott20 : null}>{fabTop ? fabButton : null}</div>
       <Collapse in={isOpen}>
         <SkPaper className={cls(styles.popper)}>
           <SkConnect />
-
           <Collapse in={!!errorMessage}>
             <ErrorMessage errorMessage={errorMessage} />
           </Collapse>

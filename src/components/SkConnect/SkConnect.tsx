@@ -32,7 +32,7 @@ import { cls } from '../../core/helper'
 import styles from '../../styles/styles.module.scss'
 import common from '../../styles/common.module.scss'
 
-// import skaleLogoFull from '../WidgetUI/skale_logo.svg';
+import skaleLogoFull from '../WidgetUI/skale_logo.svg';
 import { useMetaportStore } from '../../store/MetaportState'
 
 import ChainIcon from '../ChainIcon'
@@ -63,7 +63,7 @@ export default function SkConnect() {
                 return (
                   <div>
                     <div className={cls(common.fullWidth, common.textCentered, common.margTop20, common.margBott20)}>
-                      {/* <img className={styles.skaleLogoLg} src={skaleLogoFull} /> */}
+                      <img className={styles.skaleLogoLg} src={skaleLogoFull} />
                     </div>
                     <div className={cls(common.margBott20, common.fullWidth, common.flex, common.flexCentered)}>
                       <ChainIcon
