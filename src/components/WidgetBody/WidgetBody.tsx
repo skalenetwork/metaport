@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 
@@ -30,7 +30,22 @@ export function WidgetBody(props) {
   const setChainName1 = useMetaportStore((state) => state.setChainName1)
   const setChainName2 = useMetaportStore((state) => state.setChainName2)
 
+  const mpc = useMetaportStore((state) => state.mpc)
+  const tokens = useMetaportStore((state) => state.tokens)
+  const setToken = useMetaportStore((state) => state.setToken)
+
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
+
+  useEffect(() => {
+    setChainName1(mpc.config.chains ? mpc.config.chains[0] : '')
+    setChainName2(mpc.config.chains ? mpc.config.chains[1] : '')
+  }, []);
+
+  useEffect(() => {
+    if (tokens && tokens.erc20) {
+      setToken(Object.values(tokens.erc20)[0])
+    }
+  }, [tokens]);
 
   return (
     <div>
@@ -46,18 +61,16 @@ export function WidgetBody(props) {
             disabled={transferInProgress}
             from={true}
           />
-          <Collapse in={!!chainName1}>
-            <div>
-              <TokenList />
-            </div>
-          </Collapse>
+          {/* <Collapse in={!!chainName1}>
+          <TokenList />
+          </Collapse> */}
         </SkPaper>
 
-        <Collapse in={!!token}>
-          <SkPaper gray className={cls()}>
-            <AmountInput />
-          </SkPaper>
-        </Collapse>
+        {/* <Collapse in={!!token}> */}
+        <SkPaper gray className={cls()}>
+          <AmountInput />
+        </SkPaper>
+        {/* </Collapse> */}
       </SkPaper>
       <SwitchDirection />
       <SkPaper gray className={common.noPadd}>
@@ -72,7 +85,9 @@ export function WidgetBody(props) {
         />
       </SkPaper>
       <AmountErrorMessage />
-      <SkStepper skaleNetwork={props.config.skaleNetwork} />
+      <SkPaper background="transparent">
+        <SkStepper skaleNetwork={props.config.skaleNetwork} />
+      </SkPaper>
     </div>
   )
 }

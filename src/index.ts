@@ -19,6 +19,7 @@ import SwitchDirection from './components/SwitchDirection'
 import SkStepper from './components/Stepper'
 import TransferETF from './components/TransferETF'
 import TransferETA from './components/TransferETA'
+import AmountErrorMessage from './components/AmountErrorMessage'
 
 import { cls } from './core/helper'
 import styles from './styles/styles.module.scss'
@@ -42,6 +43,7 @@ export {
   SkStepper,
   TransferETF,
   TransferETA,
+  AmountErrorMessage,
   cls,
   styles,
   common,

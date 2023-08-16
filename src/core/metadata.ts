@@ -32,7 +32,7 @@ import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons'
 
 import * as icons from '../icons'
 
-// const icons = { eth: { default: '' } }; // TODO: fix for storybook
+// const icons = { eth: { default: '' } }; // TODO: storybook fix
 
 const CHAIN_ICONS = {
   mainnet: MAINNET_CHAIN_ICONS,

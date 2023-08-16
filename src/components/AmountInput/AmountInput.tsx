@@ -7,7 +7,10 @@ import { cls } from '../../core/helper'
 import common from '../../styles/common.module.scss'
 import localStyles from './AmountInput.module.scss'
 
+import TokenList from '../TokenList'
 import { useMetaportStore } from '../../store/MetaportState'
+import { useCollapseStore } from '../../store/Store'
+
 
 export default function AmountInput() {
   const { address } = useAccount()
@@ -16,6 +19,7 @@ export default function AmountInput() {
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
   const setAmount = useMetaportStore((state) => state.setAmount)
   const amount = useMetaportStore((state) => state.amount)
+  const expandedTokens = useCollapseStore((state) => state.expandedTokens)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (parseFloat(event.target.value) < 0) {
@@ -41,10 +45,15 @@ export default function AmountInput() {
   //   }
   // }
 
-  if (!token) return
+  // if (!token) return
   return (
     <div className={cls(common.flex, localStyles.inputAmount)}>
-      <div className={cls(common.flex, common.flexGrow)}>
+
+      {expandedTokens ? null : <div className={cls(
+        common.flex,
+        common.flexGrow,
+        common.flexCenteredVert
+      )}>
         <TextField
           type="number"
           variant="standard"
@@ -55,11 +64,14 @@ export default function AmountInput() {
         />
       </div>
 
-      <div
+      }
+      <TokenList />
+
+      {/* <div
         className={cls(
           common.p,
           common.pMain,
-          [common.pDisabled, transferInProgress],
+          [common.pDisabled, transferInProgress || !token],
           common.flex,
           common.flexCenteredVert,
           common.margRi20,
@@ -67,8 +79,8 @@ export default function AmountInput() {
           [localStyles.tokenSymbolPlaceholder, !amount],
         )}
       >
-        {token.meta.symbol}
-      </div>
+        {token ? token.meta.symbol : 'ETH'}
+      </div> */}
 
       {/* {props.maxBtn ? <div className={common.flex}>
         <Button

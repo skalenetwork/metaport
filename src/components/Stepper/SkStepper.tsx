@@ -41,6 +41,8 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const execute = useMetaportStore((state) => state.execute)
   const startOver = useMetaportStore((state) => state.startOver)
 
+  const amount = useMetaportStore((state) => state.amount)
+
   const [emoji, setEmoji] = useState<string>()
   useEffect(() => {
     setEmoji(getRandom(SUCCESS_EMOJIS))
@@ -98,10 +100,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                             className={cls(styles.btnAction, common.margTop5)}
                             onClick={() => execute(address, switchNetworkAsync, walletClient)}
                             disabled={
-                              !!(
-                                (amountErrorMessage || actionBtnDisabled || loading)
-                                // !props.communityPoolData.exitGasOk
-                              )
+                              !!(amountErrorMessage || actionBtnDisabled || loading || amount == '')
                             }
                           >
                             {step.btnText}

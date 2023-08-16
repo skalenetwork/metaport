@@ -68,8 +68,13 @@ export default function TokenList() {
     setExpandedTokens(isExpanded ? panel : false)
   }
 
+  // if (noTokens) {
+  //   return <ErrorMessage errorMessage={new NoTokenPairsMessage()} />
+  // }
+
+  let tokensText = token ? token.meta.symbol : 'TOKEN';
   if (noTokens) {
-    return <ErrorMessage errorMessage={new NoTokenPairsMessage()} />
+    tokensText = 'ETH'
   }
 
   return (
@@ -77,39 +82,45 @@ export default function TokenList() {
       <Accordion
         expanded={expandedTokens === 'panel1'}
         onChange={handleChange('panel1')}
-        disabled={disabled || transferInProgress}
+        disabled={disabled || transferInProgress || noTokens}
         elevation={0}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          className={styles.accordionSummary}
-          style={{ paddingTop: '0' }}
+          className={styles.accordionSummaryTokens}
+
         >
           <div className={cls(common.flex, common.flexCenteredVert, common.fullWidth)}>
-            <div className={cls(common.flex, common.flexCentered, common.margRi10)}>
-              <TokenIcon tokenSymbol={token?.meta.symbol} iconUrl={token?.meta.iconUrl} />
+            <div className={cls(common.flex, common.flexCentered, common.margRi10, [common.pDisabled, noTokens])}>
+              <TokenIcon
+                tokenSymbol={token?.meta.symbol}
+                iconUrl={token?.meta.iconUrl}
+              />
             </div>
             <p
               className={cls(
                 common.p,
-                common.p3,
-                common.p600,
+                common.p1,
+                common.p700,
                 common.pMain,
+                [common.pDisabled, noTokens],
                 common.flex,
                 common.flexGrow,
                 common.margRi10,
               )}
             >
-              {token ? getTokenName(token) : 'Select token'}
+              {tokensText}
             </p>
-            <div className={common.margRi5}>
+
+            {/* <div className={common.margRi5}>
               {token ? <TokenBalance token={token} tokenBalances={tokenBalances} /> : null}
-            </div>
+            </div> */}
           </div>
         </AccordionSummary>
-        <AccordionDetails>
+
+        {expandedTokens ? <AccordionDetails>
           {/* <TokenListSection
             tokens={tokens.eth}
             type={TokenType.eth}
@@ -141,7 +152,8 @@ export default function TokenList() {
             setToken={setToken}
             setExpanded={setExpandedTokens}
           />
-        </AccordionDetails>
+        </AccordionDetails> : null}
+
       </Accordion>
     </div>
   )
