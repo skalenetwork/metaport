@@ -32,6 +32,8 @@ import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons'
 
 import * as icons from '../icons'
 
+// const icons = { eth: { default: '' } }; // TODO: fix for storybook
+
 const CHAIN_ICONS = {
   mainnet: MAINNET_CHAIN_ICONS,
   staging: STAGING_CHAIN_ICONS,

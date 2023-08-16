@@ -13,7 +13,6 @@ import common from '../../styles/common.module.scss'
 import styles from '../../styles/styles.module.scss'
 import localStyles from './SkStepper.module.scss'
 import ChainIcon from '../ChainIcon'
-import SkPaper from '../SkPaper'
 
 import { useMetaportStore } from '../../store/MetaportState'
 import { Collapse } from '@mui/material'
@@ -50,13 +49,13 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   if (stepsMetadata.length === 0) return <div></div>
   return (
     <Collapse in={stepsMetadata && stepsMetadata.length !== 0}>
-      <SkPaper>
+     
         <Box className={cls()}>
           <Collapse in={currentStep !== stepsMetadata.length}>
-            <Stepper className={localStyles.mp__stepper} activeStep={currentStep} orientation="vertical">
+            <Stepper className={localStyles.stepper} activeStep={currentStep} orientation="vertical">
               {stepsMetadata.map((step, i) => (
                 <Step key={i}>
-                  <StepLabel className={localStyles.mp__labelStep}>
+                  <StepLabel className={localStyles.labelStep}>
                     <div className={cls(common.flex, common.flexCenteredVert, styles.mp_flexRow)}>
                       <div className={cls(common.flex, common.flexCenteredVert, styles.mp_flexRow)}>
                         <h4 className={cls(common.noMarg, common.flex)}>{step.headline}</h4>
@@ -145,7 +144,6 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
             </div>
           )}
         </Box>
-      </SkPaper>
     </Collapse>
   )
 }

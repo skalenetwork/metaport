@@ -43,7 +43,7 @@ export default function AmountInput() {
 
   if (!token) return
   return (
-    <div className={cls(common.flex, localStyles.mp__inputAmount)}>
+    <div className={cls(common.flex, localStyles.inputAmount)}>
       <div className={cls(common.flex, common.flexGrow)}>
         <TextField
           type="number"
@@ -74,7 +74,7 @@ export default function AmountInput() {
         <Button
           color="primary"
           size="small"
-          className={cls(styles.btnChain, localStyles.mp__btnMax)}
+          className={cls(styles.btnChain, localStyles.btnMax)}
         // onClick={setMaxAmount}
         // disabled={props.loading || !token.balance || props.amountLocked}
         >

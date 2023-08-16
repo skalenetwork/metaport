@@ -30,10 +30,9 @@ import * as interfaces from './interfaces/index'
 debug.enable('*')
 const log = debug('metaport:components:fee_calculator')
 
-export async function getTransactionFee(transferRequest: interfaces.TransferParams): Promise<number> {
+export async function getTransactionFee(): Promise<number> {
   // todo: get actual gas limit for transfer
   // todo: get actual gas price
-  log(transferRequest)
   const gasLimit = toBN('250000')
   const gasPrice = toBN('10000000000')
 

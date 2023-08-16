@@ -150,7 +150,7 @@ export default function MetaportProvider(props: {
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <div className={cls(themeCls, commonThemeCls)}>{props.children}</div>
+            <div className={cls(themeCls, commonThemeCls, styles.metaport)}>{props.children}</div>
           </ThemeProvider>
         </StyledEngineProvider>
       </RainbowKitProvider>

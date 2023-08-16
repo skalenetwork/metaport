@@ -61,7 +61,7 @@ export const BASE_EXPLORER_URLS = {
 
 // ETA constants
 
-export const GAS_STATION_API_ENDPOINT = 'https://ethgasstation.info/api/ethgasAPI.json?'
+// export const GAS_STATION_API_ENDPOINT = 'https://ethgasstation.info/api/ethgasAPI.json?'
 
 export const IMA_M2S_WAIT = 5
 export const IMA_S2S_WAIT = 2

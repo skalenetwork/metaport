@@ -15,10 +15,18 @@ import TokenIcon from './components/TokenIcon'
 import ChainsList from './components/ChainsList'
 import TokenList from './components/TokenList'
 import AmountInput from './components/AmountInput'
+import SwitchDirection from './components/SwitchDirection'
+import SkStepper from './components/Stepper'
+import TransferETF from './components/TransferETF'
+import TransferETA from './components/TransferETA'
 
 import { cls } from './core/helper'
 import styles from './styles/styles.module.scss'
 import common from './styles/common.module.scss'
+
+import { getWidgetTheme as getMetaportTheme } from './core/themes';
+
+import { useAccount as useWagmiAccount } from 'wagmi'
 
 export {
   Metaport,
@@ -30,7 +38,13 @@ export {
   ChainsList,
   TokenList,
   AmountInput,
+  SwitchDirection,
+  SkStepper,
+  TransferETF,
+  TransferETA,
   cls,
   styles,
   common,
+  getMetaportTheme,
+  useWagmiAccount
 }

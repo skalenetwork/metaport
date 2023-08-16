@@ -9,6 +9,8 @@ import SkStepper from '../Stepper'
 import SkPaper from '../SkPaper'
 import AmountErrorMessage from '../AmountErrorMessage'
 import SwitchDirection from '../SwitchDirection'
+import TransferETF from '../TransferETF'
+import TransferETA from '../TransferETA'
 
 import common from '../../styles/common.module.scss'
 import { cls } from '../../core/helper'
@@ -68,15 +70,6 @@ export function WidgetBody(props) {
           disabledChain={chainName1}
           disabled={transferInProgress}
         />
-
-        {/* <div className={cls(common.flex, common.margTop10, common.margBott10)}>
-          <div className={cls(common.flex, common.flexGrow)}>
-
-          </div>
-          <div className={cls(common.flex, common.margRi10)}>
-            {token ? <TokenBalance token={token} tokenBalances={tokenBalances} /> : null}
-          </div>
-        </div> */}
       </SkPaper>
       <AmountErrorMessage />
       <SkStepper skaleNetwork={props.config.skaleNetwork} />

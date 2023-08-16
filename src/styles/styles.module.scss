@@ -20,13 +20,6 @@
     padding: 10pt;
     border-radius: $sk-border-radius-outter;
     border: 1px rgba(127, 127, 127, .2705882353) solid;
-
-    :global(.Mui-disabled) {
-        :global(.MuiAccordionSummary-expandIconWrapper) {
-            display: none !important;
-        }
-        opacity: 1 !important;
-    }
 }
 
 .darkTheme {
@@ -115,9 +108,7 @@ button {
 }
 
 
-.imaWidgetBody {
-    border-radius: $sk-border-radius-outter !important;
-    position: fixed;
+.metaport {
 
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
     -webkit-font-smoothing: antialiased;
@@ -126,15 +117,29 @@ button {
         background-color: transparent !important;
     }
 
-    :global(.MuiAccordionDetails-root) {
-        padding: 0 !important;
-    }
-
     :global(.MuiButton-root) {
         font-weight: 600 !important;
         box-shadow: none !important;
         border-radius: $sk-border-radius !important;
     }
+
+    :global(.Mui-disabled) {
+        :global(.MuiAccordionSummary-expandIconWrapper) {
+            display: none !important;
+        }
+
+        opacity: 1 !important;
+    }
+
+    :global(.MuiAccordionDetails-root) {
+        padding: 0 !important;
+    }
+}
+
+
+.imaWidgetBody {
+    border-radius: $sk-border-radius-outter !important;
+    position: fixed;
 }
 
 .chainIconxs {
@@ -187,8 +192,8 @@ button {
 .sk__btnSwitch {
     width: 100%;
     text-align: center;
-    margin-top: -13pt;
-    margin-bottom: -13pt;
+    margin-top: -13pt !important;
+    margin-bottom: -13pt !important;
 
     button {
         border: 13px #1a1a1a solid;

@@ -47,7 +47,7 @@ const MUI_ELEMENTS = ['mobileStepper', 'fab', 'speedDial', 'appBar', 'drawer', '
 
 const INDEX_STEP = 50
 
-export function getWidgetTheme(theme: MetaportTheme | null): MetaportTheme {
+export function getWidgetTheme(theme: MetaportTheme | null | undefined): MetaportTheme {
   if (!theme) return defaultThemes.dark as MetaportTheme
   if (theme.mode && Object.keys(theme).length === 1) {
     return defaultThemes[theme.mode] as MetaportTheme
