@@ -193,6 +193,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       tokenId: null,
       currentStep: 0,
       transferInProgress: false,
+      destTokenBalance: null
     })
   },
 
@@ -254,26 +255,28 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         chainName1: name,
         tokens: tokens,
         tokenContracts: tokenContracts,
+        tokenBalances: {},
         ...updState,
       }
     }),
-  setChainName2: (name: string) =>
-    set((state) => {
-      const updState = {}
-      if (name === MAINNET_CHAIN_NAME) {
-        updState['mainnetChain'] = state.mpc.mainnet()
-      } else {
-        updState['sChain2'] = state.mpc.schain(name)
-      }
-      return {
-        currentStep: 0,
-        token: null,
-        chainName2: name,
-        tokens: state.mpc.tokens(state.chainName1, name),
-        stepsMetadata: getStepsMetadata(get().mpc.config, get().token, name),
-        ...updState,
-      }
-    }),
+  setChainName2: (name: string) => {
+    const updState = {}
+    if (name === MAINNET_CHAIN_NAME) {
+      updState['mainnetChain'] = get().mpc.mainnet()
+    } else {
+      updState['sChain2'] = get().mpc.schain(name)
+    }
+    set({
+      currentStep: 0,
+      token: null,
+      destTokenBalance: null,
+      destTokenContract: null,
+      chainName2: name,
+      tokens: get().mpc.tokens(get().chainName1, name),
+      stepsMetadata: getStepsMetadata(get().mpc.config, get().token, name),
+      ...updState,
+    })
+  },
 
   tokens: getEmptyTokenDataMap(),
 
@@ -290,7 +293,8 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     set({
       token: token,
       stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),
-      destTokenContract: destTokenContract
+      destTokenContract: destTokenContract,
+      destTokenBalance: null
     })
   },
 

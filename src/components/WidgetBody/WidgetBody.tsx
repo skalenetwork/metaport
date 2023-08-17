@@ -10,6 +10,7 @@ import AmountErrorMessage from '../AmountErrorMessage'
 import SwitchDirection from '../SwitchDirection'
 import { TokenBalance } from '../TokenList'
 import DestTokenBalance from '../DestTokenBalance'
+import ErrorMessage from '../ErrorMessage'
 
 import common from '../../styles/common.module.scss'
 import { cls } from '../../core/helper'
@@ -22,6 +23,8 @@ export function WidgetBody(props) {
   const expandedTo = useCollapseStore((state) => state.expandedTo)
   const setExpandedTo = useCollapseStore((state) => state.setExpandedTo)
 
+  const expandedTokens = useCollapseStore((state) => state.expandedTokens)
+
   const token = useMetaportStore((state) => state.token)
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const chainName2 = useMetaportStore((state) => state.chainName2)
@@ -33,6 +36,8 @@ export function WidgetBody(props) {
   const tokens = useMetaportStore((state) => state.tokens)
   const setToken = useMetaportStore((state) => state.setToken)
   const tokenBalances = useMetaportStore((state) => state.tokenBalances)
+
+  const errorMessage = useMetaportStore((state) => state.errorMessage)
 
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
@@ -47,61 +52,87 @@ export function WidgetBody(props) {
     }
   }, [tokens]);
 
+  const showFrom = !expandedTo && !expandedTokens && !errorMessage
+  const showTo = !expandedFrom && !expandedTokens && !errorMessage
+  const showInput = !expandedFrom && !expandedTo && !errorMessage
+  const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage
+  const showStepper = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage
+  const showError = !!errorMessage;
+
   return (
     <div>
+      <Collapse in={showError}>
+        <ErrorMessage errorMessage={errorMessage} />
+      </Collapse>
       <SkPaper gray className={common.noPadd}>
         <SkPaper background="transparent" className={common.noPadd}>
-          <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
-            <p className={cls(common.noMarg, common.p, common.p4, common.pSecondary, common.flex, common.flexGrow)}>From</p>
-            <div>
-              {token ? <TokenBalance
-                balance={tokenBalances[token.keyname]}
-                symbol={token.meta.symbol}
-                decimals={token.meta.decimals}
-              /> : null}
+          <Collapse in={showFrom}>
+            <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
+              <p className={cls(
+                common.noMarg,
+                common.p,
+                common.p4,
+                common.pSecondary,
+                common.flex,
+                common.flexGrow
+              )}>From</p>
+              <div>
+                {token ? <TokenBalance
+                  balance={tokenBalances[token.keyname]}
+                  symbol={token.meta.symbol}
+                  decimals={token.meta.decimals}
+                /> : null}
+              </div>
             </div>
+            <ChainsList
+              config={props.config}
+              expanded={expandedFrom}
+              setExpanded={setExpandedFrom}
+              chain={chainName1}
+              setChain={setChainName1}
+              disabledChain={chainName2}
+              disabled={transferInProgress}
+              from={true}
+            />
+          </Collapse>
+        </SkPaper>
+        <Collapse in={showInput}>
+          <SkPaper gray className={cls()}>
+            <AmountInput />
+          </SkPaper>
+        </Collapse>
+      </SkPaper>
+
+      <Collapse in={showSwitch} >
+        <SwitchDirection />
+      </Collapse>
+
+      <Collapse in={showTo}>
+        <SkPaper gray className={common.noPadd}>
+          <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
+            <p className={cls(common.noMarg, common.p, common.p4, common.pSecondary, common.flex, common.flexGrow)}>To</p>
+            <DestTokenBalance />
           </div>
           <ChainsList
             config={props.config}
-            expanded={expandedFrom}
-            setExpanded={setExpandedFrom}
-            chain={chainName1}
-            setChain={setChainName1}
-            disabledChain={chainName2}
+            expanded={expandedTo}
+            setExpanded={setExpandedTo}
+            chain={chainName2}
+            setChain={setChainName2}
+            disabledChain={chainName1}
             disabled={transferInProgress}
-            from={true}
           />
-          {/* <Collapse in={!!chainName1}>
-          <TokenList />
-          </Collapse> */}
         </SkPaper>
+      </Collapse>
 
-        {/* <Collapse in={!!token}> */}
-        <SkPaper gray className={cls()}>
-          <AmountInput />
-        </SkPaper>
-        {/* </Collapse> */}
-      </SkPaper>
-      <SwitchDirection />
-      <SkPaper gray className={common.noPadd}>
-        <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
-          <p className={cls(common.noMarg, common.p, common.p4, common.pSecondary, common.flex, common.flexGrow)}>To</p>
-          <DestTokenBalance />
-        </div>
-        <ChainsList
-          config={props.config}
-          expanded={expandedTo}
-          setExpanded={setExpandedTo}
-          chain={chainName2}
-          setChain={setChainName2}
-          disabledChain={chainName1}
-          disabled={transferInProgress}
-        />
-      </SkPaper>
       <AmountErrorMessage />
-      <SkPaper background="transparent">
-        <SkStepper skaleNetwork={props.config.skaleNetwork} />
-      </SkPaper>
+
+      <Collapse in={showStepper} className={common.margTop20} >
+        <SkPaper background="transparent">
+          <SkStepper skaleNetwork={props.config.skaleNetwork} />
+        </SkPaper>
+      </Collapse>
+
     </div>
   )
 }

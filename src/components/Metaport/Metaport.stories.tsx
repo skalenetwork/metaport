@@ -1,13 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Metaport from "./Metaport";
 
-import * as interfaces from '../../core/interfaces'
-// import { storyDecorator } from "../WidgetUI/StorybookHelper";
 
-import METAPORT_CONFIG from '../../metadata/metaportConfigStaging.json';
-const config = METAPORT_CONFIG as interfaces.MetaportConfig;
-
-// METAPORT_CONFIG.mainnetEndpoint = process.env.STORYBOOK_MAINNET_ENDPOINT;
+import { METAPORT_CONFIG } from '../../metadata/metaportConfigStaging';
+METAPORT_CONFIG.mainnetEndpoint = import.meta.env.VITE_MAINNET_ENDPOINT;
 
 const meta: Meta<typeof Metaport> = {
   title: "Functional/Metaport",
@@ -21,6 +17,6 @@ type Story = StoryObj<typeof Metaport>;
 
 export const WidgetDemo: Story = {
   args: {
-    config: config
+    config: METAPORT_CONFIG
   }
 };

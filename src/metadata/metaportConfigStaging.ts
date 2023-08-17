@@ -1,16 +1,18 @@
-{
+import * as interfaces from '../core/interfaces'
+
+export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   "skaleNetwork": "staging",
   "openOnLoad": true,
   "openButton": true,
   "debug": false,
   "chains": [
     "mainnet",
-    "staging-legal-crazy-castor",
-    "staging-utter-unripe-menkar",
-    "staging-faint-slimy-achird",
-    "staging-perfect-parallel-gacrux",
-    "staging-severe-violet-wezen",
-    "staging-weepy-fitting-caph"
+    "staging-legal-crazy-castor", // Europa
+    "staging-utter-unripe-menkar", // Calypso
+    "staging-faint-slimy-achird", // Nebula
+    "staging-perfect-parallel-gacrux", // Test Chain 1
+    "staging-severe-violet-wezen", // Test Chain 2
+    "staging-weepy-fitting-caph" // Tank War Zone
   ],
   "tokens": {
     "eth": {
@@ -108,7 +110,10 @@
         "usdc": {
           "address": "0x85dedAA65D33210E15911Da5E9dc29F5C93a50A9",
           "chains": {
-            "staging-legal-crazy-castor": {}
+            "staging-legal-crazy-castor": {},
+            "staging-utter-unripe-menkar": {
+              "hub": "staging-legal-crazy-castor"
+            }
           }
         },
         "wbtc": {
@@ -135,7 +140,7 @@
         }
       }
     },
-    "staging-utter-unripe-menkar": {
+    "staging-utter-unripe-menkar": { // Calypso connections
       "erc20": {
         "skl": {
           "address": "0x7E1B8750C21AebC3bb2a0bDf40be104C609a9852",
@@ -145,6 +150,18 @@
             },
             "staging-faint-slimy-achird": {
               "hub": "staging-legal-crazy-castor",
+              "clone": true
+            },
+            "mainnet": {
+              "hub": "staging-legal-crazy-castor",
+              "clone": true
+            }
+          }
+        },
+        "usdc": {
+          "address": "0x49c37d0Bb6238933eEe2157e9Df417fd62723fF6",
+          "chains": {
+            "staging-legal-crazy-castor": {
               "clone": true
             },
             "mainnet": {
@@ -175,7 +192,7 @@
         }
       }
     },
-    "staging-legal-crazy-castor": {
+    "staging-legal-crazy-castor": { // Europa connections
       "erc20": {
         "skl": {
           "address": "0xbA1E9BA7CDd4815Da6a51586bE56e8643d1bEAb6",
@@ -228,6 +245,9 @@
           "chains": {
             "mainnet": {
               "clone": true
+            },
+            "staging-utter-unripe-menkar": {
+              "wrapper": "0x4f250cCE5b8B39caA96D1144b9A32E1c6a9f97b0"
             }
           }
         },
@@ -242,11 +262,8 @@
       }
     },
     "staging-perfect-parallel-gacrux": {
-      "erc20": {
-      },
-      "erc721": {
-
-      },
+      "erc20": {},
+      "erc721": {},
       "erc1155": {
         "skaliens": {
           "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",

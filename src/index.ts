@@ -21,6 +21,7 @@ import TransferETF from './components/TransferETF'
 import TransferETA from './components/TransferETA'
 import AmountErrorMessage from './components/AmountErrorMessage'
 import DestTokenBalance from './components/DestTokenBalance'
+import ErrorMessage from './components/ErrorMessage'
 
 import { cls } from './core/helper'
 import styles from './styles/styles.module.scss'
@@ -29,6 +30,8 @@ import common from './styles/common.module.scss'
 import { getWidgetTheme as getMetaportTheme } from './core/themes';
 
 import { useAccount as useWagmiAccount } from 'wagmi'
+
+import { PROXY_ENDPOINTS } from './core/network'
 
 export {
   Metaport,
@@ -47,9 +50,11 @@ export {
   AmountErrorMessage,
   TokenBalance,
   DestTokenBalance,
+  ErrorMessage,
   cls,
   styles,
   common,
   getMetaportTheme,
-  useWagmiAccount
+  useWagmiAccount,
+  PROXY_ENDPOINTS
 }

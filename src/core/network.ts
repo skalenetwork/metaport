@@ -29,6 +29,8 @@ import { MAINNET_CHAIN_NAME } from './constants'
 import { IMA_ADDRESSES, IMA_ABIS } from './contracts'
 import { SkaleNetwork } from './interfaces'
 
+export { proxyEndpoints as PROXY_ENDPOINTS }
+
 const PROTOCOL: { [protocol in 'http' | 'ws']: string } = {
   http: 'https://',
   ws: 'wss://',
