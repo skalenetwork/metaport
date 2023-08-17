@@ -2,15 +2,14 @@ import React, { useEffect } from 'react'
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 
-import TokenList from '../TokenList'
 import ChainsList from '../ChainsList'
 import AmountInput from '../AmountInput'
 import SkStepper from '../Stepper'
 import SkPaper from '../SkPaper'
 import AmountErrorMessage from '../AmountErrorMessage'
 import SwitchDirection from '../SwitchDirection'
-import TransferETF from '../TransferETF'
-import TransferETA from '../TransferETA'
+import { TokenBalance } from '../TokenList'
+import DestTokenBalance from '../DestTokenBalance'
 
 import common from '../../styles/common.module.scss'
 import { cls } from '../../core/helper'
@@ -33,6 +32,7 @@ export function WidgetBody(props) {
   const mpc = useMetaportStore((state) => state.mpc)
   const tokens = useMetaportStore((state) => state.tokens)
   const setToken = useMetaportStore((state) => state.setToken)
+  const tokenBalances = useMetaportStore((state) => state.tokenBalances)
 
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
@@ -51,6 +51,16 @@ export function WidgetBody(props) {
     <div>
       <SkPaper gray className={common.noPadd}>
         <SkPaper background="transparent" className={common.noPadd}>
+          <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
+            <p className={cls(common.noMarg, common.p, common.p4, common.pSecondary, common.flex, common.flexGrow)}>From</p>
+            <div>
+              {token ? <TokenBalance
+                balance={tokenBalances[token.keyname]}
+                symbol={token.meta.symbol}
+                decimals={token.meta.decimals}
+              /> : null}
+            </div>
+          </div>
           <ChainsList
             config={props.config}
             expanded={expandedFrom}
@@ -74,6 +84,10 @@ export function WidgetBody(props) {
       </SkPaper>
       <SwitchDirection />
       <SkPaper gray className={common.noPadd}>
+        <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
+          <p className={cls(common.noMarg, common.p, common.p4, common.pSecondary, common.flex, common.flexGrow)}>To</p>
+          <DestTokenBalance />
+        </div>
         <ChainsList
           config={props.config}
           expanded={expandedTo}

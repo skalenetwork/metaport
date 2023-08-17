@@ -71,7 +71,11 @@ export default function TokenListSection(props: {
               {getTokenName(props.tokens[key])}
             </p>
             <div className={common.margRi10}>
-              <TokenBalance token={props.tokens[key]} tokenBalances={props.tokenBalances} />
+              <TokenBalance
+                balance={props.tokenBalances[props.tokens[key].keyname]}
+                symbol={props.tokens[key].meta.symbol}
+                decimals={props.tokens[key].meta.decimals}
+              />
             </div>
           </div>
         </Button>

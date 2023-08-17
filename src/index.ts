@@ -13,13 +13,14 @@ import ChainIcon from './components/ChainIcon'
 import TokenIcon from './components/TokenIcon'
 
 import ChainsList from './components/ChainsList'
-import TokenList from './components/TokenList'
+import TokenList, { TokenBalance } from './components/TokenList'
 import AmountInput from './components/AmountInput'
 import SwitchDirection from './components/SwitchDirection'
 import SkStepper from './components/Stepper'
 import TransferETF from './components/TransferETF'
 import TransferETA from './components/TransferETA'
 import AmountErrorMessage from './components/AmountErrorMessage'
+import DestTokenBalance from './components/DestTokenBalance'
 
 import { cls } from './core/helper'
 import styles from './styles/styles.module.scss'
@@ -44,6 +45,8 @@ export {
   TransferETF,
   TransferETA,
   AmountErrorMessage,
+  TokenBalance,
+  DestTokenBalance,
   cls,
   styles,
   common,

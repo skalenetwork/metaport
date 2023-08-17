@@ -23,6 +23,8 @@
 
 import debug from 'debug'
 
+import { Contract } from 'ethers';
+
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 import { create } from 'zustand'
 
@@ -78,6 +80,10 @@ interface MetaportState {
   tokenContracts: interfaces.TokenContractsMap
   tokenBalances: interfaces.TokenBalancesMap
   updateTokenBalances: (address: string) => Promise<void>
+
+  destTokenContract: Contract
+  destTokenBalance: bigint
+  updateDestTokenBalance: (address: string) => Promise<void>
 
   amountErrorMessage: string
   setAmountErrorMessage: (amountErrorMessage: string) => void
@@ -272,14 +278,31 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   tokens: getEmptyTokenDataMap(),
 
   token: null,
-  setToken: (token: dataclasses.TokenData) =>
-    set(() => ({
+
+  setToken: async (token: dataclasses.TokenData) => {
+    const provider = get().chainName2 === MAINNET_CHAIN_NAME ? get().mainnetChain.provider : get().sChain2.provider
+    const destTokenContract = get().mpc.tokenContract(
+      get().chainName2,
+      token.keyname,
+      token.type,
+      provider
+    )
+    set({
       token: token,
       stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),
-    })),
+      destTokenContract: destTokenContract
+    })
+  },
 
   tokenContracts: {},
   tokenBalances: {},
+
+  destTokenContract: null,
+  destTokenBalance: null,
+  updateDestTokenBalance: async (address: string) => {
+    const balance = await get().mpc.tokenBalance(get().destTokenContract, address)
+    set({ destTokenBalance: balance })
+  },
 
   updateTokenBalances: async (address: string) => {
     const tokenBalances = await get().mpc.tokenBalances(get().tokenContracts, address)

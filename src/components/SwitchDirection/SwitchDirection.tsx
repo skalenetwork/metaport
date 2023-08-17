@@ -32,6 +32,7 @@ export default function SwitchDirection() {
         style={{
           background: metaportTheme.background,
           borderRadius: '50%',
+          zIndex: metaportTheme.zIndex
         }}
       >
         <IconButton

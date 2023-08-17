@@ -1,26 +1,25 @@
 import React from 'react'
 import { formatUnits } from 'ethers'
-
-import { TokenType, TokenData } from '../../core/dataclasses'
-import { TokenBalancesMap } from '../../core/interfaces'
-
 import { cls } from '../../core/helper'
 import common from '../../styles/common.module.scss'
 
-function formatBalance(balance: bigint, token: TokenData): string {
-  return formatUnits(balance, parseInt(token.meta.decimals))
+function formatBalance(balance: bigint, decimals: string): string {
+  return formatUnits(balance, parseInt(decimals))
 }
 
-export default function TokenBalance(props: { token: TokenData; tokenBalances: TokenBalancesMap }) {
-  if ([TokenType.erc721, TokenType.erc721meta, TokenType.erc1155].includes(props.token.type)) return
-
-  const balance = props.tokenBalances[props.token.keyname]
-
-  if (balance === undefined || balance === null) return
+export default function TokenBalance(props: { balance: bigint, decimals: string, symbol: string }) {
+  if (props.balance === undefined || props.balance === null) return
   return (
     <div className={cls(common.flex, common.flexCenteredVert)}>
-      <p className={cls(common.p, common.p4, common.pSecondary, common.flex, common.flexCenteredVert, common.margRi5)}>
-        {formatBalance(balance, props.token)} {props.token.meta.symbol}
+      <p className={cls(
+        common.p,
+        common.p4,
+        common.pSecondary,
+        common.flex,
+        common.flexCenteredVert,
+        common.margRi5
+      )}>
+        {formatBalance(props.balance, props.decimals)} {props.symbol}
       </p>
     </div>
   )
