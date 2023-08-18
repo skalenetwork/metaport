@@ -25,6 +25,8 @@ export function WidgetBody(props) {
 
   const expandedTokens = useCollapseStore((state) => state.expandedTokens)
 
+  const destChains = useMetaportStore((state) => state.destChains)
+
   const token = useMetaportStore((state) => state.token)
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const chainName2 = useMetaportStore((state) => state.chainName2)
@@ -47,7 +49,7 @@ export function WidgetBody(props) {
   }, []);
 
   useEffect(() => {
-    if (tokens && tokens.erc20) {
+    if (tokens && tokens.erc20 && Object.values(tokens.erc20)[0]) {
       setToken(Object.values(tokens.erc20)[0])
     }
   }, [tokens]);
@@ -89,6 +91,7 @@ export function WidgetBody(props) {
               expanded={expandedFrom}
               setExpanded={setExpandedFrom}
               chain={chainName1}
+              chains={props.config.chains}
               setChain={setChainName1}
               disabledChain={chainName2}
               disabled={transferInProgress}
@@ -118,16 +121,15 @@ export function WidgetBody(props) {
             expanded={expandedTo}
             setExpanded={setExpandedTo}
             chain={chainName2}
+            chains={destChains}
             setChain={setChainName2}
             disabledChain={chainName1}
             disabled={transferInProgress}
           />
         </SkPaper>
       </Collapse>
-
       <AmountErrorMessage />
-
-      <Collapse in={showStepper} className={common.margTop20} >
+      <Collapse in={showStepper} >
         <SkPaper background="transparent">
           <SkStepper skaleNetwork={props.config.skaleNetwork} />
         </SkPaper>

@@ -69,6 +69,8 @@ interface MetaportState {
   chainName1: string
   chainName2: string
 
+  destChains: string[]
+
   setChainName1: (name: string) => void
   setChainName2: (name: string) => void
 
@@ -233,13 +235,10 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   chainName1: '',
   chainName2: '',
 
+  destChains: [],
+
   setChainName1: (name: string) =>
     set((state) => {
-      // updateState(
-      //     name,
-      //     state.chainName2
-      // )
-
       const updState = {}
       if (name === MAINNET_CHAIN_NAME) {
         updState['mainnetChain'] = state.mpc.mainnet()
@@ -256,6 +255,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         tokens: tokens,
         tokenContracts: tokenContracts,
         tokenBalances: {},
+        destChains: get().mpc.config.chains,
         ...updState,
       }
     }),
@@ -294,7 +294,8 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       token: token,
       stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),
       destTokenContract: destTokenContract,
-      destTokenBalance: null
+      destTokenBalance: null,
+      destChains: Object.keys(token.connections)
     })
   },
 
@@ -304,8 +305,10 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   destTokenContract: null,
   destTokenBalance: null,
   updateDestTokenBalance: async (address: string) => {
-    const balance = await get().mpc.tokenBalance(get().destTokenContract, address)
-    set({ destTokenBalance: balance })
+    if (get().destTokenContract) {
+      const balance = await get().mpc.tokenBalance(get().destTokenContract, address)
+      set({ destTokenBalance: balance })
+    }
   },
 
   updateTokenBalances: async (address: string) => {

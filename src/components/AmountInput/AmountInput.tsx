@@ -29,23 +29,6 @@ export default function AmountInput() {
     setAmount(event.target.value, address)
   }
 
-  // const setMaxAmount = () => {
-  //   if (token && !token.clone &&
-  //     (token.wrapsSFuel || token.type === TokenType.eth)) {
-  //     const adjustedAmount = Number(token.balance) - SFUEL_RESERVE_AMOUNT;
-  //     if (adjustedAmount > 0) {
-  //       props.setAmount(adjustedAmount.toString());
-  //     }
-  //   } else {
-  //     if (token && !token.clone && token.unwrappedBalance) {
-  //       props.setAmount(token.unwrappedBalance);
-  //     } else {
-  //       props.setAmount(token.balance);
-  //     }
-  //   }
-  // }
-
-  // if (!token) return
   return (
     <div className={cls(common.flex, localStyles.inputAmount)}>
 
@@ -63,36 +46,10 @@ export default function AmountInput() {
           disabled={transferInProgress}
         />
       </div>
-
       }
-      <TokenList />
-
-      {/* <div
-        className={cls(
-          common.p,
-          common.pMain,
-          [common.pDisabled, transferInProgress || !token],
-          common.flex,
-          common.flexCenteredVert,
-          common.margRi20,
-          localStyles.tokenSymbol,
-          [localStyles.tokenSymbolPlaceholder, !amount],
-        )}
-      >
-        {token ? token.meta.symbol : 'ETH'}
-      </div> */}
-
-      {/* {props.maxBtn ? <div className={common.flex}>
-        <Button
-          color="primary"
-          size="small"
-          className={cls(styles.btnChain, localStyles.btnMax)}
-        // onClick={setMaxAmount}
-        // disabled={props.loading || !token.balance || props.amountLocked}
-        >
-          MAX
-        </Button>
-      </div> : null} */}
+      <div>
+        <TokenList />
+      </div>
     </div>
   )
 }

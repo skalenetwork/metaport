@@ -68,93 +68,88 @@ export default function TokenList() {
     setExpandedTokens(isExpanded ? panel : false)
   }
 
-  // if (noTokens) {
-  //   return <ErrorMessage errorMessage={new NoTokenPairsMessage()} />
-  // }
-
   let tokensText = token ? token.meta.symbol : 'TOKEN';
   if (noTokens) {
-    tokensText = 'ETH'
+    tokensText = 'N/A'
   }
 
   return (
-    <div>
-      <Accordion
-        expanded={expandedTokens === 'panel1'}
-        onChange={handleChange('panel1')}
-        disabled={disabled || transferInProgress || noTokens}
-        elevation={0}
+    <Accordion
+      expanded={expandedTokens === 'panel1'}
+      onChange={handleChange('panel1')}
+      disabled={disabled || transferInProgress || noTokens}
+      elevation={0}
+      className={common.fullWidth}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1bh-content"
+        id="panel1bh-header"
+        className={styles.accordionSummaryTokens}
+
       >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-          className={styles.accordionSummaryTokens}
+        <div className={cls(common.flex, common.flexCenteredVert, common.fullWidth)}>
+          <div className={cls(common.flex, common.flexCentered, common.margRi10, [common.pDisabled, noTokens])}>
+            <TokenIcon
+              tokenSymbol={token?.meta.symbol}
+              iconUrl={token?.meta.iconUrl}
+            />
+          </div>
+          <p
+            className={cls(
+              common.p,
+              common.p1,
+              common.p700,
+              common.pMain,
+              [common.pDisabled, noTokens],
+              common.flex,
+              common.flexGrow,
+              common.margRi10,
+            )}
+          >
+            {tokensText}
+          </p>
 
-        >
-          <div className={cls(common.flex, common.flexCenteredVert, common.fullWidth)}>
-            <div className={cls(common.flex, common.flexCentered, common.margRi10, [common.pDisabled, noTokens])}>
-              <TokenIcon
-                tokenSymbol={token?.meta.symbol}
-                iconUrl={token?.meta.iconUrl}
-              />
-            </div>
-            <p
-              className={cls(
-                common.p,
-                common.p1,
-                common.p700,
-                common.pMain,
-                [common.pDisabled, noTokens],
-                common.flex,
-                common.flexGrow,
-                common.margRi10,
-              )}
-            >
-              {tokensText}
-            </p>
-
-            {/* <div className={common.margRi5}>
+          {/* <div className={common.margRi5}>
               {token ? <TokenBalance token={token} tokenBalances={tokenBalances} /> : null}
             </div> */}
-          </div>
-        </AccordionSummary>
+        </div>
+      </AccordionSummary>
 
-        {expandedTokens ? <AccordionDetails>
-          {/* <TokenListSection
+      {expandedTokens ? <AccordionDetails>
+        {/* <TokenListSection
             tokens={tokens.eth}
             type={TokenType.eth}
             setToken={setToken}
             setExpanded={setExpandedTokens}
           /> */}
-          <TokenListSection
-            tokens={tokens.erc20}
-            type={TokenType.erc20}
-            setToken={setToken}
-            setExpanded={setExpandedTokens}
-            tokenBalances={tokenBalances}
-          />
-          <TokenListSection
-            tokens={tokens.erc721}
-            type={TokenType.erc721}
-            setToken={setToken}
-            setExpanded={setExpandedTokens}
-          />
-          <TokenListSection
-            tokens={tokens.erc721meta}
-            type={TokenType.erc721meta}
-            setToken={setToken}
-            setExpanded={setExpandedTokens}
-          />
-          <TokenListSection
-            tokens={tokens.erc1155}
-            type={TokenType.erc1155}
-            setToken={setToken}
-            setExpanded={setExpandedTokens}
-          />
-        </AccordionDetails> : null}
+        <TokenListSection
+          tokens={tokens.erc20}
+          type={TokenType.erc20}
+          setToken={setToken}
+          setExpanded={setExpandedTokens}
+          tokenBalances={tokenBalances}
+        />
+        <TokenListSection
+          tokens={tokens.erc721}
+          type={TokenType.erc721}
+          setToken={setToken}
+          setExpanded={setExpandedTokens}
+        />
+        <TokenListSection
+          tokens={tokens.erc721meta}
+          type={TokenType.erc721meta}
+          setToken={setToken}
+          setExpanded={setExpandedTokens}
+        />
+        <TokenListSection
+          tokens={tokens.erc1155}
+          type={TokenType.erc1155}
+          setToken={setToken}
+          setExpanded={setExpandedTokens}
+        />
+      </AccordionDetails> : null}
 
-      </Accordion>
-    </div>
+    </Accordion>
   )
 }

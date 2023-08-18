@@ -261,22 +261,25 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         }
       }
     },
+    "staging-severe-violet-wezen": {
+      "erc20": {}
+    },
     "staging-perfect-parallel-gacrux": {
       "erc20": {},
       "erc721": {},
       "erc1155": {
-        "skaliens": {
-          "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
-          "chains": {}
-        },
-        "medals": {
-          "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
-          "chains": {}
-        },
-        "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
-          "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
-          "chains": {}
-        }
+        // "skaliens": {
+        //   "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
+        //   "chains": {}
+        // },
+        // "medals": {
+        //   "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
+        //   "chains": {}
+        // },
+        // "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
+        //   "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
+        //   "chains": {}
+        // }
       }
     }
   },

@@ -15,7 +15,7 @@
 }
 
 .popper {
-    width: 390px;
+    max-width: 390px;
     max-height: calc(100vh - 110pt);
     padding: 10pt;
     border-radius: $sk-border-radius-outter;

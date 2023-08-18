@@ -22,6 +22,7 @@ export default function ChainsList(props: {
   setExpanded: (expanded: string | false) => void
   setChain: (chain: string) => void
   chain: string
+  chains: string[]
   disabledChain: string
   from?: boolean
   disabled?: boolean
@@ -32,7 +33,7 @@ export default function ChainsList(props: {
 
   const schainNames = []
 
-  for (let chain of props.config.chains) {
+  for (let chain of props.chains) {
     if (chain != props.disabledChain && chain != props.chain) {
       schainNames.push(chain)
     }
