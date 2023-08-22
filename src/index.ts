@@ -22,12 +22,13 @@ import TransferETA from './components/TransferETA'
 import AmountErrorMessage from './components/AmountErrorMessage'
 import DestTokenBalance from './components/DestTokenBalance'
 import ErrorMessage from './components/ErrorMessage'
+import CommunityPool from './components/CommunityPool'
 
 import { cls } from './core/helper'
 import styles from './styles/styles.module.scss'
-import common from './styles/common.module.scss'
+import cmn from './styles/cmn.module.scss'
 
-import { getWidgetTheme as getMetaportTheme } from './core/themes';
+import { getWidgetTheme as getMetaportTheme } from './core/themes'
 
 import { useAccount as useWagmiAccount } from 'wagmi'
 
@@ -51,10 +52,11 @@ export {
   TokenBalance,
   DestTokenBalance,
   ErrorMessage,
+  CommunityPool,
   cls,
   styles,
-  common,
+  cmn,
   getMetaportTheme,
   useWagmiAccount,
-  PROXY_ENDPOINTS
+  PROXY_ENDPOINTS,
 }

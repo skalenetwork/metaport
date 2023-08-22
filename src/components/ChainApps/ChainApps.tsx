@@ -2,7 +2,7 @@ import React from 'react'
 import { cls, getChainAppsMeta, getChainAlias } from '../../core/helper'
 
 import styles from '../../styles/styles.module.scss'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 import { SkaleNetwork } from '../../core/interfaces'
 
 import ChainIcon from '../ChainIcon'
@@ -12,27 +12,18 @@ export default function ChainApps(props: { skaleNetwork: SkaleNetwork; chain: st
   if (!apps || !Object.keys(apps) || Object.keys(apps).length === 0) return <div></div>
 
   return (
-    <div className={cls(styles.sk__chainApps, common.margRi10, common.flex, common.flexCenteredVert)}>
-      <div className={cls(common.fldex, common.flexCenteredVert)}>
+    <div className={cls(styles.sk__chainApps, cmn.mri10, cmn.flex, cmn.flexcv)}>
+      <div className={cls(cmn.fldex, cmn.flexcv)}>
         {Object.keys(apps).map((key, _) => (
-          <div
-            className={cls(
-              common.flex,
-              common.flexCenteredVert,
-              common.margRi5,
-              common.margLeft5,
-              common.margBott10,
-              common.margTop10,
-            )}
-          >
+          <div className={cls(cmn.flex, cmn.flexcv, cmn.mri5, cmn.mleft5, cmn.mbott10, cmn.mtop10)}>
             <ChainIcon
-              className={cls(common.margLeft20)}
+              className={cls(cmn.mleft20)}
               skaleNetwork={props.skaleNetwork}
               chainName={props.chain}
               app={key}
               size="xs"
             />
-            <p className={cls(common.p, common.p4, common.pSecondary, common.p600, common.margLeft10)}>
+            <p className={cls(cmn.p, cmn.p4, cmn.pSec, cmn.p600, cmn.mleft10)}>
               {getChainAlias(props.skaleNetwork, props.chain, key)}
             </p>
           </div>

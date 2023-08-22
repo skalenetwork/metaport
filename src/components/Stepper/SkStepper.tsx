@@ -9,7 +9,7 @@ import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 import { cls, getChainAlias, getRandom } from '../../core/helper'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 import styles from '../../styles/styles.module.scss'
 import localStyles from './SkStepper.module.scss'
 import ChainIcon from '../ChainIcon'
@@ -51,98 +51,83 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   if (stepsMetadata.length === 0) return <div></div>
   return (
     <Collapse in={stepsMetadata && stepsMetadata.length !== 0}>
-     
-        <Box className={cls()}>
-          <Collapse in={currentStep !== stepsMetadata.length}>
-            <Stepper className={localStyles.stepper} activeStep={currentStep} orientation="vertical">
-              {stepsMetadata.map((step, i) => (
-                <Step key={i}>
-                  <StepLabel className={localStyles.labelStep}>
-                    <div className={cls(common.flex, common.flexCenteredVert, styles.mp_flexRow)}>
-                      <div className={cls(common.flex, common.flexCenteredVert, styles.mp_flexRow)}>
-                        <h4 className={cls(common.noMarg, common.flex)}>{step.headline}</h4>
-                        <div className={cls(common.margLeft5, common.margRi5, common.flex)}>
-                          <ChainIcon
-                            skaleNetwork={props.skaleNetwork}
-                            chainName={step.onSource ? step.from : step.to}
-                            size="xs"
-                          />
-                        </div>
-                        <h4 className={cls(common.noMarg, common.flex)}>
-                          {getChainAlias(props.skaleNetwork, step.onSource ? step.from : step.to)}
-                        </h4>
+      <Box className={cls()}>
+        <Collapse in={currentStep !== stepsMetadata.length}>
+          <Stepper className={localStyles.stepper} activeStep={currentStep} orientation="vertical">
+            {stepsMetadata.map((step, i) => (
+              <Step key={i}>
+                <StepLabel className={localStyles.labelStep}>
+                  <div className={cls(cmn.flex, cmn.flexcv, styles.mp_flexRow)}>
+                    <div className={cls(cmn.flex, cmn.flexcv, styles.mp_flexRow)}>
+                      <h4 className={cls(cmn.nom, cmn.flex)}>{step.headline}</h4>
+                      <div className={cls(cmn.mleft5, cmn.mri5, cmn.flex)}>
+                        <ChainIcon
+                          skaleNetwork={props.skaleNetwork}
+                          chainName={step.onSource ? step.from : step.to}
+                          size="xs"
+                        />
                       </div>
+                      <h4 className={cls(cmn.nom, cmn.flex)}>
+                        {getChainAlias(props.skaleNetwork, step.onSource ? step.from : step.to)}
+                      </h4>
                     </div>
-                  </StepLabel>
-                  <StepContent className={common.margTop}>
-                    <Box sx={{ mb: 2 }}>
-                      <p className={cls(common.flex, common.p, common.pSecondary, common.p4, common.flexGrow)}>
-                        {step.text}
-                      </p>
-                      <div className={common.margTop10}>
-                        {loading ? (
-                          <LoadingButton
-                            loading
-                            loadingPosition="start"
-                            variant="contained"
-                            color="primary"
-                            size="medium"
-                            className={cls(styles.btnAction, common.margTop5)}
-                          >
-                            {btnText}
-                            {/* {props.loadingTokens ? 'Loading...' : step.btnLoadingText} */}
-                          </LoadingButton>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="medium"
-                            className={cls(styles.btnAction, common.margTop5)}
-                            onClick={() => execute(address, switchNetworkAsync, walletClient)}
-                            disabled={
-                              !!(amountErrorMessage || actionBtnDisabled || loading || amount == '')
-                            }
-                          >
-                            {step.btnText}
-                          </Button>
-                        )}
-                      </div>
-                    </Box>
-                  </StepContent>
-                </Step>
-              ))}
-            </Stepper>
-          </Collapse>
+                  </div>
+                </StepLabel>
+                <StepContent className={cmn.margTop}>
+                  <Box sx={{ mb: 2 }}>
+                    <p className={cls(cmn.flex, cmn.p, cmn.pSec, cmn.p4, cmn.flexg)}>{step.text}</p>
+                    <div className={cmn.mtop10}>
+                      {loading ? (
+                        <LoadingButton
+                          loading
+                          loadingPosition="start"
+                          variant="contained"
+                          color="primary"
+                          size="medium"
+                          className={cls(styles.btnAction, cmn.mtop5)}
+                        >
+                          {btnText}
+                          {/* {props.loadingTokens ? 'Loading...' : step.btnLoadingText} */}
+                        </LoadingButton>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="medium"
+                          className={cls(styles.btnAction, cmn.mtop5)}
+                          onClick={() => execute(address, switchNetworkAsync, walletClient)}
+                          disabled={!!(amountErrorMessage || actionBtnDisabled || loading || amount == '')}
+                        >
+                          {step.btnText}
+                        </Button>
+                      )}
+                    </div>
+                  </Box>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+        </Collapse>
 
-          {currentStep === stepsMetadata.length && (
-            <div>
-              <div className={cls(common.d)}>
-                <p
-                  className={cls(
-                    common.p1,
-                    common.p,
-                    common.p600,
-                    common.pMain,
-                    common.flexGrow,
-                    common.textCentered,
-                    common.margTop20,
-                  )}
-                >
-                  {emoji} Transfer completed
-                </p>
-              </div>
-              <Button
-                onClick={startOver}
-                color="primary"
-                size="medium"
-                className={cls(styles.btnAction, common.margTop10)}
-                startIcon={<SettingsBackupRestoreRoundedIcon />}
-              >
-                Start over
-              </Button>
+        {currentStep === stepsMetadata.length && (
+          <div>
+            <div className={cls(cmn.d)}>
+              <p className={cls(cmn.p1, cmn.p, cmn.p600, cmn.pPrim, cmn.flexg, cmn.pCent, cmn.mtop20)}>
+                {emoji} Transfer completed
+              </p>
             </div>
-          )}
-        </Box>
+            <Button
+              onClick={startOver}
+              color="primary"
+              size="medium"
+              className={cls(styles.btnAction, cmn.mtop10)}
+              startIcon={<SettingsBackupRestoreRoundedIcon />}
+            >
+              Start over
+            </Button>
+          </div>
+        )}
+      </Box>
     </Collapse>
   )
 }

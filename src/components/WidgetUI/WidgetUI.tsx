@@ -40,7 +40,7 @@ import WidgetBody from '../WidgetBody'
 import { cls } from '../../core/helper'
 
 import styles from '../../styles/styles.module.scss'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 
 import SkConnect from '../SkConnect'
 import ErrorMessage from '../ErrorMessage'
@@ -67,9 +67,9 @@ export function WidgetUI(props: { config: MetaportConfig }) {
   }
 
   const fabButton = (
-    <div className={cls(common.flex)}>
-      <div className={fabLeft ? null : cls(common.flexGrow)}></div>
-      <div className={common.flex}>
+    <div className={cls(cmn.flex)}>
+      <div className={fabLeft ? null : cls(cmn.flexg)}></div>
+      <div className={cmn.flex}>
         <Fab
           color={isOpen ? 'secondary' : 'primary'}
           className={props.config.openButton ? styles.skaleBtn : styles.skaleBtnHidden}
@@ -96,17 +96,19 @@ export function WidgetUI(props: { config: MetaportConfig }) {
       className={cls(styles.imaWidgetBody)}
       style={metaportTheme ? { ...metaportTheme.position, zIndex: metaportTheme.zIndex } : null}
     >
-      <div className={props.config.openButton ? common.margBott20 : null}>{fabTop ? fabButton : null}</div>
+      <div className={props.config.openButton ? cmn.mbott20 : null}>{fabTop ? fabButton : null}</div>
       <Collapse in={isOpen}>
         <SkPaper className={cls(styles.popper)}>
           <SkConnect />
           <Collapse in={!!errorMessage}>
             <ErrorMessage errorMessage={errorMessage} />
           </Collapse>
-          <Collapse in={!errorMessage}>{address ? <WidgetBody config={props.config} /> : <div></div>}</Collapse>
+          <Collapse in={!errorMessage} className={styles.widgetContent}>
+            {address ? <WidgetBody config={props.config} /> : <div></div>}
+          </Collapse>
         </SkPaper>
       </Collapse>
-      <div className={props.config.openButton ? common.margTop20 : null}>{fabTop ? null : fabButton}</div>
+      <div className={props.config.openButton ? cmn.mtop20 : null}>{fabTop ? null : fabButton}</div>
     </div>
   )
 }

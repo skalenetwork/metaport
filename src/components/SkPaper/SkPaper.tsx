@@ -25,7 +25,7 @@ import React, { ReactElement } from 'react'
 import { cls } from '../../core/helper'
 
 import styles from '../../styles/styles.module.scss'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 
 import { useUIStore } from '../../store/Store'
 
@@ -50,7 +50,7 @@ export default function SkPaper(props: {
         styles.paper,
         [styles.paperGrey, props.gray],
         [styles.fullHeight, props.fullHeight],
-        [common.margTop20, props.margTop],
+        [cmn.mtop20, props.margTop],
       )}
     >
       {props.children}

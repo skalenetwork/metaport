@@ -11,10 +11,12 @@ import SwitchDirection from '../SwitchDirection'
 import { TokenBalance } from '../TokenList'
 import DestTokenBalance from '../DestTokenBalance'
 import ErrorMessage from '../ErrorMessage'
+import CommunityPool from '../CommunityPool'
 
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 import { cls } from '../../core/helper'
 import { Collapse } from '@mui/material'
+import { MAINNET_CHAIN_NAME } from '../../core/constants'
 
 export function WidgetBody(props) {
   const expandedFrom = useCollapseStore((state) => state.expandedFrom)
@@ -23,6 +25,7 @@ export function WidgetBody(props) {
   const expandedTo = useCollapseStore((state) => state.expandedTo)
   const setExpandedTo = useCollapseStore((state) => state.setExpandedTo)
 
+  const expandedCP = useCollapseStore((state) => state.expandedCP)
   const expandedTokens = useCollapseStore((state) => state.expandedTokens)
 
   const destChains = useMetaportStore((state) => state.destChains)
@@ -46,44 +49,40 @@ export function WidgetBody(props) {
   useEffect(() => {
     setChainName1(mpc.config.chains ? mpc.config.chains[0] : '')
     setChainName2(mpc.config.chains ? mpc.config.chains[1] : '')
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (tokens && tokens.erc20 && Object.values(tokens.erc20)[0]) {
       setToken(Object.values(tokens.erc20)[0])
     }
-  }, [tokens]);
+  }, [tokens])
 
-  const showFrom = !expandedTo && !expandedTokens && !errorMessage
-  const showTo = !expandedFrom && !expandedTokens && !errorMessage
-  const showInput = !expandedFrom && !expandedTo && !errorMessage
-  const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage
-  const showStepper = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage
-  const showError = !!errorMessage;
+  const showFrom = !expandedTo && !expandedTokens && !errorMessage && !expandedCP
+  const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP
+  const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP
+  const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
+  const showStepper = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
+  const showCP = !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
+  const showError = !!errorMessage
 
   return (
     <div>
       <Collapse in={showError}>
         <ErrorMessage errorMessage={errorMessage} />
       </Collapse>
-      <SkPaper gray className={common.noPadd}>
-        <SkPaper background="transparent" className={common.noPadd}>
+      <SkPaper gray className={cmn.nop}>
+        <SkPaper background="transparent" className={cmn.nop}>
           <Collapse in={showFrom}>
-            <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
-              <p className={cls(
-                common.noMarg,
-                common.p,
-                common.p4,
-                common.pSecondary,
-                common.flex,
-                common.flexGrow
-              )}>From</p>
+            <div className={cls(cmn.ptop20, cmn.mleft20, cmn.mri20, cmn.flex)}>
+              <p className={cls(cmn.nom, cmn.p, cmn.p4, cmn.pSec, cmn.flex, cmn.flexg)}>From</p>
               <div>
-                {token ? <TokenBalance
-                  balance={tokenBalances[token.keyname]}
-                  symbol={token.meta.symbol}
-                  decimals={token.meta.decimals}
-                /> : null}
+                {token ? (
+                  <TokenBalance
+                    balance={tokenBalances[token.keyname]}
+                    symbol={token.meta.symbol}
+                    decimals={token.meta.decimals}
+                  />
+                ) : null}
               </div>
             </div>
             <ChainsList
@@ -106,14 +105,14 @@ export function WidgetBody(props) {
         </Collapse>
       </SkPaper>
 
-      <Collapse in={showSwitch} >
+      <Collapse in={showSwitch}>
         <SwitchDirection />
       </Collapse>
 
       <Collapse in={showTo}>
-        <SkPaper gray className={common.noPadd}>
-          <div className={cls(common.paddTop20, common.margLeft20, common.margRi20, common.flex)}>
-            <p className={cls(common.noMarg, common.p, common.p4, common.pSecondary, common.flex, common.flexGrow)}>To</p>
+        <SkPaper gray className={cmn.nop}>
+          <div className={cls(cmn.ptop20, cmn.mleft20, cmn.mri20, cmn.flex)}>
+            <p className={cls(cmn.nom, cmn.p, cmn.p4, cmn.pSec, cmn.flex, cmn.flexg)}>To</p>
             <DestTokenBalance />
           </div>
           <ChainsList
@@ -129,12 +128,18 @@ export function WidgetBody(props) {
         </SkPaper>
       </Collapse>
       <AmountErrorMessage />
-      <Collapse in={showStepper} >
+
+      <Collapse in={showCP}>
+        <SkPaper gray className={cmn.nop}>
+          <CommunityPool />
+        </SkPaper>
+      </Collapse>
+
+      <Collapse in={showStepper}>
         <SkPaper background="transparent">
           <SkStepper skaleNetwork={props.config.skaleNetwork} />
         </SkPaper>
       </Collapse>
-
     </div>
   )
 }

@@ -30,7 +30,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { cls } from '../../core/helper'
 
 import styles from '../../styles/styles.module.scss'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 
 import skaleLogoFull from '../WidgetUI/skale_logo.svg'
 import { useMetaportStore } from '../../store/MetaportState'
@@ -62,79 +62,69 @@ export default function SkConnect() {
               if (!connected) {
                 return (
                   <div>
-                    <div className={cls(common.fullWidth, common.textCentered, common.margTop20, common.margBott20)}>
+                    <div className={cls(cmn.fullWidth, cmn.pCent, cmn.mtop20, cmn.mbott20)}>
                       <img className={styles.skaleLogoLg} src={skaleLogoFull} />
                     </div>
-                    <div className={cls(common.margBott20, common.fullWidth, common.flex, common.flexCentered)}>
+                    <div className={cls(cmn.mbott20, cmn.fullWidth, cmn.flex, cmn.flexc)}>
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork="mainnet"
                         chainName="turbulent-unique-scheat"
                         size="xs"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork={'mainnet'}
                         chainName={'frayed-decent-antares'}
                         size="sm"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork={'mainnet'}
                         chainName={'elated-tan-skat'}
                         app="ruby"
                         size="md"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork={'mainnet'}
                         chainName={'elated-tan-skat'}
                         size="lg"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork={'mainnet'}
                         chainName={'honorable-steel-rasalhague'}
                         size="lg"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork={'mainnet'}
                         chainName={'honorable-steel-rasalhague'}
                         app="nftrade"
                         size="md"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork={'mainnet'}
                         chainName={'affectionate-immediate-pollux'}
                         size="sm"
                       />
                       <ChainIcon
-                        className={cls(common.margRi5, common.margLeft5, styles.skMovingDiv)}
+                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
                         skaleNetwork="mainnet"
                         chainName="wan-red-ain"
                         size="xs"
                       />
                     </div>
-                    <p
-                      className={cls(
-                        common.p,
-                        common.p4,
-                        common.p500,
-                        common.pSecondary,
-                        common.margBott5,
-                        common.margLeft5,
-                        common.textCentered,
-                      )}
-                    >
+                    <p className={cls(cmn.p, cmn.p4, cmn.p500, cmn.pSec, cmn.mbott5, cmn.mleft5, cmn.pCent)}>
                       Connect a wallet to use SKALE Metaport
                     </p>
                     <Button
                       variant="contained"
                       color="primary"
                       size="medium"
-                      className={cls(styles.btnAction, common.margTop5)}
+                      className={cls(styles.btnAction, cmn.mtop5)}
                       onClick={openConnectModal}
                     >
                       Connect Wallet
@@ -148,7 +138,7 @@ export default function SkConnect() {
                     variant="contained"
                     color="error"
                     size="medium"
-                    className={cls(styles.btnAction, common.margTop5, common.margBott20)}
+                    className={cls(styles.btnAction, cmn.mtop5, cmn.mbott20)}
                     onClick={openChainModal}
                   >
                     Wrong network
@@ -156,10 +146,10 @@ export default function SkConnect() {
                 )
               }
               return (
-                <div className={cls(common.margRi5, common.margBott10, common.flex)}>
-                  <div className={cls(common.flexGrow, common.flex)}>
+                <div className={cls(cmn.mri5, cmn.mbott10, cmn.flex)}>
+                  <div className={cls(cmn.flexg, cmn.flex)}>
                     {/* <img
-                                            className={cls(common.margLeft10)}
+                                            className={cls(cmn.mleft10)}
                                             style={{ width: '16px' }}
                                             src={skaleLogo}
                                         /> */}
@@ -168,11 +158,11 @@ export default function SkConnect() {
                     <Button
                       disabled={transferInProgress}
                       size="small"
-                      className={cls(styles.btnChain, common.flex, common.flexCenteredVert, common.pMain)}
+                      className={cls(styles.btnChain, cmn.flex, cmn.flexcv, cmn.pPrim)}
                       onClick={openAccountModal}
                       style={{ color: 'white' }}
                     >
-                      <div className={cls(common.margRi5, common.flex)}>
+                      <div className={cls(cmn.mri5, cmn.flex)}>
                         <Jazzicon diameter={16} seed={jsNumberForAddress(account.address)} />
                       </div>
                       {account.displayName}

@@ -140,12 +140,6 @@ export class Action {
 
     this.originAddress = this.mpc.originAddress(chainName1, chainName2, token.keyname, token.type)
 
-    console.log('----')
-    console.log(this.chainName2)
-    console.log(token)
-    console.log(token.wrapper(this.chainName2))
-    console.log('----')
-
     if (this.token.wrapper(this.chainName2)) {
       this.unwrappedToken = mpc.tokenContract(chainName1, token.keyname, token.type, provider1)
     }

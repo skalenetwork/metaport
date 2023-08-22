@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@mui/material/Button'
 
 import { cls } from '../../core/helper'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 import styles from '../../styles/styles.module.scss'
 
 import { ErrorMessage } from '../../core/dataclasses'
@@ -23,48 +23,20 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
   if (!props.errorMessage) return
   return (
     <div>
-      <div className={cls(common.margTop20Pt, styles.infoIcon, common.pMain)}>
-        {ERROR_ICONS[props.errorMessage.icon]}
-      </div>
+      <div className={cls(cmn.mtop20Pt, styles.infoIcon, cmn.pPrim)}>{ERROR_ICONS[props.errorMessage.icon]}</div>
       <p
         style={{ wordBreak: 'break-all' }}
-        className={cls(
-          common.p1,
-          common.p,
-          common.p600,
-          common.pMain,
-          common.flexGrow,
-          common.textCentered,
-          common.margTop10,
-        )}
+        className={cls(cmn.p1, cmn.p, cmn.p600, cmn.pPrim, cmn.flexg, cmn.pCent, cmn.mtop10)}
       >
         Error occured
       </p>
-      <p
-        className={cls(
-          common.p4,
-          common.p,
-          common.p600,
-          common.pSecondary,
-          common.flexGrow,
-          common.textCentered,
-          common.margBott10,
-        )}
-      >
+      <p className={cls(cmn.p4, cmn.p, cmn.p600, cmn.pSec, cmn.flexg, cmn.pCent, cmn.mbott10)}>
         Please check logs in developer console
       </p>
-      <div className={common.flex}>
+      <div className={cmn.flex}>
         <p
           style={{ wordBreak: 'break-all' }}
-          className={cls(
-            common.p3,
-            common.p,
-            common.pMain,
-            common.flexGrow,
-            common.textCentered,
-            common.margTop10,
-            common.margBott20,
-          )}
+          className={cls(cmn.p3, cmn.p, cmn.pPrim, cmn.flexg, cmn.pCent, cmn.mtop10, cmn.mbott20)}
         >
           {props.errorMessage.text}
         </p>
@@ -75,7 +47,7 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
           variant="contained"
           color="primary"
           size="medium"
-          className={cls(styles.btnAction, common.margTop5)}
+          className={cls(styles.btnAction, cmn.mtop5)}
           onClick={() => {
             props.errorMessage.fallback()
           }}

@@ -84,7 +84,7 @@
     "@mui/lab": "^5.0.0-alpha.88",
     "@mui/material": "^5.8.1",
     "@rainbow-me/rainbowkit": "^1.0.8",
-    "@skalenetwork/ima-js": "2.0.0-experimental.1",
+    "@skalenetwork/ima-js": "2.0.0-develop.3",
     "@skaleproject/pow-ethers": "0.3.2",
     "coingecko-api-v3": "^0.0.28",
     "react-jazzicon": "^1.0.4",

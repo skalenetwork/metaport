@@ -15,6 +15,7 @@
 }
 
 .popper {
+    margin-left: 20px;
     max-width: 390px;
     max-height: calc(100vh - 110pt);
     padding: 10pt;
@@ -115,7 +116,15 @@ button {
 
     :global(.MuiAccordion-root) {
         background-color: transparent !important;
+        background-image: none !important;
     }
+
+
+    // .accordionSm {
+    //     :global(.MuiAccordionSummary-content) {
+    //         margin: 0 !important;
+    //     }
+    // }
 
     :global(.MuiButton-root) {
         font-weight: 600 !important;
@@ -134,6 +143,11 @@ button {
     :global(.MuiAccordionDetails-root) {
         padding: 0 !important;
     }
+}
+
+.widgetContent {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
 }
 
 
@@ -266,6 +280,10 @@ button {
 
 .accordionSummary {
     padding: 10px 26px !important;
+}
+
+.accordionContent {
+    padding: 0 26px !important;
 }
 
 .accordionSummaryTokens {

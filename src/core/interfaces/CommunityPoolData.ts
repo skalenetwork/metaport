@@ -24,8 +24,8 @@
 export interface CommunityPoolData {
   exitGasOk: boolean
   isActive: boolean
-  balance: string
-  accountBalance: string
-  recommendedRechargeAmount: string
-  originalRecommendedRechargeAmount: string
+  balance: bigint
+  accountBalance: bigint
+  recommendedRechargeAmount: number
+  originalRecommendedRechargeAmount: bigint
 }

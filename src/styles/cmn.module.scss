@@ -9,16 +9,16 @@
     justify-content: end;
 }
 
-.flexCentered {
+.flexc {
     align-items: center;
     justify-content: center;
 }
 
-.flexCenteredVert {
+.flexcv {
     align-items: center;
 }
 
-.flexGrow {
+.flexg {
     flex-grow: 1;
 }
 
@@ -27,49 +27,41 @@
     flex-wrap: wrap;
 }
 
-.marg10 {
-    margin: 10px !important;
-}
 
 .padd10 {
     padding: 10px !important;
 }
 
 
-.margTop10 {
+.mtop10 {
     margin-top: 10px !important;
 }
 
-.margTop20 {
+.mtop20 {
     margin-top: 20px !important;
 }
 
-.margTop40 {
-    margin-top: 40px !important;
-}
-
-
-.margLeft5 {
+.mleft5 {
     margin-left: 5px !important;
 }
 
-.margLeft10 {
+.mleft10 {
     margin-left: 10px !important;
 }
 
-.margLeft20 {
+.mleft20 {
     margin-left: 20px !important;
 }
 
-.margRi20 {
+.mri20 {
     margin-right: 20px !important;
 }
 
-.margRi10 {
+.mri10 {
     margin-right: 10px !important;
 }
 
-.margRi5 {
+.mri5 {
     margin-right: 5px !important;
 }
 
@@ -81,75 +73,39 @@
     margin-bottom: -15px !important;
 }
 
-.marg-top-20 {
-    margin-top: 20px !important;
-}
-
-.margTop20Pt {
+.mtop20Pt {
     margin-top: 20pt !important;
 }
 
-.marg-top-30 {
-    margin-top: 30px !important;
-}
-
-.margBott20 {
+.mbott20 {
     margin-bottom: 20px !important;
 }
 
-.margBott40 {
-    margin-bottom: 40px !important;
-}
-
-.margBott15 {
-    margin-bottom: 15px !important;
-}
-
-.margBott10 {
+.mbott10 {
     margin-bottom: 10px !important;
 }
 
-.marg-bott-40 {
-    margin-bottom: 40px !important;
-}
-
-.margBott5 {
+.mbott5 {
     margin-bottom: 5px !important;
 }
 
-.margTop5 {
+.mtop5 {
     margin-top: 5px !important;
 }
 
-.noMargTop {
-    margin-top: 0 !important;
-}
-
-.noMargBott {
-    margin-bottom: 0 !important;
-}
-
-.noMarg {
+.nom {
     margin: 0 !important;
 }
 
-.paddTop10 {
-    padding-top: 10px !important;
-}
-
-.paddTop20 {
+.ptop20 {
     padding-top: 20px !important;
 }
 
-.paddBott10 {
-    padding-bottom: 10px !important;
-}
-
-.noPadd {
+.nop {
     padding: 0 !important;
 }
 
-.capitalize {
+.cap {
     text-transform: capitalize !important;
 }
 
@@ -176,7 +132,7 @@
 }
 
 
-.uppercase {
+.upp {
     text-transform: uppercase !important;
 }
 
@@ -201,11 +157,11 @@
 }
 
 .darkTheme {
-    .pMain {
+    .pPrim {
         color: white !important;
     }
 
-    .pSecondary {
+    .pSec {
         color: $sk-secondary-dark !important;
     }
 
@@ -215,11 +171,11 @@
 }
 
 .lightTheme {
-    .pMain {
+    .pPrim {
         color: black !important;
     }
 
-    .pSecondary {
+    .pSec {
         color: $sk-secondary-light !important;
     }
 
@@ -232,7 +188,7 @@
     width: 100% !important;
 }
 
-.textCentered {
+.pCent {
     text-align: center;
 }
 

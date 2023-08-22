@@ -23,7 +23,7 @@
 
 import debug from 'debug'
 
-import { Contract } from 'ethers';
+import { Contract } from 'ethers'
 
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 import { create } from 'zustand'
@@ -91,7 +91,7 @@ interface MetaportState {
   setAmountErrorMessage: (amountErrorMessage: string) => void
 
   errorMessage: dataclasses.ErrorMessage
-  setErrorMessage: (amountErrorMessage: dataclasses.ErrorMessage) => void
+  setErrorMessage: (errorMessage: dataclasses.ErrorMessage) => void
 
   actionBtnDisabled: boolean
   setActionBtnDisabled: (actionBtnDisabled: boolean) => void
@@ -195,7 +195,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       tokenId: null,
       currentStep: 0,
       transferInProgress: false,
-      destTokenBalance: null
+      destTokenBalance: null,
     })
   },
 
@@ -284,18 +284,13 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
 
   setToken: async (token: dataclasses.TokenData) => {
     const provider = get().chainName2 === MAINNET_CHAIN_NAME ? get().mainnetChain.provider : get().sChain2.provider
-    const destTokenContract = get().mpc.tokenContract(
-      get().chainName2,
-      token.keyname,
-      token.type,
-      provider
-    )
+    const destTokenContract = get().mpc.tokenContract(get().chainName2, token.keyname, token.type, provider)
     set({
       token: token,
       stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),
       destTokenContract: destTokenContract,
       destTokenBalance: null,
-      destChains: Object.keys(token.connections)
+      destChains: Object.keys(token.connections),
     })
   },
 

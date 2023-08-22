@@ -13,7 +13,7 @@ import ChainIcon from '../ChainIcon'
 import { MetaportConfig } from '../../core/interfaces'
 
 import { cls, getChainAlias } from '../../core/helper'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 import styles from '../../styles/styles.module.scss'
 
 export default function ChainsList(props: {
@@ -59,17 +59,17 @@ export default function ChainsList(props: {
           className={styles.accordionSummary}
         >
           {props.chain ? (
-            <div className={cls(common.flex, common.fullWidth, common.flexCenteredVert)}>
-              <div className={cls(common.flex, common.flexCentered, common.margRi10)}>
+            <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv)}>
+              <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
                 <ChainIcon skaleNetwork={props.config.skaleNetwork} chainName={props.chain} />
               </div>
               <Tooltip title={'SKALE Chain ' + props.chain}>
-                <p className={cls(common.p, common.p3, common.p600, common.capitalize, common.pMain, common.margRi10)}>
+                <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>
                   {getChainAlias(props.config.skaleNetwork, props.chain)}
                 </p>
               </Tooltip>
-              <div className={cls(common.flex, common.flexGrow)}></div>
-              {/* <div className={cls(common.flex, common.flexCentered)}>
+              <div className={cls(cmn.flex, cmn.flexg)}></div>
+              {/* <div className={cls(cmn.flex, cmn.flexc)}>
                 <ChainApps
                   skaleNetwork={props.config.skaleNetwork}
                   chain={props.chain}
@@ -77,62 +77,36 @@ export default function ChainsList(props: {
               </div> */}
             </div>
           ) : (
-            <div className={cls(common.flex, common.flexCenteredVert)}>
-              <div className={cls(common.flex, common.flexCentered, common.margRi10)}>
+            <div className={cls(cmn.flex, cmn.flexcv)}>
+              <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
                 <ChainIcon skaleNetwork={props.config.skaleNetwork} chainName={props.chain} />
               </div>
-              <p className={cls(common.flex, common.p3, common.p600, common.p, common.pMain, common.margRi10)}>
+              <p className={cls(cmn.flex, cmn.p3, cmn.p600, cmn.p, cmn.pPrim, cmn.mri10)}>
                 Transfer {props.from ? 'from' : 'to'}...
               </p>
             </div>
           )}
         </AccordionSummary>
         <AccordionDetails>
-          <div className={cls(common.chainsList, common.margBott10, common.margRi10)} style={{ marginLeft: '8px' }}>
+          <div className={cls(cmn.chainsList, cmn.mbott10, cmn.mri10)} style={{ marginLeft: '8px' }}>
             <div style={{ marginTop: '-17px' }}>
               <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} />
             </div>
             {schainNames.map((name) => (
               <Typography key={name}>
-                <Button color="secondary" size="medium" onClick={() => handle(name)} className={cls(common.fullWidth)}>
-                  {/* <div className={common.padd10}>
+                <Button color="secondary" size="medium" onClick={() => handle(name)} className={cls(cmn.fullWidth)}>
+                  {/* <div className={cmn.padd10}>
                     
                   </div> */}
-                  <div
-                    className={cls(
-                      common.flex,
-                      common.flexCenteredVert,
-                      common.margTop5,
-                      common.margBott5,
-                      common.fullWidth,
-                    )}
-                  >
-                    <div
-                      className={cls(
-                        common.flex,
-                        common.flexCentered,
-                        common.margRi10,
-                        common.margLeft10,
-                        common.pMain,
-                      )}
-                    >
+                  <div className={cls(cmn.flex, cmn.flexcv, cmn.mtop5, cmn.mbott5, cmn.fullWidth)}>
+                    <div className={cls(cmn.flex, cmn.flexc, cmn.mri10, cmn.mleft10, cmn.pPrim)}>
                       <ChainIcon skaleNetwork={props.config.skaleNetwork} chainName={name} />
                     </div>
-                    <p
-                      className={cls(
-                        common.flex,
-                        common.p3,
-                        common.p,
-                        common.p600,
-                        common.capitalize,
-                        common.pMain,
-                        common.margRi10,
-                      )}
-                    >
+                    <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>
                       {getChainAlias(props.config.skaleNetwork, name)}
                     </p>
-                    <div className={cls(common.flex, common.flexGrow)}></div>
-                    {/* <div className={cls(common.flex, common.flexCentered)}>
+                    <div className={cls(cmn.flex, cmn.flexg)}></div>
+                    {/* <div className={cls(cmn.flex, cmn.flexc)}>
                       <ChainApps
                         skaleNetwork={props.config.skaleNetwork}
                         chain={name}
@@ -140,7 +114,7 @@ export default function ChainsList(props: {
                     </div> */}
                   </div>
                 </Button>
-                <div className={cls(common.margLeft20d)}>
+                <div className={cls(cmn.mleft20d)}>
                   <ChainApps skaleNetwork={props.config.skaleNetwork} chain={name} />
                 </div>
               </Typography>

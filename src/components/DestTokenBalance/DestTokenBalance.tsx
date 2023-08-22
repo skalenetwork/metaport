@@ -4,9 +4,7 @@ import { useAccount } from 'wagmi'
 import { TokenBalance } from '../TokenList'
 import { useMetaportStore } from '../../store/MetaportState'
 
-
 export default function DestTokenBalance() {
-
   const { address } = useAccount()
 
   const token = useMetaportStore((state) => state.token)
@@ -23,11 +21,7 @@ export default function DestTokenBalance() {
     }
   }, [updateDestTokenBalance, token, address])
 
-  if (!token) return;
+  if (!token) return
 
-  return <TokenBalance
-    balance={destTokenBalance}
-    symbol={token.meta.symbol}
-    decimals={token.meta.decimals}
-  />
+  return <TokenBalance balance={destTokenBalance} symbol={token.meta.symbol} decimals={token.meta.decimals} />
 }

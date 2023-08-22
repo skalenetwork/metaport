@@ -2,7 +2,7 @@ import React from 'react'
 import Collapse from '@mui/material/Collapse'
 
 import { cls } from '../../core/helper'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 
 import { useMetaportStore } from '../../store/MetaportState'
 
@@ -12,15 +12,15 @@ export default function AmountErrorMessage() {
     <Collapse in={!!amountErrorMessage || amountErrorMessage === ''} className="noMarg">
       <p
         className={cls(
-          common.flex,
-          common.p3,
-          common.p,
-          common.pSecondary,
-          common.errorMessage,
-          common.flexGrow,
-          common.margTop10,
-          common.margLeft10,
-          // common.uppercase
+          cmn.flex,
+          cmn.p3,
+          cmn.p,
+          cmn.pSec,
+          cmn.errorMessage,
+          cmn.flexg,
+          cmn.mtop10,
+          cmn.mleft10,
+          // cmn.upp
         )}
       >
         🔴 {amountErrorMessage}

@@ -49,7 +49,7 @@ import { useMetaportStore } from '../../store/MetaportState'
 import MetaportCore from '../../core/metaport'
 
 import styles from '../../styles/styles.module.scss'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 
 const { chains, webSocketPublicClient } = configureChains(
   [
@@ -106,7 +106,7 @@ export default function MetaportProvider(props: {
   const metaportTheme = useUIStore((state) => state.theme)
 
   const themeCls = widgetTheme.mode === 'dark' ? styles.darkTheme : styles.lightTheme
-  const commonThemeCls = widgetTheme.mode === 'dark' ? common.darkTheme : common.lightTheme
+  const commonThemeCls = widgetTheme.mode === 'dark' ? cmn.darkTheme : cmn.lightTheme
 
   useEffect(() => {
     setOpen(props.config.openOnLoad)

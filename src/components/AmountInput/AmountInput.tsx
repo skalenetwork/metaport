@@ -4,13 +4,12 @@ import { useAccount } from 'wagmi'
 import TextField from '@mui/material/TextField'
 
 import { cls } from '../../core/helper'
-import common from '../../styles/common.module.scss'
+import cmn from '../../styles/cmn.module.scss'
 import localStyles from './AmountInput.module.scss'
 
 import TokenList from '../TokenList'
 import { useMetaportStore } from '../../store/MetaportState'
 import { useCollapseStore } from '../../store/Store'
-
 
 export default function AmountInput() {
   const { address } = useAccount()
@@ -30,24 +29,20 @@ export default function AmountInput() {
   }
 
   return (
-    <div className={cls(common.flex, localStyles.inputAmount)}>
-
-      {expandedTokens ? null : <div className={cls(
-        common.flex,
-        common.flexGrow,
-        common.flexCenteredVert
-      )}>
-        <TextField
-          type="number"
-          variant="standard"
-          placeholder="0.00"
-          value={amount}
-          onChange={handleChange}
-          disabled={transferInProgress}
-        />
-      </div>
-      }
-      <div>
+    <div className={cls(cmn.flex, localStyles.inputAmount)}>
+      {expandedTokens ? null : (
+        <div className={cls(cmn.flex, cmn.flexg, cmn.flexcv)}>
+          <TextField
+            type="number"
+            variant="standard"
+            placeholder="0.00"
+            value={amount}
+            onChange={handleChange}
+            disabled={transferInProgress}
+          />
+        </div>
+      )}
+      <div className={cls([cmn.fullWidth, expandedTokens])}>
         <TokenList />
       </div>
     </div>
