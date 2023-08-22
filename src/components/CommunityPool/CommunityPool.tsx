@@ -69,6 +69,8 @@ export default function CommunityPool() {
 
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const chainName2 = useMetaportStore((state) => state.chainName2)
+  const token = useMetaportStore((state) => state.token)
+
   const mpc = useMetaportStore((state) => state.mpc)
   const setErrorMessage = useMetaportStore((state) => state.setErrorMessage)
 
@@ -76,6 +78,12 @@ export default function CommunityPool() {
   const setExpandedCP = useCollapseStore((state) => state.setExpandedCP)
 
   const { address } = useAccount()
+
+  let chainName
+  if (token) {
+    chainName = chainName1
+    if (token.connections[chainName2].hub) chainName = token.connections[chainName2].hub
+  }
 
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
     setExpandedCP(isExpanded ? panel : false)
@@ -90,15 +98,19 @@ export default function CommunityPool() {
   }
 
   useEffect(() => {
-    updateCPData(address, chainName1, chainName2, mpc)
+    updateCPData(address, chainName, chainName2, mpc)
+  }, [])
+
+  useEffect(() => {
+    updateCPData(address, chainName, chainName2, mpc)
     const intervalId = setInterval(() => {
-      updateCPData(address, chainName1, chainName2, mpc)
+      updateCPData(address, chainName, chainName2, mpc)
     }, 10000) // Fetch users every 10 seconds
 
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount
     }
-  }, [chainName1, chainName2, address])
+  }, [chainName, chainName2, address])
 
   const text = cpData.exitGasOk ? 'Exit gas wallet OK' : 'Recharge exit gas wallet'
   const icon = cpData.exitGasOk ? <CheckCircleIcon color="success" /> : <ErrorIcon color="warning" />
@@ -121,7 +133,7 @@ export default function CommunityPool() {
     withdraw(
       mpc,
       walletClient,
-      chainName1,
+      chainName,
       cpData.balance,
       address,
       switchNetworkAsync,
@@ -138,7 +150,7 @@ export default function CommunityPool() {
     await recharge(
       mpc,
       walletClient,
-      chainName1,
+      chainName,
       amount,
       address,
       switchNetworkAsync,
@@ -235,7 +247,8 @@ export default function CommunityPool() {
                       Number(amount) > Number(accountBalanceEther) ||
                       amount === '' ||
                       amount === '0' ||
-                      !amount
+                      !amount ||
+                      !chainName
                     }
                   >
                     {getRechargeBtnText()}
@@ -248,7 +261,7 @@ export default function CommunityPool() {
                     size="small"
                     className={cls(styles.btnAction, cmn.mtop5)}
                     onClick={withdrawCP}
-                    disabled={!!loading}
+                    disabled={!!loading || !chainName}
                   >
                     {getWithdrawBtnText()}
                   </Button>

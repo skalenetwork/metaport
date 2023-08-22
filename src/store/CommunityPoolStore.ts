@@ -59,7 +59,7 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
   chainName: null,
 
   updateCPData: async (address: string, chainName1: string, chainName2: string, mpc: MetaportCore) => {
-    if (chainName2 !== MAINNET_CHAIN_NAME) return
+    if (!chainName1 || !chainName2) return
     if (!get().mainnet) {
       set({ mainnet: mpc.mainnet() })
     }
@@ -68,8 +68,9 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
     }
     const cpData = await getCommunityPoolData(address, chainName1, chainName2, get().mainnet, get().sChain)
     set({
+      chainName: chainName1,
       cpData: cpData,
-      amount: cpData.recommendedRechargeAmount.toString()
+      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : null
     })
-  },
+  }
 }))
