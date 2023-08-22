@@ -67,6 +67,9 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
       set({ sChain: mpc.schain(chainName1) })
     }
     const cpData = await getCommunityPoolData(address, chainName1, chainName2, get().mainnet, get().sChain)
-    set({ cpData: cpData })
+    set({
+      cpData: cpData,
+      amount: cpData.recommendedRechargeAmount.toString()
+    })
   },
 }))

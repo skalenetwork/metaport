@@ -15,6 +15,7 @@ import localStyles from './SkStepper.module.scss'
 import ChainIcon from '../ChainIcon'
 
 import { useMetaportStore } from '../../store/MetaportState'
+import { useCPStore } from '../../store/CommunityPoolStore'
 import { Collapse } from '@mui/material'
 import { SkaleNetwork } from '../../core/interfaces'
 
@@ -42,6 +43,8 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const startOver = useMetaportStore((state) => state.startOver)
 
   const amount = useMetaportStore((state) => state.amount)
+
+  const cpData = useCPStore((state) => state.cpData)
 
   const [emoji, setEmoji] = useState<string>()
   useEffect(() => {
@@ -96,7 +99,8 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                           size="medium"
                           className={cls(styles.btnAction, cmn.mtop5)}
                           onClick={() => execute(address, switchNetworkAsync, walletClient)}
-                          disabled={!!(amountErrorMessage || actionBtnDisabled || loading || amount == '')}
+                          disabled={!!(
+                            amountErrorMessage || actionBtnDisabled || loading || amount == '' || !cpData.exitGasOk)}
                         >
                           {step.btnText}
                         </Button>

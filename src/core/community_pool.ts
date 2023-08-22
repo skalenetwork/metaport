@@ -29,7 +29,7 @@ import { WalletClient } from 'viem'
 import { Chain } from '@wagmi/core'
 
 import { CommunityPoolData } from './interfaces'
-import { fromWei } from './convertation'
+import { fromWei, toWei } from './convertation'
 import { walletClientToSigner } from './ethers'
 import {
   MAINNET_CHAIN_NAME,
@@ -38,7 +38,9 @@ import {
   MINIMUM_RECHARGE_AMOUNT,
   COMMUNITY_POOL_WITHDRAW_GAS_LIMIT,
   DEFAULT_ERROR_MSG,
+  BALANCE_UPDATE_INTERVAL_SECONDS
 } from './constants'
+import { delay } from './helper'
 import { CHAIN_IDS, isMainnetChainId, getMainnetAbi } from './network'
 import MetaportCore from './metaport'
 
@@ -149,48 +151,45 @@ export async function withdraw(
   }
 }
 
-// async function rechargeCommunityPool() {
-//     // todo: optimize
-//     setLoadingCommunityPool('recharge');
-//     try {
-//         log('Recharging community pool...')
-//         const sChain = initSChain(
-//             props.config.skaleNetwork,
-//             chainName1
-//         );
-//         const mainnetMetamask = await initMainnet1();
-//         setChainId(getChainId(props.config.skaleNetwork, MAINNET_CHAIN_NAME));
-//         await mainnetMetamask.communityPool.recharge(chainName1, address, {
-//             address: address,
-//             value: toWei(rechargeAmount, DEFAULT_ERC20_DECIMALS)
-//         });
-//         setLoadingCommunityPool('activate');
-//         let active = false;
-//         const chainHash = mainnet.web3.utils.soliditySha3(chainName1);
-//         let counter = 0;
-//         while (!active) {
-//             log('Waiting for account activation...');
-//             let activeM = await mainnet.communityPool.contract.methods.activeUsers(
-//                 address,
-//                 chainHash
-//             ).call();
-//             let activeS = await sChain.communityLocker.contract.methods.activeUsers(
-//                 address
-//             ).call();
-//             active = activeS && activeM;
-//             await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000);
-//             counter++;
-//             if (counter >= 10) break;
-//         }
-//     } catch (err) {
-//         console.error(err);
-//         const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
-//         setErrorMessage(new TransactionErrorMessage(msg, errorMessageClosedFallback));
-//     } finally {
-//         await initSchain1();
-//         setChainId(getChainId(props.config.skaleNetwork, chainName1));
-//         setMainnet(initMainnet(props.config.skaleNetwork, props.config.mainnetEndpoint));
-//         await updateCommunityPoolData();
-//         setLoadingCommunityPool(false);
-//     }
-// }
+export async function recharge(
+  mpc: MetaportCore,
+  walletClient: WalletClient,
+  chainName: string,
+  amount: string,
+  address: `0x${string}`,
+  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
+  setLoading: (loading: string | false) => void,
+  setErrorMessage: (errorMessage: dataclasses.ErrorMessage) => void,
+  errorMessageClosedFallback: () => void,
+) {
+  setLoading('recharge');
+  try {
+    log(`Recharging community pool: ${chainName}, amount: ${amount}`)
+
+    const sChain = mpc.schain(chainName)
+    const mainnetMetamask = await connectedMainnetChain(mpc, walletClient, switchNetwork)
+    await mainnetMetamask.communityPool.recharge(chainName, address, {
+      address: address,
+      value: toWei(amount, DEFAULT_ERC20_DECIMALS)
+    });
+    setLoading('activate');
+    let active = false;
+    const chainHash = ethers.id(chainName)
+    let counter = 0;
+    while (!active) {
+      log('Waiting for account activation...');
+      let activeM = await mainnetMetamask.communityPool.contract.activeUsers(address, chainHash);
+      let activeS = await sChain.communityLocker.contract.activeUsers(address);
+      active = activeS && activeM;
+      await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000);
+      counter++;
+      if (counter >= 10) break;
+    }
+  } catch (err) {
+    console.error(err);
+    const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
+    setErrorMessage(new dataclasses.TransactionErrorMessage(msg, errorMessageClosedFallback));
+  } finally {
+    setLoading(false);
+  }
+}

@@ -44,7 +44,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
 
 import { fromWei } from '../../core/convertation'
-import { withdraw } from '../../core/community_pool'
+import { withdraw, recharge } from '../../core/community_pool'
 import { DEFAULT_ERC20_DECIMALS } from '../../core/constants'
 
 import { cls } from '../../core/helper'
@@ -55,19 +55,8 @@ import { useCPStore } from '../../store/CommunityPoolStore'
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 
-// import { getChainIcon } from '../ChainsList/helper';
 
-export default function CommunityPool(props: {
-  // communityPoolData: CommunityPoolData
-  // loading: string | false
-  // rechargeAmount: string
-  // setRechargeAmount: (amount: string) => {}
-  // expanded: string | false
-  // setExpanded: (expanded: string | false) => {}
-  // recharge: () => {}
-  // withdraw: () => {}
-  // marg: boolean
-}) {
+export default function CommunityPool() {
   const { data: walletClient } = useWalletClient()
   const { switchNetworkAsync } = useSwitchNetwork()
 
@@ -145,9 +134,31 @@ export default function CommunityPool(props: {
     )
   }
 
+  async function rechargeCP() {
+    await recharge(
+      mpc,
+      walletClient,
+      chainName1,
+      amount,
+      address,
+      switchNetworkAsync,
+      setLoading,
+      setErrorMessage,
+      async () => {
+        setLoading(false)
+        setErrorMessage(null)
+      }
+    )
+    setExpandedCP(false)
+  }
+
   return (
     <div className={cls([cmn.mtop10, !expandedCP])}>
-      <Accordion disabled={!!loading} expanded={expandedCP === 'panel1'} onChange={handleChange('panel1')}>
+      <Accordion
+        disabled={!!loading}
+        expanded={expandedCP === 'panel1'}
+        onChange={handleChange('panel1')}
+      >
         <AccordionSummary
           className={cls(styles.accordionSummary, styles.accordionSm)}
           expandIcon={<ExpandMoreIcon />}
@@ -161,20 +172,26 @@ export default function CommunityPool(props: {
         </AccordionSummary>
         <AccordionDetails>
           <SkPaper background="transparent" className={cls(styles.accordionContent)}>
-            <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.errorMessage, cmn.flexg, cmn.sk__colorText)}>
-              This wallet is used to pay for Ethereum gas fees from your transactions to the Ethereum Mainnet. You may
-              withdraw funds from your SKALE Gas Wallet at anytime.
+            <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.errorMessage, cmn.flexg)}>
+              This wallet is used to pay for Ethereum gas fees from your transactions to the
+              Ethereum Mainnet. You may withdraw funds from your SKALE Gas Wallet at anytime.
             </p>
             <div className={cls(cmn.ptop20, cmn.flex)}>
-              <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>ETH Balance</p>
+              <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>
+                ETH Balance
+              </p>
               <div>
-                <TokenBalance balance={cpData.accountBalance} symbol="ETH" truncate={4} size="sm" primary />
+                <TokenBalance
+                  balance={cpData.accountBalance} symbol="ETH" truncate={4} size="sm" primary />
               </div>
             </div>
             <div className={cls(cmn.ptop0, cmn.flex)}>
-              <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>Exit wallet Balance</p>
+              <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>
+                Exit wallet Balance
+              </p>
               <div>
-                <TokenBalance balance={cpData.balance} symbol="ETH" truncate={4} size="sm" primary />
+                <TokenBalance
+                  balance={cpData.balance} symbol="ETH" truncate={4} size="sm" primary />
               </div>
             </div>
             <Grid container spacing={0} className={cmn.ptop20}>
@@ -189,10 +206,18 @@ export default function CommunityPool(props: {
                         placeholder="0.00"
                         value={amount}
                         onChange={handleAmountChange}
-                        // disabled={transferInProgress}
+                        disabled={!!loading}
                       />
                     </div>
-                    <p className={cls(cmn.p, cmn.p1, cmn.p700, cmn.pPrim, [cmn.pDisabled, false], cmn.flex, cmn.mri20)}>
+                    <p className={cls(
+                      cmn.p,
+                      cmn.p1,
+                      cmn.p700,
+                      cmn.pPrim,
+                      [cmn.pDisabled, loading],
+                      cmn.flex,
+                      cmn.mri20
+                    )}>
                       ETH
                     </p>
                   </div>
@@ -203,7 +228,7 @@ export default function CommunityPool(props: {
                     color="primary"
                     size="medium"
                     className={cls(styles.btnAction, cmn.mtop5)}
-                    //onClick={props.recharge}
+                    onClick={rechargeCP}
                     disabled={
                       !!loading ||
                       !cpData.accountBalance ||
