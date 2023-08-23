@@ -27,7 +27,6 @@ import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 import * as interfaces from '../core/interfaces'
 import { getEmptyCommunityPoolData, getCommunityPoolData } from '../core/community_pool'
 import MetaportCore from '../core/metaport'
-import { MAINNET_CHAIN_NAME } from '../core/constants'
 
 
 interface CommunityPoolState {
@@ -70,7 +69,7 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
     set({
       chainName: chainName1,
       cpData: cpData,
-      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : null
+      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : ''
     })
   }
 }))

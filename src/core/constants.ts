@@ -35,7 +35,7 @@ export const UNWRAP_ACTION = 'unwrap'
 // tslint:disable-next-line
 export const MAX_APPROVE_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935' // (2^256 - 1 )
 
-export const DEFAULT_MIN_SFUEL_WEI = '21000000000000'
+export const DEFAULT_MIN_SFUEL_WEI = 21000000000000n
 
 export const DEFAULT_ERC20_DECIMALS = '18'
 export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...'
@@ -76,12 +76,10 @@ export const SFUEL_CHEKCS_INTERVAL = 8
 
 export const SFUEL_TEXT = {
   sfuel: {
-    action: '',
     warning: 'You may need sFUEL on the destination chain',
     error: 'You need sFUEL to perform a transfer',
   },
   gas: {
-    action: '',
     warning: 'You may need ETH on the destination chain',
     error: 'You need ETH to perform a transfer',
   },

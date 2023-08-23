@@ -105,7 +105,7 @@ export default function CommunityPool() {
     updateCPData(address, chainName, chainName2, mpc)
     const intervalId = setInterval(() => {
       updateCPData(address, chainName, chainName2, mpc)
-    }, 10000) // Fetch users every 10 seconds
+    }, 10000)
 
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount

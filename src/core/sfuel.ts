@@ -21,111 +21,78 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-// import debug from 'debug';
-// import { AnonymousPoW } from "@skaleproject/pow-ethers";
+import debug from 'debug';
+import { Provider } from 'ethers';
+import { AnonymousPoW } from "@skaleproject/pow-ethers";
 
-// import { getChainEndpoint, initWeb3 } from '../core/core';
-// import { getFuncData, isFaucetAvailable } from '../core/faucet';
-// import { DEFAULT_MIN_SFUEL_WEI, DEFAULT_FAUCET_URL, MAINNET_CHAIN_NAME } from '../core/constants';
+import MetaportCore from './metaport'
+import { getFuncData, isFaucetAvailable } from '../core/faucet'
+import { MAINNET_CHAIN_NAME, DEFAULT_MIN_SFUEL_WEI } from '../core/constants'
 
-// debug.enable('*');
-// const log = debug('metaport:Widget');
 
-// function getFaucetUrl(chainsMetadata: object, chainName: string): string {
-//     if (chainsMetadata && chainsMetadata[chainName]) return chainsMetadata[chainName].faucetUrl;
-//     return DEFAULT_FAUCET_URL;
-// }
+debug.enable('*');
+const log = debug('metaport:sfuel');
 
-// function getMinSfuelWei(chainName: string, chainsMetadata?: object): string {
-//     if (chainsMetadata && chainsMetadata[chainName] && chainsMetadata[chainName].minSfuelWei) {
-//         return chainsMetadata[chainName].minSfuelWei;
-//     } else {
-//         return DEFAULT_MIN_SFUEL_WEI;
-//     }
-// }
 
-// async function getSfuelBalance(web3: any, address: string): Promise<string> {
-//     //return await provider.getBalance(address);
-//     // TODO!
-//     console.log(web3, address);
-//     return '';
-// }
+export interface StationData {
+    balance: bigint
+    ok: boolean
+}
 
-// export interface StationData {
-//     faucetUrl: string;
-//     minSfuelWei: string;
-//     balance: string;
-//     ok: boolean;
-// }
+export interface StationPowRes {
+    message: string
+    ok: boolean
+}
 
-// export interface StationPowRes {
-//     message: string;
-//     ok: boolean;
-// }
+export class Station {
 
-// export class Station {
+    endpoint: string;
+    provider: Provider;
 
-//     endpoint: string;
-//     web3: any; // todo!
+    constructor(
+        public chainName: string,
+        public mpc: MetaportCore
+    ) {
+        this.chainName = chainName
+        this.mpc = mpc
+        this.provider = mpc.provider(chainName);
+    }
 
-//     constructor(
-//         public chainName: string,
-//         public skaleNetwork: string,
-//         public mainnetEndpoint?: string,
-//         public chainsMetadata?: object
-//     ) {
-//         this.chainName = chainName;
-//         this.skaleNetwork = skaleNetwork;
+    async getData(address: string): Promise<StationData> {
+        try {
+            const balance = await this.provider.getBalance(address);
+            return { balance, ok: balance >= DEFAULT_MIN_SFUEL_WEI }
+        } catch (e) {
+            log(`ERROR: getSFuelData for ${this.chainName} failed!`);
+            log(e);
+            return { balance: undefined, ok: undefined };
+        }
+    }
 
-//         this.endpoint = getChainEndpoint(chainName, mainnetEndpoint, skaleNetwork);
-
-//         this.web3 = initWeb3(this.endpoint);
-//         this.chainsMetadata = chainsMetadata;
-//     }
-
-//     async getData(address: string): Promise<StationData> {
-//         try {
-//             const minSfuelWei = getMinSfuelWei(this.chainName, this.chainsMetadata);
-//             const balance = await getSfuelBalance(this.web3, address);
-//             return {
-//                 faucetUrl: getFaucetUrl(this.chainsMetadata, this.chainName),
-//                 minSfuelWei,
-//                 balance,
-//                 ok: Number(balance) >= Number(minSfuelWei)
-//             }
-//         } catch (e) {
-//             log(`ERROR: getSFuelData for ${this.chainName} failed!`);
-//             log(e);
-//             return {
-//                 faucetUrl: undefined, minSfuelWei: undefined, balance: undefined, ok: undefined
-//             };
-//         }
-//     }
-
-//     async doPoW(address: string): Promise<StationPowRes> {
-//         if (!this.chainName || !isFaucetAvailable(this.chainName, this.skaleNetwork)) {
-//             log('WARNING: PoW is not available for this chain');
-//             if (this.chainName === MAINNET_CHAIN_NAME) {
-//                 return { ok: true, message: 'PoW is not available for Ethereum Mainnet' };
-//             }
-//             return { ok: false, message: 'PoW is not available for this chain' };
-//         }
-//         log('Mining sFUEL for ' + address + ' on ' + this.chainName + '...');
-//         try {
-//             const endpoint = getChainEndpoint(this.chainName, undefined, this.skaleNetwork);
-//             const web3 = initWeb3(endpoint);
-//             const anon = new AnonymousPoW({ rpcUrl: endpoint });
-//             await (await anon.send(getFuncData(
-//                 web3,
-//                 this.chainName,
-//                 address,
-//                 this.skaleNetwork
-//             ))).wait();
-//             return { ok: true, message: 'PoW finished successfully' }
-//         } catch (e) {
-//             log('ERROR: PoW failed!');
-//             log(e);
-//             return { ok: false, message: e.message };
-//         }
-//     }
-// }
+    async doPoW(address: string): Promise<StationPowRes> {
+        // return { ok: true, message: 'PoW is not available for Ethereum Mainnet' };
+        if (!this.chainName || !isFaucetAvailable(this.chainName, this.mpc.config.skaleNetwork)) {
+            log('WARNING: PoW is not available for this chain');
+            if (this.chainName === MAINNET_CHAIN_NAME) {
+                return { ok: true, message: 'PoW is not available for Ethereum Mainnet' };
+            }
+            return { ok: false, message: 'PoW is not available for this chain' };
+        }
+        log('Mining sFUEL for ' + address + ' on ' + this.chainName + '...');
+        try {
+            const endpoint = this.mpc.endpoint(this.chainName)
+            const anon = new AnonymousPoW({ rpcUrl: endpoint });
+            await (await anon.send(getFuncData(
+                this.provider,
+                this.chainName,
+                address,
+                this.mpc.config.skaleNetwork
+            ))).wait();
+            return { ok: true, message: 'PoW finished successfully' }
+        } catch (e) {
+            log('ERROR: PoW failed!');
+            log(e);
+            return { ok: false, message: e.message };
+        }
+    }
+}

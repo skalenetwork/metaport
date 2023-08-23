@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
+import { useSFuelStore } from '../../store/SFuelStore'
+
 
 import ChainsList from '../ChainsList'
 import AmountInput from '../AmountInput'
@@ -12,6 +14,7 @@ import { TokenBalance } from '../TokenList'
 import DestTokenBalance from '../DestTokenBalance'
 import ErrorMessage from '../ErrorMessage'
 import CommunityPool from '../CommunityPool'
+import SFuelWarning from '../SFuelWarning'
 
 import cmn from '../../styles/cmn.module.scss'
 import { cls } from '../../core/helper'
@@ -46,6 +49,8 @@ export function WidgetBody(props) {
 
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
+  const sFuelOk = useSFuelStore((state) => state.sFuelOk);
+
   useEffect(() => {
     setChainName1(mpc.config.chains ? mpc.config.chains[0] : '')
     setChainName2(mpc.config.chains ? mpc.config.chains[1] : '')
@@ -61,7 +66,7 @@ export function WidgetBody(props) {
   const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP
   const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP
   const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
-  const showStepper = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
+  const showStepper = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && sFuelOk
   const showCP = !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
   const showError = !!errorMessage
 
@@ -134,6 +139,8 @@ export function WidgetBody(props) {
           <CommunityPool />
         </SkPaper>
       </Collapse>
+
+      <SFuelWarning />
 
       <Collapse in={showStepper}>
         <SkPaper background="transparent">
