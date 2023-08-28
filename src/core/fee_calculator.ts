@@ -21,11 +21,10 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { fromWei as _fromWei, toBN } from 'web3-utils'
 import debug from 'debug'
-
+import { fromWei } from './convertation'
 import { CoinGeckoClient } from 'coingecko-api-v3'
-import * as interfaces from './interfaces/index'
+import { DEFAULT_ERC20_DECIMALS } from './constants'
 
 debug.enable('*')
 const log = debug('metaport:components:fee_calculator')
@@ -33,11 +32,11 @@ const log = debug('metaport:components:fee_calculator')
 export async function getTransactionFee(): Promise<number> {
   // todo: get actual gas limit for transfer
   // todo: get actual gas price
-  const gasLimit = toBN('250000')
-  const gasPrice = toBN('10000000000')
+  const gasLimit = 250000n
+  const gasPrice = 10000000000n
 
-  const amountWei = gasLimit.mul(gasPrice)
-  const amountEth = _fromWei(amountWei)
+  const amountWei = gasLimit * gasPrice
+  const amountEth = fromWei(amountWei, DEFAULT_ERC20_DECIMALS)
 
   const client = new CoinGeckoClient({
     timeout: 10000,

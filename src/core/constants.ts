@@ -76,11 +76,11 @@ export const SFUEL_CHEKCS_INTERVAL = 8
 
 export const SFUEL_TEXT = {
   sfuel: {
-    warning: 'You may need sFUEL on the destination chain',
+    warning: 'You need sFUEL on the destination chain',
     error: 'You need sFUEL to perform a transfer',
   },
   gas: {
-    warning: 'You may need ETH on the destination chain',
+    warning: 'You need ETH on the destination chain',
     error: 'You need ETH to perform a transfer',
   },
 }
