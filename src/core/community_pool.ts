@@ -68,7 +68,7 @@ export async function getCommunityPoolData(
   sChain: SChain,
 ): Promise<CommunityPoolData> {
   if (chainName2 !== MAINNET_CHAIN_NAME) {
-    log('not a S2M transfer, skipping community pool check')
+    // log('not a S2M transfer, skipping community pool check')
     return {
       exitGasOk: true,
       isActive: null,

@@ -21,15 +21,15 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import BN from 'bn.js'
 import { isHexString, getNumber, randomBytes, keccak256, hexlify, toBeHex, toBigInt } from 'ethers'
+import { MAX_NUMBER } from './constants'
 
 interface Params {
-  difficulty?: BN
+  difficulty?: bigint
 }
 
 export default class SkalePowMiner {
-  public difficulty: BN = new BN(1)
+  public difficulty: bigint = 1n
 
   constructor(params?: Params) {
     if (params && params.difficulty) this.difficulty = params.difficulty
@@ -47,18 +47,17 @@ export default class SkalePowMiner {
   }
 
   public async mineFreeGas(gasAmount: number, address: string, nonce: number): Promise<BigInt> {
-    let nonceHash = new BN(keccak256(toBeHex(nonce, 32)).slice(2), 16)
-    let addressHash = new BN((keccak256(address) as string).slice(2), 16)
-    let nonceAddressXOR = nonceHash.xor(addressHash)
-    let maxNumber = new BN(2).pow(new BN(256)).sub(new BN(1))
-    let divConstant = maxNumber.div(this.difficulty)
+    let nonceHash = toBigInt(keccak256(toBeHex(nonce, 32)))
+    let addressHash = toBigInt(keccak256(address))
+    let nonceAddressXOR = nonceHash ^ addressHash
+    let divConstant = MAX_NUMBER / this.difficulty
     let candidate: string
     let iterations = 0
     while (true) {
       candidate = hexlify(randomBytes(32))
-      let candidateHash = new BN(keccak256(candidate).slice(2), 16)
-      let resultHash = nonceAddressXOR.xor(candidateHash)
-      let externalGas = divConstant.div(resultHash).toNumber()
+      let candidateHash = toBigInt(keccak256(candidate))
+      let resultHash = nonceAddressXOR ^ candidateHash
+      let externalGas = divConstant / resultHash
       if (externalGas >= gasAmount) {
         break
       }

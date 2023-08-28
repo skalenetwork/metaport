@@ -83,7 +83,6 @@
     "@mui/material": "^5.8.1",
     "@rainbow-me/rainbowkit": "^1.0.8",
     "@skalenetwork/ima-js": "2.0.0-develop.3",
-    "bn.js": "^5.2.1",
     "coingecko-api-v3": "^0.0.28",
     "react-jazzicon": "^1.0.4",
     "viem": "^1.5.3",
