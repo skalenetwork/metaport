@@ -23,10 +23,10 @@
 
 import debug from 'debug';
 import { Provider } from 'ethers';
-import { AnonymousPoW } from "@skaleproject/pow-ethers";
 
 import MetaportCore from './metaport'
-import { getFuncData, isFaucetAvailable } from '../core/faucet'
+import { AddressType } from './interfaces'
+import { isFaucetAvailable, getSFuel } from './faucet'
 import { MAINNET_CHAIN_NAME, DEFAULT_MIN_SFUEL_WEI } from '../core/constants'
 
 
@@ -58,7 +58,7 @@ export class Station {
         this.provider = mpc.provider(chainName);
     }
 
-    async getData(address: string): Promise<StationData> {
+    async getData(address: AddressType): Promise<StationData> {
         try {
             const balance = await this.provider.getBalance(address);
             return { balance, ok: balance >= DEFAULT_MIN_SFUEL_WEI }
@@ -69,7 +69,7 @@ export class Station {
         }
     }
 
-    async doPoW(address: string): Promise<StationPowRes> {
+    async doPoW(address: AddressType): Promise<StationPowRes> {
         // return { ok: true, message: 'PoW is not available for Ethereum Mainnet' };
         if (!this.chainName || !isFaucetAvailable(this.chainName, this.mpc.config.skaleNetwork)) {
             log('WARNING: PoW is not available for this chain');
@@ -80,14 +80,7 @@ export class Station {
         }
         log('Mining sFUEL for ' + address + ' on ' + this.chainName + '...');
         try {
-            const endpoint = this.mpc.endpoint(this.chainName)
-            const anon = new AnonymousPoW({ rpcUrl: endpoint });
-            await (await anon.send(getFuncData(
-                this.provider,
-                this.chainName,
-                address,
-                this.mpc.config.skaleNetwork
-            ))).wait();
+            await getSFuel(this.chainName, address, this.mpc)
             return { ok: true, message: 'PoW finished successfully' }
         } catch (e) {
             log('ERROR: PoW failed!');

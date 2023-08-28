@@ -31,3 +31,5 @@ export * from './CheckRes'
 export * from './TransactionHistory'
 export * from './CommunityPoolData'
 export * from './TokenMetadata'
+
+export type AddressType = `0x${string}`
