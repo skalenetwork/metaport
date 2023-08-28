@@ -41,12 +41,14 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     _SPACE_1: {
       name: 'SKALE Space',
       symbol: 'SPACE',
-      iconUrl: 'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png',
+      iconUrl:
+        'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png',
     },
     _SKALIENS_1: {
       name: 'SKALIENS Collection',
       symbol: 'SKALIENS',
-      iconUrl: 'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Alien/3D/alien_3d.png',
+      iconUrl:
+        'https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Alien/3D/alien_3d.png',
     },
     ruby: {
       name: 'Ruby Token',

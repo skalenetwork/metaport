@@ -28,7 +28,6 @@ import * as interfaces from '../core/interfaces'
 import { getEmptyCommunityPoolData, getCommunityPoolData } from '../core/community_pool'
 import MetaportCore from '../core/metaport'
 
-
 interface CommunityPoolState {
   cpData: interfaces.CommunityPoolData
   setCpData: (cpData: interfaces.CommunityPoolData) => void
@@ -57,7 +56,12 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
   sChain: null,
   chainName: null,
 
-  updateCPData: async (address: string, chainName1: string, chainName2: string, mpc: MetaportCore) => {
+  updateCPData: async (
+    address: string,
+    chainName1: string,
+    chainName2: string,
+    mpc: MetaportCore,
+  ) => {
     if (!chainName1 || !chainName2) return
     if (!get().mainnet) {
       set({ mainnet: mpc.mainnet() })
@@ -65,11 +69,17 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
     if (!get().sChain || get().chainName !== chainName1) {
       set({ sChain: mpc.schain(chainName1) })
     }
-    const cpData = await getCommunityPoolData(address, chainName1, chainName2, get().mainnet, get().sChain)
+    const cpData = await getCommunityPoolData(
+      address,
+      chainName1,
+      chainName2,
+      get().mainnet,
+      get().sChain,
+    )
     set({
       chainName: chainName1,
       cpData: cpData,
-      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : ''
+      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : '',
     })
-  }
+  },
 }))

@@ -23,7 +23,9 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
   if (!props.errorMessage) return
   return (
     <div>
-      <div className={cls(cmn.mtop20Pt, styles.infoIcon, cmn.pPrim)}>{ERROR_ICONS[props.errorMessage.icon]}</div>
+      <div className={cls(cmn.mtop20Pt, styles.infoIcon, cmn.pPrim)}>
+        {ERROR_ICONS[props.errorMessage.icon]}
+      </div>
       <p
         style={{ wordBreak: 'break-all' }}
         className={cls(cmn.p1, cmn.p, cmn.p600, cmn.pPrim, cmn.flexg, cmn.pCent, cmn.mtop10)}

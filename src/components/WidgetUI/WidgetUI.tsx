@@ -96,7 +96,9 @@ export function WidgetUI(props: { config: MetaportConfig }) {
       className={cls(styles.imaWidgetBody)}
       style={metaportTheme ? { ...metaportTheme.position, zIndex: metaportTheme.zIndex } : null}
     >
-      <div className={props.config.openButton ? cmn.mbott20 : null}>{fabTop ? fabButton : null}</div>
+      <div className={props.config.openButton ? cmn.mbott20 : null}>
+        {fabTop ? fabButton : null}
+      </div>
       <Collapse in={isOpen}>
         <SkPaper className={cls(styles.popper)}>
           <SkConnect />

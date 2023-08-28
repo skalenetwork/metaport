@@ -44,9 +44,23 @@ export default function TokenListSection(props: {
         >
           <div className={cls(cmn.flex, cmn.flexcv, cmn.fullWidth, cmn.mtop5, cmn.mbott5)}>
             <div className={cls(cmn.flex, cmn.flexc, cmn.mleft10)}>
-              <TokenIcon tokenSymbol={props.tokens[key]?.meta.symbol} iconUrl={props.tokens[key]?.meta.iconUrl} />
+              <TokenIcon
+                tokenSymbol={props.tokens[key]?.meta.symbol}
+                iconUrl={props.tokens[key]?.meta.iconUrl}
+              />
             </div>
-            <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.flex, cmn.flexg, cmn.mri10, cmn.mleft10)}>
+            <p
+              className={cls(
+                cmn.p,
+                cmn.p3,
+                cmn.p600,
+                cmn.pPrim,
+                cmn.flex,
+                cmn.flexg,
+                cmn.mri10,
+                cmn.mleft10,
+              )}
+            >
               {getTokenName(props.tokens[key])}
             </p>
             <div className={cmn.mri10}>

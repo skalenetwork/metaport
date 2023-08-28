@@ -21,7 +21,12 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { HTTPS_PREFIX, MAINNET_CHAIN_NAME, MAINNET_EXPLORER_URLS, BASE_EXPLORER_URLS } from './constants'
+import {
+  HTTPS_PREFIX,
+  MAINNET_CHAIN_NAME,
+  MAINNET_EXPLORER_URLS,
+  BASE_EXPLORER_URLS,
+} from './constants'
 import { SkaleNetwork } from './interfaces'
 
 function getMainnetExplorerUrl(skaleNetwork: string) {

@@ -53,9 +53,14 @@ export class TransferERC20S2S extends TransferAction {
     )) as SChain
     if (!checkResAllowance.res) {
       this.updateState('approve')
-      const approveTx = await sChain.erc20.approve(this.token.keyname, MAX_APPROVE_AMOUNT, sChain.erc20.address, {
-        address: this.address,
-      })
+      const approveTx = await sChain.erc20.approve(
+        this.token.keyname,
+        MAX_APPROVE_AMOUNT,
+        sChain.erc20.address,
+        {
+          address: this.address,
+        },
+      )
       const txBlock = await sChain.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
       externalEvents.transactionCompleted(approveTx, txBlock.timestamp, this.chainName1, 'approve')
@@ -93,7 +98,12 @@ export class TransferERC20S2S extends TransferAction {
   }
 
   async preAction() {
-    const checkResBalance = await checkERC20Balance(this.address, this.amount, this.token, this.sourceToken)
+    const checkResBalance = await checkERC20Balance(
+      this.address,
+      this.amount,
+      this.token,
+      this.sourceToken,
+    )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
       return
@@ -149,21 +159,33 @@ export class WrapERC20S extends Action {
     sChain.erc20.addToken(`wrap_${this.token.keyname}`, wrapperToken)
     if (!checkResAllowance.res) {
       this.updateState('approveWrap')
-      const approveTx = await sChain.erc20.approve(this.token.keyname, MAX_APPROVE_AMOUNT, this.token.address, {
-        address: this.address,
-      })
+      const approveTx = await sChain.erc20.approve(
+        this.token.keyname,
+        MAX_APPROVE_AMOUNT,
+        this.token.address,
+        {
+          address: this.address,
+        },
+      )
       const txBlock = await this.sChain1.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveWrapDone', approveTx.hash, txBlock.timestamp)
     }
     this.updateState('wrap')
     const amountWei = toWei(this.amount, this.token.meta.decimals)
-    const tx = await sChain.erc20.wrap(`wrap_${this.token.keyname}`, amountWei, { address: this.address })
+    const tx = await sChain.erc20.wrap(`wrap_${this.token.keyname}`, amountWei, {
+      address: this.address,
+    })
     const block = await this.sChain1.provider.getBlock(tx.blockNumber)
     this.updateState('wrapDone', tx.hash, block.timestamp)
   }
 
   async preAction() {
-    const checkResBalance = await checkERC20Balance(this.address, this.amount, this.token, this.unwrappedToken)
+    const checkResBalance = await checkERC20Balance(
+      this.address,
+      this.amount,
+      this.token,
+      this.unwrappedToken,
+    )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
       return
@@ -249,7 +271,12 @@ export class UnWrapERC20S extends Action {
   async preAction() {
     log('preAction: UnWrapERC20S')
     const tokenContract = this.sChain1.erc20.tokens[this.token.keyname]
-    const checkResBalance = await checkERC20Balance(this.address, this.amount, this.token, tokenContract)
+    const checkResBalance = await checkERC20Balance(
+      this.address,
+      this.amount,
+      this.token,
+      tokenContract,
+    )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
       return
@@ -272,7 +299,9 @@ export class TransferERC20M2S extends TransferAction {
     const mainnet = (await this.getConnectedChain(this.mainnet.provider)) as MainnetChain
     if (!checkResAllowance.res) {
       this.updateState('approve')
-      const approveTx = await mainnet.erc20.approve(this.token.keyname, MAX_APPROVE_AMOUNT, { address: this.address })
+      const approveTx = await mainnet.erc20.approve(this.token.keyname, MAX_APPROVE_AMOUNT, {
+        address: this.address,
+      })
       const txBlock = await mainnet.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
     }
@@ -290,11 +319,22 @@ export class TransferERC20M2S extends TransferAction {
     await this.sChain2.waitERC20BalanceChange(this.destToken, this.address, balanceOnDestination)
     this.updateState('received')
     log('TransferERC20M2S:execute - tokens received to destination chain')
-    externalEvents.transferComplete(tx.hash, this.chainName1, this.chainName2, this.token.keyname, false)
+    externalEvents.transferComplete(
+      tx.hash,
+      this.chainName1,
+      this.chainName2,
+      this.token.keyname,
+      false,
+    )
   }
 
   async preAction() {
-    const checkResBalance = await checkERC20Balance(this.address, this.amount, this.token, this.sourceToken)
+    const checkResBalance = await checkERC20Balance(
+      this.address,
+      this.amount,
+      this.token,
+      this.sourceToken,
+    )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
       return
@@ -318,9 +358,14 @@ export class TransferERC20S2M extends TransferAction {
     const sChain = (await this.getConnectedChain(this.sChain1.provider)) as SChain
     if (!checkResAllowance.res) {
       this.updateState('approve')
-      const approveTx = await sChain.erc20.approve(this.token.keyname, MAX_APPROVE_AMOUNT, sChain.erc20.address, {
-        address: this.address,
-      })
+      const approveTx = await sChain.erc20.approve(
+        this.token.keyname,
+        MAX_APPROVE_AMOUNT,
+        sChain.erc20.address,
+        {
+          address: this.address,
+        },
+      )
       const txBlock = await sChain.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
       externalEvents.transactionCompleted(approveTx, txBlock.timestamp, this.chainName1, 'approve')
@@ -337,11 +382,22 @@ export class TransferERC20S2M extends TransferAction {
     this.mainnet.waitERC20BalanceChange(this.destToken, this.address, balanceOnDestination)
     this.updateState('received')
     log('TransferERC20S2M:execute - tokens received to destination chain')
-    externalEvents.transferComplete(tx.hash, this.chainName1, this.chainName2, this.token.keyname, false)
+    externalEvents.transferComplete(
+      tx.hash,
+      this.chainName1,
+      this.chainName2,
+      this.token.keyname,
+      false,
+    )
   }
 
   async preAction() {
-    const checkResBalance = await checkERC20Balance(this.address, this.amount, this.token, this.sourceToken)
+    const checkResBalance = await checkERC20Balance(
+      this.address,
+      this.amount,
+      this.token,
+      this.sourceToken,
+    )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
       return

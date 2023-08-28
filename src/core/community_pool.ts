@@ -38,7 +38,7 @@ import {
   MINIMUM_RECHARGE_AMOUNT,
   COMMUNITY_POOL_WITHDRAW_GAS_LIMIT,
   DEFAULT_ERROR_MSG,
-  BALANCE_UPDATE_INTERVAL_SECONDS
+  BALANCE_UPDATE_INTERVAL_SECONDS,
 } from './constants'
 import { delay } from './helper'
 import { CHAIN_IDS, isMainnetChainId, getMainnetAbi } from './network'
@@ -86,7 +86,10 @@ export async function getCommunityPoolData(
   const chainHash = ethers.id(chainName1)
   const activeM = await mainnet.communityPool.contract.activeUsers(address, chainHash)
 
-  const rraWei = await mainnet.communityPool.contract.getRecommendedRechargeAmount(chainHash, address)
+  const rraWei = await mainnet.communityPool.contract.getRecommendedRechargeAmount(
+    chainHash,
+    address,
+  )
   const rraEther = fromWei(rraWei as string, DEFAULT_ERC20_DECIMALS)
 
   let recommendedAmount = parseFloat(rraEther as string) * RECHARGE_MULTIPLIER
@@ -162,7 +165,7 @@ export async function recharge(
   setErrorMessage: (errorMessage: dataclasses.ErrorMessage) => void,
   errorMessageClosedFallback: () => void,
 ) {
-  setLoading('recharge');
+  setLoading('recharge')
   try {
     log(`Recharging community pool: ${chainName}, amount: ${amount}`)
 
@@ -170,26 +173,26 @@ export async function recharge(
     const mainnetMetamask = await connectedMainnetChain(mpc, walletClient, switchNetwork)
     await mainnetMetamask.communityPool.recharge(chainName, address, {
       address: address,
-      value: toWei(amount, DEFAULT_ERC20_DECIMALS)
-    });
-    setLoading('activate');
-    let active = false;
+      value: toWei(amount, DEFAULT_ERC20_DECIMALS),
+    })
+    setLoading('activate')
+    let active = false
     const chainHash = ethers.id(chainName)
-    let counter = 0;
+    let counter = 0
     while (!active) {
-      log('Waiting for account activation...');
-      let activeM = await mainnetMetamask.communityPool.contract.activeUsers(address, chainHash);
-      let activeS = await sChain.communityLocker.contract.activeUsers(address);
-      active = activeS && activeM;
-      await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000);
-      counter++;
-      if (counter >= 10) break;
+      log('Waiting for account activation...')
+      let activeM = await mainnetMetamask.communityPool.contract.activeUsers(address, chainHash)
+      let activeS = await sChain.communityLocker.contract.activeUsers(address)
+      active = activeS && activeM
+      await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000)
+      counter++
+      if (counter >= 10) break
     }
   } catch (err) {
-    console.error(err);
-    const msg = err.message ? err.message : DEFAULT_ERROR_MSG;
-    setErrorMessage(new dataclasses.TransactionErrorMessage(msg, errorMessageClosedFallback));
+    console.error(err)
+    const msg = err.message ? err.message : DEFAULT_ERROR_MSG
+    setErrorMessage(new dataclasses.TransactionErrorMessage(msg, errorMessageClosedFallback))
   } finally {
-    setLoading(false);
+    setLoading(false)
   }
 }

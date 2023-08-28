@@ -1,1 +1,1 @@
-export { default } from "./SFuelWarning";
+export { default } from './SFuelWarning'

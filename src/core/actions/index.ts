@@ -23,7 +23,13 @@
 
 import debug from 'debug'
 
-import { TransferERC20S2S, WrapERC20S, UnWrapERC20S, TransferERC20M2S, TransferERC20S2M } from './erc20'
+import {
+  TransferERC20S2S,
+  WrapERC20S,
+  UnWrapERC20S,
+  TransferERC20M2S,
+  TransferERC20S2M,
+} from './erc20'
 
 import { Action } from './action'
 
@@ -34,7 +40,11 @@ import { S2S_POSTFIX, M2S_POSTFIX, S2M_POSTFIX } from '../constants'
 debug.enable('*')
 const log = debug('metaport:actions')
 
-export function getActionName(chainName1: string, chainName2: string, tokenType: TokenType): string {
+export function getActionName(
+  chainName1: string,
+  chainName2: string,
+  tokenType: TokenType,
+): string {
   if (!chainName1 || !chainName2 || !tokenType) return
   log(`Getting action name: ${chainName1} ${chainName2} ${tokenType}`)
   let postfix = S2S_POSTFIX

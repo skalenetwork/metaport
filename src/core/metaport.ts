@@ -23,7 +23,13 @@
 
 import { Provider, JsonRpcProvider, Contract } from 'ethers'
 
-import { MetaportConfig, TokenDataTypesMap, Token, TokenContractsMap, TokenBalancesMap } from './interfaces'
+import {
+  MetaportConfig,
+  TokenDataTypesMap,
+  Token,
+  TokenContractsMap,
+  TokenBalancesMap,
+} from './interfaces'
 import { TokenType, TokenData, CustomAbiTokenType } from './dataclasses'
 
 import { getEmptyTokenDataMap } from './tokens/helper'
@@ -120,7 +126,10 @@ export default class MetaportCore {
     return await tokenContract.balanceOf(address)
   }
 
-  async tokenBalances(tokenContracts: TokenContractsMap, address: string): Promise<TokenBalancesMap> {
+  async tokenBalances(
+    tokenContracts: TokenContractsMap,
+    address: string,
+  ): Promise<TokenBalancesMap> {
     const balances: TokenBalancesMap = {}
     const tokenKeynames = Object.keys(tokenContracts)
     for (const tokenKeyname of tokenKeynames) {
@@ -159,7 +168,12 @@ export default class MetaportCore {
     return new Contract(address, abi, provider)
   }
 
-  originAddress(chainName1: string, chainName2: string, tokenKeyname: string, tokenType: TokenType) {
+  originAddress(
+    chainName1: string,
+    chainName2: string,
+    tokenKeyname: string,
+    tokenType: TokenType,
+  ) {
     let token = this._config.connections[chainName1][tokenType][tokenKeyname]
     const isClone = token.chains[chainName2].clone
     if (isClone) {

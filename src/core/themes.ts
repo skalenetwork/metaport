@@ -43,7 +43,16 @@ const defaultThemes = {
 }
 
 // warning: order is important here
-const MUI_ELEMENTS = ['mobileStepper', 'fab', 'speedDial', 'appBar', 'drawer', 'modal', 'snackbar', 'tooltip']
+const MUI_ELEMENTS = [
+  'mobileStepper',
+  'fab',
+  'speedDial',
+  'appBar',
+  'drawer',
+  'modal',
+  'snackbar',
+  'tooltip',
+]
 
 const INDEX_STEP = 50
 

@@ -146,7 +146,9 @@ export class Action {
 
     // todo: use wrapper address!
     const destWrapperAddress =
-      this.mpc.config.connections[this.chainName2][this.token.type][this.token.keyname].chains[this.chainName1].wrapper
+      this.mpc.config.connections[this.chainName2][this.token.type][this.token.keyname].chains[
+        this.chainName1
+      ].wrapper
     if (this.token.isClone(this.chainName2) && destWrapperAddress) {
       this.destToken = mpc.tokenContract(
         chainName2,

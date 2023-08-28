@@ -41,12 +41,23 @@ export default function SkConnect() {
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
   return (
     <ConnectButton.Custom>
-      {({ account, chain, openAccountModal, openChainModal, openConnectModal, authenticationStatus, mounted }) => {
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        authenticationStatus,
+        mounted,
+      }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
         const ready = mounted && authenticationStatus !== 'loading'
         const connected =
-          ready && account && chain && (!authenticationStatus || authenticationStatus === 'authenticated')
+          ready &&
+          account &&
+          chain &&
+          (!authenticationStatus || authenticationStatus === 'authenticated')
         return (
           <div
             {...(!ready && {
@@ -117,7 +128,17 @@ export default function SkConnect() {
                         size="xs"
                       />
                     </div>
-                    <p className={cls(cmn.p, cmn.p4, cmn.p500, cmn.pSec, cmn.mbott5, cmn.mleft5, cmn.pCent)}>
+                    <p
+                      className={cls(
+                        cmn.p,
+                        cmn.p4,
+                        cmn.p500,
+                        cmn.pSec,
+                        cmn.mbott5,
+                        cmn.mleft5,
+                        cmn.pCent,
+                      )}
+                    >
                       Connect a wallet to use SKALE Metaport
                     </p>
                     <Button

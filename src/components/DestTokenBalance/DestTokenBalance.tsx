@@ -15,7 +15,7 @@ export default function DestTokenBalance() {
     updateDestTokenBalance(address) // Fetch users immediately on component mount
     const intervalId = setInterval(() => {
       updateDestTokenBalance(address)
-    }, 10000) 
+    }, 10000)
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount
     }
@@ -23,5 +23,11 @@ export default function DestTokenBalance() {
 
   if (!token) return
 
-  return <TokenBalance balance={destTokenBalance} symbol={token.meta.symbol} decimals={token.meta.decimals} />
+  return (
+    <TokenBalance
+      balance={destTokenBalance}
+      symbol={token.meta.symbol}
+      decimals={token.meta.decimals}
+    />
+  )
 }

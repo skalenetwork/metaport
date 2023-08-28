@@ -80,7 +80,11 @@ export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app
     return 'Ethereum'
   }
   if (CHAINS_META[skaleNetwork] && CHAINS_META[skaleNetwork][chainName]) {
-    if (app && CHAINS_META[skaleNetwork][chainName].apps && CHAINS_META[skaleNetwork][chainName].apps[app]) {
+    if (
+      app &&
+      CHAINS_META[skaleNetwork][chainName].apps &&
+      CHAINS_META[skaleNetwork][chainName].apps[app]
+    ) {
       return CHAINS_META[skaleNetwork][chainName].apps[app].alias
     }
     return CHAINS_META[skaleNetwork][chainName].alias

@@ -21,65 +21,56 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { Provider, Wallet, JsonRpcProvider, AbiCoder, TransactionResponse } from 'ethers';
+import { Provider, Wallet, JsonRpcProvider, AbiCoder, TransactionResponse } from 'ethers'
 
 import SkalePowMiner from './miner'
 import { ZERO_ADDRESS, ZERO_FUNCSIG, FAUCET_DATA } from './constants'
-import { AddressType, SkaleNetwork } from './interfaces';
-import MetaportCore from './metaport';
-
+import { AddressType, SkaleNetwork } from './interfaces'
+import MetaportCore from './metaport'
 
 function getAddress(chainName: string, skaleNetwork: string) {
-    if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_ADDRESS;
-    const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork];
-    return faucet[chainName].address;
+  if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_ADDRESS
+  const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork]
+  return faucet[chainName].address
 }
-
 
 function getFunc(chainName: string, skaleNetwork: string) {
-    if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_FUNCSIG;
-    const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork];
-    return faucet[chainName].func;
+  if (!isFaucetAvailable(chainName, skaleNetwork)) return ZERO_FUNCSIG
+  const faucet: { [x: string]: { [x: string]: string } } = FAUCET_DATA[skaleNetwork]
+  return faucet[chainName].func
 }
-
 
 export function isFaucetAvailable(chainName: string, skaleNetwork: string) {
-    if (!FAUCET_DATA[skaleNetwork]) return false;
-    const keys = Object.keys(FAUCET_DATA[skaleNetwork]);
-    return keys.includes(chainName);
+  if (!FAUCET_DATA[skaleNetwork]) return false
+  const keys = Object.keys(FAUCET_DATA[skaleNetwork])
+  return keys.includes(chainName)
 }
 
-
-function getFuncData(
-    chainName: string,
-    address: string,
-    skaleNetwork: string
-) {
-    const faucetAddress = getAddress(chainName, skaleNetwork);
-    const functionSig = getFunc(chainName, skaleNetwork);
-    const encoder = new AbiCoder()
-    const functionParam = encoder.encode(['address'], [address])
-    return { to: faucetAddress, data: functionSig + functionParam.slice(2) };
+function getFuncData(chainName: string, address: string, skaleNetwork: string) {
+  const faucetAddress = getAddress(chainName, skaleNetwork)
+  const functionSig = getFunc(chainName, skaleNetwork)
+  const encoder = new AbiCoder()
+  const functionParam = encoder.encode(['address'], [address])
+  return { to: faucetAddress, data: functionSig + functionParam.slice(2) }
 }
-
 
 export async function getSFuel(
-    chainName: string,
-    address: AddressType,
-    mpc: MetaportCore
+  chainName: string,
+  address: AddressType,
+  mpc: MetaportCore,
 ): Promise<TransactionResponse> {
-    const endpoint = mpc.endpoint(chainName)
-    const miner = new SkalePowMiner()
-    const provider = new JsonRpcProvider(endpoint);
-    const wallet = Wallet.createRandom().connect(provider)
-    let nonce: number = await wallet.getNonce();
-    const mineFreeGasResult = await miner.mineGasForTransaction(nonce, 100000, wallet.address);
-    const { to, data } = getFuncData(chainName, address, mpc.config.skaleNetwork)
-    return await wallet.sendTransaction({
-        from: wallet.address,
-        to,
-        data,
-        nonce,
-        gasPrice: mineFreeGasResult
-    })
+  const endpoint = mpc.endpoint(chainName)
+  const miner = new SkalePowMiner()
+  const provider = new JsonRpcProvider(endpoint)
+  const wallet = Wallet.createRandom().connect(provider)
+  let nonce: number = await wallet.getNonce()
+  const mineFreeGasResult = await miner.mineGasForTransaction(nonce, 100000, wallet.address)
+  const { to, data } = getFuncData(chainName, address, mpc.config.skaleNetwork)
+  return await wallet.sendTransaction({
+    from: wallet.address,
+    to,
+    data,
+    nonce,
+    gasPrice: mineFreeGasResult,
+  })
 }

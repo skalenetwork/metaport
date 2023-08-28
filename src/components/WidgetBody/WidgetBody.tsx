@@ -3,7 +3,6 @@ import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 import { useSFuelStore } from '../../store/SFuelStore'
 
-
 import ChainsList from '../ChainsList'
 import AmountInput from '../AmountInput'
 import SkStepper from '../Stepper'
@@ -49,7 +48,7 @@ export function WidgetBody(props) {
 
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
-  const sFuelOk = useSFuelStore((state) => state.sFuelOk);
+  const sFuelOk = useSFuelStore((state) => state.sFuelOk)
 
   useEffect(() => {
     setChainName1(mpc.config.chains ? mpc.config.chains[0] : '')
@@ -66,8 +65,10 @@ export function WidgetBody(props) {
   const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP
   const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP
   const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
-  const showStepper = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && sFuelOk
-  const showCP = !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
+  const showStepper =
+    !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && sFuelOk
+  const showCP =
+    !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
   const showError = !!errorMessage
 
   return (

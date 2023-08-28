@@ -99,8 +99,15 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                           size="medium"
                           className={cls(styles.btnAction, cmn.mtop5)}
                           onClick={() => execute(address, switchNetworkAsync, walletClient)}
-                          disabled={!!(
-                            amountErrorMessage || actionBtnDisabled || loading || amount == '' || !cpData.exitGasOk)}
+                          disabled={
+                            !!(
+                              amountErrorMessage ||
+                              actionBtnDisabled ||
+                              loading ||
+                              amount == '' ||
+                              !cpData.exitGasOk
+                            )
+                          }
                         >
                           {step.btnText}
                         </Button>
@@ -116,7 +123,17 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
         {currentStep === stepsMetadata.length && (
           <div>
             <div className={cls(cmn.d)}>
-              <p className={cls(cmn.p1, cmn.p, cmn.p600, cmn.pPrim, cmn.flexg, cmn.pCent, cmn.mtop20)}>
+              <p
+                className={cls(
+                  cmn.p1,
+                  cmn.p,
+                  cmn.p600,
+                  cmn.pPrim,
+                  cmn.flexg,
+                  cmn.pCent,
+                  cmn.mtop20,
+                )}
+              >
                 {emoji} Transfer completed
               </p>
             </div>

@@ -47,13 +47,27 @@ export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNe
   return Number(chainId) === CHAIN_IDS[skaleNetwork]
 }
 
-export function getChainEndpoint(mainnetEndpoint: string, network: SkaleNetwork, chainName: string): string {
+export function getChainEndpoint(
+  mainnetEndpoint: string,
+  network: SkaleNetwork,
+  chainName: string,
+): string {
   if (chainName === MAINNET_CHAIN_NAME) return mainnetEndpoint
   return getSChainEndpoint(network, chainName)
 }
 
-export function getSChainEndpoint(network: SkaleNetwork, sChainName: string, protocol: 'http' | 'ws' = 'http'): string {
-  return PROTOCOL[protocol] + getProxyEndpoint(network) + '/v1/' + (protocol === 'ws' ? 'ws/' : '') + sChainName
+export function getSChainEndpoint(
+  network: SkaleNetwork,
+  sChainName: string,
+  protocol: 'http' | 'ws' = 'http',
+): string {
+  return (
+    PROTOCOL[protocol] +
+    getProxyEndpoint(network) +
+    '/v1/' +
+    (protocol === 'ws' ? 'ws/' : '') +
+    sChainName
+  )
 }
 
 function getProxyEndpoint(network: SkaleNetwork) {
@@ -73,7 +87,11 @@ export function getMainnetAbi(network: string) {
   return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.mainnet }
 }
 
-export function initIMA(mainnetEndpoint: string, network: SkaleNetwork, chainName: string): MainnetChain | SChain {
+export function initIMA(
+  mainnetEndpoint: string,
+  network: SkaleNetwork,
+  chainName: string,
+): MainnetChain | SChain {
   if (chainName === MAINNET_CHAIN_NAME) return initMainnet(mainnetEndpoint, network)
   return initSChain(network, chainName)
 }

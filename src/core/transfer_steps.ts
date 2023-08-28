@@ -39,7 +39,11 @@ import { MAINNET_CHAIN_NAME } from './constants'
 debug.enable('*')
 const log = debug('metaport:core:transferSteps')
 
-export function getStepsMetadata(config: MetaportConfig, token: TokenData, to: string): StepMetadata[] {
+export function getStepsMetadata(
+  config: MetaportConfig,
+  token: TokenData,
+  to: string,
+): StepMetadata[] {
   const steps: StepMetadata[] = []
   if (token === undefined || token === null || to === null || to === '') return steps
 
@@ -53,7 +57,9 @@ export function getStepsMetadata(config: MetaportConfig, token: TokenData, to: s
   if (token.connections[toChain].wrapper) {
     steps.push(new WrapStepMetadata(token.chain, to))
   }
-  steps.push(new TransferStepMetadata(getActionType(token.chain, toChain, token.type), token.chain, toChain))
+  steps.push(
+    new TransferStepMetadata(getActionType(token.chain, toChain, token.type), token.chain, toChain),
+  )
   if (hubTokenOptions.wrapper && !isCloneToClone) {
     steps.push(new UnwrapStepMetadata(token.chain, toChain))
   }

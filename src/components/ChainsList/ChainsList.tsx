@@ -88,13 +88,21 @@ export default function ChainsList(props: {
           )}
         </AccordionSummary>
         <AccordionDetails>
-          <div className={cls(cmn.chainsList, cmn.mbott10, cmn.mri10)} style={{ marginLeft: '8px' }}>
+          <div
+            className={cls(cmn.chainsList, cmn.mbott10, cmn.mri10)}
+            style={{ marginLeft: '8px' }}
+          >
             <div style={{ marginTop: '-17px' }}>
               <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} />
             </div>
             {schainNames.map((name) => (
               <Typography key={name}>
-                <Button color="secondary" size="medium" onClick={() => handle(name)} className={cls(cmn.fullWidth)}>
+                <Button
+                  color="secondary"
+                  size="medium"
+                  onClick={() => handle(name)}
+                  className={cls(cmn.fullWidth)}
+                >
                   {/* <div className={cmn.padd10}>
                     
                   </div> */}
@@ -102,7 +110,17 @@ export default function ChainsList(props: {
                     <div className={cls(cmn.flex, cmn.flexc, cmn.mri10, cmn.mleft10, cmn.pPrim)}>
                       <ChainIcon skaleNetwork={props.config.skaleNetwork} chainName={name} />
                     </div>
-                    <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>
+                    <p
+                      className={cls(
+                        cmn.flex,
+                        cmn.p3,
+                        cmn.p,
+                        cmn.p600,
+                        cmn.cap,
+                        cmn.pPrim,
+                        cmn.mri10,
+                      )}
+                    >
                       {getChainAlias(props.config.skaleNetwork, name)}
                     </p>
                     <div className={cls(cmn.flex, cmn.flexg)}></div>

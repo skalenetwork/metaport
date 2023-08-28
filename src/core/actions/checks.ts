@@ -85,7 +85,11 @@ export async function checkERC20Balance(
   }
 }
 
-export async function checkSFuelBalance(address: string, amount: string, sChain: SChain): Promise<interfaces.CheckRes> {
+export async function checkSFuelBalance(
+  address: string,
+  amount: string,
+  sChain: SChain,
+): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
   try {

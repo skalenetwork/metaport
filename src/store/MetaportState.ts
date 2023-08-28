@@ -57,7 +57,11 @@ interface MetaportState {
   tokenId: number
   setTokenId: (tokenId: number) => void
 
-  execute: (address: string, switchNetwork: (chainId: number) => void, walletClient: WalletClient) => void
+  execute: (
+    address: string,
+    switchNetwork: (chainId: number) => void,
+    walletClient: WalletClient,
+  ) => void
   check: (amount: string, address: `0x${string}`) => void
 
   currentStep: number
@@ -166,7 +170,10 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         console.error(err)
         const msg = err.message ? err.message : DEFAULT_ERROR_MSG
         set({
-          errorMessage: new dataclasses.TransactionErrorMessage(msg, get().errorMessageClosedFallback),
+          errorMessage: new dataclasses.TransactionErrorMessage(
+            msg,
+            get().errorMessageClosedFallback,
+          ),
         })
         return
       } finally {
@@ -245,9 +252,16 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       } else {
         updState['sChain1'] = state.mpc.schain(name)
       }
-      const provider = updState['mainnetChain'] ? updState['mainnetChain'].provider : updState['sChain1'].provider
+      const provider = updState['mainnetChain']
+        ? updState['mainnetChain'].provider
+        : updState['sChain1'].provider
       const tokens = state.mpc.tokens(name)
-      const tokenContracts = state.mpc.tokenContracts(tokens, dataclasses.TokenType.erc20, name, provider)
+      const tokenContracts = state.mpc.tokenContracts(
+        tokens,
+        dataclasses.TokenType.erc20,
+        name,
+        provider,
+      )
       return {
         currentStep: 0,
         token: null,
@@ -283,8 +297,14 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   token: null,
 
   setToken: async (token: dataclasses.TokenData) => {
-    const provider = get().chainName2 === MAINNET_CHAIN_NAME ? get().mainnetChain.provider : get().sChain2.provider
-    const destTokenContract = get().mpc.tokenContract(get().chainName2, token.keyname, token.type, provider)
+    const provider =
+      get().chainName2 === MAINNET_CHAIN_NAME ? get().mainnetChain.provider : get().sChain2.provider
+    const destTokenContract = get().mpc.tokenContract(
+      get().chainName2,
+      token.keyname,
+      token.type,
+      provider,
+    )
     set({
       token: token,
       stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),

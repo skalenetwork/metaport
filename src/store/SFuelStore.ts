@@ -28,7 +28,6 @@ import * as interfaces from '../core/interfaces'
 import { Station, StationData } from '../core/sfuel'
 import MetaportCore from '../core/metaport'
 
-
 interface SFuelState {
   loading: boolean
   setLoading: (loading: boolean) => void
@@ -44,20 +43,20 @@ interface SFuelState {
   hubChainStation: Station
   setHubChainStation: (station: Station) => void
 
-  sFuelStatus: 'action' | 'warning' | 'error';
+  sFuelStatus: 'action' | 'warning' | 'error'
   setSFuelStatus: (status: 'action' | 'warning' | 'error') => void
 
   sFuelOk: boolean
   setSFuelOk: (loading: boolean) => void
 
-  fromStationData: StationData;
-  setFromStationData: (data: StationData) => void;
+  fromStationData: StationData
+  setFromStationData: (data: StationData) => void
 
-  toStationData: StationData;
-  setToStationData: (data: StationData) => void;
+  toStationData: StationData
+  setToStationData: (data: StationData) => void
 
-  hubStationData: StationData;
-  setHubStationData: (data: StationData) => void;
+  hubStationData: StationData
+  setHubStationData: (data: StationData) => void
 }
 
 export const useSFuelStore = create<SFuelState>()((set, get) => ({

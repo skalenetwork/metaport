@@ -38,7 +38,11 @@ export enum ActionType {
   unwrap = 'unwrap',
 }
 
-export function getActionType(chainName1: string, chainName2: string, tokenType: TokenType): ActionType {
+export function getActionType(
+  chainName1: string,
+  chainName2: string,
+  tokenType: TokenType,
+): ActionType {
   if (!chainName1 || !chainName2 || !tokenType) return
   let postfix = S2S_POSTFIX
   if (isMainnet(chainName1)) {

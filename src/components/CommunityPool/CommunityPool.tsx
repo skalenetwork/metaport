@@ -55,7 +55,6 @@ import { useCPStore } from '../../store/CommunityPoolStore'
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 
-
 export default function CommunityPool() {
   const { data: walletClient } = useWalletClient()
   const { switchNetworkAsync } = useSwitchNetwork()
@@ -113,8 +112,14 @@ export default function CommunityPool() {
   }, [chainName, chainName2, address])
 
   const text = cpData.exitGasOk ? 'Exit gas wallet OK' : 'Recharge exit gas wallet'
-  const icon = cpData.exitGasOk ? <CheckCircleIcon color="success" /> : <ErrorIcon color="warning" />
-  const accountBalanceEther = cpData.accountBalance ? fromWei(cpData.accountBalance, DEFAULT_ERC20_DECIMALS) : null
+  const icon = cpData.exitGasOk ? (
+    <CheckCircleIcon color="success" />
+  ) : (
+    <ErrorIcon color="warning" />
+  )
+  const accountBalanceEther = cpData.accountBalance
+    ? fromWei(cpData.accountBalance, DEFAULT_ERC20_DECIMALS)
+    : null
 
   function getRechargeBtnText() {
     if (loading === 'recharge') return 'Recharging...'
@@ -159,7 +164,7 @@ export default function CommunityPool() {
       async () => {
         setLoading(false)
         setErrorMessage(null)
-      }
+      },
     )
     setExpandedCP(false)
   }
@@ -194,7 +199,12 @@ export default function CommunityPool() {
               </p>
               <div>
                 <TokenBalance
-                  balance={cpData.accountBalance} symbol="ETH" truncate={4} size="sm" primary />
+                  balance={cpData.accountBalance}
+                  symbol="ETH"
+                  truncate={4}
+                  size="sm"
+                  primary
+                />
               </div>
             </div>
             <div className={cls(cmn.ptop0, cmn.flex)}>
@@ -203,7 +213,12 @@ export default function CommunityPool() {
               </p>
               <div>
                 <TokenBalance
-                  balance={cpData.balance} symbol="ETH" truncate={4} size="sm" primary />
+                  balance={cpData.balance}
+                  symbol="ETH"
+                  truncate={4}
+                  size="sm"
+                  primary
+                />
               </div>
             </div>
             <Grid container spacing={0} className={cmn.ptop20}>
@@ -221,15 +236,17 @@ export default function CommunityPool() {
                         disabled={!!loading}
                       />
                     </div>
-                    <p className={cls(
-                      cmn.p,
-                      cmn.p1,
-                      cmn.p700,
-                      cmn.pPrim,
-                      [cmn.pDisabled, loading],
-                      cmn.flex,
-                      cmn.mri20
-                    )}>
+                    <p
+                      className={cls(
+                        cmn.p,
+                        cmn.p1,
+                        cmn.p700,
+                        cmn.pPrim,
+                        [cmn.pDisabled, loading],
+                        cmn.flex,
+                        cmn.mri20,
+                      )}
+                    >
                       ETH
                     </p>
                   </div>
