@@ -51,10 +51,11 @@ export default class SkalePowMiner {
     let addressHash = toBigInt(keccak256(address))
     let nonceAddressXOR = nonceHash ^ addressHash
     let divConstant = MAX_NUMBER / this.difficulty
-    let candidate: string
+    let candidate: Uint8Array
     let iterations = 0
+    const start = performance.now()
     while (true) {
-      candidate = hexlify(randomBytes(32))
+      candidate = randomBytes(32)
       let candidateHash = toBigInt(keccak256(candidate))
       let resultHash = nonceAddressXOR ^ candidateHash
       let externalGas = divConstant / resultHash
@@ -66,6 +67,8 @@ export default class SkalePowMiner {
         await new Promise<void>((resolve) => setTimeout(resolve, 0))
       }
     }
+    const end = performance.now()
+    console.log(`PoW xecution time: ${end - start} ms`)
     return toBigInt(candidate)
   }
 }
