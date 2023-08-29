@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
+import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 
 import ChainApps from '../ChainApps'
 import ChainIcon from '../ChainIcon'
@@ -26,6 +27,7 @@ export default function ChainsList(props: {
   disabledChain: string
   from?: boolean
   disabled?: boolean
+  size?: 'sm' | 'md'
 }) {
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
     props.setExpanded(isExpanded ? panel : false)
@@ -44,6 +46,8 @@ export default function ChainsList(props: {
     props.setChain(schainName)
   }
 
+  const size = props.size ?? 'sm'
+
   return (
     <div>
       <Accordion
@@ -60,14 +64,34 @@ export default function ChainsList(props: {
         >
           {props.chain ? (
             <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv)}>
-              <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
-                <ChainIcon skaleNetwork={props.config.skaleNetwork} chainName={props.chain} />
+              <div
+                className={cls(
+                  cmn.flex,
+                  cmn.flexc,
+                  [cmn.mri10, size === 'sm'],
+                  [cmn.mri15, size === 'md'],
+                )}
+              >
+                <ChainIcon
+                  skaleNetwork={props.config.skaleNetwork}
+                  chainName={props.chain}
+                  size={size}
+                />
               </div>
-              <Tooltip title={'SKALE Chain ' + props.chain}>
-                <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>
-                  {getChainAlias(props.config.skaleNetwork, props.chain)}
-                </p>
-              </Tooltip>
+              <p
+                className={cls(
+                  cmn.p,
+                  [cmn.p2, size === 'md'],
+                  [cmn.p3, size === 'sm'],
+                  [cmn.p700, size === 'md'],
+                  [cmn.p600, size === 'sm'],
+                  cmn.cap,
+                  cmn.pPrim,
+                  cmn.mri10,
+                )}
+              >
+                {getChainAlias(props.config.skaleNetwork, props.chain)}
+              </p>
               <div className={cls(cmn.flex, cmn.flexg)}></div>
               {/* <div className={cls(cmn.flex, cmn.flexc)}>
                 <ChainApps
@@ -92,8 +116,8 @@ export default function ChainsList(props: {
             className={cls(cmn.chainsList, cmn.mbott10, cmn.mri10)}
             style={{ marginLeft: '8px' }}
           >
-            <div style={{ marginTop: '-17px' }}>
-              <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} />
+            <div className={cls([cmn.mleft5, size === 'md'])} style={{ marginTop: '-15px' }}>
+              <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} size={size} />
             </div>
             {schainNames.map((name) => (
               <Typography key={name}>
@@ -106,16 +130,41 @@ export default function ChainsList(props: {
                   {/* <div className={cmn.padd10}>
                     
                   </div> */}
-                  <div className={cls(cmn.flex, cmn.flexcv, cmn.mtop5, cmn.mbott5, cmn.fullWidth)}>
-                    <div className={cls(cmn.flex, cmn.flexc, cmn.mri10, cmn.mleft10, cmn.pPrim)}>
-                      <ChainIcon skaleNetwork={props.config.skaleNetwork} chainName={name} />
+                  <div
+                    className={cls(
+                      cmn.flex,
+                      cmn.flexcv,
+                      [cmn.mtop5, size === 'sm'],
+                      [cmn.mbott5, size === 'sm'],
+                      [cmn.mtop10, size === 'md'],
+                      [cmn.mbott10, size === 'md'],
+                      cmn.fullWidth,
+                    )}
+                  >
+                    <div
+                      className={cls(
+                        cmn.flex,
+                        cmn.flexc,
+                        [cmn.mri10, size === 'sm'],
+                        [cmn.mri15, size === 'md'],
+                        cmn.mleft10,
+                        cmn.pPrim,
+                      )}
+                    >
+                      <ChainIcon
+                        skaleNetwork={props.config.skaleNetwork}
+                        chainName={name}
+                        size={size}
+                      />
                     </div>
                     <p
                       className={cls(
                         cmn.flex,
-                        cmn.p3,
                         cmn.p,
-                        cmn.p600,
+                        [cmn.p2, size === 'md'],
+                        [cmn.p3, size === 'sm'],
+                        [cmn.p700, size === 'md'],
+                        [cmn.p600, size === 'sm'],
                         cmn.cap,
                         cmn.pPrim,
                         cmn.mri10,
@@ -124,16 +173,11 @@ export default function ChainsList(props: {
                       {getChainAlias(props.config.skaleNetwork, name)}
                     </p>
                     <div className={cls(cmn.flex, cmn.flexg)}></div>
-                    {/* <div className={cls(cmn.flex, cmn.flexc)}>
-                      <ChainApps
-                        skaleNetwork={props.config.skaleNetwork}
-                        chain={name}
-                      />
-                    </div> */}
+                    <KeyboardArrowRightRoundedIcon className={cls(cmn.mri5, cmn.pPrim)} />
                   </div>
                 </Button>
-                <div className={cls(cmn.mleft20d)}>
-                  <ChainApps skaleNetwork={props.config.skaleNetwork} chain={name} />
+                <div className={cls([cmn.mleft5, size === 'md'])}>
+                  <ChainApps skaleNetwork={props.config.skaleNetwork} chain={name} size={size} />
                 </div>
               </Typography>
             ))}

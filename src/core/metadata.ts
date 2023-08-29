@@ -24,6 +24,7 @@
 import { TokenData } from './dataclasses'
 import { SkaleNetwork } from './interfaces'
 import { MAINNET_CHAIN_NAME } from './constants'
+import { CHAINS_META } from './helper'
 
 import * as MAINNET_CHAIN_ICONS from '../meta/mainnet/icons'
 import * as STAGING_CHAIN_ICONS from '../meta/staging/icons'
@@ -58,6 +59,22 @@ export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: st
   if (CHAIN_ICONS[skaleNetwork][filename]) {
     return CHAIN_ICONS[skaleNetwork][filename]
   }
+}
+
+export function chainBg(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
+  if (CHAINS_META[skaleNetwork][chainName]) {
+    if (app) {
+      if (CHAINS_META[skaleNetwork][chainName]['apps'][app]['gradientBackground']) {
+        return CHAINS_META[skaleNetwork][chainName]['apps'][app]['gradientBackground']
+      }
+      return CHAINS_META[skaleNetwork][chainName]['apps'][app]['background']
+    }
+    if (CHAINS_META[skaleNetwork][chainName]['gradientBackground']) {
+      return CHAINS_META[skaleNetwork][chainName]['gradientBackground']
+    }
+    return CHAINS_META[skaleNetwork][chainName]['background']
+  }
+  return 'linear-gradient(273.67deg, rgb(47 50 80), rgb(39 43 68))'
 }
 
 export function tokenIcon(tokenSymbol: string) {

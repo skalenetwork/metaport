@@ -289,5 +289,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   },
   theme: {
     mode: 'dark',
-  },
+    vibrant: true,
+  }
 }

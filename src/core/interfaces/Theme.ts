@@ -31,4 +31,5 @@ export interface MetaportTheme {
   background?: string
   position?: Position
   zIndex?: number
+  vibrant?: boolean
 }

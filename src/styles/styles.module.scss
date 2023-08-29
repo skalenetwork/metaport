@@ -120,6 +120,10 @@ button {
     }
 
 
+    :global(.MuiLinearProgress-root) {
+        border-radius: 20px;
+    }
+
     // .accordionSm {
     //     :global(.MuiAccordionSummary-content) {
     //         margin: 0 !important;

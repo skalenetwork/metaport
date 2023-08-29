@@ -2,6 +2,7 @@ export { interfaces, dataclasses } from './Metaport'
 
 export { useMetaportStore } from './store/MetaportState'
 export { useUIStore, useCollapseStore } from './store/Store'
+export { useSFuelStore } from './store/SFuelStore'
 
 import Metaport from './components/Metaport'
 import MetaportProvider from './components/MetaportProvider'
@@ -23,8 +24,10 @@ import AmountErrorMessage from './components/AmountErrorMessage'
 import DestTokenBalance from './components/DestTokenBalance'
 import ErrorMessage from './components/ErrorMessage'
 import CommunityPool from './components/CommunityPool'
+import SFuelWarning from './components/SFuelWarning'
 
 import { cls } from './core/helper'
+import { chainBg } from './core/metadata'
 import styles from './styles/styles.module.scss'
 import cmn from './styles/cmn.module.scss'
 
@@ -53,10 +56,12 @@ export {
   DestTokenBalance,
   ErrorMessage,
   CommunityPool,
+  SFuelWarning,
   cls,
   styles,
   cmn,
   getMetaportTheme,
   useWagmiAccount,
   PROXY_ENDPOINTS,
+  chainBg
 }

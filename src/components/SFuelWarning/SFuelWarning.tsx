@@ -29,16 +29,10 @@ import { useAccount } from 'wagmi'
 import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Collapse } from '@mui/material'
+import LinearProgress from '@mui/material/LinearProgress';
 
-import {
-  MAINNET_CHAIN_NAME,
-  SFUEL_CHEKCS_INTERVAL,
-  SFUEL_TEXT,
-  DEFAULT_FAUCET_URL,
-} from '../../core/constants'
-
-import { Station, StationData } from '../../core/sfuel'
-import { View } from '../../core/dataclasses/View'
+import { MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../../core/constants'
+import { Station } from '../../core/sfuel'
 
 import { useMetaportStore } from '../../store/MetaportState'
 import { useSFuelStore } from '../../store/SFuelStore'
@@ -46,8 +40,6 @@ import { useSFuelStore } from '../../store/SFuelStore'
 import { cls } from '../../core/helper'
 import cmn from '../../styles/cmn.module.scss'
 import styles from '../../styles/styles.module.scss'
-
-// import CustomStationUrl from '../CustomStationUrl';
 
 debug.enable('*')
 const log = debug('metaport:components:SFuel')
@@ -78,15 +70,6 @@ export default function SFuelWarning(props: {}) {
   const sFuelOk = useSFuelStore((state) => state.sFuelOk)
   const setSFuelOk = useSFuelStore((state) => state.setSFuelOk)
 
-  const fromStationData = useSFuelStore((state) => state.fromStationData)
-  const setFromStationData = useSFuelStore((state) => state.setFromStationData)
-
-  const toStationData = useSFuelStore((state) => state.toStationData)
-  const setToStationData = useSFuelStore((state) => state.setToStationData)
-
-  const hubStationData = useSFuelStore((state) => state.hubStationData)
-  const setHubStationData = useSFuelStore((state) => state.setHubStationData)
-
   const { address } = useAccount()
 
   let hubChain
@@ -97,24 +80,14 @@ export default function SFuelWarning(props: {}) {
 
   useEffect(() => {
     if (!chainName1 || !chainName2 || !address) return
+    setLoading(true)
+    setFromChainStation(null)
+    setToChainStation(null)
+    setHubChainStation(null)
+    setSFuelOk(false)
     log('Initializing SFuelWarning', chainName1, chainName2, hubChain, address)
     createStations()
   }, [chainName1, chainName2, hubChain, address])
-
-  useEffect(() => {
-    if (!fromStationData.ok || (hubChainStation && !hubStationData.ok)) {
-      setSFuelStatus('error')
-      setSFuelOk(false)
-    } else {
-      if (!toStationData.ok) {
-        setSFuelStatus('warning')
-        setSFuelOk(false)
-      } else {
-        setSFuelStatus('action')
-        setSFuelOk(true)
-      }
-    }
-  }, [fromStationData, toStationData, hubStationData])
 
   useEffect(() => {
     updateStationsData()
@@ -133,10 +106,35 @@ export default function SFuelWarning(props: {}) {
   }
 
   async function updateStationsData() {
-    if (fromChainStation) setFromStationData(await fromChainStation.getData(address))
-    if (toChainStation) setToStationData(await toChainStation.getData(address))
-    if (hubChainStation) setHubStationData(await hubChainStation.getData(address))
-    setLoading(false)
+    let fromData
+    let toData
+    let hubData
+    if (fromChainStation) {
+      fromData = await fromChainStation.getData(address)
+    }
+    if (toChainStation) {
+      toData = await toChainStation.getData(address)
+    }
+    if (hubChainStation) {
+      hubData = await hubChainStation.getData(address)
+    }
+    if ((fromData && !fromData.ok) || (hubData && !hubData.ok)) {
+      setSFuelStatus('error')
+      setSFuelOk(false)
+    } else {
+      if (toData && !toData.ok) {
+        setSFuelStatus('warning')
+        setSFuelOk(false)
+      } else {
+        if (fromData && fromData.ok && toData && toData.ok) {
+          setSFuelStatus('action')
+          setSFuelOk(true)
+        }
+      }
+    }
+    if (fromData && toData) {
+      setLoading(false)
+    }
   }
 
   async function doPoW() {
@@ -145,20 +143,27 @@ export default function SFuelWarning(props: {}) {
     let hubPowRes
 
     setMining(true)
-
-    if (fromChainStation && !fromStationData.ok) {
-      log(`Doing PoW on ${fromChainStation.chainName}`)
-      fromPowRes = await fromChainStation.doPoW(address)
+    if (fromChainStation) {
+      const fromData = await fromChainStation.getData(address)
+      if (!fromData.ok) {
+        log(`Doing PoW on ${fromChainStation.chainName}`)
+        fromPowRes = await fromChainStation.doPoW(address)
+      }
     }
-    if (toChainStation && !toStationData.ok) {
-      log(`Doing PoW on ${toChainStation.chainName}`)
-      toPowRes = await toChainStation.doPoW(address)
+    if (toChainStation) {
+      const toData = await toChainStation.getData(address)
+      if (!toData.ok) {
+        log(`Doing PoW on ${toChainStation.chainName}`)
+        toPowRes = await toChainStation.doPoW(address)
+      }
     }
-    if (hubChainStation && !hubStationData.ok) {
-      log(`Doing PoW on ${hubChainStation.chainName}`)
-      hubPowRes = await hubChainStation.doPoW(address)
+    if (hubChainStation) {
+      const hubData = await hubChainStation.getData(address)
+      if (!hubData.ok) {
+        log(`Doing PoW on ${hubChainStation.chainName}`)
+        hubPowRes = await hubChainStation.doPoW(address)
+      }
     }
-
     if (
       (fromPowRes && !fromPowRes.ok) ||
       (toPowRes && !toPowRes.ok) ||
@@ -169,28 +174,34 @@ export default function SFuelWarning(props: {}) {
       if (toPowRes) log(chainName2, toPowRes.message)
       if (hubPowRes) log(hubChain, hubPowRes.message)
       // window.open(DEFAULT_FAUCET_URL, '_blank');
+    } else {
+      setSFuelStatus('action')
+      setSFuelOk(true)
     }
-    await updateStationsData()
+    // await updateStationsData()
     setMining(false)
   }
 
-  const noEth = fromStationData && !fromStationData.ok && chainName1 === MAINNET_CHAIN_NAME
-  const noEthDest = toStationData && !toStationData.ok && chainName2 === MAINNET_CHAIN_NAME
+  const mainnetTransfer = chainName1 === MAINNET_CHAIN_NAME || chainName2 === MAINNET_CHAIN_NAME
 
   function getSFuelText() {
-    if (noEth || (fromStationData && fromStationData.ok && noEthDest)) {
+    if (mainnetTransfer) {
       return SFUEL_TEXT['gas'][sFuelStatus]
     }
     return SFUEL_TEXT['sfuel'][sFuelStatus]
   }
 
+  if (loading) return <div className={cls(cmn.mleft10, cmn.mri10, cmn.mtop20, cmn.mbott10)}>
+    <LinearProgress />
+  </div>
+
   return (
-    <Collapse in={!loading && sFuelStatus !== 'action'}>
+    <Collapse in={!loading && sFuelStatus !== 'action' && !sFuelOk}>
       <div className={cls(cmn.mtop20, cmn.mbott5)}>
-        <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.pPrim, cmn.flexGrow, cmn.mleft5)}>
+        <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.pPrim, cmn.flexGrow, cmn.mleft10)}>
           ⛽ {getSFuelText()}
         </p>
-        {!noEth && ((fromStationData && !fromStationData.ok) || !noEthDest) ? (
+        {!mainnetTransfer ? (
           <div>
             {mining ? (
               <LoadingButton

@@ -68,7 +68,7 @@ export default class SkalePowMiner {
       }
     }
     const end = performance.now()
-    console.log(`PoW xecution time: ${end - start} ms`)
+    console.log(`PoW execution time: ${end - start} ms`)
     return toBigInt(candidate)
   }
 }

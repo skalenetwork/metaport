@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 import { useSFuelStore } from '../../store/SFuelStore'
+import { useUIStore } from '../../store/Store'
 
 import ChainsList from '../ChainsList'
 import AmountInput from '../AmountInput'
@@ -16,9 +17,11 @@ import CommunityPool from '../CommunityPool'
 import SFuelWarning from '../SFuelWarning'
 
 import cmn from '../../styles/cmn.module.scss'
+import styles from '../../styles/styles.module.scss'
 import { cls } from '../../core/helper'
 import { Collapse } from '@mui/material'
 import { MAINNET_CHAIN_NAME } from '../../core/constants'
+import { chainBg } from '../../core/metadata'
 
 export function WidgetBody(props) {
   const expandedFrom = useCollapseStore((state) => state.expandedFrom)
@@ -50,6 +53,8 @@ export function WidgetBody(props) {
 
   const sFuelOk = useSFuelStore((state) => state.sFuelOk)
 
+  const theme = useUIStore((state) => state.theme)
+
   useEffect(() => {
     setChainName1(mpc.config.chains ? mpc.config.chains[0] : '')
     setChainName2(mpc.config.chains ? mpc.config.chains[1] : '')
@@ -71,12 +76,16 @@ export function WidgetBody(props) {
     !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
   const showError = !!errorMessage
 
+  const grayBg = 'rgb(136 135 135 / 15%)'
+  const sourceBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName1) : grayBg
+  const destBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName2) : grayBg
+
   return (
     <div>
       <Collapse in={showError}>
         <ErrorMessage errorMessage={errorMessage} />
       </Collapse>
-      <SkPaper gray className={cmn.nop}>
+      <SkPaper background={sourceBg} className={cmn.nop}>
         <SkPaper background="transparent" className={cmn.nop}>
           <Collapse in={showFrom}>
             <div className={cls(cmn.ptop20, cmn.mleft20, cmn.mri20, cmn.flex)}>
@@ -116,7 +125,7 @@ export function WidgetBody(props) {
       </Collapse>
 
       <Collapse in={showTo}>
-        <SkPaper gray className={cmn.nop}>
+        <SkPaper background={destBg} className={cmn.nop}>
           <div className={cls(cmn.ptop20, cmn.mleft20, cmn.mri20, cmn.flex)}>
             <p className={cls(cmn.nom, cmn.p, cmn.p4, cmn.pSec, cmn.flex, cmn.flexg)}>To</p>
             <DestTokenBalance />

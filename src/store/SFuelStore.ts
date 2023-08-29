@@ -48,15 +48,6 @@ interface SFuelState {
 
   sFuelOk: boolean
   setSFuelOk: (loading: boolean) => void
-
-  fromStationData: StationData
-  setFromStationData: (data: StationData) => void
-
-  toStationData: StationData
-  setToStationData: (data: StationData) => void
-
-  hubStationData: StationData
-  setHubStationData: (data: StationData) => void
 }
 
 export const useSFuelStore = create<SFuelState>()((set, get) => ({
@@ -78,14 +69,5 @@ export const useSFuelStore = create<SFuelState>()((set, get) => ({
   setSFuelStatus: (status: 'action' | 'warning' | 'error') => set({ sFuelStatus: status }),
 
   sFuelOk: false,
-  setSFuelOk: (sFuelOk: boolean) => set(() => ({ sFuelOk: sFuelOk })),
-
-  fromStationData: { ok: false, balance: null },
-  setFromStationData: (data: StationData) => set({ fromStationData: data }),
-
-  toStationData: { ok: false, balance: null },
-  setToStationData: (data: StationData) => set({ toStationData: data }),
-
-  hubStationData: { ok: false, balance: null },
-  setHubStationData: (data: StationData) => set({ hubStationData: data }),
+  setSFuelOk: (sFuelOk: boolean) => set(() => ({ sFuelOk: sFuelOk }))
 }))

@@ -64,7 +64,7 @@ export async function getSFuel(
   const provider = new JsonRpcProvider(endpoint)
   const wallet = Wallet.createRandom().connect(provider)
   let nonce: number = await wallet.getNonce()
-  const mineFreeGasResult = await miner.mineGasForTransaction(nonce, 100000, wallet.address)
+  const mineFreeGasResult = await miner.mineGasForTransaction(nonce, 1000000, wallet.address)
   const { to, data } = getFuncData(chainName, address, mpc.config.skaleNetwork)
   return await wallet.sendTransaction({
     from: wallet.address,

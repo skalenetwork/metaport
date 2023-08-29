@@ -75,7 +75,7 @@ export const IMA_HUB_WAIT = 5
 export const COINGECKO_API_ENDPOINT = ''
 
 export const DEFAULT_FAUCET_URL = 'https://sfuel.skale.network/'
-export const SFUEL_CHEKCS_INTERVAL = 8
+export const SFUEL_CHECKS_INTERVAL = 8
 
 export const SFUEL_TEXT = {
   sfuel: {
