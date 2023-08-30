@@ -24,6 +24,11 @@
 import debug from 'debug'
 
 import {
+  TransferEthM2S,
+  TransferEthS2M,
+  UnlockEthM
+} from './eth';
+import {
   TransferERC20S2S,
   WrapERC20S,
   UnWrapERC20S,
@@ -60,8 +65,8 @@ export function getActionName(
 }
 
 export const ACTIONS: { [actionType in ActionType]: typeof Action } = {
-  // eth_m2s: [TransferEthM2S],
-  // eth_s2m: [TransferEthS2M, UnlockEthM],
+  eth_m2s: TransferEthM2S,
+  eth_s2m: TransferEthS2M,
   // eth_s2s: [],
 
   wrap: WrapERC20S,

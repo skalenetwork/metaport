@@ -16,7 +16,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   ],
   tokens: {
     eth: {
-      symbol: 'eth',
+      symbol: 'ETH'
     },
     skl: {
       decimals: '18',
@@ -72,6 +72,18 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   },
   connections: {
     mainnet: {
+      eth: {
+        eth: {
+          chains: {
+            'staging-legal-crazy-castor': {},
+            // "staging-utter-unripe-menkar": {},
+            // "staging-faint-slimy-achird": {},
+            // "staging-perfect-parallel-gacrux": {},
+            // "staging-severe-violet-wezen": {},
+            // "staging-weepy-fitting-caph": {}
+          }
+        }
+      },
       erc20: {
         skl: {
           address: '0x493D4442013717189C9963a2e275Ad33bfAFcE11',
@@ -197,6 +209,16 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     },
     'staging-legal-crazy-castor': {
       // Europa connections
+      eth: {
+        eth: {
+          address: '0xD2Aaa00700000000000000000000000000000000',
+          chains: {
+            mainnet: {
+              clone: true
+            }
+          }
+        }
+      },
       erc20: {
         skl: {
           address: '0xbA1E9BA7CDd4815Da6a51586bE56e8643d1bEAb6',
@@ -289,6 +311,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   },
   theme: {
     mode: 'dark',
-    vibrant: true,
+    vibrant: true
   }
 }

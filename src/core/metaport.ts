@@ -160,9 +160,17 @@ export default class MetaportCore {
     provider: Provider,
     customAbiTokenType?: CustomAbiTokenType,
     destChainName?: string,
-  ): Contract {
+  ): Contract | undefined {
+    let type = tokenType
     const token = this._config.connections[chainName][tokenType][tokenKeyname]
-    const abi = customAbiTokenType ? ERC_ABIS[customAbiTokenType].abi : ERC_ABIS[tokenType].abi
+    if (tokenType === TokenType.eth) {
+      if (destChainName && token.chains[destChainName].clone) {
+        type = TokenType.erc20
+      } else {
+        return
+      }
+    }
+    const abi = customAbiTokenType ? ERC_ABIS[customAbiTokenType].abi : ERC_ABIS[type].abi
     const address = customAbiTokenType ? token.chains[destChainName].wrapper : token.address
     // TODO: add sFUEL address support!
     return new Contract(address, abi, provider)

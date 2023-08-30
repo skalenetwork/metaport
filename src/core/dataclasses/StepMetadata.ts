@@ -36,6 +36,8 @@ export enum ActionType {
   erc20_s2s = 'erc20_s2s',
   wrap = 'wrap',
   unwrap = 'unwrap',
+  eth_m2s = 'eth_m2s',
+  eth_s2m = 'eth_s2m'
 }
 
 export function getActionType(
@@ -68,7 +70,7 @@ export abstract class StepMetadata {
     public type: ActionType,
     public from: string,
     public to: string,
-  ) {}
+  ) { }
 }
 
 export class TransferStepMetadata extends StepMetadata {

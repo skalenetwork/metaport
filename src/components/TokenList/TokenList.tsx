@@ -114,12 +114,13 @@ export default function TokenList() {
 
       {expandedTokens ? (
         <AccordionDetails>
-          {/* <TokenListSection
+          <TokenListSection
             tokens={tokens.eth}
             type={TokenType.eth}
             setToken={setToken}
             setExpanded={setExpandedTokens}
-          /> */}
+            tokenBalances={tokenBalances}
+          />
           <TokenListSection
             tokens={tokens.erc20}
             type={TokenType.erc20}
