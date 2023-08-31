@@ -63,5 +63,5 @@ export {
   getMetaportTheme,
   useWagmiAccount,
   PROXY_ENDPOINTS,
-  chainBg
+  chainBg,
 }

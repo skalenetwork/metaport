@@ -29,7 +29,7 @@ import { useAccount } from 'wagmi'
 import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Collapse } from '@mui/material'
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress'
 
 import { MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../../core/constants'
 import { Station } from '../../core/sfuel'
@@ -191,9 +191,12 @@ export default function SFuelWarning(props: {}) {
     return SFUEL_TEXT['sfuel'][sFuelStatus]
   }
 
-  if (loading) return <div className={cls(cmn.mleft10, cmn.mri10, cmn.mtop20, cmn.mbott10)}>
-    <LinearProgress />
-  </div>
+  if (loading)
+    return (
+      <div className={cls(cmn.mleft10, cmn.mri10, cmn.mtop20, cmn.mbott10)}>
+        <LinearProgress />
+      </div>
+    )
 
   return (
     <Collapse in={!loading && sFuelStatus !== 'action' && !sFuelOk}>

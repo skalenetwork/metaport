@@ -139,7 +139,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     set((state) => {
       state.check(amount, address)
       return {
-        amount: amount
+        amount: amount,
       }
     }),
 
@@ -305,7 +305,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       token.type,
       provider,
       null,
-      get().chainName1
+      get().chainName1,
     )
     set({
       token: token,
@@ -313,7 +313,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       destTokenContract: destTokenContract,
       destTokenBalance: null,
       destChains: Object.keys(token.connections),
-      amount: ''
+      amount: '',
     })
   },
 
@@ -332,7 +332,11 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       const balance = await get().mpc.tokenBalance(get().destTokenContract, address)
       set({ destTokenBalance: balance })
     } else {
-      if (get().token && get().token.type === dataclasses.TokenType.eth && get().chainName2 === MAINNET_CHAIN_NAME) {
+      if (
+        get().token &&
+        get().token.type === dataclasses.TokenType.eth &&
+        get().chainName2 === MAINNET_CHAIN_NAME
+      ) {
         const chain = get().mpc.mainnet()
         set({ destTokenBalance: await chain.ethBalance(address) })
       }
@@ -348,7 +352,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     const chain = get().mpc.ima(get().chainName1)
     tokenBalances.eth = await chain.ethBalance(address)
     set({
-      tokenBalances: tokenBalances
+      tokenBalances: tokenBalances,
     })
   },
 

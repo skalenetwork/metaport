@@ -23,11 +23,7 @@
 
 import debug from 'debug'
 
-import {
-  TransferEthM2S,
-  TransferEthS2M,
-  UnlockEthM
-} from './eth';
+import { TransferEthM2S, TransferEthS2M, UnlockEthM } from './eth'
 import {
   TransferERC20S2S,
   WrapERC20S,

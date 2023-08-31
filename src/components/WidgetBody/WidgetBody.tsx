@@ -75,7 +75,13 @@ export function WidgetBody(props) {
   const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP
   const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
   const showStepper =
-    !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && sFuelOk && !!address
+    !expandedFrom &&
+    !expandedTo &&
+    !expandedTokens &&
+    !errorMessage &&
+    !expandedCP &&
+    sFuelOk &&
+    !!address
   const showCP =
     !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
   const showError = !!errorMessage

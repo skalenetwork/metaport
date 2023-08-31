@@ -38,7 +38,7 @@ export enum ActionType {
   unwrap = 'unwrap',
   eth_m2s = 'eth_m2s',
   eth_s2m = 'eth_s2m',
-  eth_unlock = 'eth_unlock'
+  eth_unlock = 'eth_unlock',
 }
 
 export function getActionType(
@@ -71,7 +71,7 @@ export abstract class StepMetadata {
     public type: ActionType,
     public from: string,
     public to: string,
-  ) { }
+  ) {}
 }
 
 export class TransferStepMetadata extends StepMetadata {
@@ -111,7 +111,6 @@ export class UnwrapStepMetadata extends StepMetadata {
     super(ActionType.unwrap, from, to)
   }
 }
-
 
 export class UnlockStepMetadata extends StepMetadata {
   headline: string = 'Unlock on'
