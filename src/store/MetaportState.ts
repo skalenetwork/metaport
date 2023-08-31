@@ -139,11 +139,11 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     set((state) => {
       state.check(amount, address)
       return {
-        amount: amount,
+        amount: amount
       }
     }),
 
-  execute: async (address: string, switchNetwork: any, walletClient: WalletClient) => {
+  execute: async (address: `0x${string}`, switchNetwork: any, walletClient: WalletClient) => {
     log('Running execute')
     if (get().stepsMetadata[get().currentStep]) {
       set({
@@ -207,7 +207,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   },
 
   check: async (amount: string, address: string) => {
-    if (get().stepsMetadata[get().currentStep]) {
+    if (get().stepsMetadata[get().currentStep] && address) {
       set({
         loading: true,
         btnText: 'Checking balance...',
@@ -313,6 +313,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       destTokenContract: destTokenContract,
       destTokenBalance: null,
       destChains: Object.keys(token.connections),
+      amount: ''
     })
   },
 
@@ -323,6 +324,10 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   destTokenBalance: null,
 
   updateDestTokenBalance: async (address: string) => {
+    if (!address) {
+      set({ destTokenBalance: null })
+      return
+    }
     if (get().destTokenContract) {
       const balance = await get().mpc.tokenBalance(get().destTokenContract, address)
       set({ destTokenBalance: balance })
@@ -335,6 +340,10 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   },
 
   updateTokenBalances: async (address: string) => {
+    if (!address) {
+      set({ tokenBalances: {} })
+      return
+    }
     const tokenBalances = await get().mpc.tokenBalances(get().tokenContracts, address)
     const chain = get().mpc.ima(get().chainName1)
     tokenBalances.eth = await chain.ethBalance(address)

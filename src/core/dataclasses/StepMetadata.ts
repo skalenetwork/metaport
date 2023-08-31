@@ -37,7 +37,8 @@ export enum ActionType {
   wrap = 'wrap',
   unwrap = 'unwrap',
   eth_m2s = 'eth_m2s',
-  eth_s2m = 'eth_s2m'
+  eth_s2m = 'eth_s2m',
+  eth_unlock = 'eth_unlock'
 }
 
 export function getActionType(
@@ -108,5 +109,21 @@ export class UnwrapStepMetadata extends StepMetadata {
     public to: string,
   ) {
     super(ActionType.unwrap, from, to)
+  }
+}
+
+
+export class UnlockStepMetadata extends StepMetadata {
+  headline: string = 'Unlock on'
+  text: string = 'ETH should be unlocked on Ethereum.'
+  btnText: string = 'Unlock'
+  btnLoadingText: string = 'Unlocking'
+  onSource: boolean = false
+
+  constructor(
+    public from: string,
+    public to: string,
+  ) {
+    super(ActionType.eth_unlock, from, to)
   }
 }

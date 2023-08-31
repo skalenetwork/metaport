@@ -45,10 +45,15 @@ export async function checkEthBalance( // TODO: optimize balance checks
   try {
     const balance = await chain.ethBalance(address)
     log(`address: ${address}, eth balance: ${balance}, amount: ${amount}`)
-    const balanceEther = fromWei(balance, tokenData.meta.decimals)
-    if (Number(amount) + SFUEL_RESERVE_AMOUNT > Number(balanceEther)) {
-      checkRes.msg = `Current balance: ${balanceEther} ${tokenData.meta.symbol}. \
-            ${SFUEL_RESERVE_AMOUNT} ETH will be reserved to cover transfer costs.`
+    const balanceEther = Number(fromWei(balance, tokenData.meta.decimals))
+    let checkedAmount = Number(amount)
+    let msg = `Current balance: ${balanceEther} ${tokenData.meta.symbol}.`
+    if (chain instanceof MainnetChain) {
+      checkedAmount += SFUEL_RESERVE_AMOUNT
+      msg += ` ${SFUEL_RESERVE_AMOUNT} ETH will be reserved to cover transfer costs.`
+    }
+    if (checkedAmount > balanceEther) {
+      checkRes.msg = msg
     } else {
       checkRes.res = true
     }

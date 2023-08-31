@@ -67,7 +67,7 @@ export function getActionName(
 export const ACTIONS: { [actionType in ActionType]: typeof Action } = {
   eth_m2s: TransferEthM2S,
   eth_s2m: TransferEthS2M,
-  // eth_s2s: [],
+  eth_unlock: UnlockEthM,
 
   wrap: WrapERC20S,
   unwrap: UnWrapERC20S,

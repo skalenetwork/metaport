@@ -28,6 +28,7 @@ import {
   WrapStepMetadata,
   UnwrapStepMetadata,
   TransferStepMetadata,
+  UnlockStepMetadata,
   StepMetadata,
   getActionType,
 } from './dataclasses'
@@ -71,7 +72,7 @@ export function getStepsMetadata(
     steps.push(new TransferStepMetadata(getActionType(toChain, to, token.type), toChain, to))
   }
   if (to === MAINNET_CHAIN_NAME && token.keyname === 'eth') {
-    // todo: add unlock step!
+    steps.push(new UnlockStepMetadata(token.chain, toChain))
   }
 
   log(`Action steps metadata:`)

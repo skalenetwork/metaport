@@ -98,8 +98,9 @@ export class TransferEthS2M extends TransferAction {
         );
         if (!checkResBalance.res) {
             this.setAmountErrorMessage(checkResBalance.msg);
+            return
         }
-        this.setAmountErrorMessage(null);
+        this.setAmountErrorMessage(null)
     }
 }
 

@@ -73,7 +73,7 @@ export default function SkConnect() {
               if (!connected) {
                 return (
                   <div>
-                    <div className={cls(cmn.fullWidth, cmn.pCent, cmn.mtop20, cmn.mbott20)}>
+                    {/* <div className={cls(cmn.fullWidth, cmn.pCent, cmn.mtop20, cmn.mbott20)}>
                       <img className={styles.skaleLogoLg} src={skaleLogoFull} />
                     </div>
                     <div className={cls(cmn.mbott20, cmn.fullWidth, cmn.flex, cmn.flexc)}>
@@ -127,8 +127,8 @@ export default function SkConnect() {
                         chainName="wan-red-ain"
                         size="xs"
                       />
-                    </div>
-                    <p
+                    </div> */}
+                    {/* <p
                       className={cls(
                         cmn.p,
                         cmn.p4,
@@ -140,12 +140,12 @@ export default function SkConnect() {
                       )}
                     >
                       Connect a wallet to use SKALE Metaport
-                    </p>
+                    </p> */}
                     <Button
                       variant="contained"
                       color="primary"
                       size="medium"
-                      className={cls(styles.btnAction, cmn.mtop5)}
+                      className={cls(styles.btnAction, cmn.mtop20)}
                       onClick={openConnectModal}
                     >
                       Connect Wallet

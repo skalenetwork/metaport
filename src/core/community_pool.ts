@@ -79,7 +79,7 @@ export async function getCommunityPoolData(
     }
   }
 
-  log('Getting community pool data', address, chainName1)
+  // log('Getting community pool data', address, chainName1)
   const balanceWei = await mainnet.communityPool.balance(address, chainName1)
   const accountBalanceWei = await mainnet.ethBalance(address)
   const activeS = await sChain.communityLocker.contract.activeUsers(address)
@@ -103,7 +103,7 @@ export async function getCommunityPoolData(
     recommendedRechargeAmount: recommendedAmount,
     originalRecommendedRechargeAmount: rraWei,
   }
-  log('communityPoolData:', communityPoolData)
+  // log('communityPoolData:', communityPoolData)
   return communityPoolData
 }
 

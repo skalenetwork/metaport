@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import { useAccount } from 'wagmi'
+
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
 import { useSFuelStore } from '../../store/SFuelStore'
@@ -55,6 +57,8 @@ export function WidgetBody(props) {
 
   const theme = useUIStore((state) => state.theme)
 
+  const { address } = useAccount()
+
   useEffect(() => {
     setChainName1(mpc.config.chains ? mpc.config.chains[0] : '')
     setChainName2(mpc.config.chains ? mpc.config.chains[1] : '')
@@ -71,7 +75,7 @@ export function WidgetBody(props) {
   const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP
   const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
   const showStepper =
-    !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && sFuelOk
+    !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && sFuelOk && !!address
   const showCP =
     !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
   const showError = !!errorMessage
@@ -150,9 +154,9 @@ export function WidgetBody(props) {
           <CommunityPool />
         </SkPaper>
       </Collapse>
-
-      <SFuelWarning />
-
+      <Collapse in={!!address}>
+        <SFuelWarning />
+      </Collapse>
       <Collapse in={showStepper}>
         <SkPaper background="transparent">
           <SkStepper skaleNetwork={props.config.skaleNetwork} />
