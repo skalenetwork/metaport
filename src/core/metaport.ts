@@ -91,10 +91,9 @@ export const createTokensMap = (
   return tokens
 }
 
-
 export function createWrappedTokensMap(
   chainName1: string,
-  config: MetaportConfig
+  config: MetaportConfig,
 ): TokenDataTypesMap {
   const wrappedTokens: TokenDataTypesMap = getEmptyTokenDataMap()
   const tokenType = TokenType.erc20
@@ -109,20 +108,17 @@ export function createWrappedTokensMap(
   return wrappedTokens
 }
 
-
 const findFirstWrapperAddress = (token: interfaces.Token): `0x${string}` | null =>
-  Object.values(token.chains).find(chain => 'wrapper' in chain)?.wrapper || null;
-
+  Object.values(token.chains).find((chain) => 'wrapper' in chain)?.wrapper || null
 
 export const findFirstWrapperChainName = (token: TokenData): string | null => {
   for (const [chainName, chain] of Object.entries(token.connections)) {
     if (chain.wrapper) {
-      return chainName;
+      return chainName
     }
   }
-  return null;
-};
-
+  return null
+}
 
 export default class MetaportCore {
   private _config: MetaportConfig
@@ -187,7 +183,7 @@ export default class MetaportCore {
     const contracts: TokenContractsMap = {}
     if (tokens[tokenType]) {
       Object.keys(tokens[tokenType]).forEach((tokenKeyname) => {
-        let destChainName;
+        let destChainName
         if (customAbiTokenType === CustomAbiTokenType.erc20wrap) {
           destChainName = findFirstWrapperChainName(tokens[tokenType][tokenKeyname])
           if (!destChainName) return
@@ -198,7 +194,7 @@ export default class MetaportCore {
           tokenType,
           provider,
           customAbiTokenType,
-          destChainName
+          destChainName,
         )
       })
     }
@@ -211,7 +207,7 @@ export default class MetaportCore {
     tokenType: TokenType,
     provider: Provider,
     customAbiTokenType?: CustomAbiTokenType,
-    destChainName?: string
+    destChainName?: string,
   ): Contract | undefined {
     let type = tokenType
     const token = this._config.connections[chainName][tokenType][tokenKeyname]

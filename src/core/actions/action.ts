@@ -157,8 +157,6 @@ export class Action {
       }
     }
 
-
-
     this.setAmountErrorMessage = setAmountErrorMessage
     this.setBtnText = setBtnText
     this._switchNetwork = switchNetwork

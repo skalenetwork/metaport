@@ -195,7 +195,6 @@ export class WrapERC20S extends Action {
   }
 }
 
-
 export class UnWrapERC20 extends Action {
   async execute() {
     const sChain = (await this.getConnectedChain(this.sChain1.provider)) as SChain
@@ -206,7 +205,7 @@ export class UnWrapERC20 extends Action {
       this.token.type,
       sChain.provider,
       CustomAbiTokenType.erc20wrap,
-      findFirstWrapperChainName(this.token)
+      findFirstWrapperChainName(this.token),
     )
     sChain.erc20.addToken(this.token.keyname, tokenContract)
     const amountWei = await tokenContract.balanceOf(this.address)
@@ -215,9 +214,8 @@ export class UnWrapERC20 extends Action {
     this.updateState('unwrapDone', tx.hash, block.timestamp)
   }
 
-  async preAction() { }
+  async preAction() {}
 }
-
 
 export class UnWrapERC20S extends Action {
   async execute() {

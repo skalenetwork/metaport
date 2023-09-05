@@ -71,5 +71,5 @@ export {
   BASE_EXPLORER_URLS,
   CHAINS_META,
   chainBg,
-  getChainAlias
+  getChainAlias,
 }

@@ -70,7 +70,6 @@ export default function WrappedTokens() {
   const expandedWT = useCollapseStore((state) => state.expandedWT)
   const setExpandedWT = useCollapseStore((state) => state.setExpandedWT)
 
-
   const [filteredTokens, setFilteredTokens] = useState<TokenDataMap>({})
 
   useEffect(() => {
@@ -84,12 +83,14 @@ export default function WrappedTokens() {
   }, [updateWrappedTokenBalances, wrappedTokenContracts, address])
 
   useEffect(() => {
-    setFilteredTokens(Object.keys(wrappedTokenBalances).reduce((acc, key) => {
-      if (wrappedTokenBalances[key] !== 0n) {
-        acc[key] = wrappedTokens.erc20[key];
-      }
-      return acc;
-    }, {}));
+    setFilteredTokens(
+      Object.keys(wrappedTokenBalances).reduce((acc, key) => {
+        if (wrappedTokenBalances[key] !== 0n) {
+          acc[key] = wrappedTokens.erc20[key]
+        }
+        return acc
+      }, {}),
+    )
   }, [wrappedTokens, wrappedTokenBalances])
 
   useEffect(() => {
@@ -120,8 +121,12 @@ export default function WrappedTokens() {
           id="panel1a-header"
         >
           <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv)}>
-            <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}><ErrorIcon color="warning" /></div>
-            <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>Wrapped tokens found</p>
+            <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
+              <ErrorIcon color="warning" />
+            </div>
+            <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>
+              Wrapped tokens found
+            </p>
           </div>
         </AccordionSummary>
         <AccordionDetails>
@@ -156,7 +161,9 @@ export default function WrappedTokens() {
                   <div className={cmn.mfri10}>
                     <TokenBalance
                       balance={
-                        wrappedTokenBalances ? wrappedTokenBalances[filteredTokens[key].keyname] : null
+                        wrappedTokenBalances
+                          ? wrappedTokenBalances[filteredTokens[key].keyname]
+                          : null
                       }
                       symbol={`w${filteredTokens[key]?.meta.symbol}`}
                       decimals={filteredTokens[key]?.meta.decimals}
@@ -183,18 +190,18 @@ export default function WrappedTokens() {
                     color="primary"
                     size="medium"
                     className={cls(styles.btnAction, cmn.mtop5)}
-                    onClick={() => unwrapAll(address, switchNetworkAsync, walletClient, filteredTokens)}
+                    onClick={() =>
+                      unwrapAll(address, switchNetworkAsync, walletClient, filteredTokens)
+                    }
                   >
                     Unwrap all
                   </Button>
                 )}
               </div>
-
             </div>
           </SkPaper>
         </AccordionDetails>
       </Accordion>
     </div>
-
   )
 }

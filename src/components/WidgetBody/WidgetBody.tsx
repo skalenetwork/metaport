@@ -76,7 +76,8 @@ export function WidgetBody(props) {
   const showFrom = !expandedTo && !expandedTokens && !errorMessage && !expandedCP
   const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
   const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP && !expandedWT
-  const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
+  const showSwitch =
+    !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
   const showStepper =
     !expandedFrom &&
     !expandedTo &&
@@ -87,8 +88,13 @@ export function WidgetBody(props) {
     !expandedWT &&
     !!address
   const showCP =
-    !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME && !expandedWT
-  const showWT = !expandedFrom &&
+    !expandedFrom &&
+    !expandedTo &&
+    !expandedTokens &&
+    chainName2 === MAINNET_CHAIN_NAME &&
+    !expandedWT
+  const showWT =
+    !expandedFrom &&
     !expandedTo &&
     !expandedTokens &&
     !errorMessage &&

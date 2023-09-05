@@ -63,7 +63,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedTo: false,
       expandedTokens: false,
       expandedCP: false,
-      expandedWT: false
+      expandedWT: false,
     })),
   expandedTo: false,
   setExpandedTo: (expanded: string | false) =>
@@ -72,7 +72,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTokens: false,
       expandedCP: false,
-      expandedWT: false
+      expandedWT: false,
     })),
   expandedTokens: false,
   setExpandedTokens: (expanded: string | false) =>
@@ -81,7 +81,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedCP: false,
-      expandedWT: false
+      expandedWT: false,
     })),
   expandedCP: false,
   setExpandedCP: (expanded: string | false) =>
@@ -90,7 +90,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedTokens: false,
-      expandedWT: false
+      expandedWT: false,
     })),
   expandedWT: false,
   setExpandedWT: (expanded: string | false) =>
@@ -99,6 +99,6 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedTokens: false,
-      expandedWT: expanded
+      expandedWT: expanded,
     })),
 }))

@@ -29,7 +29,12 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import { PaletteMode } from '@mui/material'
 
-import { injectedWallet, coinbaseWallet, metaMaskWallet, enkryptWallet } from '@rainbow-me/rainbowkit/wallets'
+import {
+  injectedWallet,
+  coinbaseWallet,
+  metaMaskWallet,
+  enkryptWallet,
+} from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig } from '../../core/interfaces'
 
@@ -91,7 +96,7 @@ const connectors = connectorsForWallets([
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  publicClient: webSocketPublicClient
+  publicClient: webSocketPublicClient,
 })
 
 export default function MetaportProvider(props: {
