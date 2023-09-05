@@ -25,6 +25,7 @@ import debug from 'debug'
 
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 
+import { findFirstWrapperChainName } from '../metaport'
 import { externalEvents } from '../events'
 import { toWei } from '../convertation'
 import { MAX_APPROVE_AMOUNT } from '../constants'
@@ -194,48 +195,29 @@ export class WrapERC20S extends Action {
   }
 }
 
-// export class UnWrapERC20S2S123 extends Action {
-//     static label = 'Unwrap'
-//     static buttonText = 'Unwrap'
-//     static loadingText = 'Unwrapping'
-//     async execute() {
-//         log('UnWrapERC20S2S:execute - starting');
 
-//         const sChain = await this.getConnectedChain(this.sChain2.provider) as SChain;
-//         this.updateState('unwrap');
-//         try {
-//             const amountWei = toWei(this.amount, this.token.meta.decimals);
-//             const tx = await sChain.erc20.unwrap(
-//                 this.token.keyname,
-//                 amountWei,
-//                 { address: this.address }
-//             );
-//             const block = await sChain.provider.getBlock(tx.blockNumber);
-//             this.updateState('unwrapDone', tx.hash, block.timestamp);
-//             externalEvents.transactionCompleted(tx, block.timestamp, this.chainName2, 'unwrap');
-//             externalEvents.unwrapComplete(tx.hash, this.chainName2, this.token.keyname);
-//             log('UnWrapERC20S2S:execute - tx completed %O', tx);
-//         } finally {
-//             // log('UnWrapERC20S2S:execute - switchMetamaskChain back');
-//             // this.switchMetamaskChain(true);
-//         }
-//     }
+export class UnWrapERC20 extends Action {
+  async execute() {
+    const sChain = (await this.getConnectedChain(this.sChain1.provider)) as SChain
+    this.updateState('unwrap')
+    const tokenContract = this.mpc.tokenContract(
+      this.chainName1,
+      this.token.keyname,
+      this.token.type,
+      sChain.provider,
+      CustomAbiTokenType.erc20wrap,
+      findFirstWrapperChainName(this.token)
+    )
+    sChain.erc20.addToken(this.token.keyname, tokenContract)
+    const amountWei = await tokenContract.balanceOf(this.address)
+    const tx = await sChain.erc20.unwrap(this.token.keyname, amountWei, { address: this.address })
+    const block = await sChain.provider.getBlock(tx.blockNumber)
+    this.updateState('unwrapDone', tx.hash, block.timestamp)
+  }
 
-//     async preAction() {
-//         log('preAction: UnWrapERC20S2S');
-//         const tokenContract = this.sChain2.erc20.tokens[this.token.keyname];
-//         const checkResBalance = await checkERC20Balance(
-//             this.address,
-//             this.amount,
-//             this.token,
-//             tokenContract
-//         );
-//         if (!checkResBalance.res) {
-//             this.setAmountErrorMessage(checkResBalance.msg);
-//             return
-//         }
-//     }
-// }
+  async preAction() { }
+}
+
 
 export class UnWrapERC20S extends Action {
   async execute() {
@@ -244,15 +226,6 @@ export class UnWrapERC20S extends Action {
       CustomAbiTokenType.erc20wrap,
       this.chainName1,
     )) as SChain
-    // const token = this.mpc.tokenContract(
-    //     this.chainName2,
-    //     this.token.keyname,
-    //     this.token.type,
-    //     sChain.provider,
-    //     CustomAbiTokenType.erc20wrap,
-    //     this.chainName1
-    // );
-    // sChain.erc20.addToken(this.token.keyname, token);
     this.updateState('unwrap')
     let tx
     if (this.token.connections[this.chainName2].wrapsSFuel) {

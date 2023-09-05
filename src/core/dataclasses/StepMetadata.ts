@@ -36,6 +36,7 @@ export enum ActionType {
   erc20_s2s = 'erc20_s2s',
   wrap = 'wrap',
   unwrap = 'unwrap',
+  unwrap_stuck = 'unwrap_stuck',
   eth_m2s = 'eth_m2s',
   eth_s2m = 'eth_s2m',
   eth_unlock = 'eth_unlock',

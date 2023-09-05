@@ -22,14 +22,14 @@
 
 import { ReactElement, useEffect } from 'react'
 
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { mainnet, goerli } from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import { PaletteMode } from '@mui/material'
 
-import { injectedWallet, coinbaseWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
+import { injectedWallet, coinbaseWallet, metaMaskWallet, enkryptWallet } from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig } from '../../core/interfaces'
 
@@ -81,6 +81,7 @@ const connectors = connectorsForWallets([
     groupName: 'Supported Wallets',
     wallets: [
       metaMaskWallet({ chains, projectId: '' }),
+      enkryptWallet({ chains }),
       injectedWallet({ chains }),
       coinbaseWallet({ chains, appName: 'TEST' }),
     ],
@@ -90,7 +91,7 @@ const connectors = connectorsForWallets([
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  publicClient: webSocketPublicClient,
+  publicClient: webSocketPublicClient
 })
 
 export default function MetaportProvider(props: {
@@ -147,6 +148,7 @@ export default function MetaportProvider(props: {
         }}
         showRecentTransactions={true}
         chains={chains}
+        theme={widgetTheme.mode === 'dark' ? darkTheme() : lightTheme()}
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>

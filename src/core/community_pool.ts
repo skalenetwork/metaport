@@ -38,7 +38,7 @@ import {
   MINIMUM_RECHARGE_AMOUNT,
   COMMUNITY_POOL_WITHDRAW_GAS_LIMIT,
   DEFAULT_ERROR_MSG,
-  BALANCE_UPDATE_INTERVAL_SECONDS,
+  BALANCE_UPDATE_INTERVAL_MS,
 } from './constants'
 import { delay } from './helper'
 import { CHAIN_IDS, isMainnetChainId, getMainnetAbi } from './network'
@@ -184,7 +184,7 @@ export async function recharge(
       let activeM = await mainnetMetamask.communityPool.contract.activeUsers(address, chainHash)
       let activeS = await sChain.communityLocker.contract.activeUsers(address)
       active = activeS && activeM
-      await delay(BALANCE_UPDATE_INTERVAL_SECONDS * 1000)
+      await delay(BALANCE_UPDATE_INTERVAL_MS)
       counter++
       if (counter >= 10) break
     }

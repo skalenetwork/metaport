@@ -32,7 +32,7 @@ export interface Token {
 
 export interface ConnectedChain {
   hub?: string
-  wrapper?: string
+  wrapper?: `0x${string}`
   wrapsSFuel?: boolean
   clone?: boolean
 }

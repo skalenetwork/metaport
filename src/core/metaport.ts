@@ -38,6 +38,7 @@ import { ERC_ABIS } from './contracts'
 
 import debug from 'debug'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
+import { interfaces } from '../Metaport'
 
 const log = debug('ima:test:MainnetChain')
 
@@ -90,6 +91,39 @@ export const createTokensMap = (
   return tokens
 }
 
+
+export function createWrappedTokensMap(
+  chainName1: string,
+  config: MetaportConfig
+): TokenDataTypesMap {
+  const wrappedTokens: TokenDataTypesMap = getEmptyTokenDataMap()
+  const tokenType = TokenType.erc20
+  if (!chainName1) return wrappedTokens
+  Object.keys(config.connections[chainName1][tokenType]).forEach((tokenKeyname) => {
+    const token = config.connections[chainName1][tokenType][tokenKeyname]
+    const wrapperAddress = findFirstWrapperAddress(token)
+    if (wrapperAddress) {
+      addTokenData(tokenKeyname, chainName1, tokenType as TokenType, config, wrappedTokens)
+    }
+  })
+  return wrappedTokens
+}
+
+
+const findFirstWrapperAddress = (token: interfaces.Token): `0x${string}` | null =>
+  Object.values(token.chains).find(chain => 'wrapper' in chain)?.wrapper || null;
+
+
+export const findFirstWrapperChainName = (token: TokenData): string | null => {
+  for (const [chainName, chain] of Object.entries(token.connections)) {
+    if (chain.wrapper) {
+      return chainName;
+    }
+  }
+  return null;
+};
+
+
 export default class MetaportCore {
   private _config: MetaportConfig
 
@@ -122,6 +156,10 @@ export default class MetaportCore {
     return createTokensMap(from, to, this._config)
   }
 
+  wrappedTokens(chainName: string): TokenDataTypesMap {
+    return createWrappedTokensMap(chainName, this._config)
+  }
+
   async tokenBalance(tokenContract: Contract, address: string): Promise<bigint> {
     return await tokenContract.balanceOf(address)
   }
@@ -143,11 +181,25 @@ export default class MetaportCore {
     tokenType: TokenType,
     chainName: string,
     provider: Provider,
+    customAbiTokenType?: CustomAbiTokenType,
+    // destChainName?: string
   ): TokenContractsMap {
     const contracts: TokenContractsMap = {}
     if (tokens[tokenType]) {
       Object.keys(tokens[tokenType]).forEach((tokenKeyname) => {
-        contracts[tokenKeyname] = this.tokenContract(chainName, tokenKeyname, tokenType, provider)
+        let destChainName;
+        if (customAbiTokenType === CustomAbiTokenType.erc20wrap) {
+          destChainName = findFirstWrapperChainName(tokens[tokenType][tokenKeyname])
+          if (!destChainName) return
+        }
+        contracts[tokenKeyname] = this.tokenContract(
+          chainName,
+          tokenKeyname,
+          tokenType,
+          provider,
+          customAbiTokenType,
+          destChainName
+        )
       })
     }
     return contracts
@@ -159,7 +211,7 @@ export default class MetaportCore {
     tokenType: TokenType,
     provider: Provider,
     customAbiTokenType?: CustomAbiTokenType,
-    destChainName?: string,
+    destChainName?: string
   ): Contract | undefined {
     let type = tokenType
     const token = this._config.connections[chainName][tokenType][tokenKeyname]

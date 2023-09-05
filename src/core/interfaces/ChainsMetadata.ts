@@ -25,6 +25,7 @@ export interface ChainMetadata {
   alias?: string
   minSfuelWei?: string
   faucetUrl?: string
+  category: string
   apps?: {
     [appName: string]: {
       alias: string

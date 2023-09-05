@@ -152,6 +152,7 @@ button {
 .widgetContent {
     max-height: calc(100vh - 180px);
     overflow-y: auto;
+    border-radius: $sk-border-radius-outter !important;
 }
 
 

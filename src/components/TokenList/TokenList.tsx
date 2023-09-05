@@ -13,19 +13,16 @@ import { getAvailableTokensTotal, getDefaultToken } from '../../core/tokens/help
 
 import { cls } from '../../core/helper'
 
-import ErrorMessage from '../ErrorMessage'
-
 import TokenListSection from '../TokenListSection'
-import TokenBalance from './TokenBalance'
 import TokenIcon from '../TokenIcon'
 
 import styles from '../../styles/styles.module.scss'
 import cmn from '../../styles/cmn.module.scss'
-import { getTokenName } from '../../core/metadata'
 
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportState'
-import { TokenType, NoTokenPairsMessage } from '../../core/dataclasses'
+import { TokenType } from '../../core/dataclasses'
+import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
 
 export default function TokenList() {
   const token = useMetaportStore((state) => state.token)
@@ -43,10 +40,10 @@ export default function TokenList() {
   const { address } = useAccount()
 
   useEffect(() => {
-    updateTokenBalances(address) // Fetch users immediately on component mount
+    updateTokenBalances(address)
     const intervalId = setInterval(() => {
       updateTokenBalances(address)
-    }, 10000)
+    }, BALANCE_UPDATE_INTERVAL_MS)
 
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount

@@ -28,6 +28,7 @@ import {
   TransferERC20S2S,
   WrapERC20S,
   UnWrapERC20S,
+  UnWrapERC20,
   TransferERC20M2S,
   TransferERC20S2M,
 } from './erc20'
@@ -67,6 +68,7 @@ export const ACTIONS: { [actionType in ActionType]: typeof Action } = {
 
   wrap: WrapERC20S,
   unwrap: UnWrapERC20S,
+  unwrap_stuck: UnWrapERC20,
 
   erc20_m2s: TransferERC20M2S,
   erc20_s2m: TransferERC20S2M,

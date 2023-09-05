@@ -109,7 +109,6 @@ export function WidgetUI(props: { config: MetaportConfig }) {
             {/* {address ? <WidgetBody config={props.config} /> : <div></div>} */}
             <WidgetBody config={props.config} />
           </Collapse>
-          {!address ? <SkConnect /> : null}
         </SkPaper>
       </Collapse>
       <div className={props.config.openButton ? cmn.mtop20 : null}>{fabTop ? null : fabButton}</div>

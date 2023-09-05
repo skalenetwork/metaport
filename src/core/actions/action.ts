@@ -100,9 +100,7 @@ export class Action {
     walletClient: WalletClient,
   ) {
     this.mpc = mpc
-    // this.mainnet = mainnet;
-    // this.sChain1 = sChain1;
-    // this.sChain2 = sChain2;
+
     this.chainName1 = chainName1
     this.chainName2 = chainName2
     this.address = address
@@ -111,9 +109,6 @@ export class Action {
     this.tokenId = Number(tokenId)
 
     this.token = createTokenData(token.keyname, chainName1, token.type, this.mpc.config)
-    //! todo: init token here!!!!!, do not pass !!!
-
-    // todo: init token contracts!
 
     if (isMainnet(chainName1)) {
       this.mainnet = this.mpc.mainnet()
@@ -129,43 +124,40 @@ export class Action {
     const provider1 = isMainnet(chainName1) ? this.mainnet.provider : this.sChain1.provider
     const provider2 = isMainnet(chainName2) ? this.mainnet.provider : this.sChain2.provider
 
-    this.sourceToken = mpc.tokenContract(
-      chainName1,
-      token.keyname,
-      token.type,
-      provider1,
-      this.token.wrapper(this.chainName2) ? CustomAbiTokenType.erc20wrap : null,
-      this.token.wrapper(this.chainName2) ? this.chainName2 : null,
-    )
-
-    this.originAddress = this.mpc.originAddress(chainName1, chainName2, token.keyname, token.type)
-
-    if (this.token.wrapper(this.chainName2)) {
-      this.unwrappedToken = mpc.tokenContract(chainName1, token.keyname, token.type, provider1)
-    }
-
-    // todo: use wrapper address!
-    const destWrapperAddress =
-      this.mpc.config.connections[this.chainName2][this.token.type][this.token.keyname].chains[
-        this.chainName1
-      ].wrapper
-    if (this.token.isClone(this.chainName2) && destWrapperAddress) {
-      this.destToken = mpc.tokenContract(
-        chainName2,
+    if (this.chainName2) {
+      this.sourceToken = mpc.tokenContract(
+        chainName1,
         token.keyname,
         token.type,
-        provider2,
-        CustomAbiTokenType.erc20wrap,
-        this.chainName1,
+        provider1,
+        this.token.wrapper(this.chainName2) ? CustomAbiTokenType.erc20wrap : null,
+        this.token.wrapper(this.chainName2) ? this.chainName2 : null,
       )
-    } else {
-      this.destToken = mpc.tokenContract(chainName2, token.keyname, token.type, provider2)
+      this.originAddress = this.mpc.originAddress(chainName1, chainName2, token.keyname, token.type)
+
+      if (this.token.wrapper(this.chainName2)) {
+        this.unwrappedToken = mpc.tokenContract(chainName1, token.keyname, token.type, provider1)
+      }
+
+      const destWrapperAddress =
+        this.mpc.config.connections[this.chainName2][this.token.type][this.token.keyname].chains[
+          this.chainName1
+        ].wrapper
+      if (this.token.isClone(this.chainName2) && destWrapperAddress) {
+        this.destToken = mpc.tokenContract(
+          chainName2,
+          token.keyname,
+          token.type,
+          provider2,
+          CustomAbiTokenType.erc20wrap,
+          this.chainName1,
+        )
+      } else {
+        this.destToken = mpc.tokenContract(chainName2, token.keyname, token.type, provider2)
+      }
     }
 
-    // this.switchMetamaskChain = switchMetamaskChain;
 
-    // this.setActiveStep = setActiveStep;
-    // this.activeStep = activeStep;
 
     this.setAmountErrorMessage = setAmountErrorMessage
     this.setBtnText = setBtnText

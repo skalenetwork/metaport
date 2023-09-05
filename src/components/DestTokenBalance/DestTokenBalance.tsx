@@ -3,6 +3,7 @@ import { useAccount } from 'wagmi'
 
 import { TokenBalance } from '../TokenList'
 import { useMetaportStore } from '../../store/MetaportState'
+import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
 
 export default function DestTokenBalance() {
   const { address } = useAccount()
@@ -15,7 +16,7 @@ export default function DestTokenBalance() {
     updateDestTokenBalance(address) // Fetch users immediately on component mount
     const intervalId = setInterval(() => {
       updateDestTokenBalance(address)
-    }, 10000)
+    }, BALANCE_UPDATE_INTERVAL_MS)
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount
     }

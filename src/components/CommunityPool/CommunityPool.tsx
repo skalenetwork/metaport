@@ -45,7 +45,7 @@ import ErrorIcon from '@mui/icons-material/Error'
 
 import { fromWei } from '../../core/convertation'
 import { withdraw, recharge } from '../../core/community_pool'
-import { DEFAULT_ERC20_DECIMALS } from '../../core/constants'
+import { BALANCE_UPDATE_INTERVAL_MS, DEFAULT_ERC20_DECIMALS } from '../../core/constants'
 
 import { cls } from '../../core/helper'
 import cmn from '../../styles/cmn.module.scss'
@@ -104,7 +104,7 @@ export default function CommunityPool() {
     updateCPData(address, chainName, chainName2, mpc)
     const intervalId = setInterval(() => {
       updateCPData(address, chainName, chainName2, mpc)
-    }, 10000)
+    }, BALANCE_UPDATE_INTERVAL_MS)
 
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount

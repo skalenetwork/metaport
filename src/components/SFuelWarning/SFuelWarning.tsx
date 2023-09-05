@@ -31,7 +31,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { Collapse } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 
-import { MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../../core/constants'
+import { BALANCE_UPDATE_INTERVAL_MS, MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../../core/constants'
 import { Station } from '../../core/sfuel'
 
 import { useMetaportStore } from '../../store/MetaportState'
@@ -93,7 +93,7 @@ export default function SFuelWarning(props: {}) {
     updateStationsData()
     const intervalId = setInterval(() => {
       updateStationsData()
-    }, 10000)
+    }, BALANCE_UPDATE_INTERVAL_MS)
     return () => {
       clearInterval(intervalId) // Clear interval on component unmount
     }

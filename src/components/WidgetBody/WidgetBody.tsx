@@ -17,9 +17,10 @@ import DestTokenBalance from '../DestTokenBalance'
 import ErrorMessage from '../ErrorMessage'
 import CommunityPool from '../CommunityPool'
 import SFuelWarning from '../SFuelWarning'
+import SkConnect from '../SkConnect'
+import WrappedTokens from '../WrappedTokens'
 
 import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
 import { cls } from '../../core/helper'
 import { Collapse } from '@mui/material'
 import { MAINNET_CHAIN_NAME } from '../../core/constants'
@@ -33,6 +34,7 @@ export function WidgetBody(props) {
   const setExpandedTo = useCollapseStore((state) => state.setExpandedTo)
 
   const expandedCP = useCollapseStore((state) => state.expandedCP)
+  const expandedWT = useCollapseStore((state) => state.expandedWT)
   const expandedTokens = useCollapseStore((state) => state.expandedTokens)
 
   const destChains = useMetaportStore((state) => state.destChains)
@@ -50,6 +52,7 @@ export function WidgetBody(props) {
   const tokenBalances = useMetaportStore((state) => state.tokenBalances)
 
   const errorMessage = useMetaportStore((state) => state.errorMessage)
+  const loading = useMetaportStore((state) => state.loading)
 
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
@@ -71,9 +74,9 @@ export function WidgetBody(props) {
   }, [tokens])
 
   const showFrom = !expandedTo && !expandedTokens && !errorMessage && !expandedCP
-  const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP
-  const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP
-  const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP
+  const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
+  const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP && !expandedWT
+  const showSwitch = !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
   const showStepper =
     !expandedFrom &&
     !expandedTo &&
@@ -81,9 +84,17 @@ export function WidgetBody(props) {
     !errorMessage &&
     !expandedCP &&
     sFuelOk &&
+    !expandedWT &&
     !!address
   const showCP =
-    !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME
+    !expandedFrom && !expandedTo && !expandedTokens && chainName2 === MAINNET_CHAIN_NAME && !expandedWT
+  const showWT = !expandedFrom &&
+    !expandedTo &&
+    !expandedTokens &&
+    !errorMessage &&
+    !expandedCP &&
+    sFuelOk &&
+    !!address
   const showError = !!errorMessage
 
   const grayBg = 'rgb(136 135 135 / 15%)'
@@ -119,7 +130,7 @@ export function WidgetBody(props) {
               chains={props.config.chains}
               setChain={setChainName1}
               disabledChain={chainName2}
-              disabled={transferInProgress}
+              disabled={transferInProgress || loading}
               from={true}
             />
           </Collapse>
@@ -149,7 +160,7 @@ export function WidgetBody(props) {
             chains={destChains}
             setChain={setChainName2}
             disabledChain={chainName1}
-            disabled={transferInProgress}
+            disabled={transferInProgress || loading}
           />
         </SkPaper>
       </Collapse>
@@ -160,6 +171,13 @@ export function WidgetBody(props) {
           <CommunityPool />
         </SkPaper>
       </Collapse>
+
+      <Collapse in={showWT}>
+        <SkPaper gray className={cmn.nop}>
+          <WrappedTokens />
+        </SkPaper>
+      </Collapse>
+
       <Collapse in={!!address}>
         <SFuelWarning />
       </Collapse>
@@ -168,6 +186,7 @@ export function WidgetBody(props) {
           <SkStepper skaleNetwork={props.config.skaleNetwork} />
         </SkPaper>
       </Collapse>
+      {!address ? <SkConnect /> : null}
     </div>
   )
 }

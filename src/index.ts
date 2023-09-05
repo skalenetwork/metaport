@@ -25,9 +25,12 @@ import DestTokenBalance from './components/DestTokenBalance'
 import ErrorMessage from './components/ErrorMessage'
 import CommunityPool from './components/CommunityPool'
 import SFuelWarning from './components/SFuelWarning'
+import WrappedTokens from './components/WrappedTokens'
 
-import { cls } from './core/helper'
+import { cls, CHAINS_META, getChainAlias } from './core/helper'
+import MetaportCore from './core/metaport'
 import { chainBg } from './core/metadata'
+import { BASE_EXPLORER_URLS } from './core/constants'
 import styles from './styles/styles.module.scss'
 import cmn from './styles/cmn.module.scss'
 
@@ -40,6 +43,7 @@ import { PROXY_ENDPOINTS } from './core/network'
 export {
   Metaport,
   MetaportProvider,
+  MetaportCore,
   SkPaper,
   SkConnect,
   ChainIcon,
@@ -57,11 +61,15 @@ export {
   ErrorMessage,
   CommunityPool,
   SFuelWarning,
+  WrappedTokens,
   cls,
   styles,
   cmn,
   getMetaportTheme,
   useWagmiAccount,
   PROXY_ENDPOINTS,
+  BASE_EXPLORER_URLS,
+  CHAINS_META,
   chainBg,
+  getChainAlias
 }

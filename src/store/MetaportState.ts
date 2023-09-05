@@ -62,6 +62,14 @@ interface MetaportState {
     switchNetwork: (chainId: number) => void,
     walletClient: WalletClient,
   ) => void
+
+  unwrapAll: (
+    address: string,
+    switchNetwork: (chainId: number) => void,
+    walletClient: WalletClient,
+    tokens: interfaces.TokenDataMap
+  ) => void
+
   check: (amount: string, address: `0x${string}`) => void
 
   currentStep: number
@@ -86,6 +94,11 @@ interface MetaportState {
   tokenContracts: interfaces.TokenContractsMap
   tokenBalances: interfaces.TokenBalancesMap
   updateTokenBalances: (address: string) => Promise<void>
+
+  wrappedTokens: interfaces.TokenDataTypesMap
+  wrappedTokenContracts: interfaces.TokenContractsMap
+  wrappedTokenBalances: interfaces.TokenBalancesMap
+  updateWrappedTokenBalances: (address: string) => Promise<void>
 
   destTokenContract: Contract
   destTokenBalance: bigint
@@ -139,9 +152,49 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     set((state) => {
       state.check(amount, address)
       return {
-        amount: amount,
+        amount: amount
       }
     }),
+
+
+  unwrapAll: async (
+    address: `0x${string}`,
+    switchNetwork: any,
+    walletClient: WalletClient,
+    tokens: interfaces.TokenDataMap
+  ) => {
+    log('Running unwrapAll')
+    set({ loading: true })
+    try {
+      for (const key of Object.keys(tokens)) {
+        await new ACTIONS.unwrap_stuck(
+          get().mpc,
+          get().chainName1,
+          null,
+          address,
+          get().amount,
+          get().tokenId,
+          tokens[key],
+          get().setAmountErrorMessage,
+          get().setBtnText,
+          switchNetwork,
+          walletClient,
+        ).execute()
+      }
+    } catch (err) {
+      console.error(err)
+      const msg = err.message ? err.message : DEFAULT_ERROR_MSG
+      set({
+        errorMessage: new dataclasses.TransactionErrorMessage(
+          msg,
+          get().errorMessageClosedFallback
+        )
+      })
+      return
+    } finally {
+      set({ loading: false })
+    }
+  },
 
   execute: async (address: `0x${string}`, switchNetwork: any, walletClient: WalletClient) => {
     log('Running execute')
@@ -262,6 +315,13 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         name,
         provider,
       )
+      const wrappedTokenContracts = state.mpc.tokenContracts(
+        tokens,
+        dataclasses.TokenType.erc20,
+        name,
+        provider,
+        dataclasses.CustomAbiTokenType.erc20wrap
+      )
       return {
         currentStep: 0,
         token: null,
@@ -270,6 +330,9 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         tokenContracts: tokenContracts,
         tokenBalances: {},
         destChains: get().mpc.config.chains,
+        wrappedTokens: get().mpc.wrappedTokens(name),
+        wrappedTokenContracts: wrappedTokenContracts,
+        wrappedTokenBalances: {},
         ...updState,
       }
     }),
@@ -317,8 +380,12 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     })
   },
 
+  wrappedTokens: getEmptyTokenDataMap(),
   tokenContracts: {},
   tokenBalances: {},
+
+  wrappedTokenContracts: {},
+  wrappedTokenBalances: {},
 
   destTokenContract: null,
   destTokenBalance: null,
@@ -353,6 +420,16 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
     tokenBalances.eth = await chain.ethBalance(address)
     set({
       tokenBalances: tokenBalances,
+    })
+  },
+
+  updateWrappedTokenBalances: async (address: string) => {
+    if (!address) {
+      set({ wrappedTokenBalances: {} })
+      return
+    }
+    set({
+      wrappedTokenBalances: await get().mpc.tokenBalances(get().wrappedTokenContracts, address)
     })
   },
 

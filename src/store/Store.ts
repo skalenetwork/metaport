@@ -50,6 +50,9 @@ interface CollapseState {
 
   expandedCP: string | false
   setExpandedCP: (expanded: string | false) => void
+
+  expandedWT: string | false
+  setExpandedWT: (expanded: string | false) => void
 }
 
 export const useCollapseStore = create<CollapseState>()((set) => ({
@@ -60,6 +63,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedTo: false,
       expandedTokens: false,
       expandedCP: false,
+      expandedWT: false
     })),
   expandedTo: false,
   setExpandedTo: (expanded: string | false) =>
@@ -68,6 +72,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTokens: false,
       expandedCP: false,
+      expandedWT: false
     })),
   expandedTokens: false,
   setExpandedTokens: (expanded: string | false) =>
@@ -76,6 +81,7 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedCP: false,
+      expandedWT: false
     })),
   expandedCP: false,
   setExpandedCP: (expanded: string | false) =>
@@ -84,5 +90,15 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedTokens: false,
+      expandedWT: false
+    })),
+  expandedWT: false,
+  setExpandedWT: (expanded: string | false) =>
+    set(() => ({
+      expandedCP: false,
+      expandedFrom: false,
+      expandedTo: false,
+      expandedTokens: false,
+      expandedWT: expanded
     })),
 }))
