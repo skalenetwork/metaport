@@ -171,6 +171,16 @@ button {
     }
 }
 
+.chainIcons {
+    width: 20px;
+    height: 20px;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 .chainIconsm {
     width: 26px;
     height: 26px;
@@ -240,6 +250,11 @@ button {
     min-height: $sk-btn-height !important;
     border-radius: $sk-border-radius !important;
     box-shadow: none !important;
+}
+
+.btnApp {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    
 }
 
 .btnChain {

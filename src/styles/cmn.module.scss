@@ -160,6 +160,17 @@
     letter-spacing: 0.04857em !important;
 }
 
+.p5 {
+    font-size: 0.6025rem !important;
+    letter-spacing: 0.03857em !important;
+}
+
+.pWrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .darkTheme {
     .pPrim {
         color: white !important;

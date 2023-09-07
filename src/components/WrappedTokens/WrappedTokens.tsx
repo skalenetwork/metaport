@@ -64,6 +64,7 @@ export default function WrappedTokens() {
   const currentStep = useMetaportStore((state) => state.currentStep)
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const mpc = useMetaportStore((state) => state.mpc)
+  const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
   const { address } = useAccount()
 
@@ -106,7 +107,7 @@ export default function WrappedTokens() {
     setExpandedWT(isExpanded ? panel : false)
   }
 
-  if (Object.keys(filteredTokens).length === 0 || currentStep !== 0) return
+  if (Object.keys(filteredTokens).length === 0 || currentStep !== 0 || transferInProgress) return
   return (
     <div className={cls(cmn.mtop10)}>
       <Accordion

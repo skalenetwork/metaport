@@ -79,7 +79,7 @@ export default function CommunityPool() {
   const { address } = useAccount()
 
   let chainName
-  if (token) {
+  if (token && chainName2) {
     chainName = chainName1
     if (token.connections[chainName2].hub) chainName = token.connections[chainName2].hub
   }

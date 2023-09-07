@@ -22,13 +22,9 @@
  */
 
 import { create } from 'zustand'
-import { MainnetChain, SChain } from '@skalenetwork/ima-js'
+import { Station } from '../core/sfuel'
 
-import * as interfaces from '../core/interfaces'
-import { Station, StationData } from '../core/sfuel'
-import MetaportCore from '../core/metaport'
-
-interface SFuelState {
+export interface SFuelState {
   loading: boolean
   setLoading: (loading: boolean) => void
   mining: boolean

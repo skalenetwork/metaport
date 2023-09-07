@@ -22,10 +22,9 @@
  */
 
 import { create } from 'zustand'
-
 import * as interfaces from '../core/interfaces'
 
-interface UIState {
+export interface UIState {
   theme: interfaces.MetaportTheme
   setTheme: (theme: interfaces.MetaportTheme) => void
   open: boolean
@@ -39,7 +38,7 @@ export const useUIStore = create<UIState>()((set) => ({
   setOpen: (isOpen: boolean) => set(() => ({ open: isOpen })),
 }))
 
-interface CollapseState {
+export interface CollapseState {
   expandedFrom: string | false
   setExpandedFrom: (expanded: string | false) => void
   expandedTo: string | false

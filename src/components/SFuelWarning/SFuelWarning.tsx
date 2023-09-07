@@ -74,7 +74,7 @@ export default function SFuelWarning(props: {}) {
 
   let hubChain
 
-  if (token && token.connections[chainName2].hub) {
+  if (token && chainName2 && token.connections[chainName2].hub) {
     hubChain = token.connections[chainName2].hub
   }
 
@@ -191,7 +191,7 @@ export default function SFuelWarning(props: {}) {
     return SFUEL_TEXT['sfuel'][sFuelStatus]
   }
 
-  if (loading)
+  if (loading && chainName2)
     return (
       <div className={cls(cmn.mleft10, cmn.mri10, cmn.mtop20, cmn.mbott10)}>
         <LinearProgress />

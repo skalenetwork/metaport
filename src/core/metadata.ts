@@ -63,7 +63,7 @@ export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: st
 
 export function chainBg(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
   if (CHAINS_META[skaleNetwork][chainName]) {
-    if (app) {
+    if (app && CHAINS_META[skaleNetwork][chainName]['apps'][app]) {
       if (CHAINS_META[skaleNetwork][chainName]['apps'][app]['gradientBackground']) {
         return CHAINS_META[skaleNetwork][chainName]['apps'][app]['gradientBackground']
       }

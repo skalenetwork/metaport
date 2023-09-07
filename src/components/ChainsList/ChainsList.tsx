@@ -4,7 +4,6 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 
@@ -13,9 +12,10 @@ import ChainIcon from '../ChainIcon'
 
 import { MetaportConfig } from '../../core/interfaces'
 
-import { cls, getChainAlias } from '../../core/helper'
+import { cls, getChainAlias, getChainAppsMeta } from '../../core/helper'
 import cmn from '../../styles/cmn.module.scss'
 import styles from '../../styles/styles.module.scss'
+import SkPaper from '../SkPaper/SkPaper'
 
 export default function ChainsList(props: {
   config: MetaportConfig
@@ -23,6 +23,8 @@ export default function ChainsList(props: {
   setExpanded: (expanded: string | false) => void
   setChain: (chain: string) => void
   chain: string
+  setApp: (chain: string) => void
+  app: string
   chains: string[]
   disabledChain: string
   from?: boolean
@@ -36,14 +38,16 @@ export default function ChainsList(props: {
   const schainNames = []
 
   for (let chain of props.chains) {
-    if (chain != props.disabledChain && chain != props.chain) {
+    const isHub = chain == props.chain && getChainAppsMeta(props.chain, props.config.skaleNetwork)
+    if (chain !== props.disabledChain && (chain != props.chain || isHub)) {
       schainNames.push(chain)
     }
   }
 
-  function handle(schainName) {
+  function handle(schainName: string, app?: string) {
     props.setExpanded(false)
     props.setChain(schainName)
+    props.setApp(app)
   }
 
   const size = props.size ?? 'sm'
@@ -76,6 +80,7 @@ export default function ChainsList(props: {
                   skaleNetwork={props.config.skaleNetwork}
                   chainName={props.chain}
                   size={size}
+                  app={props.app}
                 />
               </div>
               <p
@@ -88,17 +93,34 @@ export default function ChainsList(props: {
                   cmn.cap,
                   cmn.pPrim,
                   cmn.mri10,
+                  cmn.pWrap,
                 )}
               >
-                {getChainAlias(props.config.skaleNetwork, props.chain)}
+                {getChainAlias(props.config.skaleNetwork, props.chain, props.app)}
               </p>
               <div className={cls(cmn.flex, cmn.flexg)}></div>
-              {/* <div className={cls(cmn.flex, cmn.flexc)}>
-                <ChainApps
-                  skaleNetwork={props.config.skaleNetwork}
-                  chain={props.chain}
-                />
-              </div> */}
+              <div className={cls(cmn.flex, cmn.flexc)}>
+                {props.app ? (
+                  <SkPaper gray className={cls(cmn.mri10, cmn.nop)}>
+                    <p
+                      className={cls(
+                        cmn.p,
+                        [cmn.p4, size === 'md'],
+                        [cmn.p4, size === 'sm'],
+                        cmn.p600,
+                        cmn.pSec,
+                        cmn.mtop5,
+                        cmn.mbott5,
+                        cmn.mleft10,
+                        cmn.mri10,
+                        cmn.pWrap,
+                      )}
+                    >
+                      on {getChainAlias(props.config.skaleNetwork, props.chain)?.split(' ')[0]}
+                    </p>
+                  </SkPaper>
+                ) : null}
+              </div>
             </div>
           ) : (
             <div className={cls(cmn.flex, cmn.flexcv)}>
@@ -116,9 +138,9 @@ export default function ChainsList(props: {
             className={cls(cmn.chainsList, cmn.mbott10, cmn.mri10)}
             style={{ marginLeft: '8px' }}
           >
-            <div className={cls([cmn.mleft5, size === 'md'])} style={{ marginTop: '-15px' }}>
-              <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} size={size} />
-            </div>
+            {/* <div className={cls([cmn.mleft5, size === 'md'])} style={{ marginTop: '-15px' }}>
+              <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} size={size} handle={handle} />
+            </div> */}
             {schainNames.map((name) => (
               <Typography key={name}>
                 <Button
@@ -127,9 +149,6 @@ export default function ChainsList(props: {
                   onClick={() => handle(name)}
                   className={cls(cmn.fullWidth)}
                 >
-                  {/* <div className={cmn.padd10}>
-                    
-                  </div> */}
                   <div
                     className={cls(
                       cmn.flex,
@@ -177,7 +196,12 @@ export default function ChainsList(props: {
                   </div>
                 </Button>
                 <div className={cls([cmn.mleft5, size === 'md'])}>
-                  <ChainApps skaleNetwork={props.config.skaleNetwork} chain={name} size={size} />
+                  <ChainApps
+                    skaleNetwork={props.config.skaleNetwork}
+                    chain={name}
+                    handle={handle}
+                    size={size}
+                  />
                 </div>
               </Typography>
             ))}

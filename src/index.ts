@@ -1,8 +1,8 @@
 export { interfaces, dataclasses } from './Metaport'
 
-export { useMetaportStore } from './store/MetaportState'
-export { useUIStore, useCollapseStore } from './store/Store'
-export { useSFuelStore } from './store/SFuelStore'
+export { useMetaportStore, type MetaportState } from './store/MetaportState'
+export { useUIStore, useCollapseStore, type UIState, type CollapseState } from './store/Store'
+export { useSFuelStore, type SFuelState } from './store/SFuelStore'
 
 import Metaport from './components/Metaport'
 import MetaportProvider from './components/MetaportProvider'

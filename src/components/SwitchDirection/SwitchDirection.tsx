@@ -16,9 +16,14 @@ export default function SwitchDirection() {
 
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const chainName2 = useMetaportStore((state) => state.chainName2)
-
   const setChainName1 = useMetaportStore((state) => state.setChainName1)
   const setChainName2 = useMetaportStore((state) => state.setChainName2)
+
+  const appName1 = useMetaportStore((state) => state.appName1)
+  const appName2 = useMetaportStore((state) => state.appName2)
+  const setAppName1 = useMetaportStore((state) => state.setAppName1)
+  const setAppName2 = useMetaportStore((state) => state.setAppName2)
+
   const startOver = useMetaportStore((state) => state.startOver)
   const loading = useMetaportStore((state) => state.loading)
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
@@ -55,9 +60,12 @@ export default function SwitchDirection() {
               }
             }
             rotate()
-            let chain1 = chainName1
+            const chain1 = chainName1
+            const app1 = appName1
             setChainName1(chainName2)
+            setAppName1(appName2)
             setChainName2(chain1)
+            setAppName2(app1)
             startOver()
           }}
         >

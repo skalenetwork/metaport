@@ -22,6 +22,7 @@ import { SkaleNetwork } from '../../core/interfaces'
 import { useWalletClient } from 'wagmi'
 
 import SettingsBackupRestoreRoundedIcon from '@mui/icons-material/SettingsBackupRestoreRounded'
+import TollIcon from '@mui/icons-material/Toll'
 
 import { useSwitchNetwork, useAccount } from 'wagmi'
 import { SUCCESS_EMOJIS } from '../../core/constants'
@@ -137,15 +138,28 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                 {emoji} Transfer completed
               </p>
             </div>
-            <Button
-              onClick={startOver}
-              color="primary"
-              size="medium"
-              className={cls(styles.btnAction, cmn.mtop10)}
-              startIcon={<SettingsBackupRestoreRoundedIcon />}
-            >
-              Start over
-            </Button>
+            <div className={cls(cmn.flex, cmn.mtop20)}>
+              <Button
+                onClick={() => {}}
+                // variant='contained'
+                color="primary"
+                size="medium"
+                className={cls(styles.btnAction, cmn.mtop10d)}
+                startIcon={<TollIcon />}
+              >
+                Add token
+              </Button>
+              <Button
+                onClick={startOver}
+                color="primary"
+                // variant='contained'
+                size="medium"
+                className={cls(styles.btnAction, cmn.mle)}
+                startIcon={<SettingsBackupRestoreRoundedIcon />}
+              >
+                Start over
+              </Button>
+            </div>
           </div>
         )}
       </Box>

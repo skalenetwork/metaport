@@ -40,11 +40,16 @@ export function WidgetBody(props) {
   const destChains = useMetaportStore((state) => state.destChains)
 
   const token = useMetaportStore((state) => state.token)
+
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const chainName2 = useMetaportStore((state) => state.chainName2)
-
   const setChainName1 = useMetaportStore((state) => state.setChainName1)
   const setChainName2 = useMetaportStore((state) => state.setChainName2)
+
+  const appName1 = useMetaportStore((state) => state.appName1)
+  const appName2 = useMetaportStore((state) => state.appName2)
+  const setAppName1 = useMetaportStore((state) => state.setAppName1)
+  const setAppName2 = useMetaportStore((state) => state.setAppName2)
 
   const mpc = useMetaportStore((state) => state.mpc)
   const tokens = useMetaportStore((state) => state.tokens)
@@ -104,8 +109,8 @@ export function WidgetBody(props) {
   const showError = !!errorMessage
 
   const grayBg = 'rgb(136 135 135 / 15%)'
-  const sourceBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName1) : grayBg
-  const destBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName2) : grayBg
+  const sourceBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName1, appName1) : grayBg
+  const destBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName2, appName2) : grayBg
 
   return (
     <div>
@@ -135,8 +140,10 @@ export function WidgetBody(props) {
               chain={chainName1}
               chains={props.config.chains}
               setChain={setChainName1}
+              setApp={setAppName1}
+              app={appName1}
               disabledChain={chainName2}
-              disabled={transferInProgress || loading}
+              disabled={transferInProgress}
               from={true}
             />
           </Collapse>
@@ -165,8 +172,10 @@ export function WidgetBody(props) {
             chain={chainName2}
             chains={destChains}
             setChain={setChainName2}
+            setApp={setAppName2}
+            app={appName2}
             disabledChain={chainName1}
-            disabled={transferInProgress || loading}
+            disabled={transferInProgress}
           />
         </SkPaper>
       </Collapse>

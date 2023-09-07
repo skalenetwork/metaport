@@ -40,7 +40,7 @@ import { WalletClient } from 'viem'
 debug.enable('*')
 const log = debug('metaport:state')
 
-interface MetaportState {
+export interface MetaportState {
   mainnetChain: MainnetChain
   setMainnetChain: (mainnet: MainnetChain) => void
   sChain1: SChain
@@ -81,10 +81,16 @@ interface MetaportState {
   chainName1: string
   chainName2: string
 
-  destChains: string[]
-
   setChainName1: (name: string) => void
   setChainName2: (name: string) => void
+
+  appName1: string
+  appName2: string
+
+  setAppName1: (name: string) => void
+  setAppName2: (name: string) => void
+
+  destChains: string[]
 
   tokens: interfaces.TokenDataTypesMap
 
@@ -294,6 +300,12 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   chainName1: '',
   chainName2: '',
 
+  appName1: null,
+  appName2: null,
+
+  setAppName1: (name: string) => set(() => ({ appName1: name })),
+  setAppName2: (name: string) => set(() => ({ appName2: name })),
+
   destChains: [],
 
   setChainName1: (name: string) =>
@@ -359,16 +371,21 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   token: null,
 
   setToken: async (token: dataclasses.TokenData) => {
-    const provider =
-      get().chainName2 === MAINNET_CHAIN_NAME ? get().mainnetChain.provider : get().sChain2.provider
-    const destTokenContract = get().mpc.tokenContract(
-      get().chainName2,
-      token.keyname,
-      token.type,
-      provider,
-      null,
-      get().chainName1,
-    )
+    let destTokenContract
+    if (get().chainName2) {
+      const provider =
+        get().chainName2 === MAINNET_CHAIN_NAME
+          ? get().mainnetChain.provider
+          : get().sChain2.provider
+      destTokenContract = get().mpc.tokenContract(
+        get().chainName2,
+        token.keyname,
+        token.type,
+        provider,
+        null,
+        get().chainName1,
+      )
+    }
     set({
       token: token,
       stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),

@@ -31,7 +31,7 @@
     "prettier": "prettier --write \"src/**/*.{ts,tsx,js,mdx}\"",
     "test": "vitest",
     "test:cov": "vitest run --coverage",
-    "prepack": "json -f package.json -I -e \"delete this.devDependencies; delete this.dependencies\""
+    "dprepack": "json -f package.json -I -e \"delete this.devDependencies; delete this.dependencies\""
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.3.2",
