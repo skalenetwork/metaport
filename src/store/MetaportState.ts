@@ -33,7 +33,6 @@ import * as interfaces from '../core/interfaces'
 import * as dataclasses from '../core/dataclasses'
 import { getEmptyTokenDataMap } from '../core/tokens/helper'
 import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../core/constants'
-import { getStepsMetadata } from '../core/transfer_steps'
 import { ACTIONS } from '../core/actions'
 import { WalletClient } from 'viem'
 
@@ -41,12 +40,11 @@ debug.enable('*')
 const log = debug('metaport:state')
 
 export interface MetaportState {
-  mainnetChain: MainnetChain
-  setMainnetChain: (mainnet: MainnetChain) => void
-  sChain1: SChain
-  setSChain1: (schain: SChain) => void
-  sChain2: SChain
-  setSChain2: (schain: SChain) => void
+  ima1: MainnetChain | SChain
+  setIma1: (ima: MainnetChain | SChain) => void
+
+  ima2: MainnetChain | SChain
+  setIma2: (ima: MainnetChain | SChain) => void
 
   mpc: MetaportCore
   setMpc: (mpc: MetaportCore) => void
@@ -133,14 +131,10 @@ export interface MetaportState {
 }
 
 export const useMetaportStore = create<MetaportState>()((set, get) => ({
-  mainnetChain: null,
-  setMainnetChain: (mainnet: MainnetChain) => set(() => ({ mainnetChain: mainnet })),
-
-  sChain1: null,
-  setSChain1: (schain: SChain) => set(() => ({ sChain1: schain })),
-
-  sChain2: null,
-  setSChain2: (schain: SChain) => set(() => ({ sChain2: schain })),
+  ima1: null,
+  ima2: null,
+  setIma1: (ima: MainnetChain | SChain) => set(() => ({ ima1: ima })),
+  setIma2: (ima: MainnetChain | SChain) => set(() => ({ ima2: ima })),
 
   mpc: null,
   setMpc: (mpc: MetaportCore) => set(() => ({ mpc: mpc })),
@@ -308,62 +302,11 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
 
   destChains: [],
 
-  setChainName1: (name: string) =>
-    set((state) => {
-      const updState = {}
-      if (name === MAINNET_CHAIN_NAME) {
-        updState['mainnetChain'] = state.mpc.mainnet()
-      } else {
-        updState['sChain1'] = state.mpc.schain(name)
-      }
-      const provider = updState['mainnetChain']
-        ? updState['mainnetChain'].provider
-        : updState['sChain1'].provider
-      const tokens = state.mpc.tokens(name)
-      const tokenContracts = state.mpc.tokenContracts(
-        tokens,
-        dataclasses.TokenType.erc20,
-        name,
-        provider,
-      )
-      const wrappedTokenContracts = state.mpc.tokenContracts(
-        tokens,
-        dataclasses.TokenType.erc20,
-        name,
-        provider,
-        dataclasses.CustomAbiTokenType.erc20wrap,
-      )
-      return {
-        currentStep: 0,
-        token: null,
-        chainName1: name,
-        tokens: tokens,
-        tokenContracts: tokenContracts,
-        tokenBalances: {},
-        destChains: get().mpc.config.chains,
-        wrappedTokens: get().mpc.wrappedTokens(name),
-        wrappedTokenContracts: wrappedTokenContracts,
-        wrappedTokenBalances: {},
-        ...updState,
-      }
-    }),
+  setChainName1: (name: string) => {
+    set(get().mpc.chainChanged(name, get().chainName2, get().token))
+  },
   setChainName2: (name: string) => {
-    const updState = {}
-    if (name === MAINNET_CHAIN_NAME) {
-      updState['mainnetChain'] = get().mpc.mainnet()
-    } else {
-      updState['sChain2'] = get().mpc.schain(name)
-    }
-    set({
-      currentStep: 0,
-      token: null,
-      destTokenBalance: null,
-      destTokenContract: null,
-      chainName2: name,
-      tokens: get().mpc.tokens(get().chainName1, name),
-      stepsMetadata: getStepsMetadata(get().mpc.config, get().token, name),
-      ...updState,
-    })
+    set(get().mpc.chainChanged(get().chainName1, name, get().token))
   },
 
   tokens: getEmptyTokenDataMap(),
@@ -371,29 +314,12 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   token: null,
 
   setToken: async (token: dataclasses.TokenData) => {
-    let destTokenContract
-    if (get().chainName2) {
-      const provider =
-        get().chainName2 === MAINNET_CHAIN_NAME
-          ? get().mainnetChain.provider
-          : get().sChain2.provider
-      destTokenContract = get().mpc.tokenContract(
-        get().chainName2,
-        token.keyname,
-        token.type,
-        provider,
-        null,
-        get().chainName1,
-      )
-    }
-    set({
-      token: token,
-      stepsMetadata: getStepsMetadata(get().mpc.config, token, get().chainName2),
-      destTokenContract: destTokenContract,
-      destTokenBalance: null,
-      destChains: Object.keys(token.connections),
-      amount: '',
-    })
+    set(get().mpc.tokenChanged(
+      get().chainName1,
+      get().ima2,
+      token,
+      get().chainName2
+    ))
   },
 
   wrappedTokens: getEmptyTokenDataMap(),

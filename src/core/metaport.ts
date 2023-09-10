@@ -33,7 +33,9 @@ import {
 import { TokenType, TokenData, CustomAbiTokenType } from './dataclasses'
 
 import { getEmptyTokenDataMap } from './tokens/helper'
+import { getStepsMetadata } from '../core/transfer_steps'
 import { getChainEndpoint, initIMA, initMainnet, initSChain } from './network'
+import { MetaportState } from '../store/MetaportState'
 import { ERC_ABIS } from './contracts'
 
 import debug from 'debug'
@@ -256,5 +258,77 @@ export default class MetaportCore {
 
   provider(chainName: string): Provider {
     return new JsonRpcProvider(this.endpoint(chainName))
+  }
+
+  tokenChanged(
+    chainName1: string,
+    ima2: MainnetChain | SChain,
+    token: TokenData,
+    destChainName?: string
+  ): Partial<MetaportState> {
+    if (!token) return {}
+    let destTokenContract
+    if (destChainName) {
+      destTokenContract = this.tokenContract(
+        destChainName,
+        token.keyname,
+        token.type,
+        ima2.provider,
+        null,
+        chainName1
+      )
+    }
+    return {
+      token,
+      stepsMetadata: getStepsMetadata(this.config, token, destChainName),
+      destTokenContract: destTokenContract,
+      destTokenBalance: null,
+      destChains: Object.keys(token.connections),
+      amount: ''
+    }
+  }
+
+  chainChanged(
+    chainName1: string,
+    chainName2: string,
+    prevToken: TokenData
+  ): Partial<MetaportState> {
+    const ima1 = this.ima(chainName1)
+    const ima2 = this.ima(chainName2)
+    const tokens = this.tokens(chainName1, chainName2)
+    const tokenContracts = this.tokenContracts(tokens, TokenType.erc20, chainName1, ima1.provider)
+    const wrappedTokenContracts = this.tokenContracts(
+      tokens,
+      TokenType.erc20,
+      chainName1,
+      ima1.provider,
+      CustomAbiTokenType.erc20wrap
+    )
+
+    const prevTokenKeyname = prevToken?.keyname;
+    const prevTokenType = prevToken?.type;
+    const token = prevTokenKeyname ? tokens[prevTokenType][prevTokenKeyname] : null;
+
+    return {
+      ima1,
+      ima2,
+      chainName1,
+      chainName2,
+
+      destChains: this.config.chains,
+      destTokenContract: null,
+      destTokenBalance: null,
+
+      ...this.tokenChanged(chainName1, ima2, token, chainName2),
+      tokens,
+      tokenContracts,
+      tokenBalances: {},
+
+      wrappedTokens: this.wrappedTokens(chainName1),
+      wrappedTokenContracts,
+      wrappedTokenBalances: {},
+
+      currentStep: 0
+    }
   }
 }

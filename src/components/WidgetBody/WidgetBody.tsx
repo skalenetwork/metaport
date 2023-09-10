@@ -73,7 +73,7 @@ export function WidgetBody(props) {
   }, [])
 
   useEffect(() => {
-    if (tokens && tokens.erc20 && Object.values(tokens.erc20)[0]) {
+    if (tokens && tokens.erc20 && Object.values(tokens.erc20)[0] && !token) {
       setToken(Object.values(tokens.erc20)[0])
     }
   }, [tokens])

@@ -26,6 +26,7 @@ export default function ChainApps(props: {
       <div className={cls(cmn.fldex, cmn.flexcv, cmn.mtop10, cmn.mbott10)}>
         {Object.keys(apps).map((key, _) => (
           <Button
+            key={key}
             onClick={() => props.handle(props.chain, key)}
             size="small"
             color="inherit"

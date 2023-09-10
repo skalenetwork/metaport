@@ -76,7 +76,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         eth: {
           chains: {
             'staging-legal-crazy-castor': {},
-            // "staging-utter-unripe-menkar": {},
+            'staging-utter-unripe-menkar': {
+              hub: 'staging-legal-crazy-castor'
+            }
             // "staging-faint-slimy-achird": {},
             // "staging-perfect-parallel-gacrux": {},
             // "staging-severe-violet-wezen": {},
@@ -156,6 +158,20 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     },
     'staging-utter-unripe-menkar': {
       // Calypso connections
+      eth: {
+        eth: {
+          address: '0xECabAE592Eb56D96115FcF4c7F772ADB7BF573d0',
+          chains: {
+            'staging-legal-crazy-castor': {
+              clone: true
+            },
+            'mainnet': {
+              clone: true,
+              hub: 'staging-legal-crazy-castor'
+            }
+          }
+        }
+      },
       erc20: {
         skl: {
           address: '0x7E1B8750C21AebC3bb2a0bDf40be104C609a9852',
@@ -216,6 +232,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             mainnet: {
               clone: true,
             },
+            'staging-utter-unripe-menkar': {
+              wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
+            }
           },
         },
       },
