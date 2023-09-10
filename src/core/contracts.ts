@@ -39,7 +39,7 @@ import sChainAbi from '../metadata/schainAbi.json'
 import mainnetAbi from '../metadata/mainnetAbi.json'
 
 export const ERC_ABIS: { [tokenType in CustomAbiTokenType | TokenType]: { ['abi']: any } } = {
-  eth: null,
+  eth: erc20Abi,
   erc20: erc20Abi,
   erc20wrap: erc20WrapperAbi,
   sfuelwrap: sFuelWrapperAbi,

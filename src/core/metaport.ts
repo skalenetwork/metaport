@@ -41,6 +41,7 @@ import { ERC_ABIS } from './contracts'
 import debug from 'debug'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 import { interfaces } from '../Metaport'
+import { MAINNET_CHAIN_NAME } from './constants'
 
 const log = debug('ima:test:MainnetChain')
 
@@ -211,16 +212,9 @@ export default class MetaportCore {
     customAbiTokenType?: CustomAbiTokenType,
     destChainName?: string,
   ): Contract | undefined {
-    let type = tokenType
     const token = this._config.connections[chainName][tokenType][tokenKeyname]
-    if (tokenType === TokenType.eth) {
-      if (destChainName && token.chains[destChainName].clone) {
-        type = TokenType.erc20
-      } else {
-        return
-      }
-    }
-    const abi = customAbiTokenType ? ERC_ABIS[customAbiTokenType].abi : ERC_ABIS[type].abi
+    if (!token.address) return
+    const abi = customAbiTokenType ? ERC_ABIS[customAbiTokenType].abi : ERC_ABIS[tokenType].abi
     const address = customAbiTokenType ? token.chains[destChainName].wrapper : token.address
     // TODO: add sFUEL address support!
     return new Contract(address, abi, provider)
@@ -281,7 +275,7 @@ export default class MetaportCore {
     return {
       token,
       stepsMetadata: getStepsMetadata(this.config, token, destChainName),
-      destTokenContract: destTokenContract,
+      destTokenContract,
       destTokenBalance: null,
       destChains: Object.keys(token.connections),
       amount: ''
@@ -297,6 +291,11 @@ export default class MetaportCore {
     const ima2 = this.ima(chainName2)
     const tokens = this.tokens(chainName1, chainName2)
     const tokenContracts = this.tokenContracts(tokens, TokenType.erc20, chainName1, ima1.provider)
+
+    if (tokens.eth.eth && chainName1 !== MAINNET_CHAIN_NAME) {
+      tokenContracts.eth = this.tokenContract(chainName1, 'eth', TokenType.eth, ima1.provider)
+    }
+
     const wrappedTokenContracts = this.tokenContracts(
       tokens,
       TokenType.erc20,
