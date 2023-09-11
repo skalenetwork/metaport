@@ -4,7 +4,6 @@ import { chainIconPath } from '../core/metadata'
 
 import { cls, styles } from '../core/css'
 
-
 export default function ChainIcon(props: {
   skaleNetwork: SkaleNetwork
   chainName: string

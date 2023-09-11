@@ -29,7 +29,6 @@ import MetaportCore from '../core/metaport'
 import * as interfaces from '../core/interfaces'
 import * as dataclasses from '../core/dataclasses'
 
-
 export interface MetaportState {
   ima1: MainnetChain | SChain
   setIma1: (ima: MainnetChain | SChain) => void

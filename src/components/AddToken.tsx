@@ -21,22 +21,91 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { cls, cmn, styles } from '../core/css'
+import { useState } from 'react'
+import { useWalletClient, useSwitchNetwork } from 'wagmi'
+import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 
 import Button from '@mui/material/Button'
 import TollIcon from '@mui/icons-material/Toll'
 
+import { cls, cmn, styles } from '../core/css'
+import MetaportCore, { createTokenData } from '../core/metaport'
+import { enforceNetwork } from '../core/network'
+import { TokenData, TokenType } from '../core/dataclasses'
+import { ICONS_BASE_URL, MAINNET_CHAIN_NAME } from '../core/constants'
 
-export default function AddToken(props: {}) {
+export default function AddToken(props: {
+  token: TokenData
+  destChainName: string
+  mpc: MetaportCore
+  ima: MainnetChain | SChain
+}) {
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const { data: walletClient } = useWalletClient()
+  const { switchNetworkAsync } = useSwitchNetwork()
+
+  function getIconUrl(token: TokenData) {
+    return `${ICONS_BASE_URL}${token.meta.symbol}.png`
+  }
+
+  async function isIconAvailable(url: string): Promise<boolean> {
+    try {
+      const response = await fetch(url, { method: 'HEAD' })
+      return response.ok
+    } catch (error) {
+      console.error('Error retrieving users:', error)
+      return false
+    }
+  }
+
+  async function addToken() {
+    setLoading(true)
+    const destToken = createTokenData(
+      props.token.keyname,
+      props.destChainName,
+      props.token.type,
+      props.mpc.config
+    )
+    const iconUrl = getIconUrl(props.token)
+    try {
+      await enforceNetwork(props.ima.provider, walletClient, switchNetworkAsync)
+      const wasAdded = await window.ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: destToken.address,
+            symbol: destToken.meta.symbol.toUpperCase(),
+            decimals: destToken.meta.decimals,
+            image: (await isIconAvailable(iconUrl)) ? iconUrl : undefined
+          }
+        }
+      })
+      if (wasAdded) {
+        console.log('Token added')
+      } else {
+        console.log('Something went wrong')
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (props.destChainName === MAINNET_CHAIN_NAME && props.token.type === TokenType.eth) return
+
   return (
     <Button
-      onClick={() => { }}
+      onClick={addToken}
+      disabled={loading}
       color="primary"
       size="medium"
       className={cls(styles.btnAction, cmn.mtop10d)}
       startIcon={<TollIcon />}
     >
-      Add token
+      {loading ? 'Check wallet' : 'Add token'}
     </Button>
   )
 }

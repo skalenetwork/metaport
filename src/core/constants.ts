@@ -32,6 +32,9 @@ export const S2S_POSTFIX = 's2s'
 export const WRAP_ACTION = 'wrap'
 export const UNWRAP_ACTION = 'unwrap'
 
+export const ICONS_BASE_URL =
+  'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/'
+
 export const MAX_NUMBER = 2n ** 256n - 1n
 
 // tslint:disable-next-line

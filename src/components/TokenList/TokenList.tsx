@@ -21,7 +21,6 @@ import { useMetaportStore } from '../../store/MetaportStore'
 import { TokenType } from '../../core/dataclasses'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
 
-
 export default function TokenList() {
   const token = useMetaportStore((state) => state.token)
   const tokens = useMetaportStore((state) => state.tokens)

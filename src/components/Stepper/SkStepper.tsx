@@ -25,7 +25,6 @@ import { useCPStore } from '../../store/CommunityPoolStore'
 import { SkaleNetwork } from '../../core/interfaces'
 import { SUCCESS_EMOJIS } from '../../core/constants'
 
-
 export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const { address } = useAccount()
   const { switchNetworkAsync } = useSwitchNetwork()
@@ -40,6 +39,11 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
 
   const execute = useMetaportStore((state) => state.execute)
   const startOver = useMetaportStore((state) => state.startOver)
+
+  const token = useMetaportStore((state) => state.token)
+  const mpc = useMetaportStore((state) => state.mpc)
+  const chainName2 = useMetaportStore((state) => state.chainName2)
+  const ima2 = useMetaportStore((state) => state.ima2)
 
   const amount = useMetaportStore((state) => state.amount)
 
@@ -99,12 +103,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                           className={cls(styles.btnAction, cmn.mtop5)}
                           onClick={() => execute(address, switchNetworkAsync, walletClient)}
                           disabled={
-                            !!(
-                              amountErrorMessage ||
-                              loading ||
-                              amount == '' ||
-                              !cpData.exitGasOk
-                            )
+                            !!(amountErrorMessage || loading || amount == '' || !cpData.exitGasOk)
                           }
                         >
                           {step.btnText}
@@ -136,7 +135,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
               </p>
             </div>
             <div className={cls(cmn.flex, cmn.mtop20)}>
-              <AddToken />
+              <AddToken token={token} destChainName={chainName2} mpc={mpc} ima={ima2} />
               <Button
                 onClick={startOver}
                 color="primary"

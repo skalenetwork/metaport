@@ -2,7 +2,6 @@ import Collapse from '@mui/material/Collapse'
 
 import { cls, cmn } from '../core/css'
 
-
 import { useMetaportStore } from '../store/MetaportStore'
 
 export default function AmountErrorMessage() {

@@ -7,7 +7,6 @@ import { getChainAppsMeta, getChainAlias } from '../core/helper'
 
 import ChainIcon from './ChainIcon'
 
-
 export default function ChainApps(props: {
   skaleNetwork: SkaleNetwork
   chain: string

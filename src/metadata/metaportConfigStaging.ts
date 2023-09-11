@@ -78,7 +78,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-legal-crazy-castor': {},
             'staging-utter-unripe-menkar': {
               hub: 'staging-legal-crazy-castor'
-            },
+            }
             // 'staging-faint-slimy-achird': {
             //   hub: 'staging-legal-crazy-castor'
             // }
@@ -248,7 +248,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             },
             'staging-utter-unripe-menkar': {
               wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
-            },
+            }
             // 'staging-faint-slimy-achird': {
             //   wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
             // }

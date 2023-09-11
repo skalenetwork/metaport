@@ -21,8 +21,12 @@
  * @copyright SKALE Labs 2023-Present
  */
 
+import debug from 'debug'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
-import { JsonRpcProvider } from 'ethers'
+import { JsonRpcProvider, Provider } from 'ethers'
+
+import { WalletClient } from 'viem'
+import { Chain } from '@wagmi/core'
 
 import proxyEndpoints from '../metadata/proxy.json'
 import { MAINNET_CHAIN_NAME } from './constants'
@@ -30,6 +34,9 @@ import { IMA_ADDRESSES, IMA_ABIS } from './contracts'
 import { SkaleNetwork } from './interfaces'
 
 export { proxyEndpoints as PROXY_ENDPOINTS }
+
+debug.enable('*')
+const log = debug('metaport:core:network')
 
 const PROTOCOL: { [protocol in 'http' | 'ws']: string } = {
   http: 'https://',
@@ -105,4 +112,22 @@ export function initSChain(network: SkaleNetwork, chainName: string): SChain {
   const endpoint = getChainEndpoint(null, network, chainName)
   const provider = new JsonRpcProvider(endpoint)
   return new SChain(provider, IMA_ABIS.schain)
+}
+
+export async function enforceNetwork(
+  provider: Provider,
+  walletClient: WalletClient,
+  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
+): Promise<void> {
+  const currentChainId = walletClient.chain.id
+  const { chainId } = await provider.getNetwork()
+  log(`Current chainId: ${currentChainId}, required chainId: ${chainId} `)
+  if (currentChainId !== Number(chainId)) {
+    log(`Switching network to ${chainId}...`)
+    const chain = await switchNetwork(Number(chainId))
+    if (!chain) {
+      throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
+    }
+    log(`Network switched to ${chainId}...`)
+  }
 }

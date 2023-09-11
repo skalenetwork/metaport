@@ -31,7 +31,6 @@ import { cls, cmn, styles } from '../core/css'
 
 import { useMetaportStore } from '../store/MetaportStore'
 
-
 export default function SkConnect() {
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
   return (

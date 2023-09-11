@@ -35,10 +35,8 @@ import { getEmptyTokenDataMap } from '../core/tokens/helper'
 import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../core/constants'
 import { ACTIONS } from '../core/actions'
 
-
 debug.enable('*')
 const log = debug('metaport:state')
-
 
 export const useMetaportStore = create<MetaportState>()((set, get) => ({
   ima1: null,
@@ -50,7 +48,10 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   setMpc: (mpc: MetaportCore) => set(() => ({ mpc: mpc })),
 
   tokenId: null,
-  setTokenId: (tokenId: number) => set(() => { return { tokenId: tokenId } }),
+  setTokenId: (tokenId: number) =>
+    set(() => {
+      return { tokenId: tokenId }
+    }),
 
   amount: '',
   setAmount: (amount: string, address: `0x${string}`) =>

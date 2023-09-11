@@ -17,7 +17,6 @@ import { cls, cmn, styles } from '../core/css'
 
 import SkPaper from './SkPaper'
 
-
 export default function ChainsList(props: {
   config: MetaportConfig
   expanded: string | false
