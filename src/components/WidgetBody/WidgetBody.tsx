@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
 import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import { useSFuelStore } from '../../store/SFuelStore'
 import { useUIStore } from '../../store/Store'
 

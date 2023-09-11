@@ -8,7 +8,7 @@ import cmn from '../../styles/cmn.module.scss'
 import localStyles from './AmountInput.module.scss'
 
 import TokenList from '../TokenList'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import { useCollapseStore } from '../../store/Store'
 
 export default function AmountInput() {

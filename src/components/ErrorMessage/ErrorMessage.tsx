@@ -16,7 +16,7 @@ const ERROR_ICONS = {
   'link-off': <LinkOffRoundedIcon />,
   'public-off': <PublicOffRoundedIcon />,
   sentiment: <SentimentDissatisfiedRoundedIcon />,
-  error: <ErrorRoundedIcon />,
+  error: <ErrorRoundedIcon />
 }
 
 export default function Error(props: { errorMessage: ErrorMessage }) {

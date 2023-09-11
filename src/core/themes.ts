@@ -31,15 +31,15 @@ const defaultThemes = {
     background: '#000000',
     mode: 'dark',
     position: Positions.bottomRight,
-    zIndex: DEFAULT_MP_Z_INDEX,
+    zIndex: DEFAULT_MP_Z_INDEX
   },
   light: {
     primary: '#173CFF',
     background: '#EFEFEF',
     mode: 'light',
     position: Positions.bottomRight,
-    zIndex: DEFAULT_MP_Z_INDEX,
-  },
+    zIndex: DEFAULT_MP_Z_INDEX
+  }
 }
 
 // warning: order is important here
@@ -51,7 +51,7 @@ const MUI_ELEMENTS = [
   'drawer',
   'modal',
   'snackbar',
-  'tooltip',
+  'tooltip'
 ]
 
 const INDEX_STEP = 50

@@ -38,7 +38,7 @@ import {
   MINIMUM_RECHARGE_AMOUNT,
   COMMUNITY_POOL_WITHDRAW_GAS_LIMIT,
   DEFAULT_ERROR_MSG,
-  BALANCE_UPDATE_INTERVAL_MS,
+  BALANCE_UPDATE_INTERVAL_MS
 } from './constants'
 import { delay } from './helper'
 import { CHAIN_IDS, isMainnetChainId, getMainnetAbi } from './network'
@@ -56,7 +56,7 @@ export function getEmptyCommunityPoolData(): CommunityPoolData {
     balance: null,
     accountBalance: null,
     recommendedRechargeAmount: null,
-    originalRecommendedRechargeAmount: null,
+    originalRecommendedRechargeAmount: null
   }
 }
 
@@ -65,7 +65,7 @@ export async function getCommunityPoolData(
   chainName1: string,
   chainName2: string,
   mainnet: MainnetChain,
-  sChain: SChain,
+  sChain: SChain
 ): Promise<CommunityPoolData> {
   if (chainName2 !== MAINNET_CHAIN_NAME) {
     // log('not a S2M transfer, skipping community pool check')
@@ -75,7 +75,7 @@ export async function getCommunityPoolData(
       balance: null,
       accountBalance: null,
       recommendedRechargeAmount: null,
-      originalRecommendedRechargeAmount: null,
+      originalRecommendedRechargeAmount: null
     }
   }
 
@@ -88,7 +88,7 @@ export async function getCommunityPoolData(
 
   const rraWei = await mainnet.communityPool.contract.getRecommendedRechargeAmount(
     chainHash,
-    address,
+    address
   )
   const rraEther = fromWei(rraWei as string, DEFAULT_ERC20_DECIMALS)
 
@@ -101,7 +101,7 @@ export async function getCommunityPoolData(
     balance: balanceWei,
     accountBalance: accountBalanceWei,
     recommendedRechargeAmount: recommendedAmount,
-    originalRecommendedRechargeAmount: rraWei,
+    originalRecommendedRechargeAmount: rraWei
   }
   // log('communityPoolData:', communityPoolData)
   return communityPoolData
@@ -110,7 +110,7 @@ export async function getCommunityPoolData(
 export async function connectedMainnetChain(
   mpc: MetaportCore,
   walletClient: WalletClient,
-  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
+  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
 ): Promise<MainnetChain> {
   const currentChainId = walletClient.chain.id
   const chainId = CHAIN_IDS[mpc.config.skaleNetwork]
@@ -136,7 +136,7 @@ export async function withdraw(
   switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
   setLoading: (loading: string | false) => void,
   setErrorMessage: (errorMessage: dataclasses.ErrorMessage) => void,
-  errorMessageClosedFallback: () => void,
+  errorMessageClosedFallback: () => void
 ) {
   setLoading('withdraw')
   try {
@@ -144,7 +144,7 @@ export async function withdraw(
     const mainnetMetamask = await connectedMainnetChain(mpc, walletClient, switchNetwork)
     await mainnetMetamask.communityPool.withdraw(chainName, amount, {
       address: address,
-      customGasLimit: COMMUNITY_POOL_WITHDRAW_GAS_LIMIT,
+      customGasLimit: COMMUNITY_POOL_WITHDRAW_GAS_LIMIT
     })
     setLoading(false)
   } catch (err) {
@@ -163,7 +163,7 @@ export async function recharge(
   switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
   setLoading: (loading: string | false) => void,
   setErrorMessage: (errorMessage: dataclasses.ErrorMessage) => void,
-  errorMessageClosedFallback: () => void,
+  errorMessageClosedFallback: () => void
 ) {
   setLoading('recharge')
   try {
@@ -173,7 +173,7 @@ export async function recharge(
     const mainnetMetamask = await connectedMainnetChain(mpc, walletClient, switchNetwork)
     await mainnetMetamask.communityPool.recharge(chainName, address, {
       address: address,
-      value: toWei(amount, DEFAULT_ERC20_DECIMALS),
+      value: toWei(amount, DEFAULT_ERC20_DECIMALS)
     })
     setLoading('activate')
     let active = false

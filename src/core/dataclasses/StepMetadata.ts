@@ -39,13 +39,14 @@ export enum ActionType {
   unwrap_stuck = 'unwrap_stuck',
   eth_m2s = 'eth_m2s',
   eth_s2m = 'eth_s2m',
-  eth_unlock = 'eth_unlock',
+  eth_s2s = 'eth_s2s',
+  eth_unlock = 'eth_unlock'
 }
 
 export function getActionType(
   chainName1: string,
   chainName2: string,
-  tokenType: TokenType,
+  tokenType: TokenType
 ): ActionType {
   if (!chainName1 || !chainName2 || !tokenType) return
   let postfix = S2S_POSTFIX
@@ -71,7 +72,7 @@ export abstract class StepMetadata {
   constructor(
     public type: ActionType,
     public from: string,
-    public to: string,
+    public to: string
   ) {}
 }
 
@@ -92,7 +93,7 @@ export class WrapStepMetadata extends StepMetadata {
 
   constructor(
     public from: string,
-    public to: string,
+    public to: string
   ) {
     super(ActionType.wrap, from, to)
   }
@@ -107,7 +108,7 @@ export class UnwrapStepMetadata extends StepMetadata {
 
   constructor(
     public from: string,
-    public to: string,
+    public to: string
   ) {
     super(ActionType.unwrap, from, to)
   }
@@ -122,7 +123,7 @@ export class UnlockStepMetadata extends StepMetadata {
 
   constructor(
     public from: string,
-    public to: string,
+    public to: string
   ) {
     super(ActionType.eth_unlock, from, to)
   }

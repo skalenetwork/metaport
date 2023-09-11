@@ -27,5 +27,5 @@ export enum TransferRequestStatus {
   IN_PROGRESS = 2,
   IN_PROGRESS_HUB = 3,
   DONE = 4,
-  ERROR = 5,
+  ERROR = 5
 }

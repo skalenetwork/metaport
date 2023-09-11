@@ -48,7 +48,7 @@ export class Station {
 
   constructor(
     public chainName: string,
-    public mpc: MetaportCore,
+    public mpc: MetaportCore
   ) {
     this.chainName = chainName
     this.mpc = mpc

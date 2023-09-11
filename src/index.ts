@@ -1,6 +1,7 @@
 export { interfaces, dataclasses } from './Metaport'
 
-export { useMetaportStore, type MetaportState } from './store/MetaportState'
+export { useMetaportStore } from './store/MetaportStore'
+export { type MetaportState } from './store/MetaportState'
 export { useUIStore, useCollapseStore, type UIState, type CollapseState } from './store/Store'
 export { useSFuelStore, type SFuelState } from './store/SFuelStore'
 
@@ -71,5 +72,5 @@ export {
   BASE_EXPLORER_URLS,
   CHAINS_META,
   chainBg,
-  getChainAlias,
+  getChainAlias
 }

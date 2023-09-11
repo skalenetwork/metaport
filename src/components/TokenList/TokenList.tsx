@@ -20,7 +20,7 @@ import styles from '../../styles/styles.module.scss'
 import cmn from '../../styles/cmn.module.scss'
 
 import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import { TokenType } from '../../core/dataclasses'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
 
@@ -97,7 +97,7 @@ export default function TokenList() {
               [cmn.pDisabled, noTokens],
               cmn.flex,
               cmn.flexg,
-              cmn.mri10,
+              cmn.mri10
             )}
           >
             {tokensText}

@@ -43,17 +43,17 @@ export function constructWagmiChain(network: SkaleNetwork, chainName: string): C
     nativeCurrency: {
       decimals: 18,
       name: 'sFUEL',
-      symbol: 'sFUEL',
+      symbol: 'sFUEL'
     },
     rpcUrls: {
       public: { http: [endpointHttp], webSocket: [endpointWs] },
-      default: { http: [endpointHttp], webSocket: [endpointWs] },
+      default: { http: [endpointHttp], webSocket: [endpointWs] }
     },
     blockExplorers: {
       etherscan: { name: 'SKALE Explorer', url: explorerUrl },
-      default: { name: 'SKALE Explorer', url: explorerUrl },
+      default: { name: 'SKALE Explorer', url: explorerUrl }
     },
-    contracts: {},
+    contracts: {}
   } as const satisfies Chain
 }
 

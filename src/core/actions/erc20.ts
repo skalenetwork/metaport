@@ -45,12 +45,12 @@ export class TransferERC20S2S extends TransferAction {
       this.sChain1.erc20.address,
       this.amount,
       this.token,
-      this.sourceToken,
+      this.sourceToken
     )
     const sChain = (await this.getConnectedChain(
       this.sChain1.provider,
       this.token.wrapper(this.chainName2) ? CustomAbiTokenType.erc20wrap : null,
-      this.token.wrapper(this.chainName2) ? this.chainName2 : null,
+      this.token.wrapper(this.chainName2) ? this.chainName2 : null
     )) as SChain
     if (!checkResAllowance.res) {
       this.updateState('approve')
@@ -59,8 +59,8 @@ export class TransferERC20S2S extends TransferAction {
         MAX_APPROVE_AMOUNT,
         sChain.erc20.address,
         {
-          address: this.address,
-        },
+          address: this.address
+        }
       )
       const txBlock = await sChain.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
@@ -86,7 +86,7 @@ export class TransferERC20S2S extends TransferAction {
       balanceOnDestination = await this.sChain2.getERC20Balance(this.destToken, this.address)
     }
     const tx = await sChain.erc20.transferToSchain(this.chainName2, this.originAddress, amountWei, {
-      address: this.address,
+      address: this.address
     })
     const block = await sChain.provider.getBlock(tx.blockNumber)
     this.updateState('transferDone', tx.hash, block.timestamp)
@@ -103,7 +103,7 @@ export class TransferERC20S2S extends TransferAction {
       this.address,
       this.amount,
       this.token,
-      this.sourceToken,
+      this.sourceToken
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
@@ -119,7 +119,7 @@ export class WrapSFuelERC20S extends Action {
     this.updateState('wrap')
     const tx = await this.sChain1.erc20.fundExit(this.token.keyname, {
       address: this.address,
-      value: this.amountWei,
+      value: this.amountWei
     })
     const block = await this.sChain1.provider.getBlock(tx.blockNumber)
     this.updateState('wrapDone', tx.hash, block.timestamp)
@@ -146,7 +146,7 @@ export class WrapERC20S extends Action {
       this.token.connections[this.chainName2].wrapper,
       this.amount,
       this.token,
-      this.unwrappedToken,
+      this.unwrappedToken
     )
     const sChain = (await this.getConnectedChain(this.sChain1.provider)) as SChain
     const wrapperToken = this.mpc.tokenContract(
@@ -155,7 +155,7 @@ export class WrapERC20S extends Action {
       this.token.type,
       sChain.provider,
       CustomAbiTokenType.erc20wrap,
-      this.chainName2,
+      this.chainName2
     )
     sChain.erc20.addToken(`wrap_${this.token.keyname}`, wrapperToken)
     if (!checkResAllowance.res) {
@@ -165,8 +165,8 @@ export class WrapERC20S extends Action {
         MAX_APPROVE_AMOUNT,
         this.token.address,
         {
-          address: this.address,
-        },
+          address: this.address
+        }
       )
       const txBlock = await this.sChain1.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveWrapDone', approveTx.hash, txBlock.timestamp)
@@ -174,7 +174,7 @@ export class WrapERC20S extends Action {
     this.updateState('wrap')
     const amountWei = toWei(this.amount, this.token.meta.decimals)
     const tx = await sChain.erc20.wrap(`wrap_${this.token.keyname}`, amountWei, {
-      address: this.address,
+      address: this.address
     })
     const block = await this.sChain1.provider.getBlock(tx.blockNumber)
     this.updateState('wrapDone', tx.hash, block.timestamp)
@@ -185,7 +185,7 @@ export class WrapERC20S extends Action {
       this.address,
       this.amount,
       this.token,
-      this.unwrappedToken,
+      this.unwrappedToken
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
@@ -205,7 +205,7 @@ export class UnWrapERC20 extends Action {
       this.token.type,
       sChain.provider,
       CustomAbiTokenType.erc20wrap,
-      findFirstWrapperChainName(this.token),
+      findFirstWrapperChainName(this.token)
     )
     sChain.erc20.addToken(this.token.keyname, tokenContract)
     const amountWei = await tokenContract.balanceOf(this.address)
@@ -222,7 +222,7 @@ export class UnWrapERC20S extends Action {
     const sChain = (await this.getConnectedChain(
       this.sChain2.provider,
       CustomAbiTokenType.erc20wrap,
-      this.chainName1,
+      this.chainName1
     )) as SChain
     this.updateState('unwrap')
     let tx
@@ -246,7 +246,7 @@ export class UnWrapERC20S extends Action {
       this.address,
       this.amount,
       this.token,
-      tokenContract,
+      tokenContract
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
@@ -265,13 +265,13 @@ export class TransferERC20M2S extends TransferAction {
       this.mainnet.erc20.address,
       this.amount,
       this.token,
-      this.sourceToken,
+      this.sourceToken
     )
     const mainnet = (await this.getConnectedChain(this.mainnet.provider)) as MainnetChain
     if (!checkResAllowance.res) {
       this.updateState('approve')
       const approveTx = await mainnet.erc20.approve(this.token.keyname, MAX_APPROVE_AMOUNT, {
-        address: this.address,
+        address: this.address
       })
       const txBlock = await mainnet.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
@@ -281,7 +281,7 @@ export class TransferERC20M2S extends TransferAction {
     // const destTokenContract = this.sChain2.erc20.tokens[this.token.keyname];
     const balanceOnDestination = await this.sChain2.getERC20Balance(this.destToken, this.address)
     const tx = await await mainnet.erc20.deposit(this.chainName2, this.token.keyname, amountWei, {
-      address: this.address,
+      address: this.address
     })
     const block = await mainnet.provider.getBlock(tx.blockNumber)
     this.updateState('transferDone', tx.hash, block.timestamp)
@@ -295,7 +295,7 @@ export class TransferERC20M2S extends TransferAction {
       this.chainName1,
       this.chainName2,
       this.token.keyname,
-      false,
+      false
     )
   }
 
@@ -304,7 +304,7 @@ export class TransferERC20M2S extends TransferAction {
       this.address,
       this.amount,
       this.token,
-      this.sourceToken,
+      this.sourceToken
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
@@ -324,7 +324,7 @@ export class TransferERC20S2M extends TransferAction {
       this.sChain1.erc20.address,
       this.amount,
       this.token,
-      this.sourceToken,
+      this.sourceToken
     )
     const sChain = (await this.getConnectedChain(this.sChain1.provider)) as SChain
     if (!checkResAllowance.res) {
@@ -334,8 +334,8 @@ export class TransferERC20S2M extends TransferAction {
         MAX_APPROVE_AMOUNT,
         sChain.erc20.address,
         {
-          address: this.address,
-        },
+          address: this.address
+        }
       )
       const txBlock = await sChain.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
@@ -358,7 +358,7 @@ export class TransferERC20S2M extends TransferAction {
       this.chainName1,
       this.chainName2,
       this.token.keyname,
-      false,
+      false
     )
   }
 
@@ -367,7 +367,7 @@ export class TransferERC20S2M extends TransferAction {
       this.address,
       this.amount,
       this.token,
-      this.sourceToken,
+      this.sourceToken
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)

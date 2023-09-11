@@ -39,7 +39,7 @@ export class TokenData {
     tokenKeyname: string,
     metadata: TokenMetadata,
     connections: ConnectedChainMap,
-    chain: string,
+    chain: string
   ) {
     this.address = address
     this.meta = metadata

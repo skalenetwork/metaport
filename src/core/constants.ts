@@ -52,14 +52,14 @@ export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   mainnet: 'https://etherscan.io',
   staging: 'https://goerli.etherscan.io/',
   legacy: 'https://goerli.etherscan.io/',
-  regression: 'https://goerli.etherscan.io/',
+  regression: 'https://goerli.etherscan.io/'
 }
 
 export const BASE_EXPLORER_URLS = {
   mainnet: 'explorer.mainnet.skalenodes.com',
   staging: 'explorer.staging-v3.skalenodes.com',
   legacy: 'explorer.staging-v3.skalenodes.com',
-  regression: 'regression-explorer.skalenodes.com',
+  regression: 'regression-explorer.skalenodes.com'
 }
 
 // ETA constants
@@ -80,12 +80,12 @@ export const SFUEL_CHECKS_INTERVAL = 8
 export const SFUEL_TEXT = {
   sfuel: {
     warning: 'You need sFUEL on the destination chain',
-    error: 'You need sFUEL to perform a transfer',
+    error: 'You need sFUEL to perform a transfer'
   },
   gas: {
     warning: 'You need ETH on the destination chain',
-    error: 'You need ETH to perform a transfer',
-  },
+    error: 'You need ETH to perform a transfer'
+  }
 }
 
 // faucet constants

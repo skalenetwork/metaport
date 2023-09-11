@@ -38,7 +38,7 @@ export async function checkEthBalance( // TODO: optimize balance checks
   chain: MainnetChain | SChain,
   address: string,
   amount: string,
-  tokenData: TokenData,
+  tokenData: TokenData
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
 
@@ -69,7 +69,7 @@ export async function checkERC20Balance(
   address: string,
   amount: string,
   tokenData: TokenData,
-  tokenContract: Contract,
+  tokenContract: Contract
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
@@ -93,7 +93,7 @@ export async function checkERC20Balance(
 export async function checkSFuelBalance(
   address: string,
   amount: string,
-  sChain: SChain,
+  sChain: SChain
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
@@ -120,7 +120,7 @@ export async function checkERC20Allowance(
   approvalAddress: string,
   amount: string,
   tokenData: TokenData,
-  tokenContract: Contract,
+  tokenContract: Contract
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
@@ -141,7 +141,7 @@ export async function checkERC721(
   address: string,
   approvalAddress: string,
   tokenId: number,
-  tokenContract: Contract,
+  tokenContract: Contract
 ): Promise<interfaces.CheckRes> {
   let approvedAddress: string
   const checkRes: interfaces.CheckRes = { res: true, approved: false }
@@ -176,7 +176,7 @@ export async function checkERC1155(
   tokenId: number,
   amount: string,
   tokenData: TokenData,
-  tokenContract: Contract,
+  tokenContract: Contract
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: true, approved: false }
   if (!tokenId || !amount) return checkRes

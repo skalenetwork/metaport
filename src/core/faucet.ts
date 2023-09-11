@@ -57,7 +57,7 @@ function getFuncData(chainName: string, address: string, skaleNetwork: string) {
 export async function getSFuel(
   chainName: string,
   address: AddressType,
-  mpc: MetaportCore,
+  mpc: MetaportCore
 ): Promise<TransactionResponse> {
   const endpoint = mpc.endpoint(chainName)
   const miner = new SkalePowMiner()
@@ -71,6 +71,6 @@ export async function getSFuel(
     to,
     data,
     nonce,
-    gasPrice: mineFreeGasResult,
+    gasPrice: mineFreeGasResult
   })
 }

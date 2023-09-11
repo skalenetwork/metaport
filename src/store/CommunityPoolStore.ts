@@ -60,7 +60,7 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
     address: string,
     chainName1: string,
     chainName2: string,
-    mpc: MetaportCore,
+    mpc: MetaportCore
   ) => {
     if (!chainName1 || !chainName2) return
     if (!get().mainnet) {
@@ -74,12 +74,12 @@ export const useCPStore = create<CommunityPoolState>()((set, get) => ({
       chainName1,
       chainName2,
       get().mainnet,
-      get().sChain,
+      get().sChain
     )
     set({
       chainName: chainName1,
       cpData: cpData,
-      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : '',
+      amount: cpData.recommendedRechargeAmount ? cpData.recommendedRechargeAmount.toString() : ''
     })
-  },
+  }
 }))

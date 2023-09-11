@@ -26,10 +26,10 @@ export enum TokenType {
   erc20 = 'erc20',
   erc721 = 'erc721',
   erc721meta = 'erc721meta',
-  erc1155 = 'erc1155',
+  erc1155 = 'erc1155'
 }
 
 export enum CustomAbiTokenType {
   erc20wrap = 'erc20wrap',
-  sfuelwrap = 'sfuelwrap',
+  sfuelwrap = 'sfuelwrap'
 }

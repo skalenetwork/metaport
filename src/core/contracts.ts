@@ -45,17 +45,17 @@ export const ERC_ABIS: { [tokenType in CustomAbiTokenType | TokenType]: { ['abi'
   sfuelwrap: sFuelWrapperAbi,
   erc721: erc721Abi,
   erc721meta: erc721MetaAbi,
-  erc1155: erc1155Abi,
+  erc1155: erc1155Abi
 }
 
 export const IMA_ADDRESSES = {
   mainnet: mainnetAddresses,
   staging: stagingAddresses,
   legacy: legacyAddresses,
-  regression: regressionAddresses,
+  regression: regressionAddresses
 }
 
 export const IMA_ABIS = {
   mainnet: mainnetAbi,
-  schain: sChainAbi,
+  schain: sChainAbi
 }

@@ -30,7 +30,7 @@ import {
   UnWrapERC20S,
   UnWrapERC20,
   TransferERC20M2S,
-  TransferERC20S2M,
+  TransferERC20S2M
 } from './erc20'
 
 import { Action } from './action'
@@ -45,7 +45,7 @@ const log = debug('metaport:actions')
 export function getActionName(
   chainName1: string,
   chainName2: string,
-  tokenType: TokenType,
+  tokenType: TokenType
 ): string {
   if (!chainName1 || !chainName2 || !tokenType) return
   log(`Getting action name: ${chainName1} ${chainName2} ${tokenType}`)
@@ -64,6 +64,7 @@ export function getActionName(
 export const ACTIONS: { [actionType in ActionType]: typeof Action } = {
   eth_m2s: TransferEthM2S,
   eth_s2m: TransferEthS2M,
+  eth_s2s: TransferERC20S2S,
   eth_unlock: UnlockEthM,
 
   wrap: WrapERC20S,
@@ -72,7 +73,7 @@ export const ACTIONS: { [actionType in ActionType]: typeof Action } = {
 
   erc20_m2s: TransferERC20M2S,
   erc20_s2m: TransferERC20S2M,
-  erc20_s2s: TransferERC20S2S,
+  erc20_s2s: TransferERC20S2S
 
   // erc721_m2s: [TransferERC721M2S],
   // erc721_s2m: [TransferERC721S2M],

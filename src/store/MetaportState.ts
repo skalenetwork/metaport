@@ -17,27 +17,18 @@
  */
 
 /**
- * @file MetaportState.ts
+ * @file IMetaportState.ts
  * @copyright SKALE Labs 2023-Present
  */
 
-import debug from 'debug'
-
 import { Contract } from 'ethers'
-
+import { WalletClient } from 'viem'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
-import { create } from 'zustand'
 
 import MetaportCore from '../core/metaport'
 import * as interfaces from '../core/interfaces'
 import * as dataclasses from '../core/dataclasses'
-import { getEmptyTokenDataMap } from '../core/tokens/helper'
-import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../core/constants'
-import { ACTIONS } from '../core/actions'
-import { WalletClient } from 'viem'
 
-debug.enable('*')
-const log = debug('metaport:state')
 
 export interface MetaportState {
   ima1: MainnetChain | SChain
@@ -58,14 +49,14 @@ export interface MetaportState {
   execute: (
     address: string,
     switchNetwork: (chainId: number) => void,
-    walletClient: WalletClient,
+    walletClient: WalletClient
   ) => void
 
   unwrapAll: (
     address: string,
     switchNetwork: (chainId: number) => void,
     walletClient: WalletClient,
-    tokens: interfaces.TokenDataMap,
+    tokens: interfaces.TokenDataMap
   ) => void
 
   check: (amount: string, address: `0x${string}`) => void
@@ -114,9 +105,6 @@ export interface MetaportState {
   errorMessage: dataclasses.ErrorMessage
   setErrorMessage: (errorMessage: dataclasses.ErrorMessage) => void
 
-  actionBtnDisabled: boolean
-  setActionBtnDisabled: (actionBtnDisabled: boolean) => void
-
   loading: boolean
   setLoading: (loading: boolean) => void
 
@@ -129,265 +117,3 @@ export interface MetaportState {
   errorMessageClosedFallback: () => void
   startOver: () => void
 }
-
-export const useMetaportStore = create<MetaportState>()((set, get) => ({
-  ima1: null,
-  ima2: null,
-  setIma1: (ima: MainnetChain | SChain) => set(() => ({ ima1: ima })),
-  setIma2: (ima: MainnetChain | SChain) => set(() => ({ ima2: ima })),
-
-  mpc: null,
-  setMpc: (mpc: MetaportCore) => set(() => ({ mpc: mpc })),
-
-  tokenId: null,
-  setTokenId: (tokenId: number) =>
-    set(() => {
-      return {
-        tokenId: tokenId,
-      }
-    }),
-
-  amount: '',
-  setAmount: (amount: string, address: `0x${string}`) =>
-    set((state) => {
-      state.check(amount, address)
-      return {
-        amount: amount,
-      }
-    }),
-
-  unwrapAll: async (
-    address: `0x${string}`,
-    switchNetwork: any,
-    walletClient: WalletClient,
-    tokens: interfaces.TokenDataMap,
-  ) => {
-    log('Running unwrapAll')
-    set({ loading: true })
-    try {
-      for (const key of Object.keys(tokens)) {
-        await new ACTIONS.unwrap_stuck(
-          get().mpc,
-          get().chainName1,
-          null,
-          address,
-          get().amount,
-          get().tokenId,
-          tokens[key],
-          get().setAmountErrorMessage,
-          get().setBtnText,
-          switchNetwork,
-          walletClient,
-        ).execute()
-      }
-    } catch (err) {
-      console.error(err)
-      const msg = err.message ? err.message : DEFAULT_ERROR_MSG
-      set({
-        errorMessage: new dataclasses.TransactionErrorMessage(
-          msg,
-          get().errorMessageClosedFallback,
-        ),
-      })
-      return
-    } finally {
-      set({ loading: false })
-    }
-  },
-
-  execute: async (address: `0x${string}`, switchNetwork: any, walletClient: WalletClient) => {
-    log('Running execute')
-    if (get().stepsMetadata[get().currentStep]) {
-      set({
-        loading: true,
-        transferInProgress: true,
-      })
-      try {
-        const stepMetadata = get().stepsMetadata[get().currentStep]
-        const actionClass = ACTIONS[stepMetadata.type]
-        await new actionClass(
-          get().mpc,
-          stepMetadata.from,
-          stepMetadata.to,
-          address,
-          get().amount,
-          get().tokenId,
-          get().token,
-          get().setAmountErrorMessage,
-          get().setBtnText,
-          switchNetwork,
-          walletClient,
-        ).execute()
-      } catch (err) {
-        console.error(err)
-        const msg = err.message ? err.message : DEFAULT_ERROR_MSG
-        set({
-          errorMessage: new dataclasses.TransactionErrorMessage(
-            msg,
-            get().errorMessageClosedFallback,
-          ),
-        })
-        return
-      } finally {
-        set({ loading: false })
-      }
-      set({
-        transferInProgress: get().currentStep + 1 !== get().stepsMetadata.length,
-        currentStep: get().currentStep + 1,
-      })
-    }
-  },
-
-  errorMessageClosedFallback() {
-    set({
-      loading: false,
-      errorMessage: undefined,
-      transferInProgress: get().currentStep !== 0,
-    })
-  },
-
-  startOver() {
-    set({
-      loading: false,
-      errorMessage: undefined,
-      amount: '',
-      tokenId: null,
-      currentStep: 0,
-      transferInProgress: false,
-      destTokenBalance: null,
-    })
-  },
-
-  check: async (amount: string, address: string) => {
-    if (get().stepsMetadata[get().currentStep] && address) {
-      set({
-        loading: true,
-        btnText: 'Checking balance...',
-      })
-      const stepMetadata = get().stepsMetadata[get().currentStep]
-      const actionClass = ACTIONS[stepMetadata.type]
-      await new actionClass(
-        get().mpc,
-        stepMetadata.from,
-        stepMetadata.to,
-        address,
-        amount,
-        get().tokenId,
-        get().token,
-        get().setAmountErrorMessage,
-        get().setBtnText,
-        null,
-        null,
-      ).preAction()
-    }
-    set({ loading: false })
-  },
-
-  currentStep: 0,
-  setCurrentStep: (currentStep: number) => set(() => ({ currentStep: currentStep })),
-
-  stepsMetadata: [],
-  setStepsMetadata: (steps: dataclasses.StepMetadata[]) => set(() => ({ stepsMetadata: steps })),
-
-  chainName1: '',
-  chainName2: '',
-
-  appName1: null,
-  appName2: null,
-
-  setAppName1: (name: string) => set(() => ({ appName1: name })),
-  setAppName2: (name: string) => set(() => ({ appName2: name })),
-
-  destChains: [],
-
-  setChainName1: (name: string) => {
-    set(get().mpc.chainChanged(name, get().chainName2, get().token))
-  },
-  setChainName2: (name: string) => {
-    set(get().mpc.chainChanged(get().chainName1, name, get().token))
-  },
-
-  tokens: getEmptyTokenDataMap(),
-
-  token: null,
-
-  setToken: async (token: dataclasses.TokenData) => {
-    set(get().mpc.tokenChanged(
-      get().chainName1,
-      get().ima2,
-      token,
-      get().chainName2
-    ))
-  },
-
-  wrappedTokens: getEmptyTokenDataMap(),
-  tokenContracts: {},
-  tokenBalances: {},
-
-  wrappedTokenContracts: {},
-  wrappedTokenBalances: {},
-
-  destTokenContract: null,
-  destTokenBalance: null,
-
-  updateDestTokenBalance: async (address: string) => {
-    if (!address) {
-      set({ destTokenBalance: null })
-      return
-    }
-    if (get().destTokenContract) {
-      const balance = await get().mpc.tokenBalance(get().destTokenContract, address)
-      set({ destTokenBalance: balance })
-    } else {
-      if (
-        get().token &&
-        get().token.type === dataclasses.TokenType.eth &&
-        get().chainName2 === MAINNET_CHAIN_NAME
-      ) {
-        set({ destTokenBalance: await get().ima2.ethBalance(address) })
-      }
-    }
-  },
-
-  updateTokenBalances: async (address: string) => {
-    if (!address) {
-      set({ tokenBalances: {} })
-      return
-    }
-    const tokenBalances = await get().mpc.tokenBalances(get().tokenContracts, address)
-    if (get().chainName1 === MAINNET_CHAIN_NAME || get().chainName2 === MAINNET_CHAIN_NAME) {
-      tokenBalances.eth = await get().ima1.ethBalance(address)
-    }
-    set({
-      tokenBalances: tokenBalances,
-    })
-  },
-
-  updateWrappedTokenBalances: async (address: string) => {
-    if (!address) {
-      set({ wrappedTokenBalances: {} })
-      return
-    }
-    set({
-      wrappedTokenBalances: await get().mpc.tokenBalances(get().wrappedTokenContracts, address),
-    })
-  },
-
-  amountErrorMessage: null,
-  setAmountErrorMessage: (em: string) => set(() => ({ amountErrorMessage: em })),
-
-  errorMessage: null,
-  setErrorMessage: (em: dataclasses.ErrorMessage) => set(() => ({ errorMessage: em })),
-
-  actionBtnDisabled: false,
-  setActionBtnDisabled: (disabled: boolean) => set(() => ({ actionBtnDisabled: disabled })),
-
-  loading: false,
-  setLoading: (loading: boolean) => set(() => ({ loading: loading })),
-
-  transferInProgress: false,
-  setTransferInProgress: (inProgress: boolean) => set(() => ({ transferInProgress: inProgress })),
-
-  btnText: null,
-  setBtnText: (btnText: string) => set(() => ({ btnText: btnText })),
-}))

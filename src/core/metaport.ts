@@ -28,7 +28,7 @@ import {
   TokenDataTypesMap,
   Token,
   TokenContractsMap,
-  TokenBalancesMap,
+  TokenBalancesMap
 } from './interfaces'
 import { TokenType, TokenData, CustomAbiTokenType } from './dataclasses'
 
@@ -49,7 +49,7 @@ export const createTokenData = (
   tokenKeyname: string,
   chainName: string,
   tokenType: TokenType,
-  config: MetaportConfig,
+  config: MetaportConfig
 ): TokenData => {
   const configToken: Token = config.connections[chainName][tokenType][tokenKeyname]
   return new TokenData(
@@ -58,7 +58,7 @@ export const createTokenData = (
     tokenKeyname,
     config.tokens[tokenKeyname],
     configToken.chains,
-    chainName,
+    chainName
   )
 }
 
@@ -67,7 +67,7 @@ export const addTokenData = (
   chainName: string,
   tokenType: TokenType,
   config: MetaportConfig,
-  tokens: TokenDataTypesMap,
+  tokens: TokenDataTypesMap
 ) => {
   tokens[tokenType][tokenKeyname] = createTokenData(tokenKeyname, chainName, tokenType, config)
 }
@@ -75,7 +75,7 @@ export const addTokenData = (
 export const createTokensMap = (
   chainName1: string,
   chainName2: string | null | undefined,
-  config: MetaportConfig,
+  config: MetaportConfig
 ): TokenDataTypesMap => {
   const tokens = getEmptyTokenDataMap()
   log(`updating tokens map for ${chainName1} -> ${chainName2}`)
@@ -96,7 +96,7 @@ export const createTokensMap = (
 
 export function createWrappedTokensMap(
   chainName1: string,
-  config: MetaportConfig,
+  config: MetaportConfig
 ): TokenDataTypesMap {
   const wrappedTokens: TokenDataTypesMap = getEmptyTokenDataMap()
   const tokenType = TokenType.erc20
@@ -165,7 +165,7 @@ export default class MetaportCore {
 
   async tokenBalances(
     tokenContracts: TokenContractsMap,
-    address: string,
+    address: string
   ): Promise<TokenBalancesMap> {
     const balances: TokenBalancesMap = {}
     const tokenKeynames = Object.keys(tokenContracts)
@@ -180,8 +180,7 @@ export default class MetaportCore {
     tokenType: TokenType,
     chainName: string,
     provider: Provider,
-    customAbiTokenType?: CustomAbiTokenType,
-    // destChainName?: string
+    customAbiTokenType?: CustomAbiTokenType
   ): TokenContractsMap {
     const contracts: TokenContractsMap = {}
     if (tokens[tokenType]) {
@@ -197,7 +196,7 @@ export default class MetaportCore {
           tokenType,
           provider,
           customAbiTokenType,
-          destChainName,
+          destChainName
         )
       })
     }
@@ -210,7 +209,7 @@ export default class MetaportCore {
     tokenType: TokenType,
     provider: Provider,
     customAbiTokenType?: CustomAbiTokenType,
-    destChainName?: string,
+    destChainName?: string
   ): Contract | undefined {
     const token = this._config.connections[chainName][tokenType][tokenKeyname]
     if (!token.address) return
@@ -224,7 +223,7 @@ export default class MetaportCore {
     chainName1: string,
     chainName2: string,
     tokenKeyname: string,
-    tokenType: TokenType,
+    tokenType: TokenType
   ) {
     let token = this._config.connections[chainName1][tokenType][tokenKeyname]
     const isClone = token.chains[chainName2].clone
@@ -304,9 +303,9 @@ export default class MetaportCore {
       CustomAbiTokenType.erc20wrap
     )
 
-    const prevTokenKeyname = prevToken?.keyname;
-    const prevTokenType = prevToken?.type;
-    const token = prevTokenKeyname ? tokens[prevTokenType][prevTokenKeyname] : null;
+    const prevTokenKeyname = prevToken?.keyname
+    const prevTokenType = prevToken?.type
+    const token = prevTokenKeyname ? tokens[prevTokenType][prevTokenKeyname] : null
 
     return {
       ima1,

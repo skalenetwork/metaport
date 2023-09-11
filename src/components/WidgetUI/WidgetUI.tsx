@@ -32,7 +32,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import skaleLogo from './skale_logo_short.svg'
 
 import { useUIStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import SkPaper from '../SkPaper'
 
 import WidgetBody from '../WidgetBody'
@@ -80,7 +80,7 @@ export function WidgetUI(props: { config: MetaportConfig }) {
           {isOpen ? (
             <CloseIcon
               style={{
-                color: metaportTheme.mode == 'dark' ? 'white' : 'black',
+                color: metaportTheme.mode == 'dark' ? 'white' : 'black'
               }}
             />
           ) : (

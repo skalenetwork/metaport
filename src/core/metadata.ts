@@ -45,7 +45,7 @@ const CHAIN_ICONS = {
   mainnet: MAINNET_CHAIN_ICONS,
   staging: STAGING_CHAIN_ICONS,
   legacy: LEGACY_CHAIN_ICONS,
-  regression: REGRESSION_CHAIN_ICONS,
+  regression: REGRESSION_CHAIN_ICONS
 }
 
 export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: string) {

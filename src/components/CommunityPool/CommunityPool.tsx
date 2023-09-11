@@ -53,7 +53,7 @@ import styles from '../../styles/styles.module.scss'
 
 import { useCPStore } from '../../store/CommunityPoolStore'
 import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 
 export default function CommunityPool() {
   const { data: walletClient } = useWalletClient()
@@ -147,7 +147,7 @@ export default function CommunityPool() {
       async () => {
         setLoading(false)
         setErrorMessage(null)
-      },
+      }
     )
   }
 
@@ -164,7 +164,7 @@ export default function CommunityPool() {
       async () => {
         setLoading(false)
         setErrorMessage(null)
-      },
+      }
     )
     setExpandedCP(false)
   }
@@ -244,7 +244,7 @@ export default function CommunityPool() {
                         cmn.pPrim,
                         [cmn.pDisabled, loading],
                         cmn.flex,
-                        cmn.mri20,
+                        cmn.mri20
                       )}
                     >
                       ETH

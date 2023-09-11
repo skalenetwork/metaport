@@ -73,7 +73,7 @@ export default function ChainsList(props: {
                   cmn.flex,
                   cmn.flexc,
                   [cmn.mri10, size === 'sm'],
-                  [cmn.mri15, size === 'md'],
+                  [cmn.mri15, size === 'md']
                 )}
               >
                 <ChainIcon
@@ -93,7 +93,7 @@ export default function ChainsList(props: {
                   cmn.cap,
                   cmn.pPrim,
                   cmn.mri10,
-                  cmn.pWrap,
+                  cmn.pWrap
                 )}
               >
                 {getChainAlias(props.config.skaleNetwork, props.chain, props.app)}
@@ -113,7 +113,7 @@ export default function ChainsList(props: {
                         cmn.mbott5,
                         cmn.mleft10,
                         cmn.mri10,
-                        cmn.pWrap,
+                        cmn.pWrap
                       )}
                     >
                       on {getChainAlias(props.config.skaleNetwork, props.chain)?.split(' ')[0]}
@@ -157,7 +157,7 @@ export default function ChainsList(props: {
                       [cmn.mbott5, size === 'sm'],
                       [cmn.mtop10, size === 'md'],
                       [cmn.mbott10, size === 'md'],
-                      cmn.fullWidth,
+                      cmn.fullWidth
                     )}
                   >
                     <div
@@ -167,7 +167,7 @@ export default function ChainsList(props: {
                         [cmn.mri10, size === 'sm'],
                         [cmn.mri15, size === 'md'],
                         cmn.mleft10,
-                        cmn.pPrim,
+                        cmn.pPrim
                       )}
                     >
                       <ChainIcon
@@ -186,7 +186,7 @@ export default function ChainsList(props: {
                         [cmn.p600, size === 'sm'],
                         cmn.cap,
                         cmn.pPrim,
-                        cmn.mri10,
+                        cmn.mri10
                       )}
                     >
                       {getChainAlias(props.config.skaleNetwork, name)}

@@ -40,7 +40,7 @@ export default function TokenBalance(props: {
           [cmn.pPrim, props.primary],
           cmn.flex,
           cmn.flexcv,
-          cmn.mri5,
+          cmn.mri5
         )}
       >
         {balance} {props.symbol}

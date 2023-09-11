@@ -33,14 +33,14 @@ export { proxyEndpoints as PROXY_ENDPOINTS }
 
 const PROTOCOL: { [protocol in 'http' | 'ws']: string } = {
   http: 'https://',
-  ws: 'wss://',
+  ws: 'wss://'
 }
 
 export const CHAIN_IDS: { [network in SkaleNetwork]: number } = {
   staging: 5,
   legacy: 5,
   regression: 5,
-  mainnet: 5,
+  mainnet: 5
 }
 
 export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNetwork): boolean {
@@ -50,7 +50,7 @@ export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNe
 export function getChainEndpoint(
   mainnetEndpoint: string,
   network: SkaleNetwork,
-  chainName: string,
+  chainName: string
 ): string {
   if (chainName === MAINNET_CHAIN_NAME) return mainnetEndpoint
   return getSChainEndpoint(network, chainName)
@@ -59,7 +59,7 @@ export function getChainEndpoint(
 export function getSChainEndpoint(
   network: SkaleNetwork,
   sChainName: string,
-  protocol: 'http' | 'ws' = 'http',
+  protocol: 'http' | 'ws' = 'http'
 ): string {
   return (
     PROTOCOL[protocol] +
@@ -90,7 +90,7 @@ export function getMainnetAbi(network: string) {
 export function initIMA(
   mainnetEndpoint: string,
   network: SkaleNetwork,
-  chainName: string,
+  chainName: string
 ): MainnetChain | SChain {
   if (chainName === MAINNET_CHAIN_NAME) return initMainnet(mainnetEndpoint, network)
   return initSChain(network, chainName)

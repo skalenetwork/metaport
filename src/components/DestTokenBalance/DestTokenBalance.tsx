@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
 import { TokenBalance } from '../TokenList'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
 
 export default function DestTokenBalance() {

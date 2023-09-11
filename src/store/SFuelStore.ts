@@ -65,5 +65,5 @@ export const useSFuelStore = create<SFuelState>()((set, get) => ({
   setSFuelStatus: (status: 'action' | 'warning' | 'error') => set({ sFuelStatus: status }),
 
   sFuelOk: false,
-  setSFuelOk: (sFuelOk: boolean) => set(() => ({ sFuelOk: sFuelOk })),
+  setSFuelOk: (sFuelOk: boolean) => set(() => ({ sFuelOk: sFuelOk }))
 }))

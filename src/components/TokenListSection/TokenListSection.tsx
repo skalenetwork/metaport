@@ -58,7 +58,7 @@ export default function TokenListSection(props: {
                 cmn.flex,
                 cmn.flexg,
                 cmn.mri10,
-                cmn.mleft10,
+                cmn.mleft10
               )}
             >
               {getTokenName(props.tokens[key])}

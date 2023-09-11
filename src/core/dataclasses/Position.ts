@@ -38,5 +38,5 @@ export const Positions: PositionMap = {
   topLeft: { top: DEFAULT_MP_MARGIN, left: DEFAULT_MP_MARGIN, right: 'auto', bottom: 'auto' },
   topRight: { top: DEFAULT_MP_MARGIN, left: 'auto', right: DEFAULT_MP_MARGIN, bottom: 'auto' },
   bottomRight: { top: 'auto', left: 'auto', right: DEFAULT_MP_MARGIN, bottom: DEFAULT_MP_MARGIN },
-  bottomLeft: { top: 'auto', left: DEFAULT_MP_MARGIN, right: 'auto', bottom: DEFAULT_MP_MARGIN },
+  bottomLeft: { top: 'auto', left: DEFAULT_MP_MARGIN, right: 'auto', bottom: DEFAULT_MP_MARGIN }
 }

@@ -40,7 +40,7 @@ export async function getTransactionFee(): Promise<number> {
 
   const client = new CoinGeckoClient({
     timeout: 10000,
-    autoRetry: true,
+    autoRetry: true
   })
   const res = await client.simplePrice({ ids: 'ethereum', vs_currencies: 'usd' })
   const ethToUsdRate = res.ethereum.usd

@@ -30,7 +30,7 @@ import {
   TransferStepMetadata,
   UnlockStepMetadata,
   StepMetadata,
-  getActionType,
+  getActionType
 } from './dataclasses'
 
 import { MetaportConfig } from './interfaces/index'
@@ -43,7 +43,7 @@ const log = debug('metaport:core:transferSteps')
 export function getStepsMetadata(
   config: MetaportConfig,
   token: TokenData,
-  to: string,
+  to: string
 ): StepMetadata[] {
   const steps: StepMetadata[] = []
   if (token === undefined || token === null || to === null || to === '') return steps
@@ -59,7 +59,7 @@ export function getStepsMetadata(
     steps.push(new WrapStepMetadata(token.chain, to))
   }
   steps.push(
-    new TransferStepMetadata(getActionType(token.chain, toChain, token.type), token.chain, toChain),
+    new TransferStepMetadata(getActionType(token.chain, toChain, token.type), token.chain, toChain)
   )
   if (hubTokenOptions.wrapper && !isCloneToClone) {
     steps.push(new UnwrapStepMetadata(token.chain, toChain))
@@ -72,7 +72,7 @@ export function getStepsMetadata(
     steps.push(new TransferStepMetadata(getActionType(toChain, to, token.type), toChain, to))
   }
   if (to === MAINNET_CHAIN_NAME && token.keyname === 'eth') {
-    steps.push(new UnlockStepMetadata(token.chain, toChain))
+    steps.push(new UnlockStepMetadata(token.chain, to))
   }
 
   log(`Action steps metadata:`)

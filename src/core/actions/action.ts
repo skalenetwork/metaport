@@ -97,7 +97,7 @@ export class Action {
     setAmountErrorMessage: (amountErrorMessage: string) => void,
     setBtnText: (btnText: string) => void,
     switchNetwork: (chainId: number | bigint) => Chain | undefined,
-    walletClient: WalletClient,
+    walletClient: WalletClient
   ) {
     this.mpc = mpc
 
@@ -131,7 +131,7 @@ export class Action {
         token.type,
         provider1,
         this.token.wrapper(this.chainName2) ? CustomAbiTokenType.erc20wrap : null,
-        this.token.wrapper(this.chainName2) ? this.chainName2 : null,
+        this.token.wrapper(this.chainName2) ? this.chainName2 : null
       )
       this.originAddress = this.mpc.originAddress(chainName1, chainName2, token.keyname, token.type)
 
@@ -150,7 +150,7 @@ export class Action {
           token.type,
           provider2,
           CustomAbiTokenType.erc20wrap,
-          this.chainName1,
+          this.chainName1
         )
       } else {
         this.destToken = mpc.tokenContract(chainName2, token.keyname, token.type, provider2)
@@ -189,10 +189,10 @@ export class Action {
         address: this.address,
         amount: this.amount,
         amountWei: this.amountWei,
-        tokenId: this.tokenId,
+        tokenId: this.tokenId
       },
       transactionHash,
-      timestamp,
+      timestamp
     )
     this.setBtnText(LOADING_BUTTON_TEXT[currentState])
   }
@@ -200,7 +200,7 @@ export class Action {
   async getConnectedChain(
     provider: Provider,
     customAbiTokenType?: CustomAbiTokenType,
-    destChainName?: string,
+    destChainName?: string
   ): Promise<MainnetChain | SChain> {
     let chain: MainnetChain | SChain
     this.updateState('switch')
@@ -227,7 +227,7 @@ export class Action {
       this.token.type,
       chain.provider,
       customAbiTokenType,
-      destChainName,
+      destChainName
     )
     chain.erc20.addToken(this.token.keyname, token)
     return chain

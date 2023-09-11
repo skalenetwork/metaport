@@ -18,7 +18,7 @@ export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
   const { data: walletClient } = useWalletClient({ chainId })
   return React.useMemo(
     () => (walletClient ? walletClientToSigner(walletClient) : undefined),
-    [walletClient],
+    [walletClient]
   )
 }
 
@@ -27,11 +27,11 @@ export function publicClientToProvider(publicClient: PublicClient) {
   const network = {
     chainId: chain.id,
     name: chain.name,
-    ensAddress: chain.contracts?.ensRegistry?.address,
+    ensAddress: chain.contracts?.ensRegistry?.address
   }
   if (transport.type === 'fallback') {
     const providers = (transport.transports as ReturnType<HttpTransport>[]).map(
-      ({ value }) => new JsonRpcProvider(value?.url, network),
+      ({ value }) => new JsonRpcProvider(value?.url, network)
     )
     if (providers.length === 1) return providers[0]
     return new FallbackProvider(providers)

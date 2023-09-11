@@ -7,7 +7,7 @@ import cmn from '../../styles/cmn.module.scss'
 import { cls } from '../../core/helper'
 
 import { useUIStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 
 export default function SwitchDirection() {
   const myElement = useRef<HTMLDivElement | null>(null)
@@ -37,7 +37,7 @@ export default function SwitchDirection() {
         style={{
           background: metaportTheme.background,
           borderRadius: '50%',
-          zIndex: metaportTheme.zIndex,
+          zIndex: metaportTheme.zIndex
         }}
       >
         <IconButton
@@ -46,7 +46,7 @@ export default function SwitchDirection() {
           style={{
             backgroundColor: metaportTheme.primary,
             borderColor: metaportTheme.background,
-            zIndex: metaportTheme.zIndex,
+            zIndex: metaportTheme.zIndex
           }}
           disabled={loading || transferInProgress}
           onClick={() => {

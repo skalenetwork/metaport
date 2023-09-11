@@ -45,7 +45,7 @@ import cmn from '../../styles/cmn.module.scss'
 import styles from '../../styles/styles.module.scss'
 
 import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import { TokenDataMap } from '../../core/interfaces'
 
 export default function WrappedTokens() {
@@ -90,7 +90,7 @@ export default function WrappedTokens() {
           acc[key] = wrappedTokens.erc20[key]
         }
         return acc
-      }, {}),
+      }, {})
     )
   }, [wrappedTokens, wrappedTokenBalances])
 
@@ -138,7 +138,10 @@ export default function WrappedTokens() {
             </p>
             <div className={cls(cmn.mtop20)}>
               {Object.keys(filteredTokens).map((key, _) => (
-                <div className={cls(cmn.flex, cmn.flexcv, cmn.fullWidth, cmn.mtop10, cmn.mbott10)}>
+                <div
+                  key={key}
+                  className={cls(cmn.flex, cmn.flexcv, cmn.fullWidth, cmn.mtop10, cmn.mbott10)}
+                >
                   <div className={cls(cmn.flex, cmn.flexc)}>
                     <TokenIcon
                       tokenSymbol={filteredTokens[key]?.meta.symbol}
@@ -154,7 +157,7 @@ export default function WrappedTokens() {
                       cmn.flex,
                       cmn.flexg,
                       cmn.mri10,
-                      cmn.mleft10,
+                      cmn.mleft10
                     )}
                   >
                     Wrapped {getTokenName(filteredTokens[key])}

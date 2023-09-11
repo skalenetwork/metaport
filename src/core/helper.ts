@@ -37,7 +37,7 @@ export const CHAINS_META = {
   mainnet: mainnetMeta,
   staging: stagingMeta,
   legacy: legacyMeta,
-  regression: regressionMeta,
+  regression: regressionMeta
 }
 
 export function cls(...args: any): string {

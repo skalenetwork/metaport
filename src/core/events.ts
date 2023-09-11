@@ -39,7 +39,7 @@ export namespace externalEvents {
     dispatchEvent('metaport_balance', {
       tokenSymbol: tokenSymbol,
       schainName: schainName,
-      balance: _balance,
+      balance: _balance
     })
   }
 
@@ -48,14 +48,14 @@ export namespace externalEvents {
     chainName1: string,
     chainName2: string,
     tokenSymbol: string,
-    unwrap: boolean = false,
+    unwrap: boolean = false
   ) {
     dispatchEvent('metaport_transferComplete', {
       tokenSymbol: tokenSymbol,
       from: chainName1,
       to: chainName2,
       tx: tx,
-      unwrap: unwrap,
+      unwrap: unwrap
     })
   }
 
@@ -67,17 +67,17 @@ export namespace externalEvents {
     txData: any,
     timestamp: string | number,
     chainName: string,
-    txName: string,
+    txName: string
   ): void {
     log('WARNING: Event metaport_transactionCompleted will be removed in the next version')
     dispatchEvent('metaport_transactionCompleted', {
       tx: {
         gasUsed: txData.gasUsed,
-        transactionHash: txData.transactionHash,
+        transactionHash: txData.transactionHash
       },
       timestamp,
       chainName,
-      txName,
+      txName
     })
   }
 
@@ -93,14 +93,14 @@ export namespace externalEvents {
       tokenId: number
     },
     transactionHash?: string,
-    timestamp?: string | number,
+    timestamp?: string | number
   ): void {
     dispatchEvent('metaport_actionStateUpdated', {
       actionState,
       actionName,
       actionData,
       transactionHash,
-      timestamp,
+      timestamp
     })
   }
 
@@ -108,13 +108,13 @@ export namespace externalEvents {
     dispatchEvent('metaport_unwrapComplete', {
       tokenSymbol: tokenSymbol,
       chain: chainName1,
-      tx: tx,
+      tx: tx
     })
   }
 
   export function ethUnlocked(tx: string) {
     dispatchEvent('metaport_ethUnlocked', {
-      tx: tx,
+      tx: tx
     })
   }
 
@@ -127,13 +127,13 @@ export namespace internalEvents {
   export function updateParams(params) {
     dispatchEvent('_metaport_updateParams', {
       tokens: params.tokens,
-      chains: params.chains,
+      chains: params.chains
     })
   }
 
   export function transfer(params: interfaces.TransferParams): void {
     dispatchEvent('_metaport_transfer', {
-      params: params,
+      params: params
     })
   }
 
@@ -141,7 +141,7 @@ export namespace internalEvents {
     dispatchEvent('_metaport_wrap', {
       amount: params.amount,
       chain: params.chain,
-      tokens: params.tokens,
+      tokens: params.tokens
     })
   }
 
@@ -149,7 +149,7 @@ export namespace internalEvents {
     dispatchEvent('_metaport_unwrap', {
       amount: params.amount,
       chain: params.chain,
-      tokens: params.tokens,
+      tokens: params.tokens
     })
   }
 
@@ -157,7 +157,7 @@ export namespace internalEvents {
     dispatchEvent('_metaport_swap', {
       amount: params.amount,
       chain: params.chain,
-      tokens: params.tokens, // todo!
+      tokens: params.tokens // todo!
     })
   }
 
@@ -176,13 +176,13 @@ export namespace internalEvents {
   export function requestBalance(params) {
     dispatchEvent('_metaport_requestBalance', {
       schainName: params.schainName,
-      tokenSymbol: params.tokenSymbol,
+      tokenSymbol: params.tokenSymbol
     })
   }
 
   export function setTheme(theme) {
     dispatchEvent('_metaport_setTheme', {
-      theme: theme,
+      theme: theme
     })
   }
 }

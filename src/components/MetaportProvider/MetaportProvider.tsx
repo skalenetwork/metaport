@@ -33,7 +33,7 @@ import {
   injectedWallet,
   coinbaseWallet,
   metaMaskWallet,
-  enkryptWallet,
+  enkryptWallet
 } from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig } from '../../core/interfaces'
@@ -50,7 +50,7 @@ import { getWidgetTheme, getMuiZIndex } from '../../core/themes'
 import { cls } from '../../core/helper'
 
 import { useUIStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import MetaportCore from '../../core/metaport'
 
 import styles from '../../styles/styles.module.scss'
@@ -69,16 +69,16 @@ const { chains, webSocketPublicClient } = configureChains(
 
     constructWagmiChain('mainnet', 'honorable-steel-rasalhague'),
     constructWagmiChain('mainnet', 'elated-tan-skat'),
-    constructWagmiChain('mainnet', 'affectionate-immediate-pollux'),
+    constructWagmiChain('mainnet', 'affectionate-immediate-pollux')
   ],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
         http: chain.rpcUrls.default.http[0],
-        webSocket: getWebSocketUrl(chain),
-      }),
-    }),
-  ],
+        webSocket: getWebSocketUrl(chain)
+      })
+    })
+  ]
 )
 
 const connectors = connectorsForWallets([
@@ -88,15 +88,15 @@ const connectors = connectorsForWallets([
       metaMaskWallet({ chains, projectId: '' }),
       enkryptWallet({ chains }),
       injectedWallet({ chains }),
-      coinbaseWallet({ chains, appName: 'TEST' }),
-    ],
-  },
+      coinbaseWallet({ chains, appName: 'TEST' })
+    ]
+  }
 ])
 
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  publicClient: webSocketPublicClient,
+  publicClient: webSocketPublicClient
 })
 
 export default function MetaportProvider(props: {
@@ -131,15 +131,15 @@ export default function MetaportProvider(props: {
     palette: {
       mode: widgetTheme.mode as PaletteMode,
       background: {
-        paper: widgetTheme.background,
+        paper: widgetTheme.background
       },
       primary: {
-        main: widgetTheme.primary,
+        main: widgetTheme.primary
       },
       secondary: {
-        main: widgetTheme.background,
-      },
-    },
+        main: widgetTheme.background
+      }
+    }
   })
 
   if (!metaportTheme) return <div></div>
@@ -149,7 +149,7 @@ export default function MetaportProvider(props: {
       <RainbowKitProvider
         coolMode
         appInfo={{
-          appName: 'SKALE Metaport',
+          appName: 'SKALE Metaport'
         }}
         showRecentTransactions={true}
         chains={chains}

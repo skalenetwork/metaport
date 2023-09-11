@@ -38,7 +38,7 @@ export default class SkalePowMiner {
   public async mineGasForTransaction(
     nonce: string | number,
     gas: string | number,
-    from: string,
+    from: string
   ): Promise<any> {
     let address = from
     nonce = isHexString(nonce) ? getNumber(nonce) : (nonce as number)

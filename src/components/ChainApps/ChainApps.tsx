@@ -42,7 +42,7 @@ export default function ChainApps(props: {
                 [cmn.mbott5, size === 'sm'],
                 [cmn.mtop5, size === 'sm'],
                 [cmn.mbott10, size === 'md'],
-                [cmn.mtop10, size === 'md'],
+                [cmn.mtop10, size === 'md']
               )}
             >
               <ChainIcon
@@ -60,7 +60,7 @@ export default function ChainApps(props: {
                   [cmn.pSec, size === 'sm'],
                   [cmn.pPrim, size === 'md'],
                   cmn.p600,
-                  cmn.mleft10,
+                  cmn.mleft10
                 )}
               >
                 {getChainAlias(props.skaleNetwork, props.chain, key)}
@@ -71,7 +71,7 @@ export default function ChainApps(props: {
                   [cmn.pSec, size === 'sm'],
                   [cmn.pPrim, size === 'md'],
                   [styles.chainIconxs, size === 'sm'],
-                  [styles.chainIcons, size === 'md'],
+                  [styles.chainIcons, size === 'md']
                 )}
               />
             </div>

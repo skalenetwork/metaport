@@ -14,7 +14,7 @@ import styles from '../../styles/styles.module.scss'
 import localStyles from './SkStepper.module.scss'
 import ChainIcon from '../ChainIcon'
 
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 import { useCPStore } from '../../store/CommunityPoolStore'
 import { Collapse } from '@mui/material'
 import { SkaleNetwork } from '../../core/interfaces'
@@ -36,7 +36,6 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const stepsMetadata = useMetaportStore((state) => state.stepsMetadata)
   const currentStep = useMetaportStore((state) => state.currentStep)
   const amountErrorMessage = useMetaportStore((state) => state.amountErrorMessage)
-  const actionBtnDisabled = useMetaportStore((state) => state.actionBtnDisabled)
   const loading = useMetaportStore((state) => state.loading)
   const btnText = useMetaportStore((state) => state.btnText)
 
@@ -103,7 +102,6 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                           disabled={
                             !!(
                               amountErrorMessage ||
-                              actionBtnDisabled ||
                               loading ||
                               amount == '' ||
                               !cpData.exitGasOk
@@ -132,7 +130,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                   cmn.pPrim,
                   cmn.flexg,
                   cmn.pCent,
-                  cmn.mtop20,
+                  cmn.mtop20
                 )}
               >
                 {emoji} Transfer completed

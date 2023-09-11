@@ -40,7 +40,7 @@ export default function SkPaper(props: {
 }) {
   const metaportTheme = useUIStore((state) => state.theme)
   const localStyle = {
-    background: props.background ?? metaportTheme.background,
+    background: props.background ?? metaportTheme.background
   }
   return (
     <div
@@ -50,7 +50,7 @@ export default function SkPaper(props: {
         styles.paper,
         [styles.paperGrey, props.gray],
         [styles.fullHeight, props.fullHeight],
-        [cmn.mtop20, props.margTop],
+        [cmn.mtop20, props.margTop]
       )}
     >
       {props.children}

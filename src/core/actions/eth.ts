@@ -41,7 +41,7 @@ export class TransferEthM2S extends TransferAction {
     this.updateState('transferETH')
     const tx = await mainnet.eth.deposit(this.chainName2, {
       address: this.address,
-      value: amountWei,
+      value: amountWei
     })
     const block = await this.mainnet.provider.getBlock(tx.blockNumber)
     this.updateState('transferETHDone', tx.hash, block.timestamp)
@@ -54,7 +54,7 @@ export class TransferEthM2S extends TransferAction {
       this.mainnet,
       this.address,
       this.amount,
-      this.token,
+      this.token
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)
@@ -84,7 +84,7 @@ export class TransferEthS2M extends TransferAction {
       this.sChain1,
       this.address,
       this.amount,
-      this.token,
+      this.token
     )
     if (!checkResBalance.res) {
       this.setAmountErrorMessage(checkResBalance.msg)

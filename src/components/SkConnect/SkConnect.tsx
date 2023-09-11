@@ -33,7 +33,7 @@ import styles from '../../styles/styles.module.scss'
 import cmn from '../../styles/cmn.module.scss'
 
 import skaleLogoFull from '../WidgetUI/skale_logo.svg'
-import { useMetaportStore } from '../../store/MetaportState'
+import { useMetaportStore } from '../../store/MetaportStore'
 
 import ChainIcon from '../ChainIcon'
 
@@ -48,7 +48,7 @@ export default function SkConnect() {
         openChainModal,
         openConnectModal,
         authenticationStatus,
-        mounted,
+        mounted
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
@@ -65,8 +65,8 @@ export default function SkConnect() {
               style: {
                 opacity: 0,
                 pointerEvents: 'none',
-                userSelect: 'none',
-              },
+                userSelect: 'none'
+              }
             })}
           >
             {(() => {
