@@ -15,7 +15,7 @@ import { MetaportConfig } from '../core/interfaces'
 import { getChainAlias, getChainAppsMeta } from '../core/helper'
 import { cls, cmn, styles } from '../core/css'
 
-import SkPaper from './SkPaper/SkPaper'
+import SkPaper from './SkPaper'
 
 
 export default function ChainsList(props: {

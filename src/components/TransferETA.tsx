@@ -3,12 +3,12 @@ import Tooltip from '@mui/material/Tooltip'
 import InfoIcon from '@mui/icons-material/Info'
 import Skeleton from '@mui/material/Skeleton'
 
-import { isMainnet } from '../../core/helper'
-import { IMA_M2S_WAIT, IMA_S2S_WAIT, IMA_HUB_WAIT } from '../../core/constants'
+import { isMainnet } from '../core/helper'
+import { IMA_M2S_WAIT, IMA_S2S_WAIT, IMA_HUB_WAIT } from '../core/constants'
 
-import { cls, cmn } from '../../core/css'
+import { cls, cmn } from '../core/css'
 
-import { TokenData } from '../../core/dataclasses'
+import { TokenData } from '../core/dataclasses'
 
 export default function TransferETA(props: { token: TokenData; toChain: string }) {
   const [eta, setEta] = React.useState<number>()

@@ -33,19 +33,19 @@ import Button from '@mui/material/Button'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ErrorIcon from '@mui/icons-material/Error'
 
-import SkPaper from '../SkPaper/SkPaper'
-import { TokenBalance } from '../TokenList'
-import TokenIcon from '../TokenIcon'
+import SkPaper from './SkPaper'
+import { TokenBalance } from './TokenList'
+import TokenIcon from './TokenIcon'
 
-import { getTokenName } from '../../core/metadata'
-import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
+import { getTokenName } from '../core/metadata'
+import { BALANCE_UPDATE_INTERVAL_MS } from '../core/constants'
 
-import { getChainAlias } from '../../core/helper'
-import { cls, cmn, styles } from '../../core/css'
+import { getChainAlias } from '../core/helper'
+import { cls, cmn, styles } from '../core/css'
 
-import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportStore'
-import { TokenDataMap } from '../../core/interfaces'
+import { useCollapseStore } from '../store/Store'
+import { useMetaportStore } from '../store/MetaportStore'
+import { TokenDataMap } from '../core/interfaces'
 
 export default function WrappedTokens() {
   const { data: walletClient } = useWalletClient()

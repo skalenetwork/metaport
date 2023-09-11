@@ -1,9 +1,9 @@
 import React from 'react'
 import Button from '@mui/material/Button'
 
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import { ErrorMessage } from '../../core/dataclasses'
+import { ErrorMessage } from '../core/dataclasses'
 
 import LinkOffRoundedIcon from '@mui/icons-material/LinkOffRounded'
 import PublicOffRoundedIcon from '@mui/icons-material/PublicOffRounded'

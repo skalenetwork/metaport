@@ -23,7 +23,7 @@
 import { MetaportConfig } from '../../core/interfaces'
 
 import WidgetUI from '../WidgetUI'
-import MetaportProvider from '../MetaportProvider/MetaportProvider'
+import MetaportProvider from '../MetaportProvider'
 
 export default function Metaport(props: { config: MetaportConfig }) {
   return (

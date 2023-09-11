@@ -27,12 +27,10 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Button from '@mui/material/Button'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import skaleLogoFull from '../WidgetUI/skale_logo.svg'
-import { useMetaportStore } from '../../store/MetaportStore'
+import { useMetaportStore } from '../store/MetaportStore'
 
-import ChainIcon from '../ChainIcon'
 
 export default function SkConnect() {
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
@@ -70,74 +68,6 @@ export default function SkConnect() {
               if (!connected) {
                 return (
                   <div>
-                    {/* <div className={cls(cmn.fullWidth, cmn.pCent, cmn.mtop20, cmn.mbott20)}>
-                      <img className={styles.skaleLogoLg} src={skaleLogoFull} />
-                    </div>
-                    <div className={cls(cmn.mbott20, cmn.fullWidth, cmn.flex, cmn.flexc)}>
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork="mainnet"
-                        chainName="turbulent-unique-scheat"
-                        size="xs"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork={'mainnet'}
-                        chainName={'frayed-decent-antares'}
-                        size="sm"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork={'mainnet'}
-                        chainName={'elated-tan-skat'}
-                        app="ruby"
-                        size="md"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork={'mainnet'}
-                        chainName={'elated-tan-skat'}
-                        size="lg"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork={'mainnet'}
-                        chainName={'honorable-steel-rasalhague'}
-                        size="lg"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork={'mainnet'}
-                        chainName={'honorable-steel-rasalhague'}
-                        app="nftrade"
-                        size="md"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork={'mainnet'}
-                        chainName={'affectionate-immediate-pollux'}
-                        size="sm"
-                      />
-                      <ChainIcon
-                        className={cls(cmn.mri5, cmn.mleft5, styles.skMovingDiv)}
-                        skaleNetwork="mainnet"
-                        chainName="wan-red-ain"
-                        size="xs"
-                      />
-                    </div> */}
-                    {/* <p
-                      className={cls(
-                        cmn.p,
-                        cmn.p4,
-                        cmn.p500,
-                        cmn.pSec,
-                        cmn.mbott5,
-                        cmn.mleft5,
-                        cmn.pCent,
-                      )}
-                    >
-                      Connect a wallet to use SKALE Metaport
-                    </p> */}
                     <Button
                       variant="contained"
                       color="primary"

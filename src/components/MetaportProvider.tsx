@@ -36,22 +36,22 @@ import {
   enkryptWallet
 } from '@rainbow-me/rainbowkit/wallets'
 
-import { MetaportConfig } from '../../core/interfaces'
+import { MetaportConfig } from '../core/interfaces'
 
 import { StyledEngineProvider } from '@mui/material/styles'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import '@rainbow-me/rainbowkit/styles.css'
 
-import { constructWagmiChain, getWebSocketUrl } from '../../core/wagmi_network'
+import { constructWagmiChain, getWebSocketUrl } from '../core/wagmi_network'
 
-import { getWidgetTheme, getMuiZIndex } from '../../core/themes'
+import { getWidgetTheme, getMuiZIndex } from '../core/themes'
 
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import { useUIStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportStore'
-import MetaportCore from '../../core/metaport'
+import { useUIStore } from '../store/Store'
+import { useMetaportStore } from '../store/MetaportStore'
+import MetaportCore from '../core/metaport'
 
 const { chains, webSocketPublicClient } = configureChains(
   [

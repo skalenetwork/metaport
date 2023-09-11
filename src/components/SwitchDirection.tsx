@@ -2,10 +2,10 @@ import React, { useRef } from 'react'
 
 import IconButton from '@mui/material/IconButton'
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import { useUIStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportStore'
+import { useUIStore } from '../store/Store'
+import { useMetaportStore } from '../store/MetaportStore'
 
 export default function SwitchDirection() {
   const myElement = useRef<HTMLDivElement | null>(null)

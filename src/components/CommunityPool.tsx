@@ -31,10 +31,10 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 
-import localStyles from '../AmountInput/AmountInput.module.scss'
+import localStyles from './AmountInput/AmountInput.module.scss'
 
-import SkPaper from '../SkPaper/SkPaper'
-import { TokenBalance } from '../TokenList'
+import SkPaper from './SkPaper'
+import { TokenBalance } from './TokenList'
 
 import Button from '@mui/material/Button'
 
@@ -43,15 +43,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
 
-import { fromWei } from '../../core/convertation'
-import { withdraw, recharge } from '../../core/community_pool'
-import { BALANCE_UPDATE_INTERVAL_MS, DEFAULT_ERC20_DECIMALS } from '../../core/constants'
+import { fromWei } from '../core/convertation'
+import { withdraw, recharge } from '../core/community_pool'
+import { BALANCE_UPDATE_INTERVAL_MS, DEFAULT_ERC20_DECIMALS } from '../core/constants'
 
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import { useCPStore } from '../../store/CommunityPoolStore'
-import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportStore'
+import { useCPStore } from '../store/CommunityPoolStore'
+import { useCollapseStore } from '../store/Store'
+import { useMetaportStore } from '../store/MetaportStore'
 
 export default function CommunityPool() {
   const { data: walletClient } = useWalletClient()

@@ -23,9 +23,9 @@
 
 import React from 'react'
 import TollRoundedIcon from '@mui/icons-material/TollRounded'
-import { tokenIcon } from '../../core/metadata'
+import { tokenIcon } from '../core/metadata'
 
-import styles from '../../styles/styles.module.scss'
+import { styles } from '../core/css'
 
 export default function TokenIcon(props: {
   tokenSymbol: string | undefined | null

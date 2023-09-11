@@ -31,13 +31,13 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { Collapse } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 
-import { BALANCE_UPDATE_INTERVAL_MS, MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../../core/constants'
-import { Station } from '../../core/sfuel'
+import { BALANCE_UPDATE_INTERVAL_MS, MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../core/constants'
+import { Station } from '../core/sfuel'
 
-import { useMetaportStore } from '../../store/MetaportStore'
-import { useSFuelStore } from '../../store/SFuelStore'
+import { useMetaportStore } from '../store/MetaportStore'
+import { useSFuelStore } from '../store/SFuelStore'
 
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
 
 debug.enable('*')

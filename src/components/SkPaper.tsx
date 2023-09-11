@@ -22,9 +22,9 @@
  */
 
 import React, { ReactElement } from 'react'
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import { useUIStore } from '../../store/Store'
+import { useUIStore } from '../store/Store'
 
 export default function SkPaper(props: {
   className?: string
