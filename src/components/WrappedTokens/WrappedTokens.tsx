@@ -87,7 +87,7 @@ export default function WrappedTokens() {
     setFilteredTokens(
       Object.keys(wrappedTokenBalances).reduce((acc, key) => {
         if (wrappedTokenBalances[key] !== 0n) {
-          acc[key] = wrappedTokens.erc20[key]
+          acc[key] = wrappedTokens.erc20[key] ?? wrappedTokens.eth[key]
         }
         return acc
       }, {})

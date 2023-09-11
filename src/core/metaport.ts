@@ -108,6 +108,13 @@ export function createWrappedTokensMap(
       addTokenData(tokenKeyname, chainName1, tokenType as TokenType, config, wrappedTokens)
     }
   })
+  const ethToken = config.connections[chainName1].eth?.eth
+  if (ethToken) {
+    const wrapperAddress = findFirstWrapperAddress(ethToken)
+    if (wrapperAddress) {
+      addTokenData('eth', chainName1, TokenType.eth, config, wrappedTokens)
+    }
+  }
   return wrappedTokens
 }
 
@@ -291,10 +298,6 @@ export default class MetaportCore {
     const tokens = this.tokens(chainName1, chainName2)
     const tokenContracts = this.tokenContracts(tokens, TokenType.erc20, chainName1, ima1.provider)
 
-    if (tokens.eth.eth && chainName1 !== MAINNET_CHAIN_NAME) {
-      tokenContracts.eth = this.tokenContract(chainName1, 'eth', TokenType.eth, ima1.provider)
-    }
-
     const wrappedTokenContracts = this.tokenContracts(
       tokens,
       TokenType.erc20,
@@ -302,6 +305,20 @@ export default class MetaportCore {
       ima1.provider,
       CustomAbiTokenType.erc20wrap
     )
+
+    if (tokens.eth?.eth && chainName1 !== MAINNET_CHAIN_NAME) {
+      tokenContracts.eth = this.tokenContract(chainName1, 'eth', TokenType.eth, ima1.provider)
+
+      const destChainName = findFirstWrapperChainName(tokens.eth.eth)
+      wrappedTokenContracts.eth = this.tokenContract(
+        chainName1,
+        'eth',
+        TokenType.eth,
+        ima1.provider,
+        CustomAbiTokenType.erc20wrap,
+        destChainName
+      )
+    }
 
     const prevTokenKeyname = prevToken?.keyname
     const prevTokenType = prevToken?.type
