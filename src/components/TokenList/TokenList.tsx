@@ -11,18 +11,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { getAvailableTokensTotal, getDefaultToken } from '../../core/tokens/helper'
 
-import { cls } from '../../core/helper'
+import { cls, cmn, styles } from '../../core/css'
 
 import TokenListSection from '../TokenListSection'
 import TokenIcon from '../TokenIcon'
-
-import styles from '../../styles/styles.module.scss'
-import cmn from '../../styles/cmn.module.scss'
 
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportStore'
 import { TokenType } from '../../core/dataclasses'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
+
 
 export default function TokenList() {
   const token = useMetaportStore((state) => state.token)

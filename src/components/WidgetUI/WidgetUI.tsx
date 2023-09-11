@@ -37,10 +37,7 @@ import SkPaper from '../SkPaper'
 
 import WidgetBody from '../WidgetBody'
 
-import { cls } from '../../core/helper'
-
-import styles from '../../styles/styles.module.scss'
-import cmn from '../../styles/cmn.module.scss'
+import { cls, cmn, styles } from '../../core/css'
 
 import SkConnect from '../SkConnect'
 import ErrorMessage from '../ErrorMessage'

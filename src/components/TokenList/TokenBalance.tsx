@@ -1,7 +1,6 @@
 import React from 'react'
 import { formatUnits } from 'ethers'
-import { cls } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
+import { cls, cmn } from '../../core/css'
 import { DEFAULT_ERC20_DECIMALS } from '../../core/constants'
 
 function formatBalance(balance: bigint, decimals?: string): string {

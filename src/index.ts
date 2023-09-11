@@ -28,12 +28,11 @@ import CommunityPool from './components/CommunityPool'
 import SFuelWarning from './components/SFuelWarning'
 import WrappedTokens from './components/WrappedTokens'
 
-import { cls, CHAINS_META, getChainAlias } from './core/helper'
+import { CHAINS_META, getChainAlias } from './core/helper'
+import { cls, styles, cmn } from './core/css'
 import MetaportCore from './core/metaport'
 import { chainBg } from './core/metadata'
 import { BASE_EXPLORER_URLS } from './core/constants'
-import styles from './styles/styles.module.scss'
-import cmn from './styles/cmn.module.scss'
 
 import { getWidgetTheme as getMetaportTheme } from './core/themes'
 

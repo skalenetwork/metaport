@@ -2,9 +2,7 @@ import React, { useRef } from 'react'
 
 import IconButton from '@mui/material/IconButton'
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'
-import styles from '../../styles/styles.module.scss'
-import cmn from '../../styles/cmn.module.scss'
-import { cls } from '../../core/helper'
+import { cls, cmn, styles } from '../../core/css'
 
 import { useUIStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportStore'

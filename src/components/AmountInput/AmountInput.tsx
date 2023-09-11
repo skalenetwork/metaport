@@ -3,8 +3,7 @@ import { useAccount } from 'wagmi'
 
 import TextField from '@mui/material/TextField'
 
-import { cls } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
+import { cls, cmn } from '../../core/css'
 import localStyles from './AmountInput.module.scss'
 
 import TokenList from '../TokenList'

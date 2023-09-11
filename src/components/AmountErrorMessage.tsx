@@ -1,10 +1,9 @@
-import React from 'react'
 import Collapse from '@mui/material/Collapse'
 
-import { cls } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
+import { cls, cmn } from '../core/css'
 
-import { useMetaportStore } from '../../store/MetaportStore'
+
+import { useMetaportStore } from '../store/MetaportStore'
 
 export default function AmountErrorMessage() {
   const amountErrorMessage = useMetaportStore((state) => state.amountErrorMessage)
@@ -20,7 +19,6 @@ export default function AmountErrorMessage() {
           cmn.flexg,
           cmn.mtop10,
           cmn.mleft10
-          // cmn.upp
         )}
       >
         🔴 {amountErrorMessage}

@@ -3,10 +3,10 @@ import Tooltip from '@mui/material/Tooltip'
 import InfoIcon from '@mui/icons-material/Info'
 import Skeleton from '@mui/material/Skeleton'
 
-import { isMainnet, cls } from '../../core/helper'
+import { isMainnet } from '../../core/helper'
 // import { getTransactionFee } from '../../core/fee_calculator';
 
-import cmn from '../../styles/cmn.module.scss'
+import { cls, cmn } from '../../core/css'
 
 function roundDown(number, decimals) {
   decimals = decimals || 0

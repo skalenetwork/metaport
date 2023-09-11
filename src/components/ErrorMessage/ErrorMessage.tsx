@@ -1,9 +1,7 @@
 import React from 'react'
 import Button from '@mui/material/Button'
 
-import { cls } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
+import { cls, cmn, styles } from '../../core/css'
 
 import { ErrorMessage } from '../../core/dataclasses'
 

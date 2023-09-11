@@ -1,10 +1,9 @@
-import React from 'react'
 import OfflineBoltRoundedIcon from '@mui/icons-material/OfflineBoltRounded'
-import { SkaleNetwork } from '../../core/interfaces'
-import { chainIconPath } from '../../core/metadata'
+import { SkaleNetwork } from '../core/interfaces'
+import { chainIconPath } from '../core/metadata'
 
-import { cls } from '../../core/helper'
-import styles from '../../styles/styles.module.scss'
+import { cls, styles } from '../core/css'
+
 
 export default function ChainIcon(props: {
   skaleNetwork: SkaleNetwork

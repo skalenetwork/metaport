@@ -47,14 +47,11 @@ import { constructWagmiChain, getWebSocketUrl } from '../../core/wagmi_network'
 
 import { getWidgetTheme, getMuiZIndex } from '../../core/themes'
 
-import { cls } from '../../core/helper'
+import { cls, cmn, styles } from '../../core/css'
 
 import { useUIStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportStore'
 import MetaportCore from '../../core/metaport'
-
-import styles from '../../styles/styles.module.scss'
-import cmn from '../../styles/cmn.module.scss'
 
 const { chains, webSocketPublicClient } = configureChains(
   [

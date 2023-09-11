@@ -40,9 +40,8 @@ import TokenIcon from '../TokenIcon'
 import { getTokenName } from '../../core/metadata'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
 
-import { cls, getChainAlias } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
+import { getChainAlias } from '../../core/helper'
+import { cls, cmn, styles } from '../../core/css'
 
 import { useCollapseStore } from '../../store/Store'
 import { useMetaportStore } from '../../store/MetaportStore'

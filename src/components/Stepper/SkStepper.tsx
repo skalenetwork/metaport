@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useWalletClient, useSwitchNetwork, useAccount } from 'wagmi'
 
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
@@ -7,25 +8,23 @@ import StepLabel from '@mui/material/StepLabel'
 import StepContent from '@mui/material/StepContent'
 import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
-
-import { cls, getChainAlias, getRandom } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
-import localStyles from './SkStepper.module.scss'
-import ChainIcon from '../ChainIcon'
-
-import { useMetaportStore } from '../../store/MetaportStore'
-import { useCPStore } from '../../store/CommunityPoolStore'
-import { Collapse } from '@mui/material'
-import { SkaleNetwork } from '../../core/interfaces'
-
-import { useWalletClient } from 'wagmi'
+import Collapse from '@mui/material/Collapse'
 
 import SettingsBackupRestoreRoundedIcon from '@mui/icons-material/SettingsBackupRestoreRounded'
 import TollIcon from '@mui/icons-material/Toll'
 
-import { useSwitchNetwork, useAccount } from 'wagmi'
+import { getChainAlias, getRandom } from '../../core/helper'
+import { cls, cmn, styles } from '../../core/css'
+import localStyles from './SkStepper.module.scss'
+
+import ChainIcon from '../ChainIcon'
+import AddToken from '../AddToken'
+
+import { useMetaportStore } from '../../store/MetaportStore'
+import { useCPStore } from '../../store/CommunityPoolStore'
+import { SkaleNetwork } from '../../core/interfaces'
 import { SUCCESS_EMOJIS } from '../../core/constants'
+
 
 export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const { address } = useAccount()
@@ -137,16 +136,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
               </p>
             </div>
             <div className={cls(cmn.flex, cmn.mtop20)}>
-              <Button
-                onClick={() => {}}
-                // variant='contained'
-                color="primary"
-                size="medium"
-                className={cls(styles.btnAction, cmn.mtop10d)}
-                startIcon={<TollIcon />}
-              >
-                Add token
-              </Button>
+              <AddToken />
               <Button
                 onClick={startOver}
                 color="primary"

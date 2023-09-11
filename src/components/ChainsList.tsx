@@ -7,15 +7,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Button from '@mui/material/Button'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 
-import ChainApps from '../ChainApps'
-import ChainIcon from '../ChainIcon'
+import ChainApps from './ChainApps'
+import ChainIcon from './ChainIcon'
 
-import { MetaportConfig } from '../../core/interfaces'
+import { MetaportConfig } from '../core/interfaces'
 
-import { cls, getChainAlias, getChainAppsMeta } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
-import SkPaper from '../SkPaper/SkPaper'
+import { getChainAlias, getChainAppsMeta } from '../core/helper'
+import { cls, cmn, styles } from '../core/css'
+
+import SkPaper from './SkPaper/SkPaper'
+
 
 export default function ChainsList(props: {
   config: MetaportConfig

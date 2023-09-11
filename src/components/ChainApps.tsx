@@ -1,13 +1,12 @@
-import React from 'react'
-import { cls, getChainAppsMeta, getChainAlias } from '../../core/helper'
-
-import styles from '../../styles/styles.module.scss'
-import cmn from '../../styles/cmn.module.scss'
-import { SkaleNetwork } from '../../core/interfaces'
-
-import ChainIcon from '../ChainIcon'
 import { Button } from '@mui/material'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
+
+import { cls, cmn, styles } from '../core/css'
+import { SkaleNetwork } from '../core/interfaces'
+import { getChainAppsMeta, getChainAlias } from '../core/helper'
+
+import ChainIcon from './ChainIcon'
+
 
 export default function ChainApps(props: {
   skaleNetwork: SkaleNetwork

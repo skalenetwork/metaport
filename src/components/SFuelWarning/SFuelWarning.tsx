@@ -37,12 +37,12 @@ import { Station } from '../../core/sfuel'
 import { useMetaportStore } from '../../store/MetaportStore'
 import { useSFuelStore } from '../../store/SFuelStore'
 
-import { cls } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
+import { cls, cmn, styles } from '../../core/css'
+
 
 debug.enable('*')
 const log = debug('metaport:components:SFuel')
+
 
 export default function SFuelWarning(props: {}) {
   const mpc = useMetaportStore((state) => state.mpc)

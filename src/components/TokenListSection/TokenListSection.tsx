@@ -3,12 +3,10 @@ import Button from '@mui/material/Button'
 
 import { TokenData, TokenType } from '../../core/dataclasses'
 import { TokenBalancesMap, TokenDataMap } from '../../core/interfaces'
-import { cls } from '../../core/helper'
+import { cls, cmn } from '../../core/css'
 
 import TokenBalance from '../TokenList/TokenBalance'
 import TokenIcon from '../TokenIcon'
-
-import cmn from '../../styles/cmn.module.scss'
 
 import { getTokenName } from '../../core/metadata'
 

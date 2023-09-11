@@ -40,14 +40,6 @@ export const CHAINS_META = {
   regression: regressionMeta
 }
 
-export function cls(...args: any): string {
-  const filteredArgs = args.map((clsName: any) => {
-    if (typeof clsName === 'string') return clsName
-    if (Array.isArray(clsName) && clsName.length === 2 && clsName[1]) return clsName[0]
-  })
-  return filteredArgs.join(' ')
-}
-
 export function eqArrays(arr1, arr2) {
   return JSON.stringify(arr1) === JSON.stringify(arr2)
 }

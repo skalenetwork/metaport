@@ -310,14 +310,16 @@ export default class MetaportCore {
       tokenContracts.eth = this.tokenContract(chainName1, 'eth', TokenType.eth, ima1.provider)
 
       const destChainName = findFirstWrapperChainName(tokens.eth.eth)
-      wrappedTokenContracts.eth = this.tokenContract(
-        chainName1,
-        'eth',
-        TokenType.eth,
-        ima1.provider,
-        CustomAbiTokenType.erc20wrap,
-        destChainName
-      )
+      if (destChainName) {
+        wrappedTokenContracts.eth = this.tokenContract(
+          chainName1,
+          'eth',
+          TokenType.eth,
+          ima1.provider,
+          CustomAbiTokenType.erc20wrap,
+          destChainName
+        )
+      }
     }
 
     const prevTokenKeyname = prevToken?.keyname

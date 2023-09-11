@@ -27,10 +27,7 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Button from '@mui/material/Button'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-import { cls } from '../../core/helper'
-
-import styles from '../../styles/styles.module.scss'
-import cmn from '../../styles/cmn.module.scss'
+import { cls, cmn, styles } from '../../core/css'
 
 import skaleLogoFull from '../WidgetUI/skale_logo.svg'
 import { useMetaportStore } from '../../store/MetaportStore'

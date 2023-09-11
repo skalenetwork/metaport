@@ -47,9 +47,7 @@ import { fromWei } from '../../core/convertation'
 import { withdraw, recharge } from '../../core/community_pool'
 import { BALANCE_UPDATE_INTERVAL_MS, DEFAULT_ERC20_DECIMALS } from '../../core/constants'
 
-import { cls } from '../../core/helper'
-import cmn from '../../styles/cmn.module.scss'
-import styles from '../../styles/styles.module.scss'
+import { cls, cmn, styles } from '../../core/css'
 
 import { useCPStore } from '../../store/CommunityPoolStore'
 import { useCollapseStore } from '../../store/Store'

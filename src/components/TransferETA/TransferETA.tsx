@@ -3,10 +3,11 @@ import Tooltip from '@mui/material/Tooltip'
 import InfoIcon from '@mui/icons-material/Info'
 import Skeleton from '@mui/material/Skeleton'
 
-import { isMainnet, cls } from '../../core/helper'
+import { isMainnet } from '../../core/helper'
 import { IMA_M2S_WAIT, IMA_S2S_WAIT, IMA_HUB_WAIT } from '../../core/constants'
-// import { getAvgWaitTime } from '../../core/gas_station';
-import cmn from '../../styles/cmn.module.scss'
+
+import { cls, cmn } from '../../core/css'
+
 import { TokenData } from '../../core/dataclasses'
 
 export default function TransferETA(props: { token: TokenData; toChain: string }) {
