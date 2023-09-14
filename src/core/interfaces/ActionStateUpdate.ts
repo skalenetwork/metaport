@@ -17,29 +17,23 @@
  */
 
 /**
- * @file TransactionHistory.ts
+ * @file ActionStateUpdate.ts
  * @copyright SKALE Labs 2023-Present
  */
 
-import { AddressType } from '.'
+import { ActionState } from './ActionState'
 
-interface TxData {
-  gasUsed: number
-  transactionHash: string
-}
-
-export interface TransactionHistory {
-  tx: TxData
-  timestamp: number
-  chainName: string
-  txName: string
-}
-
-export interface TransferHistory {
-  transactions: TransactionHistory[]
-  tokenKeyname: string
-  address: AddressType
-  chainName1: string
-  chainName2: string
-  amount: string
+export interface ActionStateUpdate {
+  actionName: string
+  actionState: ActionState
+  actionData: {
+    chainName1: string
+    chainName2: string
+    address: string
+    amount: string
+    amountWei: bigint
+    tokenId: number
+  }
+  transactionHash?: string
+  timestamp?: number
 }

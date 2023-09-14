@@ -134,8 +134,25 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       } finally {
         set({ loading: false })
       }
+
+      const isTransferFinished = get().currentStep + 1 === get().stepsMetadata.length
+
+      if (isTransferFinished) {
+        get().setTransfersHistory([
+          ...get().transfersHistory,
+          {
+            transactions: get().transactionsHistory,
+            chainName1: get().chainName1,
+            chainName2: get().chainName2,
+            amount: get().amount,
+            tokenKeyname: get().token.keyname,
+            address: address
+          }
+        ])
+      }
+
       set({
-        transferInProgress: get().currentStep + 1 !== get().stepsMetadata.length,
+        transferInProgress: !isTransferFinished,
         currentStep: get().currentStep + 1
       })
     }
@@ -280,5 +297,27 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   setTransferInProgress: (inProgress: boolean) => set(() => ({ transferInProgress: inProgress })),
 
   btnText: null,
-  setBtnText: (btnText: string) => set(() => ({ btnText: btnText }))
+  setBtnText: (btnText: string) => set(() => ({ btnText: btnText })),
+
+  transactionsHistory: [],
+  setTransactionsHistory: (transactionsHistory: interfaces.TransactionHistory[]) => {
+    set({ transactionsHistory: transactionsHistory })
+  },
+
+  addTransaction(transaction: interfaces.TransactionHistory): void {
+    const history = get().transactionsHistory
+    history.push(transaction)
+    set({ transactionsHistory: [...history] })
+  },
+  clearTransactionsHistory(): void {
+    set({ transactionsHistory: [], transfersHistory: [] })
+  },
+
+  transfersHistory: [],
+  setTransfersHistory: (transfersHistory: interfaces.TransferHistory[]) => {
+    set({
+      transfersHistory: transfersHistory,
+      transactionsHistory: []
+    })
+  }
 }))

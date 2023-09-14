@@ -98,12 +98,10 @@ export function WidgetUI(props: { config: MetaportConfig }) {
       </div>
       <Collapse in={isOpen}>
         <SkPaper className={cls(styles.popper)}>
-          {!!address ? <SkConnect /> : null}
           <Collapse in={!!errorMessage}>
             <ErrorMessage errorMessage={errorMessage} />
           </Collapse>
           <Collapse in={!errorMessage} className={styles.widgetContent}>
-            {/* {address ? <WidgetBody config={props.config} /> : <div></div>} */}
             <WidgetBody config={props.config} />
           </Collapse>
         </SkPaper>

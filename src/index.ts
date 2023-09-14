@@ -27,6 +27,8 @@ import ErrorMessage from './components/ErrorMessage'
 import CommunityPool from './components/CommunityPool'
 import SFuelWarning from './components/SFuelWarning'
 import WrappedTokens from './components/WrappedTokens'
+import HistoryButton from './components/HistoryButton'
+import TransactionsHistory from './components/TransactionsHistory'
 
 import { CHAINS_META, getChainAlias } from './core/helper'
 import { cls, styles, cmn } from './core/css'
@@ -62,6 +64,8 @@ export {
   CommunityPool,
   SFuelWarning,
   WrappedTokens,
+  TransactionsHistory,
+  HistoryButton,
   cls,
   styles,
   cmn,

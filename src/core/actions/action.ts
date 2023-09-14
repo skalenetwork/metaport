@@ -32,13 +32,14 @@ import { TokenData, CustomAbiTokenType } from '../dataclasses'
 import MetaportCore, { createTokenData } from '../metaport'
 import { externalEvents } from '../events'
 import { toWei } from '../convertation'
-import { ActionState, LOADING_BUTTON_TEXT } from './actionState'
+import { LOADING_BUTTON_TEXT } from './actionState'
 import { isMainnet } from '../helper'
 
 import { IMA_ABIS } from '../contracts'
 import { isMainnetChainId, getMainnetAbi } from '../network'
 
 import { walletClientToSigner } from '../ethers'
+import { interfaces } from '../../Metaport'
 
 debug.enable('*')
 const log = debug('metaport:actions')
@@ -161,29 +162,15 @@ export class Action {
     this.setBtnText = setBtnText
     this._switchNetwork = switchNetwork
     this.walletClient = walletClient
-
-    // if (this.tokenData) this.wrap = !!this.token.unwrappedSymbol && !this.token.clone;
   }
 
-  // tokenContract(
-  //     provider: Provider,
-  //     source: boolean = true
-  // ): Contract {
-  //     return this.mpc.tokenContract(
-  //         source ? this.chainName1 : this.chainName2,
-  //         this.token.keyname,
-  //         this.token.type,
-  //         provider
-  //     )
-  // }
-
-  updateState(currentState: ActionState, transactionHash?: string, timestamp?: string | number) {
+  updateState(currentState: interfaces.ActionState, transactionHash?: string, timestamp?: number) {
     log(`actionStateUpd: ${this.constructor.name} - ${currentState} - ${this.token.keyname} \
 - ${this.chainName1} -> ${this.chainName2}`)
-    externalEvents.actionStateUpdated(
-      this.constructor.name,
-      currentState,
-      {
+    externalEvents.actionStateUpdated({
+      actionName: this.constructor.name,
+      actionState: currentState,
+      actionData: {
         chainName1: this.chainName1,
         chainName2: this.chainName2,
         address: this.address,
@@ -193,7 +180,7 @@ export class Action {
       },
       transactionHash,
       timestamp
-    )
+    })
     this.setBtnText(LOADING_BUTTON_TEXT[currentState])
   }
 
@@ -231,11 +218,5 @@ export class Action {
     )
     chain.erc20.addToken(this.token.keyname, token)
     return chain
-  }
-}
-
-export abstract class TransferAction extends Action {
-  transferComplete(tx): void {
-    externalEvents.transferComplete(tx, this.chainName1, this.chainName2, this.token.keyname, false)
   }
 }

@@ -93,14 +93,8 @@ export default function SkConnect() {
                 )
               }
               return (
-                <div className={cls(cmn.mri5, cmn.mbott10, cmn.flex)}>
-                  <div className={cls(cmn.flexg, cmn.flex)}>
-                    {/* <img
-                                            className={cls(cmn.mleft10)}
-                                            style={{ width: '16px' }}
-                                            src={skaleLogo}
-                                        /> */}
-                  </div>
+                <div className={cls(cmn.flex)}>
+                  <div className={cls(cmn.flexg, cmn.flex)}></div>
                   <div>
                     <Button
                       disabled={transferInProgress}
@@ -113,10 +107,7 @@ export default function SkConnect() {
                         <Jazzicon diameter={16} seed={jsNumberForAddress(account.address)} />
                       </div>
                       {account.displayName}
-                      {/* {account.displayBalance
-                                                ? ` (${account.displayBalance})`
-                                                : ''} */}
-                      <ExpandMoreIcon style={{ height: '16px', width: '16px' }} />
+                      <ExpandMoreIcon className={styles.chainIconxs} />
                     </Button>
                   </div>
                 </div>

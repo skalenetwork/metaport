@@ -36,7 +36,7 @@ import {
   enkryptWallet
 } from '@rainbow-me/rainbowkit/wallets'
 
-import { MetaportConfig } from '../core/interfaces'
+import { MetaportConfig, ActionStateUpdate } from '../core/interfaces'
 
 import { StyledEngineProvider } from '@mui/material/styles'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -105,6 +105,7 @@ export default function MetaportProvider(props: {
 
   const setTheme = useUIStore((state) => state.setTheme)
   const setMpc = useMetaportStore((state) => state.setMpc)
+  const addTransaction = useMetaportStore((state) => state.addTransaction)
   const setOpen = useUIStore((state) => state.setOpen)
   const metaportTheme = useUIStore((state) => state.theme)
 
@@ -113,6 +114,7 @@ export default function MetaportProvider(props: {
 
   useEffect(() => {
     setOpen(props.config.openOnLoad)
+    window.addEventListener('metaport_actionStateUpdated', actionStateUpdated, false)
   }, [])
 
   useEffect(() => {
@@ -122,6 +124,28 @@ export default function MetaportProvider(props: {
   useEffect(() => {
     setMpc(new MetaportCore(props.config))
   }, [setMpc])
+
+  function actionStateUpdated(e: CustomEvent) {
+    const actionStateUpdate: ActionStateUpdate = e.detail
+    if (actionStateUpdate.transactionHash) {
+      let chainName = actionStateUpdate.actionData.chainName1
+      if (
+        actionStateUpdate.actionState === 'transferETHDone' ||
+        actionStateUpdate.actionState === 'unwrapDone'
+      ) {
+        chainName = actionStateUpdate.actionData.chainName2
+      }
+      addTransaction({
+        tx: {
+          transactionHash: actionStateUpdate.transactionHash,
+          gasUsed: 1000
+        },
+        timestamp: actionStateUpdate.timestamp,
+        chainName,
+        txName: actionStateUpdate.actionState
+      })
+    }
+  }
 
   let theme = createTheme({
     zIndex: getMuiZIndex(widgetTheme),

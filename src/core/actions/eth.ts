@@ -24,15 +24,14 @@
 import debug from 'debug'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 
-import { externalEvents } from '../events'
 import { toWei } from '../convertation'
-import { TransferAction, Action } from './action'
+import { Action } from './action'
 import { checkEthBalance } from './checks'
 
 debug.enable('*')
 const log = debug('metaport:actions:eth')
 
-export class TransferEthM2S extends TransferAction {
+export class TransferEthM2S extends Action {
   async execute() {
     this.updateState('init')
     const amountWei = toWei(this.amount, this.token.meta.decimals)
@@ -64,7 +63,7 @@ export class TransferEthM2S extends TransferAction {
   }
 }
 
-export class TransferEthS2M extends TransferAction {
+export class TransferEthS2M extends Action {
   async execute() {
     log('TransferEthS2M: started')
     this.updateState('init')

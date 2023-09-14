@@ -21,25 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-export type ActionState =
-  | 'init'
-  | 'approve'
-  | 'approveDone'
-  | 'transfer'
-  | 'transferDone'
-  | 'received'
-  | 'transferETH'
-  | 'transferETHDone'
-  | 'receivedETH'
-  | 'approveWrap'
-  | 'approveWrapDone'
-  | 'wrap'
-  | 'wrapDone'
-  | 'unwrap'
-  | 'unwrapDone'
-  | 'switch'
-  | 'unlock'
-  | 'unlockDone'
+import { ActionState } from '../interfaces'
 
 type LoadingButtonTextMap = {
   [key in ActionState]: string

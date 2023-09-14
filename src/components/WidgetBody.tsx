@@ -19,6 +19,8 @@ import CommunityPool from './CommunityPool'
 import SFuelWarning from './SFuelWarning'
 import SkConnect from './SkConnect'
 import WrappedTokens from './WrappedTokens'
+import TransactionsHistory from './TransactionsHistory'
+import HistoryButton from './HistoryButton'
 
 import { cls, cmn } from '../core/css'
 import { Collapse } from '@mui/material'
@@ -35,6 +37,7 @@ export function WidgetBody(props) {
   const expandedCP = useCollapseStore((state) => state.expandedCP)
   const expandedWT = useCollapseStore((state) => state.expandedWT)
   const expandedTokens = useCollapseStore((state) => state.expandedTokens)
+  const expandedTH = useCollapseStore((state) => state.expandedTH)
 
   const destChains = useMetaportStore((state) => state.destChains)
 
@@ -77,11 +80,19 @@ export function WidgetBody(props) {
     }
   }, [tokens])
 
-  const showFrom = !expandedTo && !expandedTokens && !errorMessage && !expandedCP
-  const showTo = !expandedFrom && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
-  const showInput = !expandedFrom && !expandedTo && !errorMessage && !expandedCP && !expandedWT
+  const showFrom = !expandedTo && !expandedTokens && !errorMessage && !expandedCP && !expandedTH
+  const showTo =
+    !expandedFrom && !expandedTokens && !errorMessage && !expandedCP && !expandedWT && !expandedTH
+  const showInput =
+    !expandedFrom && !expandedTo && !errorMessage && !expandedCP && !expandedWT && !expandedTH
   const showSwitch =
-    !expandedFrom && !expandedTo && !expandedTokens && !errorMessage && !expandedCP && !expandedWT
+    !expandedFrom &&
+    !expandedTo &&
+    !expandedTokens &&
+    !errorMessage &&
+    !expandedCP &&
+    !expandedWT &&
+    !expandedTH
   const showStepper =
     !expandedFrom &&
     !expandedTo &&
@@ -90,11 +101,13 @@ export function WidgetBody(props) {
     !expandedCP &&
     sFuelOk &&
     !expandedWT &&
+    !expandedTH &&
     !!address
   const showCP =
     !expandedFrom &&
     !expandedTo &&
     !expandedTokens &&
+    !expandedTH &&
     chainName2 === MAINNET_CHAIN_NAME &&
     !expandedWT
   const showWT =
@@ -103,7 +116,16 @@ export function WidgetBody(props) {
     !expandedTokens &&
     !errorMessage &&
     !expandedCP &&
+    !expandedTH &&
     sFuelOk &&
+    !!address
+  const showTH =
+    !expandedFrom &&
+    !expandedTo &&
+    !expandedTokens &&
+    !errorMessage &&
+    !expandedCP &&
+    !expandedWT &&
     !!address
   const showError = !!errorMessage
 
@@ -113,6 +135,16 @@ export function WidgetBody(props) {
 
   return (
     <div>
+      {!!address ? (
+        <div className={cls(cmn.flex, cmn.flexcv, cmn.mri10, cmn.mbott5)}>
+          <div className={cls(cmn.flexg)}></div>
+          <div className={cmn.mri5}>
+            <HistoryButton />
+          </div>
+          <SkConnect />
+        </div>
+      ) : null}
+
       <Collapse in={showError}>
         <ErrorMessage errorMessage={errorMessage} />
       </Collapse>
@@ -189,6 +221,12 @@ export function WidgetBody(props) {
       <Collapse in={showWT}>
         <SkPaper gray className={cmn.nop}>
           <WrappedTokens />
+        </SkPaper>
+      </Collapse>
+
+      <Collapse in={showTH}>
+        <SkPaper className={cmn.nop}>
+          <TransactionsHistory />
         </SkPaper>
       </Collapse>
 

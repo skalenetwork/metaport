@@ -17,29 +17,26 @@
  */
 
 /**
- * @file TransactionHistory.ts
+ * @file ActionState.ts
  * @copyright SKALE Labs 2023-Present
  */
 
-import { AddressType } from '.'
-
-interface TxData {
-  gasUsed: number
-  transactionHash: string
-}
-
-export interface TransactionHistory {
-  tx: TxData
-  timestamp: number
-  chainName: string
-  txName: string
-}
-
-export interface TransferHistory {
-  transactions: TransactionHistory[]
-  tokenKeyname: string
-  address: AddressType
-  chainName1: string
-  chainName2: string
-  amount: string
-}
+export type ActionState =
+  | 'init'
+  | 'approve'
+  | 'approveDone'
+  | 'transfer'
+  | 'transferDone'
+  | 'received'
+  | 'transferETH'
+  | 'transferETHDone'
+  | 'receivedETH'
+  | 'approveWrap'
+  | 'approveWrapDone'
+  | 'wrap'
+  | 'wrapDone'
+  | 'unwrap'
+  | 'unwrapDone'
+  | 'switch'
+  | 'unlock'
+  | 'unlockDone'

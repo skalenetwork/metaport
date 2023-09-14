@@ -113,6 +113,14 @@ export interface MetaportState {
   btnText: string
   setBtnText: (btnText: string) => void
 
+  transactionsHistory: interfaces.TransactionHistory[]
+  setTransactionsHistory: (transactionsHistory: interfaces.TransactionHistory[]) => void
+  addTransaction: (transaction: interfaces.TransactionHistory) => void
+  clearTransactionsHistory: () => void
+
+  transfersHistory: interfaces.TransferHistory[]
+  setTransfersHistory: (transfersHistory: interfaces.TransferHistory[]) => void
+
   errorMessageClosedFallback: () => void
   startOver: () => void
 }

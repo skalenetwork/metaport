@@ -52,6 +52,9 @@ export interface CollapseState {
 
   expandedWT: string | false
   setExpandedWT: (expanded: string | false) => void
+
+  expandedTH: boolean
+  setExpandedTH: (expanded: boolean) => void
 }
 
 export const useCollapseStore = create<CollapseState>()((set) => ({
@@ -62,7 +65,8 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedTo: false,
       expandedTokens: false,
       expandedCP: false,
-      expandedWT: false
+      expandedWT: false,
+      expandedTH: false
     })),
   expandedTo: false,
   setExpandedTo: (expanded: string | false) =>
@@ -71,7 +75,8 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTokens: false,
       expandedCP: false,
-      expandedWT: false
+      expandedWT: false,
+      expandedTH: false
     })),
   expandedTokens: false,
   setExpandedTokens: (expanded: string | false) =>
@@ -80,7 +85,8 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedCP: false,
-      expandedWT: false
+      expandedWT: false,
+      expandedTH: false
     })),
   expandedCP: false,
   setExpandedCP: (expanded: string | false) =>
@@ -89,7 +95,8 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedTokens: false,
-      expandedWT: false
+      expandedWT: false,
+      expandedTH: false
     })),
   expandedWT: false,
   setExpandedWT: (expanded: string | false) =>
@@ -98,6 +105,17 @@ export const useCollapseStore = create<CollapseState>()((set) => ({
       expandedFrom: false,
       expandedTo: false,
       expandedTokens: false,
-      expandedWT: expanded
+      expandedWT: expanded,
+      expandedTH: false
+    })),
+  expandedTH: false,
+  setExpandedTH: (expanded: boolean) =>
+    set(() => ({
+      expandedCP: false,
+      expandedFrom: false,
+      expandedTo: false,
+      expandedTokens: false,
+      expandedWT: false,
+      expandedTH: expanded
     }))
 }))

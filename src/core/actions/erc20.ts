@@ -30,14 +30,14 @@ import { externalEvents } from '../events'
 import { toWei } from '../convertation'
 import { MAX_APPROVE_AMOUNT } from '../constants'
 
-import { TransferAction, Action } from '../actions/action'
+import { Action } from '../actions/action'
 import { checkERC20Balance, checkERC20Allowance, checkSFuelBalance } from './checks'
 import { CustomAbiTokenType } from '../dataclasses'
 
 debug.enable('*')
 const log = debug('metaport:actions:erc20')
 
-export class TransferERC20S2S extends TransferAction {
+export class TransferERC20S2S extends Action {
   async execute() {
     this.updateState('init')
     const checkResAllowance = await checkERC20Allowance(
@@ -64,7 +64,6 @@ export class TransferERC20S2S extends TransferAction {
       )
       const txBlock = await sChain.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
-      externalEvents.transactionCompleted(approveTx, txBlock.timestamp, this.chainName1, 'approve')
       log('ApproveERC20S:execute - tx completed: %O', approveTx)
     }
 
@@ -123,7 +122,6 @@ export class WrapSFuelERC20S extends Action {
     })
     const block = await this.sChain1.provider.getBlock(tx.blockNumber)
     this.updateState('wrapDone', tx.hash, block.timestamp)
-    externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'wrapsfuel')
     log('WrapSFuelERC20S:execute - tx completed %O', tx)
   }
 
@@ -235,7 +233,6 @@ export class UnWrapERC20S extends Action {
     log('UnWrapERC20S:execute - tx completed %O', tx)
     const block = await sChain.provider.getBlock(tx.blockNumber)
     this.updateState('unwrapDone', tx.hash, block.timestamp)
-    externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'unwrap')
     externalEvents.unwrapComplete(tx, this.chainName2, this.token.keyname)
   }
 
@@ -255,7 +252,7 @@ export class UnWrapERC20S extends Action {
   }
 }
 
-export class TransferERC20M2S extends TransferAction {
+export class TransferERC20M2S extends Action {
   async execute() {
     this.updateState('init')
 
@@ -285,18 +282,10 @@ export class TransferERC20M2S extends TransferAction {
     })
     const block = await mainnet.provider.getBlock(tx.blockNumber)
     this.updateState('transferDone', tx.hash, block.timestamp)
-    externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'deposit')
     log('TransferERC20M2S:execute - tx completed %O', tx)
     await this.sChain2.waitERC20BalanceChange(this.destToken, this.address, balanceOnDestination)
     this.updateState('received')
     log('TransferERC20M2S:execute - tokens received to destination chain')
-    externalEvents.transferComplete(
-      tx.hash,
-      this.chainName1,
-      this.chainName2,
-      this.token.keyname,
-      false
-    )
   }
 
   async preAction() {
@@ -314,7 +303,7 @@ export class TransferERC20M2S extends TransferAction {
   }
 }
 
-export class TransferERC20S2M extends TransferAction {
+export class TransferERC20S2M extends Action {
   async execute() {
     this.updateState('init')
     // check approve + approve
@@ -339,7 +328,6 @@ export class TransferERC20S2M extends TransferAction {
       )
       const txBlock = await sChain.provider.getBlock(approveTx.blockNumber)
       this.updateState('approveDone', approveTx.hash, txBlock.timestamp)
-      externalEvents.transactionCompleted(approveTx, txBlock.timestamp, this.chainName1, 'approve')
       log('ApproveERC20S:execute - tx completed: %O', approveTx)
     }
     this.updateState('transfer')
@@ -348,18 +336,10 @@ export class TransferERC20S2M extends TransferAction {
     const tx = await sChain.erc20.withdraw(this.originAddress, amountWei, { address: this.address })
     const block = await sChain.provider.getBlock(tx.blockNumber)
     this.updateState('transferDone', tx.hash, block.timestamp)
-    externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'withdraw')
     log('TransferERC20S2M:execute - tx completed %O', tx)
     this.mainnet.waitERC20BalanceChange(this.destToken, this.address, balanceOnDestination)
     this.updateState('received')
     log('TransferERC20S2M:execute - tokens received to destination chain')
-    externalEvents.transferComplete(
-      tx.hash,
-      this.chainName1,
-      this.chainName2,
-      this.token.keyname,
-      false
-    )
   }
 
   async preAction() {
