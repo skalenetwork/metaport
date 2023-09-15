@@ -20,7 +20,6 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 

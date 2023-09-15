@@ -34,7 +34,7 @@ import TextField from '@mui/material/TextField'
 import localStyles from './AmountInput/AmountInput.module.scss'
 
 import SkPaper from './SkPaper'
-import { TokenBalance } from './TokenList'
+import TokenBalance from './TokenBalance'
 
 import Button from '@mui/material/Button'
 

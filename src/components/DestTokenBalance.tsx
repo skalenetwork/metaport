@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
-import { TokenBalance } from './TokenList'
+import TokenBalance from './TokenBalance'
 import { useMetaportStore } from '../store/MetaportStore'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../core/constants'
 

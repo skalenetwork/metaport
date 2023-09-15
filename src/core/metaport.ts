@@ -40,7 +40,6 @@ import { ERC_ABIS } from './contracts'
 
 import debug from 'debug'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
-import { interfaces } from '../Metaport'
 import { MAINNET_CHAIN_NAME } from './constants'
 
 const log = debug('ima:test:MainnetChain')
@@ -118,7 +117,7 @@ export function createWrappedTokensMap(
   return wrappedTokens
 }
 
-const findFirstWrapperAddress = (token: interfaces.Token): `0x${string}` | null =>
+const findFirstWrapperAddress = (token: Token): `0x${string}` | null =>
   Object.values(token.chains).find((chain) => 'wrapper' in chain)?.wrapper || null
 
 export const findFirstWrapperChainName = (token: TokenData): string | null => {

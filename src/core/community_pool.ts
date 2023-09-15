@@ -41,7 +41,7 @@ import {
   BALANCE_UPDATE_INTERVAL_MS
 } from './constants'
 import { delay } from './helper'
-import { CHAIN_IDS, isMainnetChainId, getMainnetAbi } from './network'
+import { CHAIN_IDS, getMainnetAbi } from './network'
 import MetaportCore from './metaport'
 
 import * as dataclasses from '../core/dataclasses'

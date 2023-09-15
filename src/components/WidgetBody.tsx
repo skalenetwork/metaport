@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
 import { useCollapseStore } from '../store/Store'
@@ -12,7 +12,7 @@ import SkStepper from './Stepper'
 import SkPaper from './SkPaper'
 import AmountErrorMessage from './AmountErrorMessage'
 import SwitchDirection from './SwitchDirection'
-import { TokenBalance } from './TokenList'
+import TokenBalance from './TokenBalance'
 import DestTokenBalance from './DestTokenBalance'
 import ErrorMessage from './ErrorMessage'
 import CommunityPool from './CommunityPool'
@@ -59,7 +59,6 @@ export function WidgetBody(props) {
   const tokenBalances = useMetaportStore((state) => state.tokenBalances)
 
   const errorMessage = useMetaportStore((state) => state.errorMessage)
-  const loading = useMetaportStore((state) => state.loading)
 
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 

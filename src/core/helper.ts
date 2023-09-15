@@ -24,9 +24,7 @@
 import { getAddress } from 'ethers'
 
 import { MAINNET_CHAIN_NAME } from './constants'
-// import utils from 'web3-utils';
 import { TransferRequestStatus } from './dataclasses'
-import { SkaleNetwork } from './interfaces'
 
 export function eqArrays(arr1, arr2) {
   return JSON.stringify(arr1) === JSON.stringify(arr2)

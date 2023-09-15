@@ -1,4 +1,5 @@
-export { interfaces, dataclasses } from './Metaport'
+import * as interfaces from './core/interfaces'
+import * as dataclasses from './core/dataclasses'
 
 export { useMetaportStore } from './store/MetaportStore'
 export { type MetaportState } from './store/MetaportState'
@@ -15,7 +16,8 @@ import ChainIcon from './components/ChainIcon'
 import TokenIcon from './components/TokenIcon'
 
 import ChainsList from './components/ChainsList'
-import TokenList, { TokenBalance } from './components/TokenList'
+import TokenList from './components/TokenList'
+import TokenBalance from './components/TokenBalance'
 import AmountInput from './components/AmountInput'
 import SwitchDirection from './components/SwitchDirection'
 import SkStepper from './components/Stepper'
@@ -69,6 +71,8 @@ export {
   cls,
   styles,
   cmn,
+  interfaces,
+  dataclasses,
   getMetaportTheme,
   useWagmiAccount,
   PROXY_ENDPOINTS,

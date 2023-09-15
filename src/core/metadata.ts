@@ -51,7 +51,6 @@ export const CHAINS_META = {
   regression: regressionMeta
 }
 
-
 export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
   if (chainName === MAINNET_CHAIN_NAME) {
     if (skaleNetwork != MAINNET_CHAIN_NAME) {
@@ -73,13 +72,11 @@ export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app
   return chainName
 }
 
-
 export function getChainAppsMeta(chainName: string, skaleNetwork: SkaleNetwork) {
   if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
     return CHAINS_META[skaleNetwork][chainName].apps
   }
 }
-
 
 export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: string) {
   if (!name) return
@@ -93,7 +90,6 @@ export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: st
     return CHAIN_ICONS[skaleNetwork][filename]
   }
 }
-
 
 export function chainBg(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
   if (CHAINS_META[skaleNetwork][chainName]) {
@@ -111,7 +107,6 @@ export function chainBg(skaleNetwork: SkaleNetwork, chainName: string, app?: str
   return 'linear-gradient(273.67deg, rgb(47 50 80), rgb(39 43 68))'
 }
 
-
 export function tokenIcon(tokenSymbol: string) {
   if (!tokenSymbol) return
   const key = tokenSymbol.toLowerCase()
@@ -121,7 +116,6 @@ export function tokenIcon(tokenSymbol: string) {
     return icons['eth']
   }
 }
-
 
 export function getTokenName(token: TokenData): string {
   return token.meta.name ?? token.meta.symbol

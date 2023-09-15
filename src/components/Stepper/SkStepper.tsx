@@ -11,7 +11,6 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import Collapse from '@mui/material/Collapse'
 
 import SettingsBackupRestoreRoundedIcon from '@mui/icons-material/SettingsBackupRestoreRounded'
-import TollIcon from '@mui/icons-material/Toll'
 
 import { getRandom } from '../../core/helper'
 import { getChainAlias } from '../../core/metadata'

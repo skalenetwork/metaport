@@ -34,7 +34,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ErrorIcon from '@mui/icons-material/Error'
 
 import SkPaper from './SkPaper'
-import { TokenBalance } from './TokenList'
+import TokenBalance from './TokenBalance'
 import TokenIcon from './TokenIcon'
 
 import { getTokenName, getChainAlias } from '../core/metadata'

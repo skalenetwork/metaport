@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { isHexString, getNumber, randomBytes, keccak256, hexlify, toBeHex, toBigInt } from 'ethers'
+import { isHexString, getNumber, randomBytes, keccak256, toBeHex, toBigInt } from 'ethers'
 import { MAX_NUMBER } from './constants'
 
 interface Params {

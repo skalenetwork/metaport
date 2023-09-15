@@ -21,11 +21,11 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { Provider, Wallet, JsonRpcProvider, AbiCoder, TransactionResponse } from 'ethers'
+import { Wallet, JsonRpcProvider, AbiCoder, TransactionResponse } from 'ethers'
 
 import SkalePowMiner from './miner'
 import { ZERO_ADDRESS, ZERO_FUNCSIG, FAUCET_DATA } from './constants'
-import { AddressType, SkaleNetwork } from './interfaces'
+import { AddressType } from './interfaces'
 import MetaportCore from './metaport'
 
 function getAddress(chainName: string, skaleNetwork: string) {

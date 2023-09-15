@@ -7,7 +7,6 @@ METAPORT_CONFIG.mainnetEndpoint = import.meta.env.VITE_MAINNET_ENDPOINT
 const meta: Meta<typeof Metaport> = {
   title: 'Functional/Metaport',
   component: Metaport
-  // decorators: [storyDecorator],
 }
 
 export default meta

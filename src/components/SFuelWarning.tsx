@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import debug from 'debug'
 
 import { useAccount } from 'wagmi'

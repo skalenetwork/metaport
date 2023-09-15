@@ -20,10 +20,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React, { useEffect } from 'react'
-import { StyledEngineProvider } from '@mui/material/styles'
-
-import { useAccount } from 'wagmi'
+import React from 'react'
 
 import Collapse from '@mui/material/Collapse'
 import Fab from '@mui/material/Fab'
@@ -39,7 +36,6 @@ import WidgetBody from '../WidgetBody'
 
 import { cls, cmn, styles } from '../../core/css'
 
-import SkConnect from '../SkConnect'
 import ErrorMessage from '../ErrorMessage'
 import { MetaportConfig } from '../../core/interfaces'
 
@@ -47,9 +43,6 @@ export function WidgetUI(props: { config: MetaportConfig }) {
   const metaportTheme = useUIStore((state) => state.theme)
   const isOpen = useUIStore((state) => state.open)
   const setOpen = useUIStore((state) => state.setOpen)
-
-  const { address } = useAccount()
-
   const errorMessage = useMetaportStore((state) => state.errorMessage)
 
   const handleClick = (_: React.MouseEvent<HTMLElement>) => {

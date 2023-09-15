@@ -24,32 +24,7 @@
 // @ts-ignore
 import React from 'react'
 // import { createRoot } from 'react-dom/client';
-
-import { internalEvents } from './core/events'
-
-import * as interfaces from './core/interfaces/index'
-export * as dataclasses from './core/dataclasses/index'
-export * as interfaces from './core/interfaces/index'
-
-import ChainIcon from './components/ChainIcon'
-export { ChainIcon }
-
-import WidgetUI from './components/WidgetUI'
-export { WidgetUI }
-
-import Metaport from './components/Metaport'
-export { Metaport }
-
-import MetaportProvider from './components/MetaportProvider'
-export { MetaportProvider }
-
-import SkPaper from './components/SkPaper'
-export { SkPaper }
-
-import SkConnect from './components/SkConnect'
-export { SkConnect }
-
-// export * as sfuel from './core/sfuel';
+import * as interfaces from './core/interfaces'
 
 export class InjectedMetaport {
   constructor(config: interfaces.MetaportConfig) {
@@ -63,27 +38,5 @@ export class InjectedMetaport {
     } else {
       console.log('div with id="metaport" does not exist')
     }
-  }
-
-  transfer(params: interfaces.TransferParams): void {
-    internalEvents.transfer(params)
-  }
-  // wrap(params) { internalEvents.wrap(params) }
-  // unwrap(params) { internalEvents.unwrap(params) }
-  // swap(params) { internalEvents.swap(params) }
-
-  // updateParams(params) { internalEvents.updateParams(params) }
-  // requestBalance(params) { internalEvents.requestBalance(params) }
-  setTheme(theme: any) {
-    internalEvents.setTheme(theme)
-  }
-  close() {
-    internalEvents.close()
-  }
-  open() {
-    internalEvents.open()
-  }
-  reset() {
-    internalEvents.reset()
   }
 }

@@ -29,6 +29,7 @@ import { Contract, Provider } from 'ethers'
 
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 import { TokenData, CustomAbiTokenType } from '../dataclasses'
+import * as interfaces from '../interfaces'
 import MetaportCore, { createTokenData } from '../metaport'
 import { externalEvents } from '../events'
 import { toWei } from '../convertation'
@@ -39,7 +40,6 @@ import { IMA_ABIS } from '../contracts'
 import { isMainnetChainId, getMainnetAbi } from '../network'
 
 import { walletClientToSigner } from '../ethers'
-import { interfaces } from '../../Metaport'
 
 debug.enable('*')
 const log = debug('metaport:actions')

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 import IconButton from '@mui/material/IconButton'
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'

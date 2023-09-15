@@ -12,8 +12,6 @@ import { useCollapseStore } from '../../store/Store'
 
 export default function AmountInput() {
   const { address } = useAccount()
-
-  const token = useMetaportStore((state) => state.token)
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
   const setAmount = useMetaportStore((state) => state.setAmount)
   const amount = useMetaportStore((state) => state.amount)

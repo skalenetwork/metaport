@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { cls, cmn, styles } from '../core/css'
 
 import { useUIStore } from '../store/Store'

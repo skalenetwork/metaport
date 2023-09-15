@@ -9,17 +9,17 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-import { getAvailableTokensTotal, getDefaultToken } from '../../core/tokens/helper'
+import { getAvailableTokensTotal, getDefaultToken } from '../core/tokens/helper'
 
-import { cls, cmn, styles } from '../../core/css'
+import { cls, cmn, styles } from '../core/css'
 
-import TokenListSection from '../TokenListSection'
-import TokenIcon from '../TokenIcon'
+import TokenListSection from './TokenListSection'
+import TokenIcon from './TokenIcon'
 
-import { useCollapseStore } from '../../store/Store'
-import { useMetaportStore } from '../../store/MetaportStore'
-import { TokenType } from '../../core/dataclasses'
-import { BALANCE_UPDATE_INTERVAL_MS } from '../../core/constants'
+import { useCollapseStore } from '../store/Store'
+import { useMetaportStore } from '../store/MetaportStore'
+import { TokenType } from '../core/dataclasses'
+import { BALANCE_UPDATE_INTERVAL_MS } from '../core/constants'
 
 export default function TokenList() {
   const token = useMetaportStore((state) => state.token)

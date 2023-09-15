@@ -21,13 +21,10 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import debug from 'debug'
 import { fromWei } from './convertation'
 import { CoinGeckoClient } from 'coingecko-api-v3'
 import { DEFAULT_ERC20_DECIMALS } from './constants'
 
-debug.enable('*')
-const log = debug('metaport:components:fee_calculator')
 
 export async function getTransactionFee(): Promise<number> {
   // todo: get actual gas limit for transfer

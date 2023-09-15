@@ -31,13 +31,15 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import TokenIcon from './TokenIcon'
 import ChainIcon from './ChainIcon'
 import TransactionData from './TransactionData'
+import SkPaper from './SkPaper'
 
 import { useMetaportStore } from '../store/MetaportStore'
 import { useCollapseStore } from '../store/Store'
 import { cls, styles, cmn } from '../core/css'
-import { interfaces, SkPaper } from '../Metaport'
 
 import { getChainAlias } from '../core/metadata'
+
+import * as interfaces from '../core/interfaces'
 
 export default function TransactionsHistory() {
   const transactionsHistory = useMetaportStore((state) => state.transactionsHistory)
