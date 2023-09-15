@@ -25,7 +25,7 @@ import { Chain } from 'wagmi'
 
 import { getSChainEndpoint } from './network'
 import { getExplorerUrl } from './explorer'
-import { getChainAlias } from './helper'
+import { getChainAlias } from './metadata'
 import { getChainId } from './chain_id'
 
 import { SkaleNetwork } from './interfaces'

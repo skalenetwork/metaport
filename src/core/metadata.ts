@@ -24,7 +24,11 @@
 import { TokenData } from './dataclasses'
 import { SkaleNetwork } from './interfaces'
 import { MAINNET_CHAIN_NAME } from './constants'
-import { CHAINS_META } from './helper'
+
+import mainnetMeta from '../meta/mainnet/chains.json'
+import stagingMeta from '../meta/staging/chains.json'
+import legacyMeta from '../meta/legacy/chains.json'
+import regressionMeta from '../meta/regression/chains.json'
 
 import * as MAINNET_CHAIN_ICONS from '../meta/mainnet/icons'
 import * as STAGING_CHAIN_ICONS from '../meta/staging/icons'
@@ -40,6 +44,43 @@ const CHAIN_ICONS = {
   regression: REGRESSION_CHAIN_ICONS
 }
 
+export const CHAINS_META = {
+  mainnet: mainnetMeta,
+  staging: stagingMeta,
+  legacy: legacyMeta,
+  regression: regressionMeta
+}
+
+
+export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
+  if (chainName === MAINNET_CHAIN_NAME) {
+    if (skaleNetwork != MAINNET_CHAIN_NAME) {
+      const network = skaleNetwork === 'staging' ? 'Goerli' : skaleNetwork
+      return `Ethereum (${network})`
+    }
+    return 'Ethereum'
+  }
+  if (CHAINS_META[skaleNetwork] && CHAINS_META[skaleNetwork][chainName]) {
+    if (
+      app &&
+      CHAINS_META[skaleNetwork][chainName].apps &&
+      CHAINS_META[skaleNetwork][chainName].apps[app]
+    ) {
+      return CHAINS_META[skaleNetwork][chainName].apps[app].alias
+    }
+    return CHAINS_META[skaleNetwork][chainName].alias
+  }
+  return chainName
+}
+
+
+export function getChainAppsMeta(chainName: string, skaleNetwork: SkaleNetwork) {
+  if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
+    return CHAINS_META[skaleNetwork][chainName].apps
+  }
+}
+
+
 export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: string) {
   if (!name) return
   let filename = name.toLowerCase()
@@ -52,6 +93,7 @@ export function chainIconPath(skaleNetwork: SkaleNetwork, name: string, app?: st
     return CHAIN_ICONS[skaleNetwork][filename]
   }
 }
+
 
 export function chainBg(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
   if (CHAINS_META[skaleNetwork][chainName]) {
@@ -69,6 +111,7 @@ export function chainBg(skaleNetwork: SkaleNetwork, chainName: string, app?: str
   return 'linear-gradient(273.67deg, rgb(47 50 80), rgb(39 43 68))'
 }
 
+
 export function tokenIcon(tokenSymbol: string) {
   if (!tokenSymbol) return
   const key = tokenSymbol.toLowerCase()
@@ -78,6 +121,7 @@ export function tokenIcon(tokenSymbol: string) {
     return icons['eth']
   }
 }
+
 
 export function getTokenName(token: TokenData): string {
   return token.meta.name ?? token.meta.symbol

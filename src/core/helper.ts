@@ -28,18 +28,6 @@ import { MAINNET_CHAIN_NAME } from './constants'
 import { TransferRequestStatus } from './dataclasses'
 import { SkaleNetwork } from './interfaces'
 
-import mainnetMeta from '../meta/mainnet/chains.json'
-import stagingMeta from '../meta/staging/chains.json'
-import legacyMeta from '../meta/legacy/chains.json'
-import regressionMeta from '../meta/regression/chains.json'
-
-export const CHAINS_META = {
-  mainnet: mainnetMeta,
-  staging: stagingMeta,
-  legacy: legacyMeta,
-  regression: regressionMeta
-}
-
 export function eqArrays(arr1, arr2) {
   return JSON.stringify(arr1) === JSON.stringify(arr2)
 }
@@ -61,33 +49,6 @@ export default function isTransferRequestActive(transferRequestStatus: TransferR
 
 export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
-  if (chainName === MAINNET_CHAIN_NAME) {
-    if (skaleNetwork != MAINNET_CHAIN_NAME) {
-      const network = skaleNetwork === 'staging' ? 'Goerli' : skaleNetwork
-      return `Ethereum (${network})`
-    }
-    return 'Ethereum'
-  }
-  if (CHAINS_META[skaleNetwork] && CHAINS_META[skaleNetwork][chainName]) {
-    if (
-      app &&
-      CHAINS_META[skaleNetwork][chainName].apps &&
-      CHAINS_META[skaleNetwork][chainName].apps[app]
-    ) {
-      return CHAINS_META[skaleNetwork][chainName].apps[app].alias
-    }
-    return CHAINS_META[skaleNetwork][chainName].alias
-  }
-  return chainName
-}
-
-export function getChainAppsMeta(chainName: string, skaleNetwork: SkaleNetwork) {
-  if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
-    return CHAINS_META[skaleNetwork][chainName].apps
-  }
 }
 
 export function getRandom(list: Array<any>) {

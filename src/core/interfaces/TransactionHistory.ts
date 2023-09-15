@@ -23,13 +23,8 @@
 
 import { AddressType } from '.'
 
-interface TxData {
-  gasUsed: number
-  transactionHash: string
-}
-
 export interface TransactionHistory {
-  tx: TxData
+  transactionHash: string
   timestamp: number
   chainName: string
   txName: string

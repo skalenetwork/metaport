@@ -13,7 +13,8 @@ import Collapse from '@mui/material/Collapse'
 import SettingsBackupRestoreRoundedIcon from '@mui/icons-material/SettingsBackupRestoreRounded'
 import TollIcon from '@mui/icons-material/Toll'
 
-import { getChainAlias, getRandom } from '../../core/helper'
+import { getRandom } from '../../core/helper'
+import { getChainAlias } from '../../core/metadata'
 import { cls, cmn, styles } from '../../core/css'
 import localStyles from './SkStepper.module.scss'
 

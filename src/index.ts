@@ -30,7 +30,7 @@ import WrappedTokens from './components/WrappedTokens'
 import HistoryButton from './components/HistoryButton'
 import TransactionsHistory from './components/TransactionsHistory'
 
-import { CHAINS_META, getChainAlias } from './core/helper'
+import { CHAINS_META, getChainAlias } from './core/metadata'
 import { cls, styles, cmn } from './core/css'
 import MetaportCore from './core/metaport'
 import { chainBg } from './core/metadata'

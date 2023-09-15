@@ -95,7 +95,7 @@ export default function TransactionData(props: {
   const explorerUrl = getTxUrl(
     props.transactionData.chainName,
     props.config.skaleNetwork,
-    props.transactionData.tx.transactionHash
+    props.transactionData.transactionHash
   )
   return (
     <div className={cls(cmn.flex, cmn.flexcv, cmn.mtop5, cmn.mbott5, cmn.mleft5, cmn.mri5)}>

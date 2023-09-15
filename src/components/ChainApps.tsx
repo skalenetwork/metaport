@@ -3,7 +3,7 @@ import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRigh
 
 import { cls, cmn, styles } from '../core/css'
 import { SkaleNetwork } from '../core/interfaces'
-import { getChainAppsMeta, getChainAlias } from '../core/helper'
+import { getChainAppsMeta, getChainAlias } from '../core/metadata'
 
 import ChainIcon from './ChainIcon'
 

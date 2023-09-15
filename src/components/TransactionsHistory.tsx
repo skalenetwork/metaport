@@ -37,7 +37,7 @@ import { useCollapseStore } from '../store/Store'
 import { cls, styles, cmn } from '../core/css'
 import { interfaces, SkPaper } from '../Metaport'
 
-import { getChainAlias } from '../core/helper'
+import { getChainAlias } from '../core/metadata'
 
 export default function TransactionsHistory() {
   const transactionsHistory = useMetaportStore((state) => state.transactionsHistory)

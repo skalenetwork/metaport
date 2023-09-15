@@ -37,10 +37,9 @@ import SkPaper from './SkPaper'
 import { TokenBalance } from './TokenList'
 import TokenIcon from './TokenIcon'
 
-import { getTokenName } from '../core/metadata'
+import { getTokenName, getChainAlias } from '../core/metadata'
 import { BALANCE_UPDATE_INTERVAL_MS } from '../core/constants'
 
-import { getChainAlias } from '../core/helper'
 import { cls, cmn, styles } from '../core/css'
 
 import { useCollapseStore } from '../store/Store'

@@ -53,54 +53,44 @@ import { useUIStore } from '../store/Store'
 import { useMetaportStore } from '../store/MetaportStore'
 import MetaportCore from '../core/metaport'
 
-const { chains, webSocketPublicClient } = configureChains(
-  [
-    mainnet,
-    goerli,
-    constructWagmiChain('staging', 'staging-legal-crazy-castor'),
-    constructWagmiChain('staging', 'staging-utter-unripe-menkar'),
-    constructWagmiChain('staging', 'staging-faint-slimy-achird'),
-    constructWagmiChain('staging', 'staging-perfect-parallel-gacrux'),
-    constructWagmiChain('staging', 'staging-severe-violet-wezen'),
-    constructWagmiChain('staging', 'staging-weepy-fitting-caph'),
-
-    constructWagmiChain('mainnet', 'honorable-steel-rasalhague'),
-    constructWagmiChain('mainnet', 'elated-tan-skat'),
-    constructWagmiChain('mainnet', 'affectionate-immediate-pollux')
-  ],
-  [
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: chain.rpcUrls.default.http[0],
-        webSocket: getWebSocketUrl(chain)
-      })
-    })
-  ]
-)
-
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Supported Wallets',
-    wallets: [
-      metaMaskWallet({ chains, projectId: '' }),
-      enkryptWallet({ chains }),
-      injectedWallet({ chains }),
-      coinbaseWallet({ chains, appName: 'TEST' })
-    ]
-  }
-])
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient: webSocketPublicClient
-})
-
 export default function MetaportProvider(props: {
   config: MetaportConfig
   className?: string
   children?: ReactElement | ReactElement[]
 }) {
+  const skaleChains = props.config.chains.map((chain) =>
+    constructWagmiChain(props.config.skaleNetwork, chain)
+  )
+  const { chains, webSocketPublicClient } = configureChains(
+    [mainnet, goerli, ...skaleChains],
+    [
+      jsonRpcProvider({
+        rpc: (chain) => ({
+          http: chain.rpcUrls.default.http[0],
+          webSocket: getWebSocketUrl(chain)
+        })
+      })
+    ]
+  )
+
+  const connectors = connectorsForWallets([
+    {
+      groupName: 'Supported Wallets',
+      wallets: [
+        metaMaskWallet({ chains, projectId: '' }),
+        enkryptWallet({ chains }),
+        injectedWallet({ chains }),
+        coinbaseWallet({ chains, appName: 'SKALE Bridge' })
+      ]
+    }
+  ])
+
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient: webSocketPublicClient
+  })
+
   const widgetTheme = getWidgetTheme(props.config.theme)
 
   const setTheme = useUIStore((state) => state.setTheme)
@@ -136,10 +126,7 @@ export default function MetaportProvider(props: {
         chainName = actionStateUpdate.actionData.chainName2
       }
       addTransaction({
-        tx: {
-          transactionHash: actionStateUpdate.transactionHash,
-          gasUsed: 1000
-        },
+        transactionHash: actionStateUpdate.transactionHash,
         timestamp: actionStateUpdate.timestamp,
         chainName,
         txName: actionStateUpdate.actionState

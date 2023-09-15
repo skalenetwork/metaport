@@ -12,7 +12,7 @@ import ChainIcon from './ChainIcon'
 
 import { MetaportConfig } from '../core/interfaces'
 
-import { getChainAlias, getChainAppsMeta } from '../core/helper'
+import { getChainAlias, getChainAppsMeta } from '../core/metadata'
 import { cls, cmn, styles } from '../core/css'
 
 import SkPaper from './SkPaper'
