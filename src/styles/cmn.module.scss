@@ -40,7 +40,7 @@
 }
 
 .bordbott {
-    border-top: 1px $sk-paper-color solid;
+    border-bottom: 1px $sk-paper-color solid;
 }
 
 .bordleft {
@@ -70,6 +70,10 @@
 
 .ptop20 {
     padding-top: 20px !important;
+}
+
+.m10 {
+    margin: 10px !important;
 }
 
 .mtop10 {
@@ -254,6 +258,15 @@
 .pCent {
     text-align: center;
 }
+
+.pri {
+    text-align: right;
+}
+
+.pleft {
+    text-align: right;
+}
+
 
 
 :global([rk-chain-button]) {

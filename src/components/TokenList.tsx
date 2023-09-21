@@ -99,10 +99,6 @@ export default function TokenList() {
           >
             {tokensText}
           </p>
-
-          {/* <div className={cmn.mri5}>
-              {token ? <TokenBalance token={token} tokenBalances={tokenBalances} /> : null}
-            </div> */}
         </div>
       </AccordionSummary>
 

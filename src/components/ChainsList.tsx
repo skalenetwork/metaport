@@ -138,9 +138,6 @@ export default function ChainsList(props: {
             className={cls(cmn.chainsList, cmn.mbott10, cmn.mri10)}
             style={{ marginLeft: '8px' }}
           >
-            {/* <div className={cls([cmn.mleft5, size === 'md'])} style={{ marginTop: '-15px' }}>
-              <ChainApps skaleNetwork={props.config.skaleNetwork} chain={props.chain} size={size} handle={handle} />
-            </div> */}
             {schainNames.map((name) => (
               <Typography key={name}>
                 <Button

@@ -37,6 +37,7 @@ import { cls, styles, cmn } from './core/css'
 import MetaportCore from './core/metaport'
 import { chainBg } from './core/metadata'
 import { BASE_EXPLORER_URLS } from './core/constants'
+import { toWei, fromWei } from './core/convertation'
 
 import { getWidgetTheme as getMetaportTheme } from './core/themes'
 
@@ -71,6 +72,8 @@ export {
   cls,
   styles,
   cmn,
+  toWei,
+  fromWei,
   interfaces,
   dataclasses,
   getMetaportTheme,
