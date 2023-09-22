@@ -195,7 +195,7 @@ export default function ChainsList(props: {
                 <div className={cls([cmn.mleft5, size === 'md'])}>
                   <ChainApps
                     skaleNetwork={props.config.skaleNetwork}
-                    chain={name}
+                    chainName={name}
                     handle={handle}
                     size={size}
                   />

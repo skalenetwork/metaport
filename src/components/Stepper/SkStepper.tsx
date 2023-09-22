@@ -93,7 +93,6 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                           className={cls(styles.btnAction, cmn.mtop5)}
                         >
                           {btnText}
-                          {/* {props.loadingTokens ? 'Loading...' : step.btnLoadingText} */}
                         </LoadingButton>
                       ) : (
                         <Button
@@ -139,7 +138,6 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
               <Button
                 onClick={startOver}
                 color="primary"
-                // variant='contained'
                 size="medium"
                 className={cls(styles.btnAction, cmn.mle)}
                 startIcon={<SettingsBackupRestoreRoundedIcon />}

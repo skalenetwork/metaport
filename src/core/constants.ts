@@ -23,7 +23,6 @@
 
 export const MAINNET_CHAIN_NAME = 'mainnet'
 
-export const ETH_ERC20_ADDRESS = '0xD2Aaa00700000000000000000000000000000000'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const M2S_POSTFIX = 'm2s'
@@ -58,24 +57,27 @@ export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   regression: 'https://goerli.etherscan.io/'
 }
 
-export const BASE_EXPLORER_URLS = {
+export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   mainnet: 'explorer.mainnet.skalenodes.com',
   staging: 'explorer.staging-v3.skalenodes.com',
   legacy: 'explorer.staging-v3.skalenodes.com',
   regression: 'regression-explorer.skalenodes.com'
 }
 
-// ETA constants
+export const MAINNET_WS_ENDPOINTS: { [skaleNetwork: string]: string } = {
+  mainnet: 'https://eth.llamarpc.com',
+  staging: 'wss://goerli-light.eth.linkpool.io/ws',
+  legacy: 'wss://goerli-light.eth.linkpool.io/ws',
+  regression: 'wss://goerli-light.eth.linkpool.io/ws'
+}
 
-// export const GAS_STATION_API_ENDPOINT = 'https://ethgasstation.info/api/ethgasAPI.json?'
+// ETA constants
 
 export const IMA_M2S_WAIT = 5
 export const IMA_S2S_WAIT = 2
 export const IMA_HUB_WAIT = 5
 
 // ETF constants
-
-export const COINGECKO_API_ENDPOINT = ''
 
 export const DEFAULT_FAUCET_URL = 'https://sfuel.skale.network/'
 export const SFUEL_CHECKS_INTERVAL = 8

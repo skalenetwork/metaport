@@ -7,7 +7,7 @@ import { useMetaportStore } from '../store/MetaportStore'
 export default function AmountErrorMessage() {
   const amountErrorMessage = useMetaportStore((state) => state.amountErrorMessage)
   return (
-    <Collapse in={!!amountErrorMessage || amountErrorMessage === ''} className="noMarg">
+    <Collapse in={!!amountErrorMessage || amountErrorMessage === ''}>
       <p
         className={cls(
           cmn.flex,

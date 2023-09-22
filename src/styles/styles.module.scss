@@ -81,6 +81,7 @@
 }
 
 .lightTheme {
+
     .action_transferDone,
     .action_transferETHDone {
         background-image: linear-gradient(45deg, #f7c9b1 0%, #f8d4da 100%);
@@ -356,4 +357,36 @@ button {
 
 .accordionSummaryTokens {
     padding-right: 11pt !important;
+}
+
+
+.inputAmount {
+
+    :global .MuiInput-root::after {
+        border-bottom: none !important;
+    }
+
+    :global .MuiInput-root::before {
+        border-bottom: none !important;
+    }
+
+    :global(input) {
+        border-radius: 4px 0 0 4px;
+        padding: 9pt 15pt;
+        font-weight: bold !important;
+        font-size: 1.3rem !important;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    :global input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
 }

@@ -31,8 +31,6 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 
-import localStyles from './AmountInput/AmountInput.module.scss'
-
 import SkPaper from './SkPaper'
 import TokenBalance from './TokenBalance'
 
@@ -188,8 +186,8 @@ export default function CommunityPool() {
         <AccordionDetails>
           <SkPaper background="transparent" className={cls(styles.accordionContent)}>
             <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.errorMessage, cmn.flexg)}>
-              This wallet is used to pay for Ethereum gas fees from your transactions to the
-              Ethereum Mainnet. You may withdraw funds from your SKALE Gas Wallet at anytime.
+              This wallet is used to pay for gas fees on transactions that are send to the Ethereum
+              Mainnet. You may withdraw funds from your SKALE Gas Wallet at anytime.
             </p>
             <div className={cls(cmn.ptop20, cmn.flex)}>
               <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>
@@ -207,7 +205,7 @@ export default function CommunityPool() {
             </div>
             <div className={cls(cmn.ptop0, cmn.flex)}>
               <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>
-                Exit wallet Balance
+                Exit Wallet Balance
               </p>
               <div>
                 <TokenBalance
@@ -225,7 +223,7 @@ export default function CommunityPool() {
                   <div className={cls(cmn.flex, cmn.flexcv)}>
                     <div className={cls(cmn.flex, cmn.flexg)}>
                       <TextField
-                        className={localStyles.inputAmount}
+                        className={styles.inputAmount}
                         type="number"
                         variant="standard"
                         placeholder="0.00"

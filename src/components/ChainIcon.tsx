@@ -15,10 +15,7 @@ export default function ChainIcon(props: {
   const size = props.size ?? 'sm'
   const className = styles[`chainIcon${size}`] + ' ' + props.className
   if (iconPath !== undefined) {
-    if (iconPath.default) {
-      return <img className={className} src={iconPath.default} />
-    }
-    return <img className={className} src={iconPath} />
+    return <img className={className} src={iconPath.default ?? iconPath} />
   }
   return <OfflineBoltRoundedIcon className={cls(styles.defaultChainIcon, className)} />
 }

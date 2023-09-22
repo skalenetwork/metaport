@@ -4,8 +4,6 @@ import InfoIcon from '@mui/icons-material/Info'
 import Skeleton from '@mui/material/Skeleton'
 
 import { isMainnet } from '../core/helper'
-// import { getTransactionFee } from '../../core/fee_calculator';
-
 import { cls, cmn } from '../core/css'
 
 function roundDown(number, decimals) {
@@ -21,7 +19,6 @@ export default function TransferETF(props: { fromChain: string }) {
     setIsLoaded(false)
     const fromMainnet = isMainnet(props.fromChain)
     let baseETF = 0
-    // if (fromMainnet) baseETF = await getTransactionFee();
     if (fromMainnet) baseETF = 2.5
     setEtf(baseETF)
     setIsLoaded(true)

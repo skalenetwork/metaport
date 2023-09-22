@@ -67,7 +67,7 @@ export default function MetaportProvider(props: {
       jsonRpcProvider({
         rpc: (chain) => ({
           http: chain.rpcUrls.default.http[0],
-          webSocket: getWebSocketUrl(chain)
+          webSocket: getWebSocketUrl(chain, props.config.skaleNetwork)
         })
       })
     ]
@@ -80,7 +80,7 @@ export default function MetaportProvider(props: {
         metaMaskWallet({ chains, projectId: '' }),
         enkryptWallet({ chains }),
         injectedWallet({ chains }),
-        coinbaseWallet({ chains, appName: 'SKALE Bridge' })
+        coinbaseWallet({ chains, appName: 'SKALE Metaport' })
       ]
     }
   ])

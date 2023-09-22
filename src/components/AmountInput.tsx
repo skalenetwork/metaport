@@ -3,12 +3,11 @@ import { useAccount } from 'wagmi'
 
 import TextField from '@mui/material/TextField'
 
-import { cls, cmn } from '../../core/css'
-import localStyles from './AmountInput.module.scss'
+import { cls, cmn, styles } from '../core/css'
 
-import TokenList from '../TokenList'
-import { useMetaportStore } from '../../store/MetaportStore'
-import { useCollapseStore } from '../../store/Store'
+import TokenList from './TokenList'
+import { useMetaportStore } from '../store/MetaportStore'
+import { useCollapseStore } from '../store/Store'
 
 export default function AmountInput() {
   const { address } = useAccount()
@@ -26,7 +25,7 @@ export default function AmountInput() {
   }
 
   return (
-    <div className={cls(cmn.flex, localStyles.inputAmount)}>
+    <div className={cls(cmn.flex, styles.inputAmount)}>
       {expandedTokens ? null : (
         <div className={cls(cmn.flex, cmn.flexg, cmn.flexcv)}>
           <TextField

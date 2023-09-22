@@ -25,7 +25,6 @@ import { fromWei } from './convertation'
 import { CoinGeckoClient } from 'coingecko-api-v3'
 import { DEFAULT_ERC20_DECIMALS } from './constants'
 
-
 export async function getTransactionFee(): Promise<number> {
   // todo: get actual gas limit for transfer
   // todo: get actual gas price

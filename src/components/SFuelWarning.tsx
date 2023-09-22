@@ -171,12 +171,10 @@ export default function SFuelWarning(props: {}) {
       if (fromPowRes) log(chainName1, fromPowRes.message)
       if (toPowRes) log(chainName2, toPowRes.message)
       if (hubPowRes) log(hubChain, hubPowRes.message)
-      // window.open(DEFAULT_FAUCET_URL, '_blank');
     } else {
       setSFuelStatus('action')
       setSFuelOk(true)
     }
-    // await updateStationsData()
     setMining(false)
   }
 

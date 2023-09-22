@@ -73,7 +73,7 @@ export const addTokenData = (
 
 export const createTokensMap = (
   chainName1: string,
-  chainName2: string | null | undefined,
+  chainName2: string | null,
   config: MetaportConfig
 ): TokenDataTypesMap => {
   const tokens = getEmptyTokenDataMap()

@@ -1,5 +1,4 @@
 .labelStep {
-    // font-weight: 600 !important;
     text-transform: uppercase !important;
     font-size: 0.6525rem !important;
     line-height: 1.6 !important;
@@ -13,7 +12,6 @@
         text-transform: none !important;
         font-size: 0.9025rem !important;
         line-height: 1.6 !important;
-        //letter-spacing: 0.02857em !important;
         font-family: inherit !important;
     }
 
@@ -35,7 +33,6 @@
         padding-right: 0;
         margin-left: 11px;
         padding-left: 18px;
-        //border-left: none !important;
     }
 
     :global(.MuiChip-icon) {

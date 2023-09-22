@@ -30,7 +30,6 @@ export function remove0x(s: any) {
 
 function calcChainId(chainName: string): number {
   let h = ethers.solidityPackedKeccak256(['string'], [chainName])
-  // let h = soliditySha3(sChainName);
   h = remove0x(h).toLowerCase()
   while (h.length < 64) h = '0' + h
   h = h.substr(0, 13)
@@ -39,6 +38,5 @@ function calcChainId(chainName: string): number {
 }
 
 export function getChainId(chainName: string): number {
-  // if (chainName === MAINNET_CHAIN_NAME) return CHAIN_IDS[network];
   return calcChainId(chainName)
 }

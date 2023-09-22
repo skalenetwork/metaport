@@ -22,19 +22,15 @@
  */
 
 import { TokenData } from '../../core/dataclasses/TokenData'
-import EthTokenData from '../../core/dataclasses/EthTokenData'
 import { TokenType } from '../../core/dataclasses/TokenType'
 import { Contract } from 'ethers'
 
 export interface TokenDataMap {
   [tokenSymbol: string]: TokenData
 }
-export interface EthTokenDataMap {
-  [tokenSymbol: string]: EthTokenData
-}
 
 export type TokenDataTypesMap = {
-  [TokenType.eth]: EthTokenDataMap
+  [TokenType.eth]: TokenDataMap
   [TokenType.erc20]: TokenDataMap
   [TokenType.erc721]: TokenDataMap
   [TokenType.erc721meta]: TokenDataMap

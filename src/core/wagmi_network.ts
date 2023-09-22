@@ -27,7 +27,7 @@ import { getSChainEndpoint } from './network'
 import { getExplorerUrl } from './explorer'
 import { getChainAlias } from './metadata'
 import { getChainId } from './chain_id'
-
+import { MAINNET_WS_ENDPOINTS } from './constants'
 import { SkaleNetwork } from './interfaces'
 
 export function constructWagmiChain(network: SkaleNetwork, chainName: string): Chain {
@@ -57,9 +57,8 @@ export function constructWagmiChain(network: SkaleNetwork, chainName: string): C
   } as const satisfies Chain
 }
 
-export function getWebSocketUrl(chain: Chain): string {
-  // return chain.rpcUrls.default.webSocket ? chain.rpcUrls.default.webSocket[0] : '';
+export function getWebSocketUrl(chain: Chain, skaleNetwork: SkaleNetwork): string {
   return chain.rpcUrls.default.webSocket
     ? chain.rpcUrls.default.webSocket[0]
-    : 'wss://goerli-light.eth.linkpool.io/ws' // TODO - IP!
+    : MAINNET_WS_ENDPOINTS[skaleNetwork]
 }

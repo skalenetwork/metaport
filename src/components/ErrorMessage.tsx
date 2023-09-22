@@ -27,10 +27,10 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
         style={{ wordBreak: 'break-all' }}
         className={cls(cmn.p1, cmn.p, cmn.p600, cmn.pPrim, cmn.flexg, cmn.pCent, cmn.mtop10)}
       >
-        Error occured
+        Oops! Something went wrong.
       </p>
       <p className={cls(cmn.p4, cmn.p, cmn.p600, cmn.pSec, cmn.flexg, cmn.pCent, cmn.mbott10)}>
-        Please check logs in developer console
+        Logs are available in your browser's developer console
       </p>
       <div className={cmn.flex}>
         <p

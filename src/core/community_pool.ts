@@ -68,7 +68,6 @@ export async function getCommunityPoolData(
   sChain: SChain
 ): Promise<CommunityPoolData> {
   if (chainName2 !== MAINNET_CHAIN_NAME) {
-    // log('not a S2M transfer, skipping community pool check')
     return {
       exitGasOk: true,
       isActive: null,
@@ -78,8 +77,6 @@ export async function getCommunityPoolData(
       originalRecommendedRechargeAmount: null
     }
   }
-
-  // log('Getting community pool data', address, chainName1)
   const balanceWei = await mainnet.communityPool.balance(address, chainName1)
   const accountBalanceWei = await mainnet.ethBalance(address)
   const activeS = await sChain.communityLocker.contract.activeUsers(address)

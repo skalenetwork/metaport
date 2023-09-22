@@ -11,8 +11,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-utter-unripe-menkar', // Calypso
     'staging-faint-slimy-achird', // Nebula
     'staging-perfect-parallel-gacrux', // Test Chain 1
-    'staging-severe-violet-wezen', // Test Chain 2
-    'staging-weepy-fitting-caph' // Tank War Zone
+    'staging-severe-violet-wezen' // Test Chain 2
   ],
   tokens: {
     eth: {
@@ -79,9 +78,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-utter-unripe-menkar': {
               hub: 'staging-legal-crazy-castor'
             }
-            // 'staging-faint-slimy-achird': {
-            //   hub: 'staging-legal-crazy-castor'
-            // }
           }
         }
       },
@@ -204,20 +200,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     },
     'staging-faint-slimy-achird': {
       // Nebula connections
-      // eth: {
-      //   eth: {
-      //     address: '0x',
-      //     chains: {
-      //       'staging-legal-crazy-castor': {
-      //         clone: true
-      //       },
-      //       mainnet: {
-      //         hub: 'staging-legal-crazy-castor',
-      //         clone: true
-      //       },
-      //     }
-      //   }
-      // },
       erc20: {
         skl: {
           address: '0x7F73B66d4e6e67bCdeaF277b9962addcDabBFC4d',
@@ -249,9 +231,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-utter-unripe-menkar': {
               wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
             }
-            // 'staging-faint-slimy-achird': {
-            //   wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
-            // }
           }
         }
       },
@@ -329,20 +308,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-perfect-parallel-gacrux': {
       erc20: {},
       erc721: {},
-      erc1155: {
-        // "skaliens": {
-        //   "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
-        //   "chains": {}
-        // },
-        // "medals": {
-        //   "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
-        //   "chains": {}
-        // },
-        // "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
-        //   "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
-        //   "chains": {}
-        // }
-      }
+      erc1155: {}
     }
   },
   theme: {

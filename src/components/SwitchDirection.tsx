@@ -26,6 +26,26 @@ export default function SwitchDirection() {
   const loading = useMetaportStore((state) => state.loading)
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
 
+  function doSwitch() {
+    const element = myElement.current
+    const rotate = () => {
+      if (element) {
+        element.classList.add('spin')
+        setTimeout(() => {
+          element.classList.remove('spin')
+        }, 400)
+      }
+    }
+    rotate()
+    const chain1 = chainName1
+    const app1 = appName1
+    setChainName1(chainName2)
+    setAppName1(appName2)
+    setChainName2(chain1)
+    setAppName2(app1)
+    startOver()
+  }
+
   return (
     <div className={cls(styles.sk__btnSwitch, cmn.flex)}>
       <div className={cls(cmn.flex, cmn.flexg)}></div>
@@ -47,25 +67,7 @@ export default function SwitchDirection() {
             zIndex: metaportTheme.zIndex
           }}
           disabled={loading || transferInProgress}
-          onClick={() => {
-            const element = myElement.current
-            const rotate = () => {
-              if (element) {
-                element.classList.add('spin')
-                setTimeout(() => {
-                  element.classList.remove('spin')
-                }, 400)
-              }
-            }
-            rotate()
-            const chain1 = chainName1
-            const app1 = appName1
-            setChainName1(chainName2)
-            setAppName1(appName2)
-            setChainName2(chain1)
-            setAppName2(app1)
-            startOver()
-          }}
+          onClick={doSwitch}
         >
           <ArrowDownwardRoundedIcon />
         </IconButton>
