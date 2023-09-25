@@ -21,47 +21,29 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-export type ActionState =
-    | 'init'
-    | 'approve'
-    | 'approveDone'
-    | 'transfer'
-    | 'transferDone'
-    | 'received'
-    | 'transferETH'
-    | 'transferETHDone'
-    | 'receivedETH'
-    | 'approveWrap'
-    | 'approveWrapDone'
-    | 'wrap'
-    | 'wrapDone'
-    | 'unwrap'
-    | 'unwrapDone'
-    | 'switch'
-    | 'unlock'
-    | 'unlockDone';
+import { ActionState } from '../interfaces'
 
 type LoadingButtonTextMap = {
-    [key in ActionState]: string;
-};
+  [key in ActionState]: string
+}
 
 export const LOADING_BUTTON_TEXT: LoadingButtonTextMap = {
-    init: 'Initializing',
-    approve: 'Approving transfer',
-    approveDone: 'Transfer approved',
-    transfer: 'Transferring tokens',
-    transferDone: 'Waiting for tokens to be received',
-    received: 'Tokens received',
-    transferETH: 'Transferring ETH',
-    transferETHDone: 'Waiting for ETH to be received',
-    receivedETH: 'ETH received',
-    approveWrap: 'Approving wrap',
-    approveWrapDone: 'Wrap approved',
-    wrap: 'Wrapping tokens',
-    wrapDone: 'Tokens wrapped',
-    unwrap: 'Unwrapping tokens',
-    unwrapDone: 'Tokens unwrapped',
-    switch: 'Waiting for network switch',
-    unlock: 'Unlocking ETH',
-    unlockDone: 'ETH unlocked'
-};
+  init: 'Initializing',
+  approve: 'Approving transfer',
+  approveDone: 'Transfer approved',
+  transfer: 'Transferring tokens',
+  transferDone: 'Waiting for tokens to be received',
+  received: 'Tokens received',
+  transferETH: 'Transferring ETH',
+  transferETHDone: 'Waiting for ETH to be received',
+  receivedETH: 'ETH received',
+  approveWrap: 'Approving wrap',
+  approveWrapDone: 'Wrap approved',
+  wrap: 'Wrapping tokens',
+  wrapDone: 'Tokens wrapped',
+  unwrap: 'Unwrapping tokens',
+  unwrapDone: 'Tokens unwrapped',
+  switch: 'Waiting for network switch',
+  unlock: 'Unlocking ETH',
+  unlockDone: 'ETH unlocked'
+}

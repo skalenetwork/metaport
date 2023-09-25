@@ -1,201 +1,81 @@
+/**
+ * @license
+ * SKALE Metaport
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
+/**
+ * @file transfer_steps.ts
+ * @copyright SKALE Labs 2023-Present
+ */
 
-import debug from 'debug';
+import debug from 'debug'
 
-import TokenData from './dataclasses/TokenData';
-import * as interfaces from './interfaces/index';
-import { MetaportConfig } from './interfaces/index';
+import {
+  TokenData,
+  WrapStepMetadata,
+  UnwrapStepMetadata,
+  TransferStepMetadata,
+  UnlockStepMetadata,
+  StepMetadata,
+  getActionType
+} from './dataclasses'
 
-import { getChainIcon } from '../components/ChainsList/helper';
-import { getChainName } from './helper';
-import { MAINNET_CHAIN_NAME } from './constants';
+import { MetaportConfig } from './interfaces/index'
 
+import { MAINNET_CHAIN_NAME } from './constants'
 
-debug.enable('*');
-const log = debug('metaport:core:transferSteps');
+debug.enable('*')
+const log = debug('metaport:core:transferSteps')
 
+export function getStepsMetadata(
+  config: MetaportConfig,
+  token: TokenData,
+  to: string
+): StepMetadata[] {
+  const steps: StepMetadata[] = []
+  if (token === undefined || token === null || to === null || to === '') return steps
 
-export function getTransferSteps(
-    trReq: interfaces.TransferParams,
-    config: MetaportConfig,
-    theme: any,
-    token: TokenData
-) {
+  const toChain = token.connections[to].hub ?? to
+  const hubTokenOptions = config.connections[toChain][token.type][token.keyname].chains[token.chain]
+  const destTokenOptions = config.connections[to][token.type][token.keyname].chains[token.chain]
+  const isCloneToClone = token.isClone(to) && destTokenOptions.clone
 
-    // TODO: refactor this function
+  log(`Setting toChain: ${toChain}`)
 
-    const steps = [];
-
-    const toChain = trReq.route ? trReq.route.hub : trReq.chains[1];
-    const toApp = trReq.route ? null : trReq.toApp;
-
-    log('adding transfer step');
-    steps.push(getTransferStep(
-        trReq.chains[0],
-        toChain,
-        trReq.fromApp,
-        toApp,
-        token.symbol,
-        config,
-        theme
-    ));
-
-    if (trReq.route) {
-        if (!token.clone) {
-            log('adding wrap+transfer steps');
-            steps.push(getWrapStep(
-                trReq.route.hub,
-                null,
-                config,
-                theme
-            ));
-            steps.push(getTransferStep(
-                trReq.route.hub,
-                trReq.chains[1],
-                null,
-                trReq.toApp,
-                token.symbol,
-                config,
-                theme
-            ));
-
-        } else {
-            log('adding unwrap+transfer steps');
-            steps.push(getUnwrapStep(
-                trReq.route.hub,
-                null,
-                config,
-                theme
-            ));
-            steps.push(getTransferStep(
-                trReq.route.hub,
-                trReq.chains[1],
-                null,
-                toApp,
-                token.symbol,
-                config,
-                theme
-            ));
-        }
-    } else {
-        if (token.unwrappedSymbol || token.wrapsSFuel) {
-            if (!token.clone) {
-                log('adding wrap step');
-                steps.unshift(getWrapStep(
-                    trReq.chains[0],
-                    trReq.fromApp,
-                    config,
-                    theme
-                ));
-            } else {
-                log('adding unwrap step');
-                if (!token.wrapsSFuel) {
-                    steps.push(getUnwrapStep(
-                        trReq.chains[1],
-                        trReq.toApp,
-                        config,
-                        theme
-                    ));
-                }
-            }
-        }
-    };
-    if (trReq.chains[1] === MAINNET_CHAIN_NAME &&
-        (trReq.tokenKeyname === 'eth' || (trReq.route && trReq.route.tokenKeyname === 'eth'))
-    ) {
-        log('adding unlock step');
-        steps.push(getUnlockStep(
-            trReq.chains[1],
-            null,
-            config,
-            theme
-        ))
+  if (token.connections[toChain].wrapper) {
+    steps.push(new WrapStepMetadata(token.chain, to))
+  }
+  steps.push(
+    new TransferStepMetadata(getActionType(token.chain, toChain, token.type), token.chain, toChain)
+  )
+  if (hubTokenOptions.wrapper && !isCloneToClone) {
+    steps.push(new UnwrapStepMetadata(token.chain, toChain))
+  }
+  if (token.connections[to].hub) {
+    const tokenOptionsHub = config.connections[toChain][token.type][token.keyname].chains[to]
+    if (tokenOptionsHub.wrapper && !isCloneToClone) {
+      steps.push(new WrapStepMetadata(toChain, to))
     }
-    return steps;
-}
+    steps.push(new TransferStepMetadata(getActionType(toChain, to, token.type), toChain, to))
+  }
+  if (to === MAINNET_CHAIN_NAME && token.keyname === 'eth') {
+    steps.push(new UnlockStepMetadata(token.chain, to))
+  }
 
-
-function getWrapStep(
-    chain: string,
-    app: string,
-    config: MetaportConfig,
-    theme: any
-) {
-    const chainName = getChainName(config.chainsMetadata, chain, config.skaleNetwork, app);
-    const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
-    return {
-        chainName,
-        chainIcon,
-        headline: 'Wrap on',
-        text: `Wrap on ${chainName}. You may need to approve first.`,
-        btnText: 'Wrap',
-        btnLoadingText: 'Wrapping'
-    }
-}
-
-
-function getUnwrapStep(
-    chain: string,
-    app: string,
-    config: MetaportConfig,
-    theme: any
-) {
-    const chainName = getChainName(config.chainsMetadata, chain, config.skaleNetwork, app);
-    const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
-    return {
-        chainName,
-        chainIcon,
-        headline: 'Unwrap on',
-        text: `Unwrap on ${chainName}.`,
-        btnText: 'Unwrap',
-        btnLoadingText: 'Unwrapping'
-    }
-}
-
-
-function getUnlockStep(
-    chain: string,
-    app: string,
-    config: MetaportConfig,
-    theme: any
-) {
-    const chainName = getChainName(config.chainsMetadata, chain, config.skaleNetwork, app);
-    const chainIcon = getChainIcon(config.skaleNetwork, chain, theme.dark, app);
-    return {
-        chainName,
-        chainIcon,
-        headline: 'Unlock on',
-        text: `You have to unlock your assets to be able to use it on ${chainName}.`,
-        btnText: 'Unlock',
-        btnLoadingText: 'Unlocking'
-    }
-}
-
-
-function getTransferStep(
-    fromChain: string,
-    toChain: string,
-    fromApp: string,
-    toApp: string,
-    tokenSymbol: string,
-    config: MetaportConfig,
-    theme: any
-) {
-    const fromChainName = getChainName(
-        config.chainsMetadata,
-        fromChain,
-        config.skaleNetwork,
-        fromApp
-    );
-    const toChainName = getChainName(config.chainsMetadata, toChain, config.skaleNetwork, toApp);
-    const toChainIcon = getChainIcon(config.skaleNetwork, toChain, theme.dark, toApp);
-    return {
-        chainName: toChainName,
-        chainIcon: toChainIcon,
-        headline: 'Transfer to',
-        text: `Transfer ${tokenSymbol.toUpperCase()} from ${fromChainName} to ${toChainName}.
-            You may need to approve first.`,
-        btnText: 'Transfer',
-        btnLoadingText: 'Transferring'
-    }
+  log(`Action steps metadata:`)
+  log(steps)
+  return steps
 }

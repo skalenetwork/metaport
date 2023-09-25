@@ -21,85 +21,93 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-export const MAINNET_CHAIN_NAME = 'mainnet';
+export const MAINNET_CHAIN_NAME = 'mainnet'
 
-export const ETH_ERC20_ADDRESS = '0xD2Aaa00700000000000000000000000000000000';
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
-export const M2S_POSTFIX = 'm2s';
-export const S2M_POSTFIX = 's2m';
-export const S2S_POSTFIX = 's2s';
-export const WRAP_ACTION = 'wrap';
-export const UNWRAP_ACTION = 'unwrap';
+export const M2S_POSTFIX = 'm2s'
+export const S2M_POSTFIX = 's2m'
+export const S2S_POSTFIX = 's2s'
+export const WRAP_ACTION = 'wrap'
+export const UNWRAP_ACTION = 'unwrap'
+
+export const ICONS_BASE_URL =
+  'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/'
+
+export const MAX_NUMBER = 2n ** 256n - 1n
 
 // tslint:disable-next-line
-export const MAX_APPROVE_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'; // (2^256 - 1 )
+export const MAX_APPROVE_AMOUNT =
+  '115792089237316195423570985008687907853269984665640564039457584007913129639935' // (2^256 - 1 )
 
-export const DEFAULT_MIN_SFUEL_WEI = '21000000000000';
+export const DEFAULT_MIN_SFUEL_WEI = 21000000000000n
 
-export const DEFAULT_ERC20_DECIMALS = '18';
-export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...';
+export const DEFAULT_ERC20_DECIMALS = '18'
+export const DEFAULT_ERROR_MSG = 'Ooops... Something went wrong...'
 
-export const DEFAULT_MP_MARGIN = '20pt';
-export const DEFAULT_MP_Z_INDEX = 99000;
+export const DEFAULT_MP_MARGIN = '20pt'
+export const DEFAULT_MP_Z_INDEX = 99000
 
-export const HTTPS_PREFIX = 'https://';
+export const HTTPS_PREFIX = 'https://'
 
 export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
-    mainnet: 'https://etherscan.io',
-    staging3: 'https://goerli.etherscan.io/',
-    legacy: 'https://goerli.etherscan.io/',
-    regression: 'https://goerli.etherscan.io/'
-};
+  mainnet: 'https://etherscan.io',
+  staging: 'https://goerli.etherscan.io/',
+  legacy: 'https://goerli.etherscan.io/',
+  regression: 'https://goerli.etherscan.io/'
+}
 
-export const BASE_EXPLORER_URLS = {
-    mainnet: "explorer.mainnet.skalenodes.com",
-    staging3: "explorer.staging-v3.skalenodes.com",
-    legacy: "explorer.staging-v3.skalenodes.com",
-    regression: "regression-explorer.skalenodes.com"
-};
+export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
+  mainnet: 'explorer.mainnet.skalenodes.com',
+  staging: 'explorer.staging-v3.skalenodes.com',
+  legacy: 'explorer.staging-v3.skalenodes.com',
+  regression: 'regression-explorer.skalenodes.com'
+}
+
+export const MAINNET_WS_ENDPOINTS: { [skaleNetwork: string]: string } = {
+  mainnet: 'https://eth.llamarpc.com',
+  staging: 'wss://goerli-light.eth.linkpool.io/ws',
+  legacy: 'wss://goerli-light.eth.linkpool.io/ws',
+  regression: 'wss://goerli-light.eth.linkpool.io/ws'
+}
 
 // ETA constants
 
-export const GAS_STATION_API_ENDPOINT = 'https://ethgasstation.info/api/ethgasAPI.json?';
-
-export const IMA_M2S_WAIT = 5;
-export const IMA_S2S_WAIT = 2;
-export const IMA_HUB_WAIT = 5;
+export const IMA_M2S_WAIT = 5
+export const IMA_S2S_WAIT = 2
+export const IMA_HUB_WAIT = 5
 
 // ETF constants
 
-export const COINGECKO_API_ENDPOINT = '';
-
-export const DEFAULT_FAUCET_URL = 'https://sfuel.skale.network/';
-export const SFUEL_CHEKCS_INTERVAL = 8;
+export const DEFAULT_FAUCET_URL = 'https://sfuel.skale.network/'
+export const SFUEL_CHECKS_INTERVAL = 8
 
 export const SFUEL_TEXT = {
-    'sfuel': {
-        'action': '',
-        'warning': 'You may need sFUEL on the destination chain',
-        'error': 'You need sFUEL to perform a transfer'
-    },
-    'gas': {
-        'action': '',
-        'warning': 'You may need ETH on the destination chain',
-        'error': 'You need ETH to perform a transfer'
-    }
-};
+  sfuel: {
+    warning: 'You need sFUEL on the destination chain',
+    error: 'You need sFUEL to perform a transfer'
+  },
+  gas: {
+    warning: 'You need ETH on the destination chain',
+    error: 'You need ETH to perform a transfer'
+  }
+}
 
 // faucet constants
 
-export const ZERO_FUNCSIG = '0x00000000';
+export const ZERO_FUNCSIG = '0x00000000'
 
-import faucetJson from '../metadata/faucet.json';
-export const FAUCET_DATA = faucetJson;
+import faucetJson from '../metadata/faucet.json'
+export const FAUCET_DATA = faucetJson
 
 // community pool
 
-export const RECHARGE_MULTIPLIER = 1.2;
-export const MINIMUM_RECHARGE_AMOUNT = 0.005;
-export const COMMUNITY_POOL_WITHDRAW_GAS_LIMIT = '1500000';
-export const BALANCE_UPDATE_INTERVAL_SECONDS = 10;
+export const RECHARGE_MULTIPLIER = 1.2
+export const MINIMUM_RECHARGE_AMOUNT = 0.005
+export const COMMUNITY_POOL_WITHDRAW_GAS_LIMIT = 1500000n
+export const _BALANCE_UPDATE_INTERVAL_SECONDS = 10
+export const BALANCE_UPDATE_INTERVAL_MS = _BALANCE_UPDATE_INTERVAL_SECONDS * 1000
 
+export const SFUEL_RESERVE_AMOUNT = 0.02
 
-export const SFUEL_RESERVE_AMOUNT = 0.02;
+export const SUCCESS_EMOJIS = ['🎉', '👌', '✅', '🙌', '🎊']

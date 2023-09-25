@@ -17,9 +17,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node }}
-    - name: Update submodules
-      run: |
-        git submodule update --remote
     - name: Prepare metadata
       run: |
         bash prepare_meta.sh

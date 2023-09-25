@@ -21,91 +21,34 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import { getAddress } from 'ethers'
 
-import { MAINNET_CHAIN_NAME } from './constants';
-import utils from 'web3-utils';
-import { TransferRequestStatus } from './dataclasses';
-
-import mainnetMeta from '../meta/mainnet/chains.json';
-import stagingMeta from '../meta/staging/chains.json';
-import legacyMeta from '../meta/legacy/chains.json';
-import regressionMeta from '../meta/regression/chains.json';
-
-
-export const CHAINS_META = {
-    'mainnet': mainnetMeta,
-    'staging3': stagingMeta,
-    'legacy': legacyMeta,
-    'regression': regressionMeta
-}
-
-
-export function clsNames(...args: any): string {
-    const filteredArgs = args.map((clsName: any) => {
-        if (typeof clsName === 'string') return clsName;
-        if (Array.isArray(clsName) && clsName.length === 2 && clsName[1]) return clsName[0];
-    });
-    return filteredArgs.join(' ');
-}
-
+import { MAINNET_CHAIN_NAME } from './constants'
+import { TransferRequestStatus } from './dataclasses'
 
 export function eqArrays(arr1, arr2) {
-    return JSON.stringify(arr1) === JSON.stringify(arr2);
+  return JSON.stringify(arr1) === JSON.stringify(arr2)
 }
-
 
 export function isMainnet(chainName: string): boolean {
-    return chainName === MAINNET_CHAIN_NAME;
+  return chainName === MAINNET_CHAIN_NAME
 }
-
 
 export function addressesEqual(address1: string, address2: string): boolean {
-    return utils.toChecksumAddress(address1) === utils.toChecksumAddress(address2);
+  return getAddress(address1) === getAddress(address2)
 }
 
-
-export function isTransferRequestActive(transferRequestStatus: TransferRequestStatus) {
-    return transferRequestStatus === TransferRequestStatus.IN_PROGRESS ||
-        transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB;
+export default function isTransferRequestActive(transferRequestStatus: TransferRequestStatus) {
+  return (
+    transferRequestStatus === TransferRequestStatus.IN_PROGRESS ||
+    transferRequestStatus === TransferRequestStatus.IN_PROGRESS_HUB
+  )
 }
 
 export function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export function getChainName(
-    chainsMetadata: any,
-    chainName: string,
-    skaleNetwork: string,
-    app?: string
-): string {
-    if (chainName === MAINNET_CHAIN_NAME) {
-        return 'Mainnet';
-    }
-    if (chainsMetadata && chainsMetadata[chainName]) {
-        if (app && chainsMetadata[chainName].apps[app]) {
-            return chainsMetadata[chainName].apps[app].alias;
-        }
-        return chainsMetadata[chainName].alias;
-    } else {
-        return getChainNameMeta(chainName, skaleNetwork, app);
-    }
-}
-
-
-function getChainNameMeta(chainName: string, skaleNetwork: string, app?: string): string {
-    if (CHAINS_META[skaleNetwork] && CHAINS_META[skaleNetwork][chainName]) {
-        if (app && CHAINS_META[skaleNetwork][chainName].apps &&
-            CHAINS_META[skaleNetwork][chainName].apps[app]) {
-            return CHAINS_META[skaleNetwork][chainName].apps[app].alias;
-        }
-        return CHAINS_META[skaleNetwork][chainName].alias;
-    }
-    return chainName;
-}
-
-export function getChainAppsMeta(chainName: string, skaleNetwork: string) {
-    if (CHAINS_META[skaleNetwork][chainName] && CHAINS_META[skaleNetwork][chainName].apps) {
-        return CHAINS_META[skaleNetwork][chainName].apps;
-    }
+export function getRandom(list: Array<any>) {
+  return list[Math.floor(Math.random() * list.length)]
 }
