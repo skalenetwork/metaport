@@ -22,7 +22,7 @@
  */
 
 import { TokenData } from './dataclasses'
-import { SkaleNetwork } from './interfaces'
+import { SkaleNetwork, NetworksMetadataMap } from './interfaces'
 import { MAINNET_CHAIN_NAME } from './constants'
 
 import mainnetMeta from '../meta/mainnet/chains.json'
@@ -37,14 +37,14 @@ import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons'
 
 import * as icons from '../icons'
 
-const CHAIN_ICONS = {
+const CHAIN_ICONS: { [network in SkaleNetwork]: any } = {
   mainnet: MAINNET_CHAIN_ICONS,
   staging: STAGING_CHAIN_ICONS,
   legacy: LEGACY_CHAIN_ICONS,
   regression: REGRESSION_CHAIN_ICONS
 }
 
-export const CHAINS_META = {
+export const CHAINS_META: NetworksMetadataMap = {
   mainnet: mainnetMeta,
   staging: stagingMeta,
   legacy: legacyMeta,

@@ -30,7 +30,8 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --fix",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,js,mdx}\"",
     "test": "vitest",
-    "test:cov": "vitest run --coverage"
+    "test:cov": "vitest run --coverage",
+    "version": "node -e \"console.log(require('./package.json').version);\""
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.4.0",
