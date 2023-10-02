@@ -33,6 +33,7 @@ export interface MetaportConfig {
 
   skaleNetwork: SkaleNetwork
   mainnetEndpoint?: string
+  projectId?: string
   chains: string[]
 
   tokens: TokenMetadataMap

@@ -11,6 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import Collapse from '@mui/material/Collapse'
 
 import SettingsBackupRestoreRoundedIcon from '@mui/icons-material/SettingsBackupRestoreRounded'
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded'
 
 import { getRandom } from '../../core/helper'
 import { getChainAlias } from '../../core/metadata'
@@ -63,8 +64,8 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
             {stepsMetadata.map((step, i) => (
               <Step key={i}>
                 <StepLabel className={localStyles.labelStep}>
-                  <div className={cls(cmn.flex, cmn.flexcv, styles.mp_flexRow)}>
-                    <div className={cls(cmn.flex, cmn.flexcv, styles.mp_flexRow)}>
+                  <div className={cls(cmn.flex, cmn.flexcv)}>
+                    <div className={cls(cmn.flex, cmn.flexcv)}>
                       <h4 className={cls(cmn.nom, cmn.flex)}>{step.headline}</h4>
                       <div className={cls(cmn.mleft5, cmn.mri5, cmn.flex)}>
                         <ChainIcon
@@ -86,6 +87,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                       {loading ? (
                         <LoadingButton
                           loading
+                          startIcon={<ArrowOutwardRoundedIcon />}
                           loadingPosition="start"
                           variant="contained"
                           color="primary"

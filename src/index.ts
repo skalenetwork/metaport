@@ -29,8 +29,7 @@ import ErrorMessage from './components/ErrorMessage'
 import CommunityPool from './components/CommunityPool'
 import SFuelWarning from './components/SFuelWarning'
 import WrappedTokens from './components/WrappedTokens'
-import HistoryButton from './components/HistoryButton'
-import TransactionsHistory from './components/TransactionsHistory'
+import History from './components/History'
 
 import { CHAINS_META, getChainAlias } from './core/metadata'
 import { cls, styles, cmn } from './core/css'
@@ -42,6 +41,7 @@ import { toWei, fromWei } from './core/convertation'
 import { getWidgetTheme as getMetaportTheme } from './core/themes'
 
 import { useAccount as useWagmiAccount } from 'wagmi'
+import { ConnectButton as RainbowConnectButton } from '@rainbow-me/rainbowkit'
 
 import { PROXY_ENDPOINTS } from './core/network'
 
@@ -67,8 +67,7 @@ export {
   CommunityPool,
   SFuelWarning,
   WrappedTokens,
-  TransactionsHistory,
-  HistoryButton,
+  History,
   cls,
   styles,
   cmn,
@@ -82,5 +81,6 @@ export {
   BASE_EXPLORER_URLS,
   CHAINS_META,
   chainBg,
-  getChainAlias
+  getChainAlias,
+  RainbowConnectButton
 }

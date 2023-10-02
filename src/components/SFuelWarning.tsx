@@ -30,6 +30,7 @@ import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Collapse } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded'
 
 import { BALANCE_UPDATE_INTERVAL_MS, MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../core/constants'
 import { Station } from '../core/sfuel'
@@ -205,6 +206,7 @@ export default function SFuelWarning(props: {}) {
             {mining ? (
               <LoadingButton
                 loading
+                startIcon={<ArrowOutwardRoundedIcon />}
                 loadingPosition="start"
                 size="small"
                 variant="contained"

@@ -73,15 +73,20 @@ export default function MetaportProvider(props: {
     ]
   )
 
+  const wallets = [
+    enkryptWallet({ chains }),
+    injectedWallet({ chains }),
+    coinbaseWallet({ chains, appName: 'SKALE Metaport' })
+  ]
+
+  if (props.config.projectId) {
+    wallets.push(metaMaskWallet({ chains, projectId: props.config.projectId }))
+  }
+
   const connectors = connectorsForWallets([
     {
       groupName: 'Supported Wallets',
-      wallets: [
-        metaMaskWallet({ chains, projectId: '' }),
-        enkryptWallet({ chains }),
-        injectedWallet({ chains }),
-        coinbaseWallet({ chains, appName: 'SKALE Metaport' })
-      ]
+      wallets: wallets
     }
   ])
 

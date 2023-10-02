@@ -66,9 +66,9 @@ export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
 
 export const MAINNET_WS_ENDPOINTS: { [skaleNetwork: string]: string } = {
   mainnet: 'https://eth.llamarpc.com',
-  staging: 'wss://goerli-light.eth.linkpool.io/ws',
-  legacy: 'wss://goerli-light.eth.linkpool.io/ws',
-  regression: 'wss://goerli-light.eth.linkpool.io/ws'
+  staging: 'wss://ethereum-goerli.publicnode.com',
+  legacy: 'wss://ethereum-goerli.publicnode.com	',
+  regression: 'wss://ethereum-goerli.publicnode.com	'
 }
 
 // ETA constants

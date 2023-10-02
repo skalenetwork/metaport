@@ -2,13 +2,13 @@ import React from 'react'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
-import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Button from '@mui/material/Button'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 
 import ChainApps from './ChainApps'
 import ChainIcon from './ChainIcon'
+import Chain from './Chain'
 
 import { MetaportConfig } from '../core/interfaces'
 
@@ -68,36 +68,12 @@ export default function ChainsList(props: {
         >
           {props.chain ? (
             <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv)}>
-              <div
-                className={cls(
-                  cmn.flex,
-                  cmn.flexc,
-                  [cmn.mri10, size === 'sm'],
-                  [cmn.mri15, size === 'md']
-                )}
-              >
-                <ChainIcon
-                  skaleNetwork={props.config.skaleNetwork}
-                  chainName={props.chain}
-                  size={size}
-                  app={props.app}
-                />
-              </div>
-              <p
-                className={cls(
-                  cmn.p,
-                  [cmn.p2, size === 'md'],
-                  [cmn.p3, size === 'sm'],
-                  [cmn.p700, size === 'md'],
-                  [cmn.p600, size === 'sm'],
-                  cmn.cap,
-                  cmn.pPrim,
-                  cmn.mri10,
-                  cmn.pWrap
-                )}
-              >
-                {getChainAlias(props.config.skaleNetwork, props.chain, props.app)}
-              </p>
+              <Chain
+                skaleNetwork={props.config.skaleNetwork}
+                chainName={props.chain}
+                size={size}
+                app={props.app}
+              />
               <div className={cls(cmn.flex, cmn.flexg)}></div>
               <div className={cls(cmn.flex, cmn.flexc)}>
                 {props.app ? (
@@ -139,7 +115,7 @@ export default function ChainsList(props: {
             style={{ marginLeft: '8px' }}
           >
             {schainNames.map((name) => (
-              <Typography key={name}>
+              <div key={name}>
                 <Button
                   color="secondary"
                   size="medium"
@@ -150,6 +126,7 @@ export default function ChainsList(props: {
                     className={cls(
                       cmn.flex,
                       cmn.flexcv,
+                      cmn.mleft10,
                       [cmn.mtop5, size === 'sm'],
                       [cmn.mbott5, size === 'sm'],
                       [cmn.mtop10, size === 'md'],
@@ -157,37 +134,7 @@ export default function ChainsList(props: {
                       cmn.fullWidth
                     )}
                   >
-                    <div
-                      className={cls(
-                        cmn.flex,
-                        cmn.flexc,
-                        [cmn.mri10, size === 'sm'],
-                        [cmn.mri15, size === 'md'],
-                        cmn.mleft10,
-                        cmn.pPrim
-                      )}
-                    >
-                      <ChainIcon
-                        skaleNetwork={props.config.skaleNetwork}
-                        chainName={name}
-                        size={size}
-                      />
-                    </div>
-                    <p
-                      className={cls(
-                        cmn.flex,
-                        cmn.p,
-                        [cmn.p2, size === 'md'],
-                        [cmn.p3, size === 'sm'],
-                        [cmn.p700, size === 'md'],
-                        [cmn.p600, size === 'sm'],
-                        cmn.cap,
-                        cmn.pPrim,
-                        cmn.mri10
-                      )}
-                    >
-                      {getChainAlias(props.config.skaleNetwork, name)}
-                    </p>
+                    <Chain skaleNetwork={props.config.skaleNetwork} chainName={name} size={size} />
                     <div className={cls(cmn.flex, cmn.flexg)}></div>
                     <KeyboardArrowRightRoundedIcon className={cls(cmn.mri5, cmn.pPrim)} />
                   </div>
@@ -200,7 +147,7 @@ export default function ChainsList(props: {
                     size={size}
                   />
                 </div>
-              </Typography>
+              </div>
             ))}
           </div>
         </AccordionDetails>

@@ -32,6 +32,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import Button from '@mui/material/Button'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ErrorIcon from '@mui/icons-material/Error'
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded'
 
 import SkPaper from './SkPaper'
 import TokenBalance from './TokenBalance'
@@ -178,6 +179,7 @@ export default function WrappedTokens() {
                 {loading ? (
                   <LoadingButton
                     loading
+                    startIcon={<ArrowOutwardRoundedIcon />}
                     loadingPosition="start"
                     variant="contained"
                     color="primary"
