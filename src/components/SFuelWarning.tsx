@@ -180,12 +180,15 @@ export default function SFuelWarning(props: {}) {
   }
 
   const mainnetTransfer = chainName1 === MAINNET_CHAIN_NAME || chainName2 === MAINNET_CHAIN_NAME
+  const noSFuelDest = sFuelStatus === 'warning' && chainName1 === MAINNET_CHAIN_NAME
+  const noSFuelSource = sFuelStatus === 'error' && chainName2 === MAINNET_CHAIN_NAME
+  const sFuelBtn = noSFuelDest || noSFuelSource || !mainnetTransfer
 
   function getSFuelText() {
-    if (mainnetTransfer) {
-      return SFUEL_TEXT['gas'][sFuelStatus]
+    if (sFuelBtn) {
+      return SFUEL_TEXT['sfuel'][sFuelStatus]
     }
-    return SFUEL_TEXT['sfuel'][sFuelStatus]
+    return SFUEL_TEXT['gas'][sFuelStatus]
   }
 
   if (loading && chainName2)
@@ -201,7 +204,7 @@ export default function SFuelWarning(props: {}) {
         <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.pPrim, cmn.flexGrow, cmn.mleft10)}>
           ⛽ {getSFuelText()}
         </p>
-        {!mainnetTransfer ? (
+        {sFuelBtn ? (
           <div>
             {mining ? (
               <LoadingButton
