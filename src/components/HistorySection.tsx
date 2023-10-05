@@ -56,7 +56,7 @@ export default function TransactionsHistory() {
           }}
           color="warning"
           size="medium"
-          className={cls(styles.btnAction, cmn.mle)}
+          className={cls(styles.btnAction)}
           startIcon={<CloseRoundedIcon />}
         >
           Close history
@@ -65,7 +65,7 @@ export default function TransactionsHistory() {
           onClick={clearTransferHistory}
           color="error"
           size="medium"
-          className={cls(styles.btnAction, cmn.mle)}
+          className={cls(styles.btnAction)}
           startIcon={<DeleteRoundedIcon />}
         >
           Clear history

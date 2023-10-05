@@ -10,8 +10,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-legal-crazy-castor', // Europa
     'staging-utter-unripe-menkar', // Calypso
     'staging-faint-slimy-achird', // Nebula
+    'staging-fast-active-bellatrix', // Chaos Testnet
     'staging-perfect-parallel-gacrux', // Test Chain 1
-    'staging-severe-violet-wezen' // Test Chain 2
+    'staging-severe-violet-wezen', // Test Chain 2
   ],
   tokens: {
     eth: {
@@ -67,6 +68,12 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
       name: 'Human Token',
       symbol: 'HMT',
       iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/10347.png'
+    },
+    ubxs: {
+      name: 'UBXS Token',
+      symbol: 'UBXS',
+      decimals: '6',
+      iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/17242.png'
     }
   },
   connections: {
@@ -136,6 +143,15 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         hmt: {
           address: '0x4058d058ff62ED347dB8a69c43Ae9C67268B50b0',
           chains: {}
+        },
+        ubxs: {
+          address: '0x5A4957cc54B21e1fa72BA549392f213030d34804',
+          chains: {
+            'staging-legal-crazy-castor': {},
+            'staging-fast-active-bellatrix': {
+              hub: 'staging-legal-crazy-castor'
+            }
+          }
         }
       },
       erc721meta: {
@@ -198,8 +214,39 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         }
       }
     },
+    'staging-fast-active-bellatrix': {
+      // Chaos connections
+      erc20: {
+        ubxs: {
+          address: '0x1b54d4b074fed0cd6a0b5836fc82af13a7f9288a',
+          chains: {
+            mainnet: {
+              clone: true,
+              hub: 'staging-legal-crazy-castor'
+            },
+            'staging-legal-crazy-castor': {
+              clone: true
+            }
+          }
+        }
+      }
+    },
     'staging-faint-slimy-achird': {
       // Nebula connections
+      // eth: {
+      //   eth: {
+      //     address: '0x',
+      //     chains: {
+      //       'staging-legal-crazy-castor': {
+      //         clone: true
+      //       },
+      //       mainnet: {
+      //         hub: 'staging-legal-crazy-castor',
+      //         clone: true
+      //       },
+      //     }
+      //   }
+      // },
       erc20: {
         skl: {
           address: '0x7F73B66d4e6e67bCdeaF277b9962addcDabBFC4d',
@@ -297,6 +344,17 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
           chains: {
             mainnet: {
               clone: true
+            }
+          }
+        },
+        ubxs: {
+          address: '0x8e55e1cc37eca9636f4ef35874468876d52d623f',
+          chains: {
+            mainnet: {
+              clone: true
+            },
+            'staging-fast-active-bellatrix': {
+              wrapper: '0xaB5149362daCcC086bC4ABDde80aB6b09cBc118E'
             }
           }
         }

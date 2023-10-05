@@ -75,7 +75,7 @@ export default function History(props: { size?: interfaces.SimplifiedSize }) {
         </SkPaper>
       ) : null}
       <div>
-        {transfersHistory.map((transfer: interfaces.TransferHistory, key: number) => (
+        {transfersHistory.slice().reverse().map((transfer: interfaces.TransferHistory, key: number) => (
           <SkPaper
             gray
             key={key}

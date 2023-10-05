@@ -134,6 +134,19 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
               >
                 {emoji} Transfer completed
               </p>
+              <p
+                className={cls(
+                  cmn.p3,
+                  cmn.p,
+                  cmn.p600,
+                  cmn.pSec,
+                  cmn.flexg,
+                  cmn.pCent,
+                  cmn.mtop5
+                )}
+              >
+                Transfer details are available in History section
+              </p>
             </div>
             <div className={cls(cmn.flex, cmn.mtop20)}>
               <AddToken token={token} destChainName={chainName2} mpc={mpc} ima={ima2} />
@@ -141,7 +154,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                 onClick={startOver}
                 color="primary"
                 size="medium"
-                className={cls(styles.btnAction, cmn.mle)}
+                className={cls(styles.btnAction)}
                 startIcon={<SettingsBackupRestoreRoundedIcon />}
               >
                 Start over
