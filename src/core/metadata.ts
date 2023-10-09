@@ -51,7 +51,17 @@ export const CHAINS_META: NetworksMetadataMap = {
   regression: regressionMeta
 }
 
-export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app?: string): string {
+
+function transformChainName(chainName: string): string {
+  return chainName.split('-')
+    .map(word =>
+      word.charAt(0).toUpperCase() +
+      word.slice(1).toLowerCase()
+    ).join(' ');
+}
+
+export function getChainAlias(
+  skaleNetwork: SkaleNetwork, chainName: string, app?: string, prettify?: boolean): string {
   if (chainName === MAINNET_CHAIN_NAME) {
     if (skaleNetwork != MAINNET_CHAIN_NAME) {
       const network = skaleNetwork === 'staging' ? 'Goerli' : skaleNetwork
@@ -69,6 +79,7 @@ export function getChainAlias(skaleNetwork: SkaleNetwork, chainName: string, app
     }
     return CHAINS_META[skaleNetwork][chainName].alias
   }
+  if (prettify) return transformChainName(chainName)
   return chainName
 }
 
