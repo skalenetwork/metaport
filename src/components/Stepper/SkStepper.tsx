@@ -135,15 +135,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                 {emoji} Transfer completed
               </p>
               <p
-                className={cls(
-                  cmn.p3,
-                  cmn.p,
-                  cmn.p600,
-                  cmn.pSec,
-                  cmn.flexg,
-                  cmn.pCent,
-                  cmn.mtop5
-                )}
+                className={cls(cmn.p3, cmn.p, cmn.p600, cmn.pSec, cmn.flexg, cmn.pCent, cmn.mtop5)}
               >
                 Transfer details are available in History section
               </p>

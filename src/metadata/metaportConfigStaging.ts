@@ -12,7 +12,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-faint-slimy-achird', // Nebula
     'staging-fast-active-bellatrix', // Chaos Testnet
     'staging-perfect-parallel-gacrux', // Test Chain 1
-    'staging-severe-violet-wezen', // Test Chain 2
+    'staging-severe-violet-wezen' // Test Chain 2
   ],
   tokens: {
     eth: {
