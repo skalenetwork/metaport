@@ -60,7 +60,7 @@ export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
 export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   mainnet: 'explorer.mainnet.skalenodes.com',
   staging: 'explorer.staging-v3.skalenodes.com',
-  legacy: 'explorer.staging-v3.skalenodes.com',
+  legacy: 'legacy-explorer.skalenodes.com',
   regression: 'regression-explorer.skalenodes.com'
 }
 
