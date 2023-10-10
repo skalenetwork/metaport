@@ -161,7 +161,7 @@ export class WrapERC20S extends Action {
       const approveTx = await sChain.erc20.approve(
         this.token.keyname,
         MAX_APPROVE_AMOUNT,
-        this.token.address,
+        this.token.wrapper(this.chainName2),
         {
           address: this.address
         }
