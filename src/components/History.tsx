@@ -75,111 +75,124 @@ export default function History(props: { size?: interfaces.SimplifiedSize }) {
         </SkPaper>
       ) : null}
       <div>
-        {transfersHistory.map((transfer: interfaces.TransferHistory, key: number) => (
-          <SkPaper
-            gray
-            key={key}
-            className={cls(
-              [cmn.mtop10, size === 'sm'],
-              [cmn.mbott10, size === 'sm'],
-              [cmn.mtop20, size === 'md'],
-              [cmn.mbott20, size === 'md'],
-              cmn.nop
-            )}
-          >
-            <div
+        {transfersHistory
+          .slice()
+          .reverse()
+          .map((transfer: interfaces.TransferHistory, key: number) => (
+            <SkPaper
+              gray
+              key={key}
               className={cls(
-                cmn.flex,
-                cmn.flexcv,
-                cmn.flexw,
-                cmn.mleft15,
-                [cmn.ptop15, size === 'sm'],
-                [cmn.ptop25, size === 'md']
+                [cmn.mtop10, size === 'sm'],
+                [cmn.mbott10, size === 'sm'],
+                [cmn.mtop20, size === 'md'],
+                [cmn.mbott20, size === 'md'],
+                cmn.nop
               )}
             >
               <div
                 className={cls(
                   cmn.flex,
                   cmn.flexcv,
-                  [cmn.mbott10, size === 'sm'],
-                  [cmn.mbott20, size === 'md']
+                  cmn.flexw,
+                  cmn.mleft15,
+                  [cmn.ptop15, size === 'sm'],
+                  [cmn.ptop25, size === 'md']
                 )}
               >
-                <Chain skaleNetwork={network} chainName={transfer.chainName1} size={size} decIcon />
-                <ArrowForwardRoundedIcon
+                <div
                   className={cls(
-                    cmn.pPrim,
-                    [cmn.mleft5, size === 'sm'],
-                    [cmn.mleft10, size === 'md'],
-                    [cmn.mri5, size === 'sm'],
-                    [cmn.mri10, size === 'md'],
-                    styles.chainIconxs
+                    cmn.flex,
+                    cmn.flexcv,
+                    [cmn.mbott10, size === 'sm'],
+                    [cmn.mbott20, size === 'md']
                   )}
-                />
-                <Chain skaleNetwork={network} chainName={transfer.chainName2} size={size} decIcon />
-              </div>
-              <div className={cls(cmn.flexg)}></div>
-
-              <div
-                className={cls(
-                  cmn.flex,
-                  cmn.flexcv,
-                  [cmn.mbott10, size === 'sm'],
-                  [cmn.mbott20, size === 'md'],
-                  cmn.mri20
-                )}
-              >
-                <div className={cls(cmn.flex, cmn.flexcv)}>
-                  <TokenIcon
-                    tokenSymbol={transfer.tokenKeyname}
-                    size={size == 'sm' ? 'xs' : 'sm'}
+                >
+                  <Chain
+                    skaleNetwork={network}
+                    chainName={transfer.chainName1}
+                    size={size}
+                    decIcon
+                  />
+                  <ArrowForwardRoundedIcon
+                    className={cls(
+                      cmn.pPrim,
+                      [cmn.mleft5, size === 'sm'],
+                      [cmn.mleft10, size === 'md'],
+                      [cmn.mri5, size === 'sm'],
+                      [cmn.mri10, size === 'md'],
+                      styles.chainIconxs
+                    )}
+                  />
+                  <Chain
+                    skaleNetwork={network}
+                    chainName={transfer.chainName2}
+                    size={size}
+                    decIcon
                   />
                 </div>
-                <p
-                  className={cls(
-                    cmn.p,
-                    [cmn.p3, size == 'sm'],
-                    [cmn.p2, size == 'md'],
-                    cmn.p600,
-                    cmn.cap,
-                    cmn.pPrim,
-                    cmn.upp,
-                    cmn.mleft5
-                  )}
-                >
-                  {transfer.amount} {transfer.tokenKeyname}
-                </p>
-                <p
-                  className={cls(
-                    cmn.p,
-                    [cmn.p3, size == 'sm'],
-                    [cmn.p2, size == 'md'],
-                    cmn.p600,
-                    cmn.cap,
-                    cmn.pPrim,
-                    cmn.mleft5,
-                    cmn.flexg
-                  )}
-                >
-                  •{' '}
-                  {transfer.address.substring(0, 6) +
-                    '...' +
-                    transfer.address.substring(transfer.address.length - 4)}
-                </p>
-              </div>
-            </div>
+                <div className={cls(cmn.flexg)}></div>
 
-            <SkPaper gray>
-              {transfer.transactions.map((transactionData: interfaces.TransactionHistory) => (
-                <TransactionData
-                  key={transactionData.transactionHash}
-                  transactionData={transactionData}
-                  config={mpc.config}
-                />
-              ))}
+                <div
+                  className={cls(
+                    cmn.flex,
+                    cmn.flexcv,
+                    [cmn.mbott10, size === 'sm'],
+                    [cmn.mbott20, size === 'md'],
+                    cmn.mri20
+                  )}
+                >
+                  <div className={cls(cmn.flex, cmn.flexcv)}>
+                    <TokenIcon
+                      tokenSymbol={transfer.tokenKeyname}
+                      size={size == 'sm' ? 'xs' : 'sm'}
+                    />
+                  </div>
+                  <p
+                    className={cls(
+                      cmn.p,
+                      [cmn.p3, size == 'sm'],
+                      [cmn.p2, size == 'md'],
+                      cmn.p600,
+                      cmn.cap,
+                      cmn.pPrim,
+                      cmn.upp,
+                      cmn.mleft5
+                    )}
+                  >
+                    {transfer.amount} {transfer.tokenKeyname}
+                  </p>
+                  <p
+                    className={cls(
+                      cmn.p,
+                      [cmn.p3, size == 'sm'],
+                      [cmn.p2, size == 'md'],
+                      cmn.p600,
+                      cmn.cap,
+                      cmn.pPrim,
+                      cmn.mleft5,
+                      cmn.flexg
+                    )}
+                  >
+                    •{' '}
+                    {transfer.address.substring(0, 6) +
+                      '...' +
+                      transfer.address.substring(transfer.address.length - 4)}
+                  </p>
+                </div>
+              </div>
+
+              <SkPaper gray>
+                {transfer.transactions.map((transactionData: interfaces.TransactionHistory) => (
+                  <TransactionData
+                    key={transactionData.transactionHash}
+                    transactionData={transactionData}
+                    config={mpc.config}
+                  />
+                ))}
+              </SkPaper>
             </SkPaper>
-          </SkPaper>
-        ))}
+          ))}
       </div>
     </div>
   )

@@ -45,6 +45,10 @@
     "staging-faint-slimy-achird": {
       "address": "0xfd56A3456fbAB0fc013213edCc830B9d32403C8B",
       "func": "0x0c11dedd"
+    },
+    "staging-fast-active-bellatrix": {
+      "address": "0x1B2e7E6E66a6c202cdC0C31DF996b530af22CBee",
+      "func": "0x0c11dedd"
     }
   },
   "legacy": null,
