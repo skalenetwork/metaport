@@ -1,10 +1,10 @@
 {
-  "message_proxy_mainnet_address": "0x20C7946Ace5abE5A1d2B7a8995ff6bAd9AfDfA08",
-  "linker_address": "0xb8174D91323BB448F190d0410f8B8ADD171fA561",
-  "community_pool_address": "0x39aA4a762117FA1513516bA119153C4A44B6a54f",
-  "deposit_box_eth_address": "0x02e03E9Fa67aedfc9234378164CD60B1e3fB2fA3",
-  "deposit_box_erc20_address": "0x978A111EfD61ccD7983c17fD15b3C8F54E363133",
-  "deposit_box_erc721_address": "0xa59Cc7611f62bEF09393FdC56B6B446aD9088d1F",
-  "deposit_box_erc1155_address": "0x645F16eb315cb5F97a6E58116d9684083127CcAB",
-  "deposit_box_erc721_with_metadata_address": "0x953157b6ad85399bC0Ca629beB2C954CC876E274"
+  "message_proxy_mainnet_address": "0x1aB061B92CF11Cb7E1dc66Ef397a8A86707398a8",
+  "linker_address": "0x71b9CeE11de5A0CD1c23c79761bd228D37f68B7f",
+  "community_pool_address": "0xf0d861f90707Fc348d3f55ac54DF51993191e146",
+  "deposit_box_eth_address": "0x4F945E1E36CB921acd25C25467C516B2aD830A26",
+  "deposit_box_erc20_address": "0x05F9264A0639419f3A1ED21de910EC1D7B7868ba",
+  "deposit_box_erc721_address": "0x44c39c783E2ba0B981A0a0e5beCE5a12661d11C8",
+  "deposit_box_erc1155_address": "0x4EC8e29627e233da710F257b537D0F53740CDB3E",
+  "deposit_box_erc721_with_metadata_address": "0x2dC54a15E06b9cBcE94d26C9753cc15aE3192b9C"
 }

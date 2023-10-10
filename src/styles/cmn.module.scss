@@ -22,7 +22,7 @@
     flex-grow: 1;
 }
 
-.flexRow {
+.flexw {
     flex-direction: row;
     flex-wrap: wrap;
 }
@@ -155,6 +155,10 @@
 
 .ptop15 {
     padding-top: 15px !important;
+}
+
+.ptop25 {
+    padding-top: 25px !important;
 }
 
 .nop {

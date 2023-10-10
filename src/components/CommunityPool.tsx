@@ -28,7 +28,6 @@ import { useAccount, useWalletClient, useSwitchNetwork } from 'wagmi'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 
 import SkPaper from './SkPaper'
@@ -217,70 +216,66 @@ export default function CommunityPool() {
                 />
               </div>
             </div>
-            <Grid container spacing={0} className={cmn.ptop20}>
-              <Grid className={cmn.mtop20s} item xs={12}>
-                <SkPaper gray className={cmn.mtop10}>
-                  <div className={cls(cmn.flex, cmn.flexcv)}>
-                    <div className={cls(cmn.flex, cmn.flexg)}>
-                      <TextField
-                        className={styles.inputAmount}
-                        type="number"
-                        variant="standard"
-                        placeholder="0.00"
-                        value={amount}
-                        onChange={handleAmountChange}
-                        disabled={!!loading}
-                      />
-                    </div>
-                    <p
-                      className={cls(
-                        cmn.p,
-                        cmn.p1,
-                        cmn.p700,
-                        cmn.pPrim,
-                        [cmn.pDisabled, loading],
-                        cmn.flex,
-                        cmn.mri20
-                      )}
-                    >
-                      ETH
-                    </p>
-                  </div>
-                </SkPaper>
-                <div className={cls(cmn.mtop10)}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="medium"
-                    className={cls(styles.btnAction, cmn.mtop5)}
-                    onClick={rechargeCP}
-                    disabled={
-                      !!loading ||
-                      !cpData.accountBalance ||
-                      Number(amount) > Number(accountBalanceEther) ||
-                      amount === '' ||
-                      amount === '0' ||
-                      !amount ||
-                      !chainName
-                    }
-                  >
-                    {getRechargeBtnText()}
-                  </Button>
+            <SkPaper gray className={cls(cmn.mtop20)}>
+              <div className={cls(cmn.flex, cmn.flexcv)}>
+                <div className={cls(cmn.flex, cmn.flexg)}>
+                  <TextField
+                    className={styles.inputAmount}
+                    type="number"
+                    variant="standard"
+                    placeholder="0.00"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    disabled={!!loading}
+                  />
                 </div>
-                <div className={cls(cmn.mtop5, cmn.mbott10)}>
-                  <Button
-                    variant="text"
-                    color="warning"
-                    size="small"
-                    className={cls(styles.btnAction, cmn.mtop5)}
-                    onClick={withdrawCP}
-                    disabled={!!loading || !chainName}
-                  >
-                    {getWithdrawBtnText()}
-                  </Button>
-                </div>
-              </Grid>
-            </Grid>
+                <p
+                  className={cls(
+                    cmn.p,
+                    cmn.p1,
+                    cmn.p700,
+                    cmn.pPrim,
+                    [cmn.pDisabled, loading],
+                    cmn.flex,
+                    cmn.mri20
+                  )}
+                >
+                  ETH
+                </p>
+              </div>
+            </SkPaper>
+            <div className={cls(cmn.mtop10)}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                className={cls(styles.btnAction, cmn.mtop5)}
+                onClick={rechargeCP}
+                disabled={
+                  !!loading ||
+                  !cpData.accountBalance ||
+                  Number(amount) > Number(accountBalanceEther) ||
+                  amount === '' ||
+                  amount === '0' ||
+                  !amount ||
+                  !chainName
+                }
+              >
+                {getRechargeBtnText()}
+              </Button>
+            </div>
+            <div className={cls(cmn.mtop5, cmn.mbott10)}>
+              <Button
+                variant="text"
+                color="warning"
+                size="small"
+                className={cls(styles.btnAction, cmn.mtop5)}
+                onClick={withdrawCP}
+                disabled={!!loading || !chainName}
+              >
+                {getWithdrawBtnText()}
+              </Button>
+            </div>
           </SkPaper>
         </AccordionDetails>
       </Accordion>

@@ -2,7 +2,7 @@ import OfflineBoltRoundedIcon from '@mui/icons-material/OfflineBoltRounded'
 import { SkaleNetwork } from '../core/interfaces'
 import { chainIconPath } from '../core/metadata'
 
-import { cls, styles } from '../core/css'
+import { cls, styles, cmn } from '../core/css'
 
 export default function ChainIcon(props: {
   skaleNetwork: SkaleNetwork
@@ -17,5 +17,5 @@ export default function ChainIcon(props: {
   if (iconPath !== undefined) {
     return <img className={className} src={iconPath.default ?? iconPath} />
   }
-  return <OfflineBoltRoundedIcon className={cls(styles.defaultChainIcon, className)} />
+  return <OfflineBoltRoundedIcon className={cls(styles.defaultChainIcon, cmn.pPrim, className)} />
 }

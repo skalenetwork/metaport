@@ -19,7 +19,7 @@ import CommunityPool from './CommunityPool'
 import SFuelWarning from './SFuelWarning'
 import SkConnect from './SkConnect'
 import WrappedTokens from './WrappedTokens'
-import TransactionsHistory from './TransactionsHistory'
+import TransactionsHistory from './HistorySection'
 import HistoryButton from './HistoryButton'
 
 import { cls, cmn } from '../core/css'

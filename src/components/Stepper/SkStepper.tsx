@@ -11,6 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import Collapse from '@mui/material/Collapse'
 
 import SettingsBackupRestoreRoundedIcon from '@mui/icons-material/SettingsBackupRestoreRounded'
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded'
 
 import { getRandom } from '../../core/helper'
 import { getChainAlias } from '../../core/metadata'
@@ -63,8 +64,8 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
             {stepsMetadata.map((step, i) => (
               <Step key={i}>
                 <StepLabel className={localStyles.labelStep}>
-                  <div className={cls(cmn.flex, cmn.flexcv, styles.mp_flexRow)}>
-                    <div className={cls(cmn.flex, cmn.flexcv, styles.mp_flexRow)}>
+                  <div className={cls(cmn.flex, cmn.flexcv)}>
+                    <div className={cls(cmn.flex, cmn.flexcv)}>
                       <h4 className={cls(cmn.nom, cmn.flex)}>{step.headline}</h4>
                       <div className={cls(cmn.mleft5, cmn.mri5, cmn.flex)}>
                         <ChainIcon
@@ -86,6 +87,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                       {loading ? (
                         <LoadingButton
                           loading
+                          startIcon={<ArrowOutwardRoundedIcon />}
                           loadingPosition="start"
                           variant="contained"
                           color="primary"
@@ -132,6 +134,11 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
               >
                 {emoji} Transfer completed
               </p>
+              <p
+                className={cls(cmn.p3, cmn.p, cmn.p600, cmn.pSec, cmn.flexg, cmn.pCent, cmn.mtop5)}
+              >
+                Transfer details are available in History section
+              </p>
             </div>
             <div className={cls(cmn.flex, cmn.mtop20)}>
               <AddToken token={token} destChainName={chainName2} mpc={mpc} ima={ima2} />
@@ -139,7 +146,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                 onClick={startOver}
                 color="primary"
                 size="medium"
-                className={cls(styles.btnAction, cmn.mle)}
+                className={cls(styles.btnAction)}
                 startIcon={<SettingsBackupRestoreRoundedIcon />}
               >
                 Start over

@@ -36,7 +36,7 @@ export default function TransferETA(props: { token: TokenData; toChain: string }
   return (
     <Tooltip arrow title={tooltipText} placement="top">
       <div>
-        <div className={cls(cmn.flex, cmn.flexcv, cmn.flexRow)}>
+        <div className={cls(cmn.flex, cmn.flexcv, cmn.flexw)}>
           <p className={cls(cmn.pSec, cmn.p, cmn.p4, cmn.mri5)}>ETA</p>
           <InfoIcon style={{ width: '14px' }} className={cls(cmn.pSec)} />
         </div>

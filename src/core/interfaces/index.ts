@@ -35,3 +35,6 @@ export * from './ActionStateUpdate'
 export * from './ActionState'
 
 export type AddressType = `0x${string}`
+
+export type Size = 'xs' | 'sm' | 'md' | 'lg'
+export type SimplifiedSize = 'sm' | 'md'

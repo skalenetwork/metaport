@@ -30,6 +30,7 @@ import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Collapse } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded'
 
 import { BALANCE_UPDATE_INTERVAL_MS, MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../core/constants'
 import { Station } from '../core/sfuel'
@@ -179,12 +180,15 @@ export default function SFuelWarning(props: {}) {
   }
 
   const mainnetTransfer = chainName1 === MAINNET_CHAIN_NAME || chainName2 === MAINNET_CHAIN_NAME
+  const noSFuelDest = sFuelStatus === 'warning' && chainName1 === MAINNET_CHAIN_NAME
+  const noSFuelSource = sFuelStatus === 'error' && chainName2 === MAINNET_CHAIN_NAME
+  const sFuelBtn = noSFuelDest || noSFuelSource || !mainnetTransfer
 
   function getSFuelText() {
-    if (mainnetTransfer) {
-      return SFUEL_TEXT['gas'][sFuelStatus]
+    if (sFuelBtn) {
+      return SFUEL_TEXT['sfuel'][sFuelStatus]
     }
-    return SFUEL_TEXT['sfuel'][sFuelStatus]
+    return SFUEL_TEXT['gas'][sFuelStatus]
   }
 
   if (loading && chainName2)
@@ -200,11 +204,12 @@ export default function SFuelWarning(props: {}) {
         <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.pPrim, cmn.flexGrow, cmn.mleft10)}>
           ⛽ {getSFuelText()}
         </p>
-        {!mainnetTransfer ? (
+        {sFuelBtn ? (
           <div>
             {mining ? (
               <LoadingButton
                 loading
+                startIcon={<ArrowOutwardRoundedIcon />}
                 loadingPosition="start"
                 size="small"
                 variant="contained"

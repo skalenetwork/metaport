@@ -10,6 +10,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-legal-crazy-castor', // Europa
     'staging-utter-unripe-menkar', // Calypso
     'staging-faint-slimy-achird', // Nebula
+    'staging-fast-active-bellatrix', // Chaos Testnet
     'staging-perfect-parallel-gacrux', // Test Chain 1
     'staging-severe-violet-wezen' // Test Chain 2
   ],
@@ -67,6 +68,12 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
       name: 'Human Token',
       symbol: 'HMT',
       iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/10347.png'
+    },
+    ubxs: {
+      name: 'UBXS Token',
+      symbol: 'UBXS',
+      decimals: '6',
+      iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/17242.png'
     }
   },
   connections: {
@@ -78,6 +85,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-utter-unripe-menkar': {
               hub: 'staging-legal-crazy-castor'
             }
+            // 'staging-faint-slimy-achird': {
+            //   hub: 'staging-legal-crazy-castor'
+            // }
           }
         }
       },
@@ -136,6 +146,15 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         hmt: {
           address: '0x4058d058ff62ED347dB8a69c43Ae9C67268B50b0',
           chains: {}
+        },
+        ubxs: {
+          address: '0x5A4957cc54B21e1fa72BA549392f213030d34804',
+          chains: {
+            'staging-legal-crazy-castor': {},
+            'staging-fast-active-bellatrix': {
+              hub: 'staging-legal-crazy-castor'
+            }
+          }
         }
       },
       erc721meta: {
@@ -198,8 +217,39 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         }
       }
     },
+    'staging-fast-active-bellatrix': {
+      // Chaos connections
+      erc20: {
+        ubxs: {
+          address: '0xB430a748Af4Ed4E07BA53454a8247f4FA0da7484',
+          chains: {
+            mainnet: {
+              clone: true,
+              hub: 'staging-legal-crazy-castor'
+            },
+            'staging-legal-crazy-castor': {
+              clone: true
+            }
+          }
+        }
+      }
+    },
     'staging-faint-slimy-achird': {
       // Nebula connections
+      // eth: {
+      //   eth: {
+      //     address: '0x',
+      //     chains: {
+      //       'staging-legal-crazy-castor': {
+      //         clone: true
+      //       },
+      //       mainnet: {
+      //         hub: 'staging-legal-crazy-castor',
+      //         clone: true
+      //       },
+      //     }
+      //   }
+      // },
       erc20: {
         skl: {
           address: '0x7F73B66d4e6e67bCdeaF277b9962addcDabBFC4d',
@@ -231,6 +281,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-utter-unripe-menkar': {
               wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
             }
+            // 'staging-faint-slimy-achird': {
+            //   wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
+            // }
           }
         }
       },
@@ -299,6 +352,17 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
               clone: true
             }
           }
+        },
+        ubxs: {
+          address: '0xaB5149362daCcC086bC4ABDde80aB6b09cBc118E',
+          chains: {
+            mainnet: {
+              clone: true
+            },
+            'staging-fast-active-bellatrix': {
+              wrapper: '0x8e55e1Cc37ecA9636F4eF35874468876d52d623F'
+            }
+          }
         }
       }
     },
@@ -308,7 +372,20 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-perfect-parallel-gacrux': {
       erc20: {},
       erc721: {},
-      erc1155: {}
+      erc1155: {
+        // "skaliens": {
+        //   "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
+        //   "chains": {}
+        // },
+        // "medals": {
+        //   "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
+        //   "chains": {}
+        // },
+        // "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
+        //   "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
+        //   "chains": {}
+        // }
+      }
     }
   },
   theme: {

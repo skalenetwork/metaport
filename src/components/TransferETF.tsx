@@ -35,7 +35,7 @@ export default function TransferETF(props: { fromChain: string }) {
   return (
     <Tooltip arrow title={tooltipText} placement="top">
       <div>
-        <div className={cls(cmn.flex, cmn.flexcv, cmn.flexRow)}>
+        <div className={cls(cmn.flex, cmn.flexcv, cmn.flexw)}>
           <p className={cls(cmn.pSec, cmn.p, cmn.p4, cmn.mri5)}>Estimated Transaction Fee</p>
           <InfoIcon style={{ width: '14px' }} className={cls(cmn.pSec)} />
         </div>
