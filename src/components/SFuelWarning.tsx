@@ -34,6 +34,7 @@ import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded'
 
 import { BALANCE_UPDATE_INTERVAL_MS, MAINNET_CHAIN_NAME, SFUEL_TEXT } from '../core/constants'
 import { Station } from '../core/sfuel'
+import { isFaucetAvailable } from '../core/faucet'
 
 import { useMetaportStore } from '../store/MetaportStore'
 import { useSFuelStore } from '../store/SFuelStore'
@@ -198,13 +199,36 @@ export default function SFuelWarning(props: {}) {
       </div>
     )
 
+  const sourceFaucetAvailable =
+    chainName1 === MAINNET_CHAIN_NAME || isFaucetAvailable(chainName1, mpc.config.skaleNetwork)
+  const destFaucetAvailable =
+    chainName2 === MAINNET_CHAIN_NAME || isFaucetAvailable(chainName2, mpc.config.skaleNetwork)
+  const hubFaucetAvailable = !hubChain || isFaucetAvailable(hubChain, mpc.config.skaleNetwork)
+  const faucetsAvailable = sourceFaucetAvailable && destFaucetAvailable && hubFaucetAvailable
+
   return (
     <Collapse in={!loading && sFuelStatus !== 'action' && !sFuelOk}>
       <div className={cls(cmn.mtop20, cmn.mbott5)}>
         <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.pPrim, cmn.flexGrow, cmn.mleft10)}>
           ⛽ {getSFuelText()}
         </p>
-        {sFuelBtn ? (
+        {!faucetsAvailable ? (
+          <p
+            className={cls(
+              cmn.flex,
+              cmn.p3,
+              cmn.p,
+              cmn.pPrim,
+              cmn.flexGrow,
+              cmn.mleft10,
+              cmn.mtop10
+            )}
+          >
+            ❗️ Faucet is not available for one of the selected chains, contact with chain owner to
+            get sFUEL
+          </p>
+        ) : null}
+        {sFuelBtn && faucetsAvailable ? (
           <div>
             {mining ? (
               <LoadingButton
