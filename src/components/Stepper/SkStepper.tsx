@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useWalletClient, useSwitchNetwork, useAccount } from 'wagmi'
+import { useAddRecentTransaction } from '@rainbow-me/rainbowkit'
 
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
@@ -29,6 +30,7 @@ import { SUCCESS_EMOJIS } from '../../core/constants'
 export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const { address } = useAccount()
   const { switchNetworkAsync } = useSwitchNetwork()
+  const addRecentTransaction = useAddRecentTransaction()
 
   const { data: walletClient } = useWalletClient()
 
@@ -47,6 +49,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   const ima2 = useMetaportStore((state) => state.ima2)
 
   const amount = useMetaportStore((state) => state.amount)
+  const transactionsHistory = useMetaportStore((state) => state.transactionsHistory)
 
   const cpData = useCPStore((state) => state.cpData)
 
@@ -54,6 +57,21 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   useEffect(() => {
     setEmoji(getRandom(SUCCESS_EMOJIS))
   }, [])
+
+  useEffect(() => {
+    try {
+      const latestTx = transactionsHistory[transactionsHistory.length - 1]
+      if (latestTx) {
+        addRecentTransaction({
+          hash: latestTx.transactionHash,
+          description: latestTx.txName,
+          confirmations: 1
+        })
+      }
+    } catch {
+      console.error('Failed to add tx to rainbowkit')
+    }
+  }, [transactionsHistory])
 
   if (stepsMetadata.length === 0) return <div></div>
   return (

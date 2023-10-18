@@ -51,7 +51,6 @@ export default function SkConnect() {
           (!authenticationStatus || authenticationStatus === 'authenticated')
         return (
           <div
-            className={cls(cmn.fullWidth)}
             {...(!ready && {
               'aria-hidden': true,
               style: {
