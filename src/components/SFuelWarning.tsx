@@ -174,6 +174,7 @@ export default function SFuelWarning(props: {}) {
       if (toPowRes) log(chainName2, toPowRes.message)
       if (hubPowRes) log(hubChain, hubPowRes.message)
     } else {
+      await updateStationsData()
       setSFuelStatus('action')
       setSFuelOk(true)
     }
