@@ -8,7 +8,8 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   chains: [
     'mainnet',
     'skale-innocent-nasty', // europa
-    'international-villainous-zaurak' // calypso
+    'international-villainous-zaurak', // calypso
+    'big-majestic-oval-SKALE' // QA chain
   ],
   tokens: {
     eth: {
