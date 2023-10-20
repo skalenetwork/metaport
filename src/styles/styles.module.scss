@@ -169,6 +169,9 @@ button {
         background-image: none !important;
     }
 
+    :global(.MuiAccordion-root:before) {
+        display: none !important;
+    }
 
     :global(.MuiLinearProgress-root) {
         border-radius: 20px;
@@ -203,6 +206,11 @@ button {
     max-height: calc(100vh - 180px);
     overflow-y: auto;
     border-radius: $sk-border-radius-outter !important;
+}
+
+.contentHeight {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
 }
 
 
@@ -336,7 +344,7 @@ button {
 
 .infoIcon {
     svg {
-        height: 45pt;
+        height: 35pt;
         width: 100%;
     }
 }
@@ -345,10 +353,12 @@ button {
     transform: rotate(360deg);
 }
 
-
-
 .accordionSummary {
     padding: 10px 26px !important;
+}
+
+.accordionSummarySm {
+    padding: 10px !important;
 }
 
 .accordionContent {
