@@ -81,7 +81,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@rainbow-me/rainbowkit": "^1.1.2",
-    "@skalenetwork/ima-js": "2.0.0-develop.4",
+    "@skalenetwork/ima-js": "2.0.0-preview.5",
     "coingecko-api-v3": "^0.0.29",
     "react-jazzicon": "^1.0.4",
     "viem": "^1.16.6",
