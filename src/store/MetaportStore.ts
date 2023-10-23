@@ -32,7 +32,7 @@ import MetaportCore from '../core/metaport'
 import * as interfaces from '../core/interfaces'
 import * as dataclasses from '../core/dataclasses'
 import { getEmptyTokenDataMap } from '../core/tokens/helper'
-import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG } from '../core/constants'
+import { MAINNET_CHAIN_NAME, DEFAULT_ERROR_MSG, TRANSFER_ERROR_MSG } from '../core/constants'
 import { ACTIONS } from '../core/actions'
 
 debug.enable('*')
@@ -123,11 +123,22 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         ).execute()
       } catch (err) {
         console.error(err)
-        const msg = err.message ? err.message : DEFAULT_ERROR_MSG
+        const msg = err.message
+        let headline
+        if (err.code && err.code === 'ACTION_REJECTED') {
+          headline = 'Transaction signing was rejected'
+        } else {
+          headline = TRANSFER_ERROR_MSG
+        }
+        if (err.info && err.info.error && err.info.error.data && err.info.error.data.message) {
+          headline = err.info.error.data.message
+        }
         set({
           errorMessage: new dataclasses.TransactionErrorMessage(
             msg,
-            get().errorMessageClosedFallback
+            get().errorMessageClosedFallback,
+            headline,
+            true
           )
         })
         return

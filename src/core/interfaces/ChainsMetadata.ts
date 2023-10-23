@@ -25,9 +25,10 @@ import { SkaleNetwork } from './Config'
 
 export interface ChainMetadata {
   alias?: string
+  shortAlias?: string
   minSfuelWei?: string
   faucetUrl?: string
-  category: string
+  category: string | string[]
   background: string
   gradientBackground?: string
   description?: string

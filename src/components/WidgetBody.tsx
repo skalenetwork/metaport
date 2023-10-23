@@ -14,7 +14,6 @@ import AmountErrorMessage from './AmountErrorMessage'
 import SwitchDirection from './SwitchDirection'
 import TokenBalance from './TokenBalance'
 import DestTokenBalance from './DestTokenBalance'
-import ErrorMessage from './ErrorMessage'
 import CommunityPool from './CommunityPool'
 import SFuelWarning from './SFuelWarning'
 import SkConnect from './SkConnect'
@@ -126,7 +125,6 @@ export function WidgetBody(props) {
     !expandedCP &&
     !expandedWT &&
     !!address
-  const showError = !!errorMessage
 
   const grayBg = 'rgb(136 135 135 / 15%)'
   const sourceBg = theme.vibrant ? chainBg(mpc.config.skaleNetwork, chainName1, appName1) : grayBg
@@ -143,10 +141,6 @@ export function WidgetBody(props) {
           <SkConnect />
         </div>
       ) : null}
-
-      <Collapse in={showError}>
-        <ErrorMessage errorMessage={errorMessage} />
-      </Collapse>
       <SkPaper background={sourceBg} className={cmn.nop}>
         <SkPaper background="transparent" className={cmn.nop}>
           <Collapse in={showFrom}>

@@ -29,30 +29,13 @@ const metaport = new Metaport({
 
 Additionally, you can enable debug logs in developer console by enabling `Verbose` level of logs.
 
-### Storybook setup
-
-```
-yarn install
-npx sb init --builder webpack5
-yarn run storybook
-```
-
-### Linter
-
-Used linter: https://palantir.github.io/tslint/  
-
-Install the global CLI and its peer dependency:
-
-```shell
-yarn global add tslint typescript
-```
 
 #### Linter git hook
 
 Be sure to add pre-commit git hook:
 
 ```shell
-echo 'yarn lint' > .git/hooks/pre-commit
+echo 'bun lint' > .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 

@@ -89,8 +89,8 @@ export function WidgetUI(props: { config: MetaportConfig }) {
       <div className={props.config.openButton ? cmn.mbott20 : null}>
         {fabTop ? fabButton : null}
       </div>
-      <Collapse in={isOpen}>
-        <SkPaper className={cls(styles.popper)}>
+      <Collapse in={isOpen} >
+        <SkPaper className={cls(styles.popper, styles.contentHeight)}>
           <Collapse in={!!errorMessage}>
             <ErrorMessage errorMessage={errorMessage} />
           </Collapse>

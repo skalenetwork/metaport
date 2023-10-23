@@ -81,8 +81,8 @@ export default function SkConnect() {
                   <Button
                     variant="contained"
                     color="error"
-                    size="medium"
-                    className={cls(styles.btnAction, cmn.mtop5, cmn.mbott20)}
+                    size="small"
+                    className={cls(styles.btnAction, cmn.mbott5, cmn.fullWidth)}
                     onClick={openChainModal}
                   >
                     Wrong network

@@ -21,11 +21,17 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+
+import { TRANSFER_ERROR_MSG } from "../constants"
+
+
 export class ErrorMessage {
   icon: string
+  headline: string
   text: string
   btnText?: string
   fallback?: Function
+  showTips?: boolean
 
   constructor(fallback?: Function) {
     this.fallback = fallback
@@ -50,11 +56,22 @@ export class WrongNetworkMessage extends ErrorMessage {
 }
 
 export class TransactionErrorMessage extends ErrorMessage {
-  constructor(text: string, fallback: Function) {
+  constructor(text: string, fallback: Function, headline?: string, showTips?: boolean) {
     super(fallback)
-    this.icon = 'sentiment'
+    this.icon = 'warning'
+    this.headline = headline ?? TRANSFER_ERROR_MSG
     this.text = text
     this.btnText = 'Try again'
+    this.showTips = showTips
+  }
+}
+
+export class TimeoutErrorMessage extends ErrorMessage {
+  constructor(text: string, fallback: Function) {
+    super(fallback)
+    this.icon = 'time'
+    this.text = text
+    this.btnText = 'Close message'
   }
 }
 

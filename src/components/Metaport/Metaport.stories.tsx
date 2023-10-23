@@ -3,6 +3,7 @@ import Metaport from './Metaport'
 
 import { METAPORT_CONFIG } from '../../metadata/metaportConfigStaging'
 METAPORT_CONFIG.mainnetEndpoint = import.meta.env.VITE_MAINNET_ENDPOINT
+METAPORT_CONFIG.projectId = import.meta.env.VITE_WC_PROJECT_ID
 
 const meta: Meta<typeof Metaport> = {
   title: 'Functional/Metaport',

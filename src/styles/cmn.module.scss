@@ -31,6 +31,11 @@
     transform: rotate(180deg);
 }
 
+
+.bordRad {
+    border-radius: $sk-border-radius;
+}
+
 .bord {
     border: 1px $sk-paper-color solid;
 }
@@ -268,10 +273,8 @@
 }
 
 .pleft {
-    text-align: right;
+    text-align: left;
 }
-
-
 
 :global([rk-chain-button]) {
     display: none !important;

@@ -42,13 +42,18 @@ import ErrorIcon from '@mui/icons-material/Error'
 
 import { fromWei } from '../core/convertation'
 import { withdraw, recharge } from '../core/community_pool'
-import { BALANCE_UPDATE_INTERVAL_MS, DEFAULT_ERC20_DECIMALS } from '../core/constants'
+import {
+  BALANCE_UPDATE_INTERVAL_MS,
+  DEFAULT_ERC20_DECIMALS,
+  MINIMUM_RECHARGE_AMOUNT
+} from '../core/constants'
 
 import { cls, cmn, styles } from '../core/css'
 
 import { useCPStore } from '../store/CommunityPoolStore'
 import { useCollapseStore } from '../store/Store'
 import { useMetaportStore } from '../store/MetaportStore'
+import { Collapse } from '@mui/material'
 
 export default function CommunityPool() {
   const { data: walletClient } = useWalletClient()
@@ -120,6 +125,8 @@ export default function CommunityPool() {
     if (loading === 'recharge') return 'Recharging...'
     if (loading === 'activate') return 'Activating account...'
     if (Number(amount) > Number(accountBalanceEther)) return 'Insufficient ETH balance'
+    if (Number(amount) < MINIMUM_RECHARGE_AMOUNT)
+      return `Recharge amount should be bigger than ${MINIMUM_RECHARGE_AMOUNT}`
     if (amount === '' || amount === '0' || !amount) return 'Enter an amount'
     return 'Recharge exit gas wallet'
   }
@@ -188,6 +195,12 @@ export default function CommunityPool() {
               This wallet is used to pay for gas fees on transactions that are send to the Ethereum
               Mainnet. You may withdraw funds from your SKALE Gas Wallet at anytime.
             </p>
+            {cpData.recommendedRechargeAmount ? (
+              <p className={cls(cmn.flex, cmn.p3, cmn.p, cmn.errorMessage, cmn.flexg, cmn.mtop10)}>
+                Minimum recommended recharge amount for your wallet is{' '}
+                {cpData.recommendedRechargeAmount} ETH.
+              </p>
+            ) : null}
             <div className={cls(cmn.ptop20, cmn.flex)}>
               <p className={cls(cmn.nom, cmn.p, cmn.p3, cmn.pSec, cmn.flex, cmn.flexg)}>
                 ETH Balance
@@ -244,7 +257,7 @@ export default function CommunityPool() {
                 </p>
               </div>
             </SkPaper>
-            <div className={cls(cmn.mtop10)}>
+            <div className={cls(cmn.mbott20, cmn.mtop10)}>
               <Button
                 variant="contained"
                 color="primary"
@@ -255,6 +268,7 @@ export default function CommunityPool() {
                   !!loading ||
                   !cpData.accountBalance ||
                   Number(amount) > Number(accountBalanceEther) ||
+                  Number(amount) < MINIMUM_RECHARGE_AMOUNT ||
                   amount === '' ||
                   amount === '0' ||
                   !amount ||
@@ -263,18 +277,20 @@ export default function CommunityPool() {
               >
                 {getRechargeBtnText()}
               </Button>
-            </div>
-            <div className={cls(cmn.mtop5, cmn.mbott10)}>
-              <Button
-                variant="text"
-                color="warning"
-                size="small"
-                className={cls(styles.btnAction, cmn.mtop5)}
-                onClick={withdrawCP}
-                disabled={!!loading || !chainName}
-              >
-                {getWithdrawBtnText()}
-              </Button>
+              <Collapse in={cpData.balance !== 0n || loading === 'withdraw'}>
+                <div className={cls(cmn.mtop5)}>
+                  <Button
+                    variant="text"
+                    color="warning"
+                    size="small"
+                    className={cls(styles.btnAction, cmn.mtop5)}
+                    onClick={withdrawCP}
+                    disabled={!!loading || !chainName || cpData.balance === 0n}
+                  >
+                    {getWithdrawBtnText()}
+                  </Button>
+                </div>
+              </Collapse>
             </div>
           </SkPaper>
         </AccordionDetails>

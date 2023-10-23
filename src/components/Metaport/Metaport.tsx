@@ -23,11 +23,13 @@
 import { MetaportConfig } from '../../core/interfaces'
 
 import WidgetUI from '../WidgetUI'
+import Debug from '../Debug'
 import MetaportProvider from '../MetaportProvider'
 
 export default function Metaport(props: { config: MetaportConfig }) {
   return (
     <MetaportProvider config={props.config}>
+      <Debug />
       <WidgetUI config={props.config} />
     </MetaportProvider>
   )
