@@ -6,8 +6,8 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   openButton: true,
   debug: true,
   chains: [
-    //'mainnet',
     'rural-colossal-cebalrai',
+    'mainnet',
     'skale-innocent-nasty', // europa
     'international-villainous-zaurak', // calypso
     'big-majestic-oval-SKALE' // QA chain
@@ -28,6 +28,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     }
   },
   connections: {
+    'rural-colossal-cebalrai': {},
     mainnet: {
       eth: {
         eth: {
