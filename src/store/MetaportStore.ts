@@ -191,21 +191,36 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         loading: true,
         btnText: 'Checking balance...'
       })
-      const stepMetadata = get().stepsMetadata[get().currentStep]
-      const actionClass = ACTIONS[stepMetadata.type]
-      await new actionClass(
-        get().mpc,
-        stepMetadata.from,
-        stepMetadata.to,
-        address,
-        amount,
-        get().tokenId,
-        get().token,
-        get().setAmountErrorMessage,
-        get().setBtnText,
-        null,
-        null
-      ).preAction()
+      try {
+        const stepMetadata = get().stepsMetadata[get().currentStep]
+        const actionClass = ACTIONS[stepMetadata.type]
+        await new actionClass(
+          get().mpc,
+          stepMetadata.from,
+          stepMetadata.to,
+          address,
+          amount,
+          get().tokenId,
+          get().token,
+          get().setAmountErrorMessage,
+          get().setBtnText,
+          null,
+          null
+        ).preAction()
+      } catch (err) {
+        console.error(err)
+        const msg = err.code && err.fault ? `${err.code} - ${err.fault}` : 'Something went wrong'
+        set({
+          errorMessage: new dataclasses.TransactionErrorMessage(
+            err.message,
+            get().errorMessageClosedFallback,
+            msg,
+            false
+          )
+        })
+      } finally {
+        set({ loading: false })
+      }
     }
     set({ loading: false })
   },

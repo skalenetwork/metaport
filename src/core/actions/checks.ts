@@ -25,7 +25,7 @@ import debug from 'debug'
 import { Contract } from 'ethers'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 
-import { fromWei } from '../convertation'
+import { fromWei, toWei } from '../convertation'
 import { TokenData } from '../dataclasses/TokenData'
 import * as interfaces from '../interfaces'
 import { addressesEqual } from '../helper'
@@ -73,6 +73,16 @@ export async function checkERC20Balance(
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
+  try {
+    toWei(amount, tokenData.meta.decimals)
+  } catch (err) {
+    if (err.fault && err.fault === 'underflow') {
+      checkRes.msg = 'The amount is too small'
+    } else {
+      checkRes.msg = 'Incorrect amount'
+    }
+    return checkRes
+  }
   try {
     const balance = await tokenContract.balanceOf(address)
     log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`)

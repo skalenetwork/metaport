@@ -54,24 +54,24 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
       <p className={cls(cmn.p4, cmn.p, cmn.p500, cmn.pSec, cmn.flexg, cmn.pCent, cmn.mbott10)}>
         Logs are available in your browser's developer console
       </p>
-
-      <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv, cmn.mtop20, cmn.mbott10, cmn.mleft10)}>
-        <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
-          <AvTimerRoundedIcon color="primary" />
+      {props.errorMessage.showTips ? <div>
+        <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv, cmn.mtop20, cmn.mbott10, cmn.mleft10)}>
+          <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
+            <AvTimerRoundedIcon color="primary" />
+          </div>
+          <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
+            When transferring from SKALE to Ethereum Mainnet, there are frequency limitations.
+          </p>
         </div>
-        <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
-          When transferring from SKALE to Ethereum Mainnet, there are frequency limitations.
-        </p>
-      </div>
-      <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv, cmn.mtop20, cmn.mbott10, cmn.mleft10)}>
-        <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
-          <HourglassBottomRoundedIcon color="primary" />
+        <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv, cmn.mtop20, cmn.mbott10, cmn.mleft10)}>
+          <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
+            <HourglassBottomRoundedIcon color="primary" />
+          </div>
+          <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
+            Sometimes transfers may take more time than expected.
+          </p>
         </div>
-        <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
-          Sometimes transfers may take more time than expected.
-        </p>
-      </div>
-
+      </div> : null}
       <Accordion
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}

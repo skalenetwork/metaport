@@ -116,9 +116,10 @@ export class WrapSFuelERC20S extends Action {
   async execute() {
     log('WrapSFuelERC20S:execute - starting')
     this.updateState('wrap')
+    const amountWei = toWei(this.amount, this.token.meta.decimals)
     const tx = await this.sChain1.erc20.fundExit(this.token.keyname, {
       address: this.address,
-      value: this.amountWei
+      value: amountWei
     })
     const block = await this.sChain1.provider.getBlock(tx.blockNumber)
     this.updateState('wrapDone', tx.hash, block.timestamp)
@@ -212,7 +213,7 @@ export class UnWrapERC20 extends Action {
     this.updateState('unwrapDone', tx.hash, block.timestamp)
   }
 
-  async preAction() {}
+  async preAction() { }
 }
 
 export class UnWrapERC20S extends Action {
