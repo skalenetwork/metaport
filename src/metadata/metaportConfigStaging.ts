@@ -6,7 +6,8 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   openButton: true,
   debug: true,
   chains: [
-    'mainnet',
+    //'mainnet',
+    'rural-colossal-cebalrai',
     'skale-innocent-nasty', // europa
     'international-villainous-zaurak', // calypso
     'big-majestic-oval-SKALE' // QA chain
