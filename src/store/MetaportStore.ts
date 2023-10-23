@@ -124,11 +124,9 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
       } catch (err) {
         console.error(err)
         const msg = err.message
-        let showTips = true
         let headline
         if (err.code && err.code === 'ACTION_REJECTED') {
           headline = 'Transaction signing was rejected'
-          showTips = false
         } else {
           headline = TRANSFER_ERROR_MSG
         }

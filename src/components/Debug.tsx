@@ -21,8 +21,6 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import Button from '@mui/material/Button'
-
 import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
