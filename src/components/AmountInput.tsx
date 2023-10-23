@@ -18,18 +18,18 @@ export default function AmountInput() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (parseFloat(event.target.value) < 0) {
-      setAmount('', address);
-      return;
+      setAmount('', address)
+      return
     }
     if (event.target.value.length > 12) {
-      let initialSize = 22 - (event.target.value.length / 3);
-      initialSize = initialSize <= 12 ? 12 : initialSize;
-      event.target.style.fontSize = initialSize + "px";
+      let initialSize = 22 - event.target.value.length / 3
+      initialSize = initialSize <= 12 ? 12 : initialSize
+      event.target.style.fontSize = initialSize + 'px'
     } else {
       event.target.style.fontSize = '22px'
     }
-    setAmount(event.target.value, address);
-  };
+    setAmount(event.target.value, address)
+  }
 
   return (
     <div className={cls(cmn.flex, styles.inputAmount)}>

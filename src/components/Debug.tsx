@@ -21,21 +21,19 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import Grid from '@mui/material/Grid';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
 
 import { useMetaportStore } from '../store/MetaportStore'
 import { cls, cmn } from '../core/css'
 
-
 export default function Debug() {
-
   const debug = useMetaportStore((state) => state.mpc.config.debug)
   const chainName1 = useMetaportStore((state) => state.chainName1)
   const chainName2 = useMetaportStore((state) => state.chainName2)
@@ -46,15 +44,14 @@ export default function Debug() {
     { name: 'chainName1', value: chainName1 },
     { name: 'chainName2', value: chainName2 },
     { name: 'amount', value: amount },
-    { name: 'stepsMetadata', value: JSON.stringify(stepsMetadata) },
+    { name: 'stepsMetadata', value: JSON.stringify(stepsMetadata) }
   ]
 
   if (!debug) return
   return (
     <div className={cls(cmn.flex, cmn.flexcv)}>
       <Grid container spacing={3}>
-        <Grid item sm={6} xs={12}
-        >
+        <Grid item sm={6} xs={12}>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
@@ -80,7 +77,6 @@ export default function Debug() {
           </TableContainer>
         </Grid>
       </Grid>
-
     </div>
   )
 }
