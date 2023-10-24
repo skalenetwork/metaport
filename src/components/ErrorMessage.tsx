@@ -16,10 +16,11 @@ import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded'
 import HourglassTopRoundedIcon from '@mui/icons-material/HourglassTopRounded'
 import CrisisAlertRoundedIcon from '@mui/icons-material/CrisisAlertRounded'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import TextSnippetRoundedIcon from '@mui/icons-material/TextSnippetRounded'
 import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded'
 import AvTimerRoundedIcon from '@mui/icons-material/AvTimerRounded'
-
+import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
+import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
+import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import { DEFAULT_ERROR_MSG } from '../core/constants'
 
 const ERROR_ICONS = {
@@ -66,10 +67,10 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
             )}
           >
             <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
-              <AvTimerRoundedIcon color="primary" />
+              <HourglassBottomRoundedIcon color="info" />
             </div>
             <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
-              When transferring from SKALE to Ethereum Mainnet, there are frequency limitations.
+              Transfers might occasionally delay, but all tokens will be sent.
             </p>
           </div>
           <div
@@ -83,10 +84,44 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
             )}
           >
             <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
-              <HourglassBottomRoundedIcon color="primary" />
+              <RestartAltRoundedIcon color="info" />
             </div>
             <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
-              Sometimes transfers may take more time than expected.
+              If a transfer is interrupted, you can continue from where you stopped.
+            </p>
+          </div>
+          <div
+            className={cls(
+              cmn.flex,
+              cmn.fullWidth,
+              cmn.flexcv,
+              cmn.mtop20,
+              cmn.mbott10,
+              cmn.mleft10
+            )}
+          >
+            <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
+              <AvTimerRoundedIcon color="info" />
+            </div>
+            <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
+              Transfers from SKALE to Ethereum Mainnet have frequency limits.
+            </p>
+          </div>
+          <div
+            className={cls(
+              cmn.flex,
+              cmn.fullWidth,
+              cmn.flexcv,
+              cmn.mtop20,
+              cmn.mbott10,
+              cmn.mleft10
+            )}
+          >
+            <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
+              <HelpOutlineRoundedIcon color="info" />
+            </div>
+            <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.pPrim, cmn.mri10)}>
+              If you still have questions, consult FAQ or contact the support team.
             </p>
           </div>
         </div>
@@ -100,7 +135,7 @@ export default function Error(props: { errorMessage: ErrorMessage }) {
         >
           <div className={cls(cmn.flex, cmn.fullWidth, cmn.flexcv)}>
             <div className={cls(cmn.flex, cmn.flexc, cmn.mri10)}>
-              <TextSnippetRoundedIcon color="warning" />
+              <SortRoundedIcon />
             </div>
             <p className={cls(cmn.p, cmn.p3, cmn.p600, cmn.cap, cmn.pPrim, cmn.mri10)}>
               {expanded === 'panel1' ? 'Hide' : 'Show'} error details

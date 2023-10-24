@@ -133,6 +133,9 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         if (err.info && err.info.error && err.info.error.data && err.info.error.data.message) {
           headline = err.info.error.data.message
         }
+        if (err.shortMessage) {
+          headline = err.shortMessage
+        }
         set({
           errorMessage: new dataclasses.TransactionErrorMessage(
             msg,

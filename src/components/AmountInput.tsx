@@ -12,6 +12,7 @@ import { useCollapseStore } from '../store/Store'
 export default function AmountInput() {
   const { address } = useAccount()
   const transferInProgress = useMetaportStore((state) => state.transferInProgress)
+  const currentStep = useMetaportStore((state) => state.currentStep)
   const setAmount = useMetaportStore((state) => state.setAmount)
   const amount = useMetaportStore((state) => state.amount)
   const expandedTokens = useCollapseStore((state) => state.expandedTokens)
@@ -41,7 +42,7 @@ export default function AmountInput() {
             placeholder="0.00"
             value={amount}
             onChange={handleChange}
-            disabled={transferInProgress}
+            disabled={transferInProgress || currentStep !== 0}
             style={{ width: '100%' }}
           />
         </div>
