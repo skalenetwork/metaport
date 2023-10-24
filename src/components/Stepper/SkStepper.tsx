@@ -74,6 +74,10 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
   }, [transactionsHistory])
 
   if (stepsMetadata.length === 0) return <div></div>
+
+  const actionDisabled =
+    amountErrorMessage || loading || amount == '' || Number(amount) === 0 || !cpData.exitGasOk
+
   return (
     <Collapse in={stepsMetadata && stepsMetadata.length !== 0}>
       <Box className={cls()}>
@@ -121,9 +125,7 @@ export default function SkStepper(props: { skaleNetwork: SkaleNetwork }) {
                           size="medium"
                           className={cls(styles.btnAction, cmn.mtop5)}
                           onClick={() => execute(address, switchNetworkAsync, walletClient)}
-                          disabled={
-                            !!(amountErrorMessage || loading || amount == '' || !cpData.exitGasOk)
-                          }
+                          disabled={!!actionDisabled}
                         >
                           {step.btnText}
                         </Button>

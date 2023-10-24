@@ -133,6 +133,9 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         if (err.info && err.info.error && err.info.error.data && err.info.error.data.message) {
           headline = err.info.error.data.message
         }
+        if (err.shortMessage) {
+          headline = err.shortMessage
+        }
         set({
           errorMessage: new dataclasses.TransactionErrorMessage(
             msg,
@@ -191,21 +194,36 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
         loading: true,
         btnText: 'Checking balance...'
       })
-      const stepMetadata = get().stepsMetadata[get().currentStep]
-      const actionClass = ACTIONS[stepMetadata.type]
-      await new actionClass(
-        get().mpc,
-        stepMetadata.from,
-        stepMetadata.to,
-        address,
-        amount,
-        get().tokenId,
-        get().token,
-        get().setAmountErrorMessage,
-        get().setBtnText,
-        null,
-        null
-      ).preAction()
+      try {
+        const stepMetadata = get().stepsMetadata[get().currentStep]
+        const actionClass = ACTIONS[stepMetadata.type]
+        await new actionClass(
+          get().mpc,
+          stepMetadata.from,
+          stepMetadata.to,
+          address,
+          amount,
+          get().tokenId,
+          get().token,
+          get().setAmountErrorMessage,
+          get().setBtnText,
+          null,
+          null
+        ).preAction()
+      } catch (err) {
+        console.error(err)
+        const msg = err.code && err.fault ? `${err.code} - ${err.fault}` : 'Something went wrong'
+        set({
+          errorMessage: new dataclasses.TransactionErrorMessage(
+            err.message,
+            get().errorMessageClosedFallback,
+            msg,
+            false
+          )
+        })
+      } finally {
+        set({ loading: false })
+      }
     }
     set({ loading: false })
   },

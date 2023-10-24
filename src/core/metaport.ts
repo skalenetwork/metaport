@@ -283,7 +283,8 @@ export default class MetaportCore {
       destTokenContract,
       destTokenBalance: null,
       destChains: Object.keys(token.connections),
-      amount: ''
+      amount: '',
+      currentStep: 0
     }
   }
 

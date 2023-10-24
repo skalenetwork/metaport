@@ -21,9 +21,7 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
-import { TRANSFER_ERROR_MSG } from "../constants"
-
+import { TRANSFER_ERROR_MSG } from '../constants'
 
 export class ErrorMessage {
   icon: string
