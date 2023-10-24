@@ -99,7 +99,7 @@ export function createWrappedTokensMap(
 ): TokenDataTypesMap {
   const wrappedTokens: TokenDataTypesMap = getEmptyTokenDataMap()
   const tokenType = TokenType.erc20
-  if (!chainName1) return wrappedTokens
+  if (!chainName1 || !config.connections[chainName1][tokenType]) return wrappedTokens
   Object.keys(config.connections[chainName1][tokenType]).forEach((tokenKeyname) => {
     const token = config.connections[chainName1][tokenType][tokenKeyname]
     const wrapperAddress = findFirstWrapperAddress(token)
@@ -283,7 +283,8 @@ export default class MetaportCore {
       destTokenContract,
       destTokenBalance: null,
       destChains: Object.keys(token.connections),
-      amount: ''
+      amount: '',
+      currentStep: 0
     }
   }
 

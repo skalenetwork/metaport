@@ -15,6 +15,13 @@ See https://docs.skale.network/metaport/1.1.x/
 
 ## Development
 
+### Storybook preview
+
+```
+bash prepare_meta.sh && bun install && bun build:lib
+bun dev
+```
+
 ### Debug mode
 
 To enable debug mode, set `debug` environment variable to `true`:

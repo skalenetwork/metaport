@@ -25,7 +25,7 @@ import debug from 'debug'
 import { Contract } from 'ethers'
 import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 
-import { fromWei } from '../convertation'
+import { fromWei, toWei } from '../convertation'
 import { TokenData } from '../dataclasses/TokenData'
 import * as interfaces from '../interfaces'
 import { addressesEqual } from '../helper'
@@ -41,7 +41,17 @@ export async function checkEthBalance( // TODO: optimize balance checks
   tokenData: TokenData
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
-
+  if (!amount || Number(amount) === 0) return checkRes
+  try {
+    toWei(amount, tokenData.meta.decimals)
+  } catch (err) {
+    if (err.fault && err.fault === 'underflow') {
+      checkRes.msg = 'The amount is too small'
+    } else {
+      checkRes.msg = 'Incorrect amount'
+    }
+    return checkRes
+  }
   try {
     const balance = await chain.ethBalance(address)
     log(`address: ${address}, eth balance: ${balance}, amount: ${amount}`)
@@ -74,6 +84,16 @@ export async function checkERC20Balance(
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
   try {
+    toWei(amount, tokenData.meta.decimals)
+  } catch (err) {
+    if (err.fault && err.fault === 'underflow') {
+      checkRes.msg = 'The amount is too small'
+    } else {
+      checkRes.msg = 'Incorrect amount'
+    }
+    return checkRes
+  }
+  try {
     const balance = await tokenContract.balanceOf(address)
     log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`)
     const balanceEther = fromWei(balance, tokenData.meta.decimals)
@@ -97,6 +117,16 @@ export async function checkSFuelBalance(
 ): Promise<interfaces.CheckRes> {
   const checkRes: interfaces.CheckRes = { res: false }
   if (!amount || Number(amount) === 0) return checkRes
+  try {
+    toWei(amount, DEFAULT_ERC20_DECIMALS)
+  } catch (err) {
+    if (err.fault && err.fault === 'underflow') {
+      checkRes.msg = 'The amount is too small'
+    } else {
+      checkRes.msg = 'Incorrect amount'
+    }
+    return checkRes
+  }
   try {
     const balance = await sChain.provider.getBalance(address)
     log(`address: ${address}, balanceWei: ${balance}, amount: ${amount}`)

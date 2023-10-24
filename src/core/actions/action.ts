@@ -64,7 +64,6 @@ export class Action {
   chainName2: string
   address: string
   amount: string
-  amountWei: bigint
   tokenId: number
   token: TokenData
 
@@ -86,9 +85,6 @@ export class Action {
 
   constructor(
     mpc: MetaportCore,
-    // mainnet: MainnetChain,
-    // sChain1: SChain,
-    // sChain2: SChain,
     chainName1: string,
     chainName2: string,
     address: string,
@@ -106,7 +102,6 @@ export class Action {
     this.chainName2 = chainName2
     this.address = address
     this.amount = amount
-    if (amount) this.amountWei = toWei(amount, token.meta.decimals)
     this.tokenId = Number(tokenId)
 
     this.token = createTokenData(token.keyname, chainName1, token.type, this.mpc.config)
@@ -167,6 +162,7 @@ export class Action {
   updateState(currentState: interfaces.ActionState, transactionHash?: string, timestamp?: number) {
     log(`actionStateUpd: ${this.constructor.name} - ${currentState} - ${this.token.keyname} \
 - ${this.chainName1} -> ${this.chainName2}`)
+    const amountWei = toWei(this.amount, this.token.meta.decimals)
     externalEvents.actionStateUpdated({
       actionName: this.constructor.name,
       actionState: currentState,
@@ -175,7 +171,7 @@ export class Action {
         chainName2: this.chainName2,
         address: this.address,
         amount: this.amount,
-        amountWei: this.amountWei,
+        amountWei: amountWei,
         tokenId: this.tokenId
       },
       transactionHash,
