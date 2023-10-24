@@ -116,7 +116,8 @@ export function WidgetBody(props) {
     !expandedCP &&
     !expandedTH &&
     sFuelOk &&
-    !!address
+    !!address &&
+    !!token
   const showTH =
     !expandedFrom &&
     !expandedTo &&
@@ -154,7 +155,6 @@ export function WidgetBody(props) {
                     balance={tokenBalances[token.keyname]}
                     symbol={token.meta.symbol}
                     decimals={token.meta.decimals}
-                    truncate={9}
                   />
                 ) : null}
               </div>

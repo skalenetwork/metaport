@@ -29,7 +29,6 @@ export default function DestTokenBalance() {
       balance={destTokenBalance}
       symbol={token.meta.symbol}
       decimals={token.meta.decimals}
-      truncate={9}
     />
   )
 }
