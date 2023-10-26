@@ -82,8 +82,8 @@ export interface MetaportState {
 
   tokens: interfaces.TokenDataTypesMap
 
-  token: dataclasses.TokenData
-  setToken: (token: dataclasses.TokenData) => void
+  token: dataclasses.TokenData | null
+  setToken: (token: dataclasses.TokenData | null) => void
 
   tokenContracts: interfaces.TokenContractsMap
   tokenBalances: interfaces.TokenBalancesMap

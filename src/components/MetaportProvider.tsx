@@ -125,7 +125,7 @@ export default function MetaportProvider(props: {
     if (actionStateUpdate.transactionHash) {
       let chainName = actionStateUpdate.actionData.chainName1
       if (
-        actionStateUpdate.actionState === 'transferETHDone' ||
+        actionStateUpdate.actionState === 'unlockDone' ||
         actionStateUpdate.actionState === 'unwrapDone'
       ) {
         chainName = actionStateUpdate.actionData.chainName2

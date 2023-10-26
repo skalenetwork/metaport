@@ -256,7 +256,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
 
   token: null,
 
-  setToken: async (token: dataclasses.TokenData) => {
+  setToken: async (token: dataclasses.TokenData | null) => {
     set(get().mpc.tokenChanged(get().chainName1, get().ima2, token, get().chainName2))
   },
 
@@ -290,7 +290,8 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   },
 
   updateTokenBalances: async (address: string) => {
-    if (!address) {
+    const tokenContracts = get().tokenContracts
+    if (!address || Object.keys(tokenContracts).length === 0) {
       set({ tokenBalances: {} })
       return
     }

@@ -31,6 +31,7 @@ import SFuelWarning from './components/SFuelWarning'
 import WrappedTokens from './components/WrappedTokens'
 import History from './components/History'
 import TransactionData from './components/TransactionData'
+import Debug from './components/Debug'
 
 import { CHAINS_META, getChainAlias } from './core/metadata'
 import { cls, styles, cmn } from './core/css'
@@ -70,6 +71,7 @@ export {
   WrappedTokens,
   History,
   TransactionData,
+  Debug,
   cls,
   styles,
   cmn,

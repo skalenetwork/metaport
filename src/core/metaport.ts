@@ -262,10 +262,18 @@ export default class MetaportCore {
   tokenChanged(
     chainName1: string,
     ima2: MainnetChain | SChain,
-    token: TokenData,
+    token: TokenData | null | undefined,
     destChainName?: string
   ): Partial<MetaportState> {
-    if (!token) return {}
+    if (token === undefined || token === null)
+      return {
+        token: null,
+        destTokenContract: null,
+        destTokenBalance: null,
+        stepsMetadata: [],
+        amount: '',
+        currentStep: 0
+      }
     let destTokenContract
     if (destChainName) {
       destTokenContract = this.tokenContract(
@@ -324,7 +332,10 @@ export default class MetaportCore {
 
     const prevTokenKeyname = prevToken?.keyname
     const prevTokenType = prevToken?.type
-    const token = prevTokenKeyname ? tokens[prevTokenType][prevTokenKeyname] : null
+    const token =
+      prevTokenKeyname && tokens[prevTokenType][prevTokenKeyname]
+        ? tokens[prevTokenType][prevTokenKeyname]
+        : null
 
     return {
       ima1,
