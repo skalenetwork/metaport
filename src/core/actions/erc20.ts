@@ -221,7 +221,8 @@ export class UnWrapERC20S extends Action {
     const sChain = (await this.getConnectedChain(
       this.sChain2.provider,
       CustomAbiTokenType.erc20wrap,
-      this.chainName1
+      this.chainName1,
+      this.chainName2
     )) as SChain
     this.updateState('unwrap')
     let tx

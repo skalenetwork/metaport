@@ -162,7 +162,8 @@ export default function MetaportProvider(props: {
       <RainbowKitProvider
         coolMode
         appInfo={{
-          appName: 'SKALE Metaport'
+          appName: 'SKALE Metaport',
+          learnMoreUrl: 'https://portal.skale.space/other/faq'
         }}
         showRecentTransactions={true}
         chains={chains}
