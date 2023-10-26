@@ -28,7 +28,7 @@ import { useSFuelStore } from '../store/SFuelStore'
 import { MAINNET_CHAIN_NAME } from '../core/constants'
 import { AddressType } from '../core/interfaces'
 
-type DisplayFunctions = {
+export type DisplayFunctions = {
   showFrom: () => boolean
   showTo: () => boolean
   showSwitch: () => boolean
