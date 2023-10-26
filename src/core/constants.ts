@@ -112,3 +112,5 @@ export const BALANCE_UPDATE_INTERVAL_MS = _BALANCE_UPDATE_INTERVAL_SECONDS * 100
 export const SFUEL_RESERVE_AMOUNT = 0.02
 
 export const SUCCESS_EMOJIS = ['🎉', '👌', '✅', '🙌', '🎊']
+
+export const GRAY_BG = 'rgb(136 135 135 / 15%)'
