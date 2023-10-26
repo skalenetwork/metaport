@@ -74,7 +74,7 @@ export default function SFuelWarning(props: {}) {
 
   let hubChain
 
-  if (token && chainName2 && token.connections[chainName2].hub) {
+  if (token && chainName2 && token.connections[chainName2] && token.connections[chainName2].hub) {
     hubChain = token.connections[chainName2].hub
   }
 

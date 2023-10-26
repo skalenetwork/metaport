@@ -81,7 +81,8 @@ export default function CommunityPool() {
   let chainName
   if (token && chainName2) {
     chainName = chainName1
-    if (token.connections[chainName2].hub) chainName = token.connections[chainName2].hub
+    if (token.connections[chainName2] && token.connections[chainName2].hub)
+      chainName = token.connections[chainName2].hub
   }
 
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {

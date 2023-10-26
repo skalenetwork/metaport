@@ -401,3 +401,14 @@ button {
         /* Firefox */
     }
 }
+
+.smallTable{
+    code {
+        font-size: 0.7rem;
+        display: block;
+        max-width: 400px;
+        white-space: nowrap;
+        overflow: auto;
+        text-overflow: ellipsis;
+    }
+}
