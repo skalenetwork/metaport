@@ -18,9 +18,9 @@ import CrisisAlertRoundedIcon from '@mui/icons-material/CrisisAlertRounded'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded'
 import AvTimerRoundedIcon from '@mui/icons-material/AvTimerRounded'
-import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
-import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
-import SortRoundedIcon from '@mui/icons-material/SortRounded';
+import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded'
+import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded'
+import SortRoundedIcon from '@mui/icons-material/SortRounded'
 import { DEFAULT_ERROR_MSG } from '../core/constants'
 
 const ERROR_ICONS = {

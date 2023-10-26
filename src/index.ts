@@ -5,6 +5,7 @@ export { useMetaportStore } from './store/MetaportStore'
 export { type MetaportState } from './store/MetaportState'
 export { useUIStore, useCollapseStore, type UIState, type CollapseState } from './store/Store'
 export { useSFuelStore, type SFuelState } from './store/SFuelStore'
+export { useDisplayFunctions, type DisplayFunctions } from './store/DisplayFunctions'
 
 import Metaport from './components/Metaport'
 import MetaportProvider from './components/MetaportProvider'
@@ -31,12 +32,13 @@ import SFuelWarning from './components/SFuelWarning'
 import WrappedTokens from './components/WrappedTokens'
 import History from './components/History'
 import TransactionData from './components/TransactionData'
+import Debug from './components/Debug'
 
 import { CHAINS_META, getChainAlias } from './core/metadata'
 import { cls, styles, cmn } from './core/css'
 import MetaportCore from './core/metaport'
 import { chainBg } from './core/metadata'
-import { BASE_EXPLORER_URLS } from './core/constants'
+import { BASE_EXPLORER_URLS, GRAY_BG } from './core/constants'
 import { toWei, fromWei } from './core/convertation'
 
 import { getWidgetTheme as getMetaportTheme } from './core/themes'
@@ -70,6 +72,7 @@ export {
   WrappedTokens,
   History,
   TransactionData,
+  Debug,
   cls,
   styles,
   cmn,
@@ -82,6 +85,7 @@ export {
   PROXY_ENDPOINTS,
   BASE_EXPLORER_URLS,
   CHAINS_META,
+  GRAY_BG,
   chainBg,
   getChainAlias,
   RainbowConnectButton
