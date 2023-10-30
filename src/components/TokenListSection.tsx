@@ -39,7 +39,7 @@ export default function TokenListSection(props: {
           className={cmn.fullWidth}
           onClick={() => handle(props.tokens[key])}
         >
-          <div className={cls(cmn.flex, cmn.flexcv, cmn.fullWidth, cmn.mtop5, cmn.mbott5)}>
+          <div className={cls(cmn.flex, cmn.flexcv, cmn.fullWidth, cmn.mtop10, cmn.mbott10)}>
             <div className={cls(cmn.flex, cmn.flexc, cmn.mleft10)}>
               <TokenIcon
                 tokenSymbol={props.tokens[key]?.meta.symbol}
