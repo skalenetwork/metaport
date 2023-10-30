@@ -69,7 +69,13 @@ export default function AddToken(props: {
     )
     const iconUrl = getIconUrl(props.token)
     try {
-      await enforceNetwork(props.ima.provider, walletClient, switchNetworkAsync)
+      await enforceNetwork(
+        props.ima.provider,
+        walletClient,
+        switchNetworkAsync,
+        props.mpc.config.skaleNetwork,
+        props.destChainName
+      )
       const wasAdded = await window.ethereum.request({
         method: 'wallet_watchAsset',
         params: {
