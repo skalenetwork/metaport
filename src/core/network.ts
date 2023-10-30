@@ -32,6 +32,7 @@ import proxyEndpoints from '../metadata/proxy.json'
 import { MAINNET_CHAIN_NAME } from './constants'
 import { IMA_ADDRESSES, IMA_ABIS } from './contracts'
 import { SkaleNetwork } from './interfaces'
+import { constructWagmiChain } from './wagmi_network'
 
 export { proxyEndpoints as PROXY_ENDPOINTS }
 
@@ -117,17 +118,24 @@ export function initSChain(network: SkaleNetwork, chainName: string): SChain {
 export async function enforceNetwork(
   provider: Provider,
   walletClient: WalletClient,
-  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
-): Promise<void> {
+  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
+  skaleNetwork: SkaleNetwork,
+  chainName: string
+): Promise<bigint> {
   const currentChainId = walletClient.chain.id
   const { chainId } = await provider.getNetwork()
   log(`Current chainId: ${currentChainId}, required chainId: ${chainId} `)
   if (currentChainId !== Number(chainId)) {
     log(`Switching network to ${chainId}...`)
-    const chain = await switchNetwork(Number(chainId))
-    if (!chain) {
-      throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
+    if (chainId !== 1n && chainId !== 5n) {
+      await walletClient.addChain({ chain: constructWagmiChain(skaleNetwork, chainName) })
+    } else {
+      const chain = await switchNetwork(Number(chainId))
+      if (!chain) {
+        throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
+      }
     }
     log(`Network switched to ${chainId}...`)
   }
+  return chainId
 }

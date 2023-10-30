@@ -37,7 +37,7 @@ import { LOADING_BUTTON_TEXT } from './actionState'
 import { isMainnet } from '../helper'
 
 import { IMA_ABIS } from '../contracts'
-import { isMainnetChainId, getMainnetAbi } from '../network'
+import { isMainnetChainId, getMainnetAbi, enforceNetwork } from '../network'
 
 import { walletClientToSigner } from '../ethers'
 
@@ -81,7 +81,7 @@ export class Action {
   setAmountErrorMessage: React.Dispatch<React.SetStateAction<string>>
   setBtnText: (btnText: string) => void
 
-  _switchNetwork: (chainId: number | bigint) => Chain | undefined
+  _switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
 
   constructor(
     mpc: MetaportCore,
@@ -93,7 +93,7 @@ export class Action {
     token: TokenData,
     setAmountErrorMessage: (amountErrorMessage: string) => void,
     setBtnText: (btnText: string) => void,
-    switchNetwork: (chainId: number | bigint) => Chain | undefined,
+    switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
     walletClient: WalletClient
   ) {
     this.mpc = mpc
@@ -183,21 +183,18 @@ export class Action {
   async getConnectedChain(
     provider: Provider,
     customAbiTokenType?: CustomAbiTokenType,
-    destChainName?: string
+    destChainName?: string,
+    chainName?: string
   ): Promise<MainnetChain | SChain> {
     let chain: MainnetChain | SChain
     this.updateState('switch')
-    const currentChainId = this.walletClient.chain.id
-    const { chainId } = await provider.getNetwork()
-    log(`Current chainId: ${currentChainId}, required chainId: ${chainId} `)
-    if (currentChainId !== Number(chainId)) {
-      log(`Switching network to ${chainId}...`)
-      const chain = await this._switchNetwork(Number(chainId))
-      if (!chain) {
-        throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
-      }
-      log(`Network switched to ${chainId}...`)
-    }
+    const chainId = await enforceNetwork(
+      provider,
+      this.walletClient,
+      this._switchNetwork,
+      this.mpc.config.skaleNetwork,
+      chainName ?? this.chainName1
+    )
     const signer = walletClientToSigner(this.walletClient)
     if (isMainnetChainId(chainId, this.mpc.config.skaleNetwork)) {
       chain = new MainnetChain(signer.provider, getMainnetAbi(this.mpc.config.skaleNetwork))

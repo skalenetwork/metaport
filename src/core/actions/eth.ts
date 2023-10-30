@@ -100,7 +100,12 @@ export class UnlockEthM extends Action {
 
   async execute() {
     this.updateState('init')
-    const mainnet = (await this.getConnectedChain(this.mainnet.provider)) as MainnetChain
+    const mainnet = (await this.getConnectedChain(
+      this.mainnet.provider,
+      undefined,
+      undefined,
+      this.chainName2
+    )) as MainnetChain
     this.updateState('unlock')
     const tx = await mainnet.eth.getMyEth({ address: this.address })
     const block = await this.mainnet.provider.getBlock(tx.blockNumber)
