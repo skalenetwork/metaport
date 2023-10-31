@@ -21,7 +21,7 @@ export default function ChainApps(props: {
 
   return (
     <div className={cls(styles.sk__chainApps, cmn.mri10, cmn.flex, cmn.flexcv)}>
-      <div className={cls(cmn.fldex, cmn.flexcv, cmn.mtop10, cmn.mbott10)}>
+      <div className={cls(cmn.mtop10, cmn.mbott10)}>
         {Object.keys(apps).map((key, _) => (
           <Button
             key={key}
