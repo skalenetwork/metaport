@@ -63,10 +63,10 @@ export default function TokenListSection(props: {
             <div className={cmn.mri10}>
               <TokenBalance
                 balance={
-                  props.tokenBalances ? props.tokenBalances[props.tokens[key].keyname] : null
+                  props.tokenBalances ? props.tokenBalances[props.tokens[key]?.keyname] : null
                 }
-                symbol={props.tokens[key].meta.symbol}
-                decimals={props.tokens[key].meta.decimals}
+                symbol={props.tokens[key]?.meta.symbol}
+                decimals={props.tokens[key]?.meta.decimals}
               />
             </div>
           </div>

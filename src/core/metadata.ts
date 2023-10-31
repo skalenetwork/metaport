@@ -130,6 +130,7 @@ export function tokenIcon(tokenSymbol: string) {
   }
 }
 
-export function getTokenName(token: TokenData): string {
+export function getTokenName(token: TokenData): string | undefined {
+  if (!token) return
   return token.meta.name ?? token.meta.symbol
 }

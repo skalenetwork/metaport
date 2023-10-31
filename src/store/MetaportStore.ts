@@ -290,8 +290,7 @@ export const useMetaportStore = create<MetaportState>()((set, get) => ({
   },
 
   updateTokenBalances: async (address: string) => {
-    const tokenContracts = get().tokenContracts
-    if (!address || Object.keys(tokenContracts).length === 0) {
+    if (!address) {
       set({ tokenBalances: {} })
       return
     }
