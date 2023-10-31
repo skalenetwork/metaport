@@ -39,6 +39,7 @@ import ExpandRoundedIcon from '@mui/icons-material/ExpandRounded'
 
 import { useMetaportStore } from '../store/MetaportStore'
 import { cls, cmn, styles } from '../core/css'
+import { ActionStateUpdate } from '../core/interfaces'
 import { Collapse } from '@mui/material'
 
 const initialState = { queue: [] }
@@ -97,6 +98,9 @@ export default function Debug() {
   }
 
   const { queue, enqueue, empty } = useQueue()
+
+  const { queue: queueAction, enqueue: enqueueAction, empty: emptyAction } = useQueue();
+
   const [expanded, setExpanded] = useState<boolean>(false)
 
   const chainName1 = useMetaportStore((state) => state.chainName1)
@@ -128,6 +132,23 @@ export default function Debug() {
   ]
 
   const [prevRows, setPrevRows] = useState(getRows)
+
+  useEffect(() => {
+    window.addEventListener('metaport_actionStateUpdated', actionStateUpdated, false)
+  }, [])
+
+
+  function actionStateUpdated(e: CustomEvent) {
+    const actionStateUpdate: ActionStateUpdate = e.detail
+    enqueueAction({
+      action: actionStateUpdate.actionState,
+      chainName1: actionStateUpdate.actionData.chainName1,
+      chainName2: actionStateUpdate.actionData.chainName2,
+      amountWei: actionStateUpdate.actionData.amountWei.toString(),
+      address: actionStateUpdate.actionData.address,
+      time: formatUTCTime()
+    })
+  }
 
   useEffect(() => {
     const currentRows = getRows()
@@ -228,6 +249,56 @@ export default function Debug() {
                         </TableCell>
                         <TableCell align="left">
                           <code>{row.value}</code>
+                        </TableCell>
+                        <TableCell align="left">
+                          <code>{row.time}</code>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+              <Button
+                onClick={() => {
+                  emptyAction()
+                }}
+                color="error"
+                size="small"
+                className={cls(styles.btnAction)}
+                startIcon={<DeleteRoundedIcon />}
+              >
+                Clear transfer actions history
+              </Button>
+              <TableContainer component={Paper}>
+                <Table stickyHeader aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">Action</TableCell>
+                      <TableCell align="left">chainName1</TableCell>
+                      <TableCell align="left">chainName2</TableCell>
+                      <TableCell align="left">amountWei</TableCell>
+                      <TableCell align="left">address</TableCell>
+                      <TableCell align="left">Time</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {queueAction.map((row, i) => (
+                      <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell align="left">
+                          <code>{row.action}</code>
+                        </TableCell>
+                        <TableCell align="left">
+                          <code>{row.chainName1}</code>
+                        </TableCell>
+                        <TableCell align="left">
+                          <code>{row.chainName2}</code>
+                        </TableCell>
+                        <TableCell align="left">
+                          <code>{row.amountWei}</code>
+                        </TableCell>
+                        <TableCell align="left">
+                          <code>{row.address}</code>
                         </TableCell>
                         <TableCell align="left">
                           <code>{row.time}</code>

@@ -165,7 +165,7 @@ export default function WrappedTokens() {
                     <TokenBalance
                       balance={
                         wrappedTokenBalances
-                          ? wrappedTokenBalances[filteredTokens[key].keyname]
+                          ? wrappedTokenBalances[filteredTokens[key]?.keyname]
                           : null
                       }
                       symbol={`w${filteredTokens[key]?.meta.symbol}`}
