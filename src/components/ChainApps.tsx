@@ -11,7 +11,7 @@ export default function ChainApps(props: {
   skaleNetwork: SkaleNetwork
   chainName: string
   handle?: (schainName: string, app?: string) => void
-  size?: 'sm' | 'md',
+  size?: 'sm' | 'md'
   prim?: boolean
 }) {
   const apps = getChainAppsMeta(props.chainName, props.skaleNetwork)
