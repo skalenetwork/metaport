@@ -99,7 +99,7 @@ export default function Debug() {
 
   const { queue, enqueue, empty } = useQueue()
 
-  const { queue: queueAction, enqueue: enqueueAction, empty: emptyAction } = useQueue();
+  const { queue: queueAction, enqueue: enqueueAction, empty: emptyAction } = useQueue()
 
   const [expanded, setExpanded] = useState<boolean>(false)
 
@@ -136,7 +136,6 @@ export default function Debug() {
   useEffect(() => {
     window.addEventListener('metaport_actionStateUpdated', actionStateUpdated, false)
   }, [])
-
 
   function actionStateUpdated(e: CustomEvent) {
     const actionStateUpdate: ActionStateUpdate = e.detail

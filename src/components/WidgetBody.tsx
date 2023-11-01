@@ -147,7 +147,8 @@ export function WidgetBody(props) {
             expanded={expandedTo}
             setExpanded={setExpandedTo}
             chain={chainName2}
-            chains={destChains}
+            chains={props.config.chains}
+            destChains={destChains}
             setChain={setChainName2}
             setApp={setAppName2}
             app={appName2}
