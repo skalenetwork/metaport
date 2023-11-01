@@ -37,18 +37,15 @@ export default function TokenList() {
   const { address } = useAccount()
 
   useEffect(() => {
-    updateTokenBalances(address)
-    const intervalId = setInterval(() => {
+    const fetchBalances = () => {
       updateTokenBalances(address)
-    }, BALANCE_UPDATE_INTERVAL_MS)
-    return () => {
-      clearInterval(intervalId) // Clear interval on component unmount
     }
-  }, [updateTokenBalances])
-
-  useEffect(() => {
-    updateTokenBalances(address)
-  }, [updateTokenBalances, tokenContracts, address])
+    fetchBalances()
+    const intervalId = setInterval(fetchBalances, BALANCE_UPDATE_INTERVAL_MS)
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [address, updateTokenBalances, tokenContracts])
 
   useEffect(() => {
     const defaultToken = getDefaultToken(tokens)

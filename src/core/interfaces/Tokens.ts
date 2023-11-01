@@ -21,8 +21,7 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { AddressType } from "."
-
+import { AddressType } from '.'
 
 export interface EthToken {
   chains: ConnectedChainMap
