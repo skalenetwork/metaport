@@ -21,18 +21,21 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import { AddressType } from "."
+
+
 export interface EthToken {
   chains: ConnectedChainMap
 }
 
 export interface Token {
-  address?: string
+  address?: AddressType
   chains: ConnectedChainMap
 }
 
 export interface ConnectedChain {
   hub?: string
-  wrapper?: `0x${string}`
+  wrapper?: AddressType
   wrapsSFuel?: boolean
   clone?: boolean
 }

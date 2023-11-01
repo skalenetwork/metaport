@@ -31,7 +31,7 @@ export default function TokenListSection(props: {
       >
         {props.type}
       </p>
-      {Object.keys(props.tokens).map((key, _) => (
+      {Object.keys(props.tokens).sort().map((key, _) => (
         <Button
           key={key}
           color="secondary"

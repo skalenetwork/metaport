@@ -37,6 +37,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import ExpandRoundedIcon from '@mui/icons-material/ExpandRounded'
 
+import { useCPStore } from '../store/CommunityPoolStore'
 import { useMetaportStore } from '../store/MetaportStore'
 import { cls, cmn, styles } from '../core/css'
 import { ActionStateUpdate } from '../core/interfaces'
@@ -99,7 +100,7 @@ export default function Debug() {
 
   const { queue, enqueue, empty } = useQueue()
 
-  const { queue: queueAction, enqueue: enqueueAction, empty: emptyAction } = useQueue();
+  const { queue: queueAction, enqueue: enqueueAction, empty: emptyAction } = useQueue()
 
   const [expanded, setExpanded] = useState<boolean>(false)
 
@@ -114,12 +115,15 @@ export default function Debug() {
   const tokenContracts = useMetaportStore((state) => state.tokenContracts)
   const tokens = useMetaportStore((state) => state.tokens)
 
+  const cpData = useCPStore((state) => state.cpData)
+
   const getRows = () => [
     { name: 'chainName1', value: chainName1 },
     { name: 'chainName2', value: chainName2 },
     { name: 'token', value: JSON.stringify(token) },
     { name: 'tokenBalances', value: stringifyBigInt(tokenBalances) },
     { name: 'destTokenBalance', value: stringifyBigInt(destTokenBalance) },
+    { name: 'cpData', value: stringifyBigInt(cpData) },
     {
       name: 'tokenContracts',
       value:
@@ -136,7 +140,6 @@ export default function Debug() {
   useEffect(() => {
     window.addEventListener('metaport_actionStateUpdated', actionStateUpdated, false)
   }, [])
-
 
   function actionStateUpdated(e: CustomEvent) {
     const actionStateUpdate: ActionStateUpdate = e.detail
@@ -172,7 +175,8 @@ export default function Debug() {
     tokenBalances,
     destTokenBalance,
     tokenContracts,
-    tokens
+    tokens,
+    cpData
   ])
 
   return (
