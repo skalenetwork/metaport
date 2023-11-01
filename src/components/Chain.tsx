@@ -35,8 +35,10 @@ export default function Chain(props: {
   app?: string
   size?: Size
   decIcon?: boolean
+  prim?: boolean
 }) {
   const size = props.size ?? 'sm'
+  const prim = props.prim ?? true
   return (
     <div className={cls(cmn.flex, cmn.flexcv)}>
       <ChainIcon
@@ -59,7 +61,8 @@ export default function Chain(props: {
           [cmn.p600, !props.bold],
           [cmn.p700, props.bold],
           cmn.cap,
-          cmn.pPrim
+          [cmn.pPrim, prim],
+          [cmn.pSec, !prim]
         )}
       >
         {getChainAlias(props.skaleNetwork, props.chainName, props.app)}

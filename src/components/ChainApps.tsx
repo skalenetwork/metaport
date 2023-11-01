@@ -11,7 +11,8 @@ export default function ChainApps(props: {
   skaleNetwork: SkaleNetwork
   chainName: string
   handle?: (schainName: string, app?: string) => void
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md',
+  prim?: boolean
 }) {
   const apps = getChainAppsMeta(props.chainName, props.skaleNetwork)
   if (!apps || !Object.keys(apps) || Object.keys(apps).length === 0) return <div></div>
@@ -19,9 +20,11 @@ export default function ChainApps(props: {
   const size = props.size ?? 'sm'
   const iconSize = props.size === 'sm' ? 'xs' : 'sm'
 
+  const prim = props.prim ?? size === 'md'
+
   return (
     <div className={cls(styles.sk__chainApps, cmn.mri10, cmn.flex, cmn.flexcv)}>
-      <div className={cls(cmn.fldex, cmn.flexcv, cmn.mtop10, cmn.mbott10)}>
+      <div className={cls(cmn.mtop10, cmn.mbott10)}>
         {Object.keys(apps).map((key, _) => (
           <Button
             key={key}
@@ -55,8 +58,8 @@ export default function ChainApps(props: {
                   cmn.p,
                   [cmn.p3, size === 'md'],
                   [cmn.p4, size === 'sm'],
-                  [cmn.pSec, size === 'sm'],
-                  [cmn.pPrim, size === 'md'],
+                  [cmn.pSec, !prim],
+                  [cmn.pPrim, prim],
                   cmn.p600,
                   cmn.mleft10
                 )}
@@ -66,8 +69,8 @@ export default function ChainApps(props: {
               <div className={cls(cmn.flex, cmn.flexg)}></div>
               <KeyboardArrowRightRoundedIcon
                 className={cls(
-                  [cmn.pSec, size === 'sm'],
-                  [cmn.pPrim, size === 'md'],
+                  [cmn.pSec, !prim],
+                  [cmn.pPrim, prim],
                   [styles.chainIconxs, size === 'sm'],
                   [styles.chainIcons, size === 'md']
                 )}

@@ -22,11 +22,11 @@
  */
 
 import { DEFAULT_ERC20_DECIMALS } from '../constants'
-import { TokenMetadata, ConnectedChainMap } from '../interfaces'
+import { TokenMetadata, ConnectedChainMap, AddressType } from '../interfaces'
 import { TokenType } from './TokenType'
 
 export class TokenData {
-  address: string
+  address: AddressType
   keyname: string
   type: TokenType
   meta: TokenMetadata
@@ -34,7 +34,7 @@ export class TokenData {
   chain: string
 
   constructor(
-    address: string,
+    address: AddressType,
     type: TokenType,
     tokenKeyname: string,
     metadata: TokenMetadata,

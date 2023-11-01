@@ -4,7 +4,9 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
+import MotionPhotosOffRoundedIcon from '@mui/icons-material/MotionPhotosOffRounded'
 
 import ChainApps from './ChainApps'
 import ChainIcon from './ChainIcon'
@@ -30,6 +32,7 @@ export default function ChainsList(props: {
   from?: boolean
   disabled?: boolean
   size?: 'sm' | 'md'
+  destChains?: string[]
 }) {
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
     props.setExpanded(isExpanded ? panel : false)
@@ -134,9 +137,32 @@ export default function ChainsList(props: {
                       cmn.fullWidth
                     )}
                   >
-                    <Chain skaleNetwork={props.config.skaleNetwork} chainName={name} size={size} />
+                    <Chain
+                      skaleNetwork={props.config.skaleNetwork}
+                      chainName={name}
+                      size={size}
+                      bold={props.destChains?.includes(name)}
+                      prim={props.destChains?.includes(name)}
+                    />
                     <div className={cls(cmn.flex, cmn.flexg)}></div>
-                    <KeyboardArrowRightRoundedIcon className={cls(cmn.mri5, cmn.pPrim)} />
+                    {props.destChains && !props.destChains?.includes(name) ? (
+                      <Tooltip
+                        arrow
+                        title="Current token is not available on this chain."
+                        placement="top"
+                      >
+                        <MotionPhotosOffRoundedIcon
+                          className={cls(cmn.mri10, cmn.pSec, styles.chainIconxs)}
+                        />
+                      </Tooltip>
+                    ) : null}
+                    <KeyboardArrowRightRoundedIcon
+                      className={cls(
+                        cmn.mri5,
+                        [cmn.pPrim, props.destChains?.includes(name)],
+                        [cmn.pSec, !props.destChains?.includes(name)]
+                      )}
+                    />
                   </div>
                 </Button>
                 <div className={cls([cmn.mleft5, size === 'md'])}>
@@ -145,6 +171,7 @@ export default function ChainsList(props: {
                     chainName={name}
                     handle={handle}
                     size={size}
+                    prim={props.destChains?.includes(name)}
                   />
                 </div>
               </div>

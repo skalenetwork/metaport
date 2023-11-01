@@ -65,8 +65,15 @@ export function WidgetBody(props) {
   }, [])
 
   useEffect(() => {
-    if (tokens && tokens.erc20 && Object.values(tokens.erc20)[0] && !token) {
-      setToken(Object.values(tokens.erc20)[0])
+    if (tokens && !token) {
+      if (tokens.erc20 && Object.values(tokens.erc20)[0]) {
+        setToken(Object.values(tokens.erc20)[0])
+        return
+      }
+      if (tokens.eth && tokens.eth.eth) {
+        setToken(tokens.eth.eth)
+        return
+      }
     }
   }, [tokens])
 
@@ -140,7 +147,8 @@ export function WidgetBody(props) {
             expanded={expandedTo}
             setExpanded={setExpandedTo}
             chain={chainName2}
-            chains={destChains}
+            chains={props.config.chains}
+            destChains={destChains}
             setChain={setChainName2}
             setApp={setAppName2}
             app={appName2}
