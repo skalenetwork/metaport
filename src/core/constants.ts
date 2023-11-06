@@ -114,3 +114,6 @@ export const SFUEL_RESERVE_AMOUNT = 0.02
 export const SUCCESS_EMOJIS = ['🎉', '👌', '✅', '🙌', '🎊']
 
 export const GRAY_BG = 'rgb(136 135 135 / 15%)'
+
+export const DEFAULT_SLEEP = 6000
+export const DEFAULT_ITERATIONS = 60
