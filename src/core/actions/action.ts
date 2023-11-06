@@ -162,7 +162,7 @@ export class Action {
   updateState(currentState: interfaces.ActionState, transactionHash?: string, timestamp?: number) {
     log(`actionStateUpd: ${this.constructor.name} - ${currentState} - ${this.token.keyname} \
 - ${this.chainName1} -> ${this.chainName2}`)
-    const amountWei = toWei(this.amount, this.token.meta.decimals)
+    const amountWei = this.amount ? toWei(this.amount, this.token.meta.decimals) : 0n
     externalEvents.actionStateUpdated({
       actionName: this.constructor.name,
       actionState: currentState,
