@@ -52,3 +52,7 @@ export function delay(ms: number) {
 export function getRandom(list: Array<any>) {
   return list[Math.floor(Math.random() * list.length)]
 }
+
+export async function sleep(ms: number): Promise<any> {
+  return await new Promise((resolve) => setTimeout(resolve, ms))
+}
