@@ -21,101 +21,94 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import debug from 'debug'
+import { MainnetChain, SChain } from '@skalenetwork/ima-js'
 
-import debug from 'debug';
+import { toWei } from '../convertation'
+import { Action } from './action'
+import { checkEthBalance } from './checks'
 
-import { externalEvents } from '../events';
-import { toWei } from '../convertation';
-import { TransferAction, Action } from './action';
-import { checkEthBalance } from './checks';
+debug.enable('*')
+const log = debug('metaport:actions:eth')
 
+export class TransferEthM2S extends Action {
+  async execute() {
+    this.updateState('init')
+    const amountWei = toWei(this.amount, this.token.meta.decimals)
+    const sChainBalanceBefore = await this.sChain2.ethBalance(this.address)
+    const mainnet = (await this.getConnectedChain(this.mainnet.provider)) as MainnetChain
+    this.updateState('transferETH')
+    const tx = await mainnet.eth.deposit(this.chainName2, {
+      address: this.address,
+      value: amountWei
+    })
+    const block = await this.mainnet.provider.getBlock(tx.blockNumber)
+    this.updateState('transferETHDone', tx.hash, block.timestamp)
+    await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore)
+    this.updateState('receivedETH')
+  }
 
-debug.enable('*');
-const log = debug('metaport:actions:eth');
-
-
-export class TransferEthM2S extends TransferAction {
-    async execute() {
-        log('TransferEthM2S: started');
-        this.updateState('transferETH');
-        const amountWei = toWei(this.amount, this.tokenData.decimals);
-        const sChainBalanceBefore = await this.sChain2.ethBalance(this.address);
-        const tx = await this.mainnet.eth.deposit(
-            this.chainName2,
-            {
-                address: this.address,
-                value: amountWei
-            }
-        );
-        this.updateState('transferETHDone');
-        const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
-        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'deposit');
-        await this.sChain2.waitETHBalanceChange(this.address, sChainBalanceBefore);
-        this.updateState('receivedETH');
-        externalEvents.transferComplete(
-            tx, this.chainName1, this.chainName2, this.tokenData.keyname);
+  async preAction() {
+    const checkResBalance = await checkEthBalance(
+      this.mainnet,
+      this.address,
+      this.amount,
+      this.token
+    )
+    if (!checkResBalance.res) {
+      this.setAmountErrorMessage(checkResBalance.msg)
+      return
     }
-
-    async preAction() {
-        const checkResBalance = await checkEthBalance(
-            this.mainnet,
-            this.address,
-            this.amount,
-            this.tokenData
-        );
-        if (!checkResBalance.res) this.setAmountErrorMessage(checkResBalance.msg);
-    }
+    this.setAmountErrorMessage(null)
+  }
 }
 
+export class TransferEthS2M extends Action {
+  async execute() {
+    log('TransferEthS2M: started')
+    this.updateState('init')
+    const amountWei = toWei(this.amount, this.token.meta.decimals)
+    const lockedETHAmount = await this.mainnet.eth.lockedETHAmount(this.address)
+    const sChain = (await this.getConnectedChain(this.sChain1.provider)) as SChain
+    this.updateState('transferETH')
+    const tx = await sChain.eth.withdraw(amountWei, { address: this.address })
+    const block = await this.sChain1.provider.getBlock(tx.blockNumber)
+    this.updateState('transferETHDone', tx.hash, block.timestamp)
+    await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount)
+    this.updateState('receivedETH')
+  }
 
-export class TransferEthS2M extends TransferAction {
-    async execute() {
-        log('TransferEthS2M: started');
-        this.updateState('transferETH');
-        const amountWei = toWei(this.amount, this.tokenData.decimals);
-        const lockedETHAmount = await this.mainnet.eth.lockedETHAmount(this.address);
-        const tx = await this.sChain1.eth.withdraw(
-            amountWei,
-            { address: this.address }
-        );
-        this.updateState('transferETHDone');
-        const block = await this.sChain1.web3.eth.getBlock(tx.blockNumber);
-        externalEvents.transactionCompleted(tx, block.timestamp, this.chainName1, 'withdraw');
-        await this.mainnet.eth.waitLockedETHAmountChange(this.address, lockedETHAmount);
-        this.updateState('receivedETH');
-        externalEvents.transferComplete(
-            tx, this.chainName1, this.chainName2, this.tokenData.keyname);
+  async preAction() {
+    const checkResBalance = await checkEthBalance(
+      this.sChain1,
+      this.address,
+      this.amount,
+      this.token
+    )
+    if (!checkResBalance.res) {
+      this.setAmountErrorMessage(checkResBalance.msg)
+      return
     }
-
-    async preAction() {
-        const checkResBalance = await checkEthBalance(
-            this.sChain1,
-            this.address,
-            this.amount,
-            this.tokenData
-        );
-        if (!checkResBalance.res) this.setAmountErrorMessage(checkResBalance.msg);
-    }
+    this.setAmountErrorMessage(null)
+  }
 }
-
 
 export class UnlockEthM extends Action {
-    static label = 'Unlock ETH'
-    static buttonText = 'Unlock'
-    static loadingText = 'Unlocking'
+  static label = 'Unlock ETH'
+  static buttonText = 'Unlock'
+  static loadingText = 'Unlocking'
 
-    async execute() {
-        log('UnlockEthM: started');
-        this.updateState('switch');
-        await this.switchMetamaskChain(false);
-        this.updateState('unlock');
-        const tx = await this.mainnet.eth.getMyEth(
-            { address: this.address }
-        );
-        const block = await this.mainnet.web3.eth.getBlock(tx.blockNumber);
-        externalEvents.transactionCompleted(tx, block.timestamp, 'mainnet', 'getMyEth');
-        this.updateState('unlockDone');
-        externalEvents.ethUnlocked(tx);
-    }
+  async execute() {
+    this.updateState('init')
+    const mainnet = (await this.getConnectedChain(
+      this.mainnet.provider,
+      undefined,
+      undefined,
+      this.chainName2
+    )) as MainnetChain
+    this.updateState('unlock')
+    const tx = await mainnet.eth.getMyEth({ address: this.address })
+    const block = await this.mainnet.provider.getBlock(tx.blockNumber)
+    this.updateState('unlockDone', tx.hash, block.timestamp)
+  }
 }
-

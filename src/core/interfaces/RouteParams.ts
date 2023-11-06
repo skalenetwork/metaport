@@ -21,11 +21,10 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
-
+import { TokenType } from '../dataclasses/TokenType'
 
 export interface RouteParams {
-    hub: string;
-    tokenKeyname: string;
-    tokenType: TokenType;
+  hub: string
+  tokenKeyname: string
+  tokenType: TokenType
 }

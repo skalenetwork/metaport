@@ -21,19 +21,18 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-import { TokenType } from '../dataclasses/TokenType';
-import { RouteParams } from './RouteParams';
-
+import { TokenType } from '../dataclasses/TokenType'
+import { RouteParams } from './RouteParams'
 
 export interface TransferParams {
-    tokenKeyname: string;
-    tokenType: TokenType;
-    amount?: string;
-    tokenId?: number;
-    chains?: string[];
-    lockValue?: boolean;
-    route?: RouteParams;
-    text?: string;
-    fromApp?: string;
-    toApp?: string;
+  tokenKeyname: string
+  tokenType: TokenType
+  amount?: string
+  tokenId?: number
+  chains?: string[]
+  lockValue?: boolean
+  route?: RouteParams
+  text?: string
+  fromApp?: string
+  toApp?: string
 }

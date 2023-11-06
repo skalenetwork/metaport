@@ -1,4 +1,3 @@
-
 /**
  * @license
  * SKALE Metaport
@@ -22,16 +21,20 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-
-interface TxData {
-    gasUsed: number;
-    transactionHash: string;
-}
-
+import { AddressType } from '.'
 
 export interface TransactionHistory {
-    tx: TxData;
-    timestamp: number;
-    chainName: string;
-    txName: string;
+  transactionHash: string
+  timestamp: number
+  chainName: string
+  txName: string
+}
+
+export interface TransferHistory {
+  transactions: TransactionHistory[]
+  tokenKeyname: string
+  address: AddressType
+  chainName1: string
+  chainName2: string
+  amount: string
 }
