@@ -22,17 +22,18 @@
  */
 
 import debug from 'debug'
-import { MainnetChain, SChain } from '@skalenetwork/ima-js'
+import { MainnetChain, SChain, TimeoutException } from '@skalenetwork/ima-js'
 import { JsonRpcProvider, Provider } from 'ethers'
 
 import { WalletClient } from 'viem'
 import { Chain } from '@wagmi/core'
 
 import proxyEndpoints from '../metadata/proxy.json'
-import { MAINNET_CHAIN_NAME } from './constants'
+import { MAINNET_CHAIN_NAME, DEFAULT_ITERATIONS, DEFAULT_SLEEP } from './constants'
 import { IMA_ADDRESSES, IMA_ABIS } from './contracts'
 import { SkaleNetwork } from './interfaces'
 import { constructWagmiChain } from './wagmi_network'
+import { sleep } from './helper'
 
 export { proxyEndpoints as PROXY_ENDPOINTS }
 
@@ -115,6 +116,36 @@ export function initSChain(network: SkaleNetwork, chainName: string): SChain {
   return new SChain(provider, IMA_ABIS.schain)
 }
 
+async function waitForNetworkChange(
+  walletClient: WalletClient,
+  initialChainId: number | bigint,
+  requiredChainId: number | bigint,
+  sleepInterval: number = DEFAULT_SLEEP,
+  iterations: number = DEFAULT_ITERATIONS
+): Promise<void> {
+  const logData = `${initialChainId} -> ${requiredChainId}, sleep ${sleepInterval}ms`
+  for (let i = 1; i <= iterations; i++) {
+    const chainId = await walletClient.getChainId()
+    if (BigInt(chainId) === BigInt(requiredChainId)) {
+      return
+    }
+    log(`🔎 ${i}/${iterations} Waiting for network change - ${logData}`)
+    await sleep(sleepInterval)
+  }
+  throw new TimeoutException('waitForNetworkChange timeout - ' + logData)
+}
+
+async function _networkSwitch(
+  chainId: number | bigint,
+  currentChainId: number | bigint,
+  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
+): Promise<void> {
+  const chain = await switchNetwork(Number(chainId))
+  if (!chain) {
+    throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
+  }
+}
+
 export async function enforceNetwork(
   provider: Provider,
   walletClient: WalletClient,
@@ -124,17 +155,22 @@ export async function enforceNetwork(
 ): Promise<bigint> {
   const currentChainId = walletClient.chain.id
   const { chainId } = await provider.getNetwork()
-  log(`Current chainId: ${currentChainId}, required chainId: ${chainId} `)
+  log(
+    `Current chainId: ${currentChainId}, required chainId: ${chainId}, required network: ${chainName} `
+  )
   if (currentChainId !== Number(chainId)) {
     log(`Switching network to ${chainId}...`)
     if (chainId !== 1n && chainId !== 5n) {
       await walletClient.addChain({ chain: constructWagmiChain(skaleNetwork, chainName) })
-    } else {
-      const chain = await switchNetwork(Number(chainId))
-      if (!chain) {
-        throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
-      }
     }
+    try {
+      // tmp fix for coinbase wallet
+      _networkSwitch(chainId, currentChainId, switchNetwork)
+    } catch (e) {
+      await sleep(DEFAULT_SLEEP)
+      _networkSwitch(chainId, currentChainId, switchNetwork)
+    }
+    await waitForNetworkChange(walletClient, currentChainId, chainId)
     log(`Network switched to ${chainId}...`)
   }
   return chainId
