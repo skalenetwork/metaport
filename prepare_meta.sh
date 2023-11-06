@@ -21,3 +21,6 @@ else
     cp -R $DIR/skale-network/metadata/mainnet/ $META_DIR
     echo "${META_DIR_EXTERNAL} not found, copying Mainnet meta"
 fi
+
+node generate-imports.js ./src/meta
+node generate-imports.js ./src/icons

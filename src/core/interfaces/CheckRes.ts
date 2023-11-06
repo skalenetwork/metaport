@@ -21,9 +21,8 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-
 export interface CheckRes {
-    res: boolean;
-    approved?: boolean;
-    msg?: string;
+  res: boolean
+  approved?: boolean
+  msg?: string
 }

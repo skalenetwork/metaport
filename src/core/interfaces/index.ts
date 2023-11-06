@@ -21,12 +21,20 @@
  * @copyright SKALE Labs 2022-Present
  */
 
-export * from "./Config";
-export * from "./ChainsMetadata";
-export * from "./Theme";
-export * from "./Tokens";
-export * from "./TokenDataMap";
-export * from "./TransferParams";
-export * from "./CheckRes";
-export * from "./TransactionHistory";
-export * from "./CommunityPoolData";
+export * from './Config'
+export * from './ChainsMetadata'
+export * from './Theme'
+export * from './Tokens'
+export * from './TokenDataMap'
+export * from './TransferParams'
+export * from './CheckRes'
+export * from './TransactionHistory'
+export * from './CommunityPoolData'
+export * from './TokenMetadata'
+export * from './ActionStateUpdate'
+export * from './ActionState'
+
+export type AddressType = `0x${string}`
+
+export type Size = 'xs' | 'sm' | 'md' | 'lg'
+export type SimplifiedSize = 'sm' | 'md'

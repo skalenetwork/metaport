@@ -21,19 +21,33 @@
  * @copyright SKALE Labs 2022-Present
  */
 
+import { SkaleNetwork } from './Config'
 
 export interface ChainMetadata {
-    alias?: string;
-    minSfuelWei?: string;
-    faucetUrl?: string;
-    apps?: {
-        [appName: string]: {
-            alias: string;
-            background: string;
-            url: string;
-        };
+  alias?: string
+  shortAlias?: string
+  minSfuelWei?: string
+  faucetUrl?: string
+  category: string | string[]
+  background: string
+  gradientBackground?: string
+  description?: string
+  url?: string
+  apps?: {
+    [appName: string]: {
+      alias: string
+      background: string
+      gradientBackground?: string
+      description?: string
+      url?: string
     }
+  }
 }
 
+export interface ChainsMetadataMap {
+  [chainName: string]: ChainMetadata
+}
 
-export interface ChainsMetadataMap { [chainName: string]: ChainMetadata; }
+export type NetworksMetadataMap = {
+  [key in SkaleNetwork]: ChainsMetadataMap
+}
