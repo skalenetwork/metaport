@@ -109,7 +109,7 @@ export const COMMUNITY_POOL_WITHDRAW_GAS_LIMIT = 150000n
 export const _BALANCE_UPDATE_INTERVAL_SECONDS = 10
 export const BALANCE_UPDATE_INTERVAL_MS = _BALANCE_UPDATE_INTERVAL_SECONDS * 1000
 
-export const SFUEL_RESERVE_AMOUNT = 0.005
+export const SFUEL_RESERVE_AMOUNT = 0.01
 
 export const SUCCESS_EMOJIS = ['🎉', '👌', '✅', '🙌', '🎊']
 
