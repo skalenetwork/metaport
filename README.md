@@ -1,4 +1,4 @@
-# SKALE Metaport Widget
+# SKALE Metaport
 
 [![Discord](https://img.shields.io/discord/534485763354787851.svg)](https://discord.gg/vvUtWJB)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/skalenetwork/metaport/publish.yml)
@@ -8,10 +8,13 @@
 
 Metaport is a Typescript/Javascript widget that could be embeded into a web application to add IMA functionality to any SKALE dApp.
 
+![Metaport Preview](art/metaport.png)
 
 ## Documentation
 
-See https://docs.skale.network/metaport/1.1.x/
+- Metaport v2 docs: https://docs.skale.network/metaport/2.0.x/
+- Metaport v1 docs: https://docs.skale.network/metaport/1.2.x/
+- Integration demo: https://github.com/skalenetwork/metaport-integration-demo
 
 ## Development
 
