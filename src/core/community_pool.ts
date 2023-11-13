@@ -31,6 +31,7 @@ import { Chain } from '@wagmi/core'
 import { CommunityPoolData } from './interfaces'
 import { fromWei, toWei } from './convertation'
 import { walletClientToSigner } from './ethers'
+import { enforceNetwork, getMainnetAbi } from './network'
 import {
   MAINNET_CHAIN_NAME,
   DEFAULT_ERC20_DECIMALS,
@@ -41,7 +42,6 @@ import {
   BALANCE_UPDATE_INTERVAL_MS
 } from './constants'
 import { delay } from './helper'
-import { CHAIN_IDS, getMainnetAbi } from './network'
 import MetaportCore from './metaport'
 
 import * as dataclasses from '../core/dataclasses'
@@ -104,25 +104,6 @@ export async function getCommunityPoolData(
   return communityPoolData
 }
 
-export async function connectedMainnetChain(
-  mpc: MetaportCore,
-  walletClient: WalletClient,
-  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
-): Promise<MainnetChain> {
-  const currentChainId = walletClient.chain.id
-  const chainId = CHAIN_IDS[mpc.config.skaleNetwork]
-  log(`Current chainId: ${currentChainId}, required chainId: ${chainId} `)
-  if (currentChainId !== Number(chainId)) {
-    log(`Switching network to ${chainId}...`)
-    const chain = await switchNetwork(Number(chainId))
-    if (!chain) {
-      throw new Error(`Failed to switch from ${currentChainId} to ${chainId} `)
-    }
-    log(`Network switched to ${chainId}...`)
-  }
-  const signer = walletClientToSigner(walletClient)
-  return new MainnetChain(signer.provider, getMainnetAbi(mpc.config.skaleNetwork))
-}
 
 export async function withdraw(
   mpc: MetaportCore,
@@ -138,8 +119,19 @@ export async function withdraw(
   setLoading('withdraw')
   try {
     log(`Withdrawing from community pool: ${chainName}, amount: ${amount}`)
-    const mainnetMetamask = await connectedMainnetChain(mpc, walletClient, switchNetwork)
-    await mainnetMetamask.communityPool.withdraw(chainName, amount, {
+    await enforceNetwork(
+      mpc.mainnet().provider,
+      walletClient,
+      switchNetwork,
+      mpc.config.skaleNetwork,
+      MAINNET_CHAIN_NAME
+    )
+    const signer = walletClientToSigner(walletClient)
+    const connectedMainnet = new MainnetChain(
+      signer.provider,
+      getMainnetAbi(mpc.config.skaleNetwork)
+    )
+    await connectedMainnet.communityPool.withdraw(chainName, amount, {
       address: address,
       customGasLimit: COMMUNITY_POOL_WITHDRAW_GAS_LIMIT
     })
@@ -167,8 +159,19 @@ export async function recharge(
     log(`Recharging community pool: ${chainName}, amount: ${amount}`)
 
     const sChain = mpc.schain(chainName)
-    const mainnetMetamask = await connectedMainnetChain(mpc, walletClient, switchNetwork)
-    await mainnetMetamask.communityPool.recharge(chainName, address, {
+    await enforceNetwork(
+      mpc.mainnet().provider,
+      walletClient,
+      switchNetwork,
+      mpc.config.skaleNetwork,
+      MAINNET_CHAIN_NAME
+    )
+    const signer = walletClientToSigner(walletClient)
+    const connectedMainnet = new MainnetChain(
+      signer.provider,
+      getMainnetAbi(mpc.config.skaleNetwork)
+    )
+    await connectedMainnet.communityPool.recharge(chainName, address, {
       address: address,
       value: toWei(amount, DEFAULT_ERC20_DECIMALS)
     })
@@ -178,7 +181,7 @@ export async function recharge(
     let counter = 0
     while (!active) {
       log('Waiting for account activation...')
-      let activeM = await mainnetMetamask.communityPool.contract.activeUsers(address, chainHash)
+      let activeM = await connectedMainnet.communityPool.contract.activeUsers(address, chainHash)
       let activeS = await sChain.communityLocker.contract.activeUsers(address)
       active = activeS && activeM
       await delay(BALANCE_UPDATE_INTERVAL_MS)
