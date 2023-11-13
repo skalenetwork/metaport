@@ -49,7 +49,7 @@ export const CHAIN_IDS: { [network in SkaleNetwork]: number } = {
   staging: 5,
   legacy: 5,
   regression: 5,
-  mainnet: 5
+  mainnet: 1
 }
 
 export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNetwork): boolean {
