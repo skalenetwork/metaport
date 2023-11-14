@@ -104,7 +104,6 @@ export async function getCommunityPoolData(
   return communityPoolData
 }
 
-
 export async function withdraw(
   mpc: MetaportCore,
   walletClient: WalletClient,
