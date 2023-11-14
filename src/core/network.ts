@@ -153,7 +153,7 @@ export async function enforceNetwork(
   skaleNetwork: SkaleNetwork,
   chainName: string
 ): Promise<bigint> {
-  const currentChainId = walletClient.chain.id
+  const currentChainId = await walletClient.getChainId()
   const { chainId } = await provider.getNetwork()
   log(
     `Current chainId: ${currentChainId}, required chainId: ${chainId}, required network: ${chainName} `
