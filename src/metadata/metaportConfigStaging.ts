@@ -4,7 +4,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
   skaleNetwork: 'staging',
   openOnLoad: true,
   openButton: true,
-  debug: false,
+  debug: true,
   chains: [
     'mainnet',
     'staging-legal-crazy-castor', // Europa
