@@ -31,9 +31,9 @@ import { PaletteMode } from '@mui/material'
 
 import {
   injectedWallet,
-  // coinbaseWallet,
-  metaMaskWallet
-  // enkryptWallet
+  coinbaseWallet,
+  metaMaskWallet,
+  enkryptWallet
 } from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig, ActionStateUpdate } from '../core/interfaces'
@@ -74,9 +74,9 @@ export default function MetaportProvider(props: {
   )
 
   const wallets = [
-    // enkryptWallet({ chains }),
-    injectedWallet({ chains })
-    // coinbaseWallet({ chains, appName: 'SKALE Metaport' })
+    enkryptWallet({ chains }),
+    injectedWallet({ chains }),
+    coinbaseWallet({ chains, appName: 'SKALE Metaport' })
   ]
 
   if (props.config.projectId) {
