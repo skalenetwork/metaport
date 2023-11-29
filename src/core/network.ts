@@ -49,7 +49,7 @@ export const CHAIN_IDS: { [network in SkaleNetwork]: number } = {
   staging: 5,
   legacy: 5,
   regression: 5,
-  mainnet: 5
+  mainnet: 1
 }
 
 export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNetwork): boolean {
@@ -153,7 +153,7 @@ export async function enforceNetwork(
   skaleNetwork: SkaleNetwork,
   chainName: string
 ): Promise<bigint> {
-  const currentChainId = walletClient.chain.id
+  const currentChainId = await walletClient.getChainId()
   const { chainId } = await provider.getNetwork()
   log(
     `Current chainId: ${currentChainId}, required chainId: ${chainId}, required network: ${chainName} `
