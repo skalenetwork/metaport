@@ -23,7 +23,7 @@
 
 import debug from 'debug'
 import { MainnetChain, SChain, TimeoutException } from '@skalenetwork/ima-js'
-import { JsonRpcProvider, Provider } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 
 import { WalletClient } from 'viem'
 import { Chain } from '@wagmi/core'
@@ -138,7 +138,7 @@ async function waitForNetworkChange(
 async function _networkSwitch(
   chainId: number | bigint,
   currentChainId: number | bigint,
-  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>
+  switchNetwork: (chainId: number | undefined) => Promise<Chain | undefined>
 ): Promise<void> {
   const chain = await switchNetwork(Number(chainId))
   if (!chain) {
@@ -147,14 +147,13 @@ async function _networkSwitch(
 }
 
 export async function enforceNetwork(
-  provider: Provider,
+  chainId: bigint,
   walletClient: WalletClient,
-  switchNetwork: (chainId: number | bigint) => Promise<Chain | undefined>,
+  switchNetwork: (chainId: number | undefined) => Promise<Chain | undefined>,
   skaleNetwork: SkaleNetwork,
   chainName: string
 ): Promise<bigint> {
   const currentChainId = await walletClient.getChainId()
-  const { chainId } = await provider.getNetwork()
   log(
     `Current chainId: ${currentChainId}, required chainId: ${chainId}, required network: ${chainName} `
   )

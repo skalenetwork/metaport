@@ -40,13 +40,20 @@ import MetaportCore from './core/metaport'
 import { chainBg } from './core/metadata'
 import { BASE_EXPLORER_URLS, GRAY_BG } from './core/constants'
 import { toWei, fromWei } from './core/convertation'
+import { ERC_ABIS } from './core/contracts'
+import { sendTransaction } from './core/transactions'
 
 import { getWidgetTheme as getMetaportTheme } from './core/themes'
 
-import { useAccount as useWagmiAccount } from 'wagmi'
+import {
+  useAccount as useWagmiAccount,
+  useWalletClient as useWagmiWalletClient,
+  useSwitchNetwork as useWagmiSwitchNetwork
+} from 'wagmi'
 import { ConnectButton as RainbowConnectButton } from '@rainbow-me/rainbowkit'
 
-import { PROXY_ENDPOINTS } from './core/network'
+import { PROXY_ENDPOINTS, enforceNetwork } from './core/network'
+import { walletClientToSigner } from './core/ethers'
 
 export {
   Metaport,
@@ -82,11 +89,17 @@ export {
   dataclasses,
   getMetaportTheme,
   useWagmiAccount,
+  useWagmiWalletClient,
+  useWagmiSwitchNetwork,
+  walletClientToSigner,
+  sendTransaction,
   PROXY_ENDPOINTS,
   BASE_EXPLORER_URLS,
   CHAINS_META,
   GRAY_BG,
+  ERC_ABIS,
   chainBg,
   getChainAlias,
+  enforceNetwork,
   RainbowConnectButton
 }
