@@ -21,13 +21,15 @@
  * @copyright SKALE Labs 2023-Present
  */
 
+import { type TransactionResponse } from 'ethers';
 import { TRANSFER_ERROR_MSG } from './constants'
 import { TxResponse } from './interfaces'
 
 
 export async function sendTransaction(func: any, args: any[]): Promise<TxResponse> {
   try {
-    const response = await func(...args)
+    const response: TransactionResponse = await func(...args)
+    await response.wait()
     return { status: true, err: undefined, response: response }
   } catch (err) {
     console.error(err)
