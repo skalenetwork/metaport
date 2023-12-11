@@ -148,19 +148,20 @@ async function _networkSwitch(
 
 export async function enforceNetwork(
   chainId: bigint,
-  walletClient: WalletClient,
+  walletClient: any,
   switchNetwork: (chainId: number | undefined) => Promise<Chain | undefined>,
   skaleNetwork: SkaleNetwork,
   chainName: string
 ): Promise<bigint> {
-  const currentChainId = await walletClient.getChainId()
+  const _walletClient = walletClient as WalletClient
+  const currentChainId = await _walletClient.getChainId()
   log(
     `Current chainId: ${currentChainId}, required chainId: ${chainId}, required network: ${chainName} `
   )
   if (currentChainId !== Number(chainId)) {
     log(`Switching network to ${chainId}...`)
     if (chainId !== 1n && chainId !== 5n) {
-      await walletClient.addChain({ chain: constructWagmiChain(skaleNetwork, chainName) })
+      await _walletClient.addChain({ chain: constructWagmiChain(skaleNetwork, chainName) })
     }
     try {
       // tmp fix for coinbase wallet
@@ -169,7 +170,7 @@ export async function enforceNetwork(
       await sleep(DEFAULT_SLEEP)
       _networkSwitch(chainId, currentChainId, switchNetwork)
     }
-    await waitForNetworkChange(walletClient, currentChainId, chainId)
+    await waitForNetworkChange(_walletClient, currentChainId, chainId)
     log(`Network switched to ${chainId}...`)
   }
   return chainId
