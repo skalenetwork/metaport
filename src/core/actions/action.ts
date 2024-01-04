@@ -188,15 +188,16 @@ export class Action {
   ): Promise<MainnetChain | SChain> {
     let chain: MainnetChain | SChain
     this.updateState('switch')
-    const chainId = await enforceNetwork(
-      provider,
+    const { chainId } = await provider.getNetwork()
+    const updChainId = await enforceNetwork(
+      chainId,
       this.walletClient,
       this._switchNetwork,
       this.mpc.config.skaleNetwork,
       chainName ?? this.chainName1
     )
     const signer = walletClientToSigner(this.walletClient)
-    if (isMainnetChainId(chainId, this.mpc.config.skaleNetwork)) {
+    if (isMainnetChainId(updChainId, this.mpc.config.skaleNetwork)) {
       chain = new MainnetChain(signer.provider, getMainnetAbi(this.mpc.config.skaleNetwork))
     } else {
       chain = new SChain(signer.provider, IMA_ABIS.schain)
