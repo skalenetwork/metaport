@@ -104,7 +104,6 @@ export async function getCommunityPoolData(
   return communityPoolData
 }
 
-
 export async function withdraw(
   mpc: MetaportCore,
   walletClient: WalletClient,
@@ -119,8 +118,9 @@ export async function withdraw(
   setLoading('withdraw')
   try {
     log(`Withdrawing from community pool: ${chainName}, amount: ${amount}`)
+    const { chainId } = await mpc.mainnet().provider.getNetwork()
     await enforceNetwork(
-      mpc.mainnet().provider,
+      chainId,
       walletClient,
       switchNetwork,
       mpc.config.skaleNetwork,
@@ -159,8 +159,9 @@ export async function recharge(
     log(`Recharging community pool: ${chainName}, amount: ${amount}`)
 
     const sChain = mpc.schain(chainName)
+    const { chainId } = await mpc.mainnet().provider.getNetwork()
     await enforceNetwork(
-      mpc.mainnet().provider,
+      chainId,
       walletClient,
       switchNetwork,
       mpc.config.skaleNetwork,
