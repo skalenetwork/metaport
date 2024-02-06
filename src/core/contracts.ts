@@ -34,6 +34,7 @@ import mainnetAddresses from '../metadata/addresses/mainnet.json'
 import stagingAddresses from '../metadata/addresses/staging.json'
 import legacyAddresses from '../metadata/addresses/legacy.json'
 import regressionAddresses from '../metadata/addresses/regression.json'
+import testnetAddresses from '../metadata/addresses/testnet.json'
 
 import sChainAbi from '../metadata/schainAbi.json'
 import mainnetAbi from '../metadata/mainnetAbi.json'
@@ -52,7 +53,8 @@ export const IMA_ADDRESSES = {
   mainnet: mainnetAddresses,
   staging: stagingAddresses,
   legacy: legacyAddresses,
-  regression: regressionAddresses
+  regression: regressionAddresses,
+  testnet: testnetAddresses
 }
 
 export const IMA_ABIS = {

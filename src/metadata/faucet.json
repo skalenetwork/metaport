@@ -65,5 +65,6 @@
       "func": "0x0c11dedd"
     }
   },
-  "regression": null
+  "regression": null,
+  "testnet": null
 }
