@@ -64,7 +64,7 @@ export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   staging: 'explorer.staging-v3.skalenodes.com',
   legacy: 'legacy-explorer.skalenodes.com',
   regression: 'regression-explorer.skalenodes.com',
-  testnet: 'testnet-explorer.skalenodes.com'
+  testnet: 'explorer.testnet.skalenodes.com'
 }
 
 export const MAINNET_WS_ENDPOINTS: { [skaleNetwork: string]: string } = {
