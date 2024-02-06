@@ -29,11 +29,13 @@ import mainnetMeta from '../meta/mainnet/chains.json'
 import stagingMeta from '../meta/staging/chains.json'
 import legacyMeta from '../meta/legacy/chains.json'
 import regressionMeta from '../meta/regression/chains.json'
+import testnetMeta from '../meta/testnet/chains.json'
 
 import * as MAINNET_CHAIN_ICONS from '../meta/mainnet/icons'
 import * as STAGING_CHAIN_ICONS from '../meta/staging/icons'
 import * as LEGACY_CHAIN_ICONS from '../meta/legacy/icons'
 import * as REGRESSION_CHAIN_ICONS from '../meta/regression/icons'
+import * as TESTNET_CHAIN_ICONS from '../meta/testnet/icons'
 
 import * as icons from '../icons'
 
@@ -41,14 +43,16 @@ const CHAIN_ICONS: { [network in SkaleNetwork]: any } = {
   mainnet: MAINNET_CHAIN_ICONS,
   staging: STAGING_CHAIN_ICONS,
   legacy: LEGACY_CHAIN_ICONS,
-  regression: REGRESSION_CHAIN_ICONS
+  regression: REGRESSION_CHAIN_ICONS,
+  testnet: TESTNET_CHAIN_ICONS
 }
 
 export const CHAINS_META: NetworksMetadataMap = {
   mainnet: mainnetMeta,
   staging: stagingMeta,
   legacy: legacyMeta,
-  regression: regressionMeta
+  regression: regressionMeta,
+  testnet: testnetMeta
 }
 
 function transformChainName(chainName: string): string {

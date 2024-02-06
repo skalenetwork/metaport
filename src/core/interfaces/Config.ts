@@ -23,7 +23,7 @@
 
 import { TokenConnectionsMap, TokenMetadataMap, MetaportTheme } from '.'
 
-export type SkaleNetwork = 'mainnet' | 'staging' | 'legacy' | 'regression'
+export type SkaleNetwork = 'mainnet' | 'staging' | 'legacy' | 'regression' | 'testnet'
 
 export interface MetaportConfig {
   openOnLoad?: boolean

@@ -49,7 +49,8 @@ export const CHAIN_IDS: { [network in SkaleNetwork]: number } = {
   staging: 5,
   legacy: 5,
   regression: 5,
-  mainnet: 1
+  mainnet: 1,
+  testnet: 17000
 }
 
 export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNetwork): boolean {
@@ -92,6 +93,9 @@ export function getMainnetAbi(network: string) {
   }
   if (network === 'regression') {
     return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.regression }
+  }
+  if (network === 'testnet') {
+    return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.testnet }
   }
   return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.mainnet }
 }
