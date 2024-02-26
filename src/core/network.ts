@@ -27,6 +27,7 @@ import { JsonRpcProvider } from 'ethers'
 
 import { WalletClient } from 'viem'
 import { Chain } from '@wagmi/core'
+import { holesky } from '@wagmi/core/chains'
 
 import proxyEndpoints from '../metadata/proxy.json'
 import { MAINNET_CHAIN_NAME, DEFAULT_ITERATIONS, DEFAULT_SLEEP } from './constants'
@@ -164,8 +165,11 @@ export async function enforceNetwork(
   )
   if (currentChainId !== Number(chainId)) {
     log(`Switching network to ${chainId}...`)
-    if (chainId !== 1n && chainId !== 5n) {
+    if (chainId !== 1n && chainId !== 5n && chainId !== 17000n) {
       await _walletClient.addChain({ chain: constructWagmiChain(skaleNetwork, chainName) })
+    }
+    if (chainId === 17000n) {
+      await _walletClient.addChain({ chain: holesky })
     }
     try {
       // tmp fix for coinbase wallet
