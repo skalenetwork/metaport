@@ -65,5 +65,19 @@
       "func": "0x0c11dedd"
     }
   },
-  "regression": null
+  "regression": null,
+  "testnet": {
+    "juicy-low-small-testnet": {
+      "address": "0x366727B410fE55774C8b0B5b5A6E2d74199a088A",
+      "func": "0x0c11dedd"
+    },
+    "giant-half-dual-testnet": {
+      "address": "0x62Fe932FF26e0087Ae383f6080bd2Ed481bA5A8A",
+      "func": "0x0c11dedd"
+    },
+    "lanky-ill-funny-testnet": {
+      "address": "0x000E9c53C4e2e21F5063f2e232d0AA907318dccb",
+      "func": "0x0c11dedd"
+    }
+  }
 }

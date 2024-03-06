@@ -27,6 +27,7 @@ import { JsonRpcProvider } from 'ethers'
 
 import { WalletClient } from 'viem'
 import { Chain } from '@wagmi/core'
+import { holesky } from '@wagmi/core/chains'
 
 import proxyEndpoints from '../metadata/proxy.json'
 import { MAINNET_CHAIN_NAME, DEFAULT_ITERATIONS, DEFAULT_SLEEP } from './constants'
@@ -49,7 +50,8 @@ export const CHAIN_IDS: { [network in SkaleNetwork]: number } = {
   staging: 5,
   legacy: 5,
   regression: 5,
-  mainnet: 1
+  mainnet: 1,
+  testnet: 17000
 }
 
 export function isMainnetChainId(chainId: number | BigInt, skaleNetwork: SkaleNetwork): boolean {
@@ -92,6 +94,9 @@ export function getMainnetAbi(network: string) {
   }
   if (network === 'regression') {
     return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.regression }
+  }
+  if (network === 'testnet') {
+    return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.testnet }
   }
   return { ...IMA_ABIS.mainnet, ...IMA_ADDRESSES.mainnet }
 }
@@ -160,8 +165,11 @@ export async function enforceNetwork(
   )
   if (currentChainId !== Number(chainId)) {
     log(`Switching network to ${chainId}...`)
-    if (chainId !== 1n && chainId !== 5n) {
+    if (chainId !== 1n && chainId !== 5n && chainId !== 17000n) {
       await _walletClient.addChain({ chain: constructWagmiChain(skaleNetwork, chainName) })
+    }
+    if (chainId === 17000n) {
+      await _walletClient.addChain({ chain: holesky })
     }
     try {
       // tmp fix for coinbase wallet

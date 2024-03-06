@@ -24,7 +24,7 @@ import { ReactElement, useEffect } from 'react'
 
 import { RainbowKitProvider, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { mainnet, goerli } from 'wagmi/chains'
+import { mainnet, goerli, holesky } from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import { PaletteMode } from '@mui/material'
@@ -63,7 +63,7 @@ export default function MetaportProvider(props: {
     constructWagmiChain(props.config.skaleNetwork, chain)
   )
   const { chains, webSocketPublicClient } = configureChains(
-    [mainnet, goerli, ...skaleChains],
+    [mainnet, goerli, holesky, ...skaleChains],
     [
       jsonRpcProvider({
         rpc: (chain) => ({
