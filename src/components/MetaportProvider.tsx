@@ -34,7 +34,9 @@ import {
   coinbaseWallet,
   metaMaskWallet,
   enkryptWallet,
-  rainbowWallet
+  rainbowWallet,
+  rabbyWallet,
+  trustWallet
 } from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig, ActionStateUpdate } from '../core/interfaces'
@@ -77,12 +79,14 @@ export default function MetaportProvider(props: {
   const wallets = [
     enkryptWallet({ chains }),
     injectedWallet({ chains }),
-    coinbaseWallet({ chains, appName: 'SKALE Metaport' })
+    coinbaseWallet({ chains, appName: 'SKALE Metaport' }),
+    rabbyWallet({ chains })
   ]
 
   if (props.config.projectId) {
     wallets.push(metaMaskWallet({ chains, projectId: props.config.projectId }))
     wallets.push(rainbowWallet({ chains, projectId: props.config.projectId }))
+    wallets.push(trustWallet({ chains, projectId: props.config.projectId }))
   }
 
   const connectors = connectorsForWallets([
