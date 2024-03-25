@@ -21,10 +21,9 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { type TransactionResponse } from 'ethers';
-import { TRANSFER_ERROR_MSG } from './constants'
+import { type TransactionResponse } from 'ethers'
+import { TRANSACTION_ERROR_MSG } from './constants'
 import { TxResponse } from './interfaces'
-
 
 export async function sendTransaction(func: any, args: any[]): Promise<TxResponse> {
   try {
@@ -38,8 +37,10 @@ export async function sendTransaction(func: any, args: any[]): Promise<TxRespons
     if (err.code && err.code === 'ACTION_REJECTED') {
       name = 'Transaction signing was rejected'
     } else {
-      name = TRANSFER_ERROR_MSG
+      name = TRANSACTION_ERROR_MSG
     }
+    const revertMsg = parseErrorMessage(err.message)
+    if (revertMsg) name = revertMsg
     if (err.info && err.info.error && err.info.error.data && err.info.error.data.message) {
       name = err.info.error.data.message
     }
@@ -48,4 +49,15 @@ export async function sendTransaction(func: any, args: any[]): Promise<TxRespons
     }
     return { status: false, err: { name, msg }, response: undefined }
   }
+}
+
+function parseErrorMessage(input: string | undefined): string | null {
+  if (!input) return null
+  const startDelimiter = 'execution reverted: "'
+  const endDelimiter = '"'
+  const startIndex = input.indexOf(startDelimiter)
+  if (startIndex === -1) return null
+  const endIndex = input.indexOf(endDelimiter, startIndex + startDelimiter.length)
+  if (endIndex === -1) return null
+  return input.substring(startIndex + startDelimiter.length, endIndex)
 }

@@ -10,9 +10,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-legal-crazy-castor', // Europa
     'staging-utter-unripe-menkar', // Calypso
     'staging-faint-slimy-achird', // Nebula
-    'staging-fast-active-bellatrix', // Chaos Testnet
-    'staging-perfect-parallel-gacrux', // Test Chain 1
-    'staging-severe-violet-wezen' // Test Chain 2
+    'staging-fast-active-bellatrix' // Chaos Testnet
   ],
   tokens: {
     eth: {
@@ -85,9 +83,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-utter-unripe-menkar': {
               hub: 'staging-legal-crazy-castor'
             }
-            // 'staging-faint-slimy-achird': {
-            //   hub: 'staging-legal-crazy-castor'
-            // }
           }
         }
       },
@@ -133,6 +128,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
           chains: {
             'staging-legal-crazy-castor': {},
             'staging-utter-unripe-menkar': {
+              hub: 'staging-legal-crazy-castor'
+            },
+            'staging-faint-slimy-achird': {
               hub: 'staging-legal-crazy-castor'
             }
           }
@@ -235,21 +233,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
       }
     },
     'staging-faint-slimy-achird': {
-      // Nebula connections
-      // eth: {
-      //   eth: {
-      //     address: '0x',
-      //     chains: {
-      //       'staging-legal-crazy-castor': {
-      //         clone: true
-      //       },
-      //       mainnet: {
-      //         hub: 'staging-legal-crazy-castor',
-      //         clone: true
-      //       },
-      //     }
-      //   }
-      // },
+      // nebula connections
       erc20: {
         skl: {
           address: '0x7F73B66d4e6e67bCdeaF277b9962addcDabBFC4d',
@@ -262,6 +246,18 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
               clone: true
             },
             'staging-utter-unripe-menkar': {
+              hub: 'staging-legal-crazy-castor',
+              clone: true
+            }
+          }
+        },
+        usdc: {
+          address: '0x717d43399ab3a8aada669CDC9560a6BAfdeA9796',
+          chains: {
+            'staging-legal-crazy-castor': {
+              clone: true
+            },
+            mainnet: {
               hub: 'staging-legal-crazy-castor',
               clone: true
             }
@@ -281,9 +277,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             'staging-utter-unripe-menkar': {
               wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
             }
-            // 'staging-faint-slimy-achird': {
-            //   wrapper: '0xa270484784f043e159f74C03B691F80B6F6e3c24'
-            // }
           }
         }
       },
@@ -342,6 +335,9 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             },
             'staging-utter-unripe-menkar': {
               wrapper: '0x4f250cCE5b8B39caA96D1144b9A32E1c6a9f97b0'
+            },
+            'staging-faint-slimy-achird': {
+              wrapper: '0x4f250cCE5b8B39caA96D1144b9A32E1c6a9f97b0'
             }
           }
         },
@@ -364,27 +360,6 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
             }
           }
         }
-      }
-    },
-    'staging-severe-violet-wezen': {
-      erc20: {}
-    },
-    'staging-perfect-parallel-gacrux': {
-      erc20: {},
-      erc721: {},
-      erc1155: {
-        // "skaliens": {
-        //   "address": "0xBA9fF38A2b22edDfa8e05805bD22C8f20c40546e",
-        //   "chains": {}
-        // },
-        // "medals": {
-        //   "address": "0x5D8bD602dC5468B3998e8514A1851bd5888E9639",
-        //   "chains": {}
-        // },
-        // "_ANIMALS_0xDf87EEF0977148129969b01b329379b17756cdDE": {
-        //   "address": "0xDf87EEF0977148129969b01b329379b17756cdDE",
-        //   "chains": {}
-        // }
       }
     }
   },

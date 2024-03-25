@@ -21,7 +21,7 @@
  * @copyright SKALE Labs 2023-Present
  */
 
-import { type TransactionResponse } from 'ethers';
+import { type TransactionResponse } from 'ethers'
 
 export interface TxResponse {
   status: boolean
