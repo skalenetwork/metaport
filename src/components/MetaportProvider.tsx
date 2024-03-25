@@ -29,15 +29,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import { PaletteMode } from '@mui/material'
 
-import {
-  injectedWallet,
-  coinbaseWallet,
-  metaMaskWallet,
-  enkryptWallet,
-  rainbowWallet,
-  rabbyWallet,
-  trustWallet
-} from '@rainbow-me/rainbowkit/wallets'
+import { injectedWallet, metaMaskWallet, enkryptWallet } from '@rainbow-me/rainbowkit/wallets'
 
 import { MetaportConfig, ActionStateUpdate } from '../core/interfaces'
 
@@ -76,17 +68,10 @@ export default function MetaportProvider(props: {
     ]
   )
 
-  const wallets = [
-    enkryptWallet({ chains }),
-    injectedWallet({ chains }),
-    coinbaseWallet({ chains, appName: 'SKALE Metaport' }),
-    rabbyWallet({ chains })
-  ]
+  const wallets = [enkryptWallet({ chains }), injectedWallet({ chains })]
 
   if (props.config.projectId) {
     wallets.push(metaMaskWallet({ chains, projectId: props.config.projectId }))
-    wallets.push(rainbowWallet({ chains, projectId: props.config.projectId }))
-    wallets.push(trustWallet({ chains, projectId: props.config.projectId }))
   }
 
   const connectors = connectorsForWallets([

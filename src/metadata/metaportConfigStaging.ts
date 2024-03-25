@@ -10,7 +10,7 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
     'staging-legal-crazy-castor', // Europa
     'staging-utter-unripe-menkar', // Calypso
     'staging-faint-slimy-achird', // Nebula
-    'staging-fast-active-bellatrix', // Chaos Testnet
+    'staging-fast-active-bellatrix' // Chaos Testnet
   ],
   tokens: {
     eth: {
@@ -232,7 +232,8 @@ export const METAPORT_CONFIG: interfaces.MetaportConfig = {
         }
       }
     },
-    'staging-faint-slimy-achird': { // nebula connections
+    'staging-faint-slimy-achird': {
+      // nebula connections
       erc20: {
         skl: {
           address: '0x7F73B66d4e6e67bCdeaF277b9962addcDabBFC4d',
