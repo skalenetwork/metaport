@@ -48,7 +48,7 @@ const PROTOCOL: { [protocol in 'http' | 'ws']: string } = {
 
 export const CHAIN_IDS: { [network in SkaleNetwork]: number } = {
   staging: 5,
-  legacy: 5,
+  legacy: 17000,
   regression: 5,
   mainnet: 1,
   testnet: 17000

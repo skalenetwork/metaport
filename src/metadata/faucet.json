@@ -55,16 +55,7 @@
       "func": "0x0c11dedd"
     }
   },
-  "legacy": {
-    "skale-innocent-nasty": {
-      "address": "0xC0ED18Fe6654C8211582671E28E75d73BF61A60f",
-      "func": "0x0c11dedd"
-    },
-    "international-villainous-zaurak": {
-      "address": "0x8bcA6a0E1427dBc2C2F40134d805d5929B80f56E",
-      "func": "0x0c11dedd"
-    }
-  },
+  "legacy": null,
   "regression": null,
   "testnet": {
     "juicy-low-small-testnet": {
