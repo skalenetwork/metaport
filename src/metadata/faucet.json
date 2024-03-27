@@ -55,7 +55,20 @@
       "func": "0x0c11dedd"
     }
   },
-  "legacy": null,
+  "legacy": {
+    "adorable-quaint-bellatrix": {
+      "address": "0x94977628d2EeDa78E2A56Abe178F432c46E13a6b",
+      "func": "0x0c11dedd"
+    },
+    "these-long-sadalsuud": {
+      "address": "0xA6dd0D8d8d7cf599AEAE97316b5Fba2E6a56a99E",
+      "func": "0x0c11dedd"
+    },
+    "spanish-smug-auva": {
+      "address": "0xa101902B3119f4830292bb79ebAB56967229207B",
+      "func": "0x0c11dedd"
+    }
+  },
   "regression": null,
   "testnet": {
     "juicy-low-small-testnet": {
