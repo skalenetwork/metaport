@@ -56,12 +56,16 @@
     }
   },
   "legacy": {
-    "skale-innocent-nasty": {
-      "address": "0xC0ED18Fe6654C8211582671E28E75d73BF61A60f",
+    "adorable-quaint-bellatrix": {
+      "address": "0x94977628d2EeDa78E2A56Abe178F432c46E13a6b",
       "func": "0x0c11dedd"
     },
-    "international-villainous-zaurak": {
-      "address": "0x8bcA6a0E1427dBc2C2F40134d805d5929B80f56E",
+    "these-long-sadalsuud": {
+      "address": "0xA6dd0D8d8d7cf599AEAE97316b5Fba2E6a56a99E",
+      "func": "0x0c11dedd"
+    },
+    "spanish-smug-auva": {
+      "address": "0xa101902B3119f4830292bb79ebAB56967229207B",
       "func": "0x0c11dedd"
     }
   },

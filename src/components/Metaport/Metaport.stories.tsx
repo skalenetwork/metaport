@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import Metaport from './Metaport'
 
-import { METAPORT_CONFIG } from '../../metadata/metaportConfigStaging'
+import { METAPORT_CONFIG } from '../../metadata/metaportConfigTestnet'
 METAPORT_CONFIG.mainnetEndpoint = import.meta.env.VITE_MAINNET_ENDPOINT
 METAPORT_CONFIG.projectId = import.meta.env.VITE_WC_PROJECT_ID
 

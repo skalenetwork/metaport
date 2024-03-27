@@ -55,7 +55,7 @@ export const HTTPS_PREFIX = 'https://'
 export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   mainnet: 'https://etherscan.io',
   staging: 'https://goerli.etherscan.io/',
-  legacy: 'https://goerli.etherscan.io/',
+  legacy: 'https://holesky.etherscan.io/',
   regression: 'https://goerli.etherscan.io/',
   testnet: 'https://holesky.etherscan.io/'
 }
@@ -63,7 +63,7 @@ export const MAINNET_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
 export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
   mainnet: 'explorer.mainnet.skalenodes.com',
   staging: 'explorer.staging-v3.skalenodes.com',
-  legacy: 'legacy-explorer.skalenodes.com',
+  legacy: 'legacy-explorer.skaleserver.com',
   regression: 'regression-explorer.skalenodes.com',
   testnet: 'explorer.testnet.skalenodes.com'
 }
@@ -71,7 +71,7 @@ export const BASE_EXPLORER_URLS: { [skaleNetwork: string]: string } = {
 export const MAINNET_WS_ENDPOINTS: { [skaleNetwork: string]: string } = {
   mainnet: 'wss://ethereum.publicnode.com',
   staging: 'wss://ethereum-goerli.publicnode.com',
-  legacy: 'wss://ethereum-goerli.publicnode.com',
+  legacy: 'wss://ethereum-holesky.publicnode.com',
   regression: 'wss://ethereum-goerli.publicnode.com',
   testnet: 'wss://ethereum-holesky.publicnode.com'
 }
